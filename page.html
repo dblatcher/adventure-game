@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>training with vue</title>
+
+  <style>
+	body { background-color: linen; }
+  </style>
+</head>
+<body>
+
+	<div id='app'>
+		<character-c v-for="char in characters":key="char.id" v-bind:char='char'></character-c>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+	<script src="sprite-comp.js"></script>
+	<script src="speech-line-comp.js"></script>
+	<script src="character-comp.js"></script>
+	<script src="app-go.js"></script>
+
+</body>
+</html>
+
