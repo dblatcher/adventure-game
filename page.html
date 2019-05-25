@@ -12,7 +12,11 @@
 <body>
 
 	<div id='app'>
-		<character-c v-for="char in characters":key="char.id" v-bind:char='char'></character-c>
+		
+		<div>
+			<p>{{message}}</p>
+			<character-c v-for="char in characters":key="char.id" v-bind:char='char'></character-c>
+		</div>
 	</div>
 
 	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
