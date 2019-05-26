@@ -47,7 +47,8 @@ var vm = new Vue({
 
   mounted: function () {
 	this.$on('get-report',function(component,data){
-		this.message = `message from ${component.name}: ${data}.`
+		var now = new Date();
+		this.message = `${now.getHours()}:${now.getMinutes()}.${now.getSeconds()} : message from ${component.name}: ${data}.`
 	})
   }
 
