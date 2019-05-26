@@ -143,8 +143,7 @@ Vue.component('character-c', {
 		},250);
 	},
 	template: `
-	
-	<article>
+	<article v-bind:name="name" v-bind:action="action">
 		<div v-bind:style="{
 			position: 'absolute',
 			height: scaledHeight+'px',
