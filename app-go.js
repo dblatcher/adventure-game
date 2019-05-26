@@ -8,11 +8,11 @@ var vm = new Vue({
       {id:'m', url: 'mario.png', row:2, col:3},
     ],
 	characters : [
-		{id:'npc', name:'Billy', speechColor: 'red',
+		{id:'pc', name:'Billy', speechColor: 'red',
 		spritesUsed:[2,0],
 		validDirections : ['down','left','right','up'],
 		baseHeight:50,baseWidth:50,
-		startX:10,startY:150,
+		startX:10,startY:10,
 		cycles : {
 			wait: [[0,0,0]],
 			talk: [[0,0,0],[2,0,0]],
@@ -25,11 +25,11 @@ var vm = new Vue({
 		},
 		},
 		
-		{id:'pc', name:'Mario', speechColor: 'blue', 
+		{id:'npc', name:'Mario', speechColor: 'blue', 
 		spritesUsed:['m'],
 		validDirections : ['right','left'],
 		baseHeight:75,baseWidth:50,
-		startX:20,startY:300,
+		startX:20,startY:30,
 		cycles : {
 			wait: {
 				right: [ ['m',0,0] ],
@@ -42,6 +42,9 @@ var vm = new Vue({
 		},
 		}
 	],
+	rooms: [
+		{id:'swamp', url: "bg1.png", width:400, height:300}
+	],
 	message: 'blank message'
   },
   methods : {
@@ -51,21 +54,53 @@ var vm = new Vue({
   },
 
   mounted: function () {
-	  
-	getChildByIdent('pc',this).say('Hello, World. I am the player character.')
+
+	var room = this.$children[0];  
+	var pc = getChildByIdent('pc',room);
+	pc.say('Hello, World. I am the player character.')
 	
-	marchRightThenLeft( getChildByIdent('npc',this) );
+	marchRightThenLeft( getChildByIdent('npc',room) );
 	 
 	this.$on('get-report',function(component,data){
 		var now = new Date();
 		this.message = `${now.getHours()}:${now.getMinutes()}.${now.getSeconds()} : message from ${component.name}: ${data}.`
-	})
+	});
+	
+	this.$on('clicked', function (component,type,event){
+		
+		if (type === 'room') {
+			
+			//TO DO -  generate path of steps to navigate around obsticles to closest valid point  
+			var order = {
+				y: (event.target.offsetHeight - event.clientY + event.target.offsetTop),
+				x: (event.clientX - event.target.offsetLeft),
+				action: 'walk'
+			};
+			
+			var horizontal = order.x > pc.x ? 'right' : 'left';
+			var vertical   = order.y > pc.y ? 'up' : 'down';
+			
+			var direction = Math.abs(order.x - pc.x) > Math.abs(order.y - pc.y) ? 
+				horizontal:
+				(pc.char.validDirections.includes(vertical) ? vertical : horizontal );
+			
+			order.direction = direction;
+			
+			
+			
+			console.log(order);
+			pc.destinationQueue = [order];
+		}
+		
+	});
+	
   }
 
 })
 
-var pc = getChildByIdent('pc');
-var npc = getChildByIdent('npc');
+var room = vm.$children[0];
+var pc = getChildByIdent('pc',room);
+var npc = getChildByIdent('npc',room);
 
 function stop (character) {
 	character.destinationQueue = [];

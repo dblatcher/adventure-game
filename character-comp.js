@@ -4,7 +4,7 @@ Vue.component('character-c', {
 	props:['char'],
 	data: function() {		
 		var spriteSet = [];		
-		var fullSet = this.$parent.$data.sprites;
+		var fullSet = this.$root.$data.sprites;
 		for (var i=0; i< fullSet.length; i++) {		
 			if (this.char.spritesUsed.includes(fullSet[i].id)) {spriteSet.push ( Object.assign({}, fullSet[i], {p:this} ) )	}
 		};
@@ -41,6 +41,10 @@ Vue.component('character-c', {
 		}
 	},
 	methods : {
+		clickHandler : function (event) {
+			console.log(this.name,'clicked',event)
+			this.$root.$emit('get-report', this, 'clicked');
+		},
 		move : function () {
 			if (this.destinationQueue.length === 0) {return false};
 			var order = this.destinationQueue[0];
@@ -72,7 +76,7 @@ Vue.component('character-c', {
 				if (order.action) {this.act('wait');}
 				this.destinationQueue.shift();
 				if (this.destinationQueue.length === 0) {
-					this.$root.$emit('get-report',this,'reached destination');
+					//this.$root.$emit('get-report',this,'reached destination');
 					this.$emit('reached-destination');
 				};
 			}
@@ -107,7 +111,7 @@ Vue.component('character-c', {
 			this.actFrame = onLastFrame ? 0: this.actFrame + 1;
 			
 			if (onLastFrame && !this.actionOnLoop) {
-				this.$root.$emit('get-report',this,'last frame');
+				//this.$root.$emit('get-report',this,'last frame');
 				this.$emit('last-frame');
 				this.action = 'wait';
 				this.actionOnLoop = true;
@@ -143,7 +147,9 @@ Vue.component('character-c', {
 		},250);
 	},
 	template: `
-	<article v-bind:name="name" v-bind:action="action">
+	<article @click.stop="clickHandler(event)"
+	v-bind:name="name" 
+	v-bind:action="action">
 		<div v-bind:style="{
 			position: 'absolute',
 			height: scaledHeight+'px',

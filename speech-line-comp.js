@@ -6,7 +6,8 @@ Vue.component('speech-line', {
 				color:this.color,
 				fontWeight:'600',
 				margin: '0',
-				backgroundColor: 'rgba(0,0,0,.25)'
+				backgroundColor: 'rgba(0,0,0,.25)',
+				zIndex:2
 			}
 		}
 	},
