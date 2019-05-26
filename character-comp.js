@@ -43,33 +43,38 @@ Vue.component('character-c', {
 	methods : {
 		move : function () {
 			if (this.destinationQueue.length === 0) {return false};
+			var order = this.destinationQueue[0];
 			
-			var d = {x: this.destinationQueue[0].x - this.x, y:this.destinationQueue[0].y - this.y};
+			if (!order.started) {
+				if (order.action) {
+					this.act(order.action, {loop:true, direction: order.direction||this.direction})
+				};
+			};			
+			order.started = true;
+			
+			var d = {x: order.x - this.x, y:order.y - this.y};
 			var absD = {x: Math.abs(d.x), y: Math.abs(d.y) };
-			//console.log(d);
 			var speed = 12;
 			var movement = {x:0,y:0};
-
-			if (d.y === 0 ) {
-				movement.x = Math.min ( absD.x, speed );								
-			} else if (d.x === 0 ) {
-				movement.y = Math.min ( absD.y, speed );				
-			} else {
-				var rX = absD.x / ( absD.x + absD.y);
-				movement.x = Math.min ( absD.x, speed*rX );
-				var rY = absD.y / ( absD.x + absD.y) ;
-				movement.y = Math.min ( absD.y, speed*rY );
-			} 
 			
+			var rX = absD.x ? absD.x / ( absD.x + absD.y) : 0;
+			var rY = absD.y ? absD.y / ( absD.x + absD.y) : 0;
+							
+			movement.x = Math.min ( absD.x, speed*rX );
+			movement.y = Math.min ( absD.y, speed*rY );
 			if (d.x < 0 ) {movement.x *= -1}
 			if (d.y < 0 ) {movement.y *= -1}
-			console.log(this.destinationQueue[0].x +', ' + this.destinationQueue[0].y, movement);
+			 
 			this.x += movement.x;
 			this.y += movement.y;
 			
-			if (this.x ===  this.destinationQueue[0].x && this.y === this.destinationQueue[0].y) {
-				console.log ('reached ' + this.destinationQueue[0].x +', ' + this.destinationQueue[0].y);
+			if (this.x ===  order.x && this.y === order.y) {
+				if (order.action) {this.act('wait');}
 				this.destinationQueue.shift();
+				if (this.destinationQueue.length === 0) {
+					this.$root.$emit('get-report',this,'reached destination');
+					this.$emit('reached-destination');
+				};
 			}
 			
 		},
@@ -103,6 +108,7 @@ Vue.component('character-c', {
 			
 			if (onLastFrame && !this.actionOnLoop) {
 				this.$root.$emit('get-report',this,'last frame');
+				this.$emit('last-frame');
 				this.action = 'wait';
 				this.actionOnLoop = true;
 			}
@@ -129,9 +135,7 @@ Vue.component('character-c', {
 			};
 		}
 	},
-	mounted : function() {
-		this.say('Hello world, I am '+this.name+'.')
-		
+	mounted : function() {		
 		var that = this;
 		setInterval (function(){
 			that.showNextFrame();
