@@ -13,7 +13,7 @@ Vue.component('sprite-image',{
 		position: 'absolute',
 		margin: '0',
 		bottom:'0',
-		left:'50%',
+		left:'0',
 		transform: 'translateX(-50%)'
       }
     }

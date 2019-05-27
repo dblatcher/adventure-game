@@ -35,10 +35,17 @@ Vue.component('character-c', {
 			var directionNeeded = !Array.isArray(this.char.cycles[this.action]);
 			var v = directionNeeded ? 
 				this.char.cycles[this.action][this.direction][this.actFrame]:
-				this.char.cycles[this.action][this.actFrame];
-			
+				this.char.cycles[this.action][this.actFrame];			
 			return {sprite: v[0], fx:v[1], fy:v[2]}
-		}
+		},
+		styleObject : function () {return {
+			position: 'absolute',
+			height: this.scaledHeight+'px',
+			width: this.scaledWidth+'px',
+			bottom: this.y+'px',
+			left: this.x+'px',
+			zIndex: 1000-this.y
+		}}
 	},
 	methods : {
 		clickHandler : function (event) {
@@ -150,12 +157,7 @@ Vue.component('character-c', {
 	<article @click.stop="clickHandler(event)"
 	v-bind:name="name" 
 	v-bind:action="action">
-		<div v-bind:style="{
-			position: 'absolute',
-			height: scaledHeight+'px',
-			width: scaledWidth+'px',
-			bottom: y+'px',
-			left: x+'px'}">
+		<div v-bind:style="styleObject">
 			<sprite-image v-for="sprite in this.spriteSet":key="sprite.id"
 				v-bind:sprite="sprite"
 				v-bind:fx="sprite.p.frame.fx" 
@@ -171,6 +173,7 @@ Vue.component('character-c', {
 				bottom: (y+scaledHeight)+'px',
 				left: x+'px'}"
 			v-bind:text="saying"
+			v-bind:charCentre="x"
 			v-bind:color="char.speechColor"
 		></speech-line>				
 		
