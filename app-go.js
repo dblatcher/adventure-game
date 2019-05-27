@@ -1,15 +1,7 @@
-var vm = new Vue({
-  el:'#app',
-
-  data: {
-    sprites : [
-      {id:0, url: 'boy.png', row:4, col:4},
-      {id:2, url: 'boy2.png', row:4, col:4},
-      {id:'m', url: 'mario.png', row:2, col:3},
-      {id:'w', url: 'woman.png', row:4, col:9},
-    ],
-	characters : [
-		{id:'Billy', name:'Billy', speechColor: 'red',
+var summonCharacter = {
+	billy: function(x,y,customIdent,customName) {
+	return {
+		id:customIdent || 'Billy', name:customName || 'Billy', speechColor: 'red',
 		spritesUsed:[2,0],
 		validDirections : ['down','left','right','up'],
 		baseHeight:50,baseWidth:50,
@@ -23,14 +15,17 @@ var vm = new Vue({
 				left  : [[0,0,2],[0,1,2],[0,2,2],[0,3,2]  ],
 				right : [[0,0,3],[0,1,3],[0,2,3],[0,3,3]  ],
 			}
-		},
-		},
-		
-		{id:'npc', name:'Mario', speechColor: 'blue', 
+		}
+	};
+	},
+	
+	mario: function(x,y,customIdent,customName) {
+	return {
+		id:customIdent||'npc', name:customName || 'Mario', speechColor: 'blue', 
 		spritesUsed:['m'],
 		validDirections : ['right','left'],
 		baseHeight:75,baseWidth:50,
-		startX:20,startY:30,
+		startX:x,startY:y,
 		cycles : {
 			wait: {
 				right: [ ['m',0,0] ],
@@ -41,13 +36,14 @@ var vm = new Vue({
 				left: [ ['m',2,1],['m',1,1],['m',0,1]  ]
 			}
 		}
-		},
-		
-		{id:'pc', name:'Jane', speechColor: 'white',
+	};},
+	
+	jane: function(x,y,customIdent,customName) {
+		return {id: customIdent || 'pc' , name:customName || 'Jane', speechColor: 'white',
 		spritesUsed:['w'],
 		validDirections : ['down','left','right','up'],
 		baseHeight:75,baseWidth:50,
-		startX:120,startY:30,
+		startX:x,startY:y,
 		cycles : {
 			wait : {
 				up 	  : [ ['w',0,0] ],
@@ -63,8 +59,23 @@ var vm = new Vue({
 				
 			},
 		}
-		}
-	],
+		};
+	}
+
+}
+
+
+var vm = new Vue({
+  el:'#app',
+
+  data: {
+    sprites : [
+      {id:0, url: 'boy.png', row:4, col:4},
+      {id:2, url: 'boy2.png', row:4, col:4},
+      {id:'m', url: 'mario.png', row:2, col:3},
+      {id:'w', url: 'woman.png', row:4, col:9},
+    ], 	
+	characters : [summonCharacter.jane(30,50,'fake','Janis'),summonCharacter.jane(160,50),],
 	rooms: [
 		{id:'swamp', url: "bg1.png", width:400, height:300}
 	],
@@ -80,7 +91,8 @@ var vm = new Vue({
 	var room = this.$children[0];  
 	var pc = getChildByIdent('pc',room);
 	
-	pc.say('Hello, World. I am the player character.')
+	pc.say('Hello, World. I am the player character.');
+	
 	//marchRightThenLeft( getChildByIdent('npc',room) );
 	 
 	this.$on('get-report',function(component,data){
