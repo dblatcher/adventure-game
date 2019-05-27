@@ -1,7 +1,7 @@
 var summonCharacter = {
-	billy: function(x,y,customIdent,customName) {
+	billy: function(x,y,custom = {}) {
 	return {
-		id:customIdent || 'Billy', name:customName || 'Billy', speechColor: 'red',
+		id:custom.ident || 'Billy', name:custom.name || 'Billy', speechColor: 'red',
 		spritesUsed:[2,0],
 		validDirections : ['down','left','right','up'],
 		baseHeight:50,baseWidth:50,
@@ -19,9 +19,9 @@ var summonCharacter = {
 	};
 	},
 	
-	mario: function(x,y,customIdent,customName) {
+	mario: function(x,y,custom = {}) {
 	return {
-		id:customIdent||'npc', name:customName || 'Mario', speechColor: 'blue', 
+		id:custom.ident||'npc', name:custom.name || 'Mario', speechColor: 'blue', 
 		spritesUsed:['m'],
 		validDirections : ['right','left'],
 		baseHeight:75,baseWidth:50,
@@ -38,8 +38,8 @@ var summonCharacter = {
 		}
 	};},
 	
-	jane: function(x,y,customIdent,customName) {
-		return {id: customIdent || 'pc' , name:customName || 'Jane', speechColor: 'white',
+	jane: function(x,y,custom = {}) {
+		return {id: custom.ident || 'pc' , name:custom.name || 'Jane', speechColor: 'white',
 		spritesUsed:['w'],
 		validDirections : ['down','left','right','up'],
 		baseHeight:75,baseWidth:50,
@@ -52,9 +52,9 @@ var summonCharacter = {
 				right : [ ['w',0,3] ],
 			},
 			walk : {
-				up 	  : [ ['w',0,0],['w',1,0],['w',2,0],['w',3,0] ],
+				up 	  : [ ['w',0,0],['w',1,0],['w',2,0],['w',3,0], ['w',4,0],['w',5,0],['w',6,0],['w',7,0], ['w',8,0] ],
 				left  : [ ['w',0,1],['w',1,1],['w',2,1],['w',3,1], ['w',4,1],['w',5,1],['w',6,1],['w',7,1], ['w',8,1] ],
-				down  : [ ['w',0,2],['w',1,2],['w',2,2],['w',3,2] ],
+				down  : [ ['w',0,2],['w',1,2],['w',2,2],['w',3,2], ['w',4,2],['w',5,2],['w',6,2],['w',7,2], ['w',8,2] ],
 				right : [ ['w',0,3],['w',1,3],['w',2,3],['w',3,3], ['w',4,3],['w',5,3],['w',6,3],['w',7,3], ['w',8,3] ] ,
 				
 			},
@@ -155,9 +155,6 @@ var vm = new Vue({
   }
 
 })
-
-
-var pc = function() {return vm.roomContents.pc};
 
 
 function stop (character) {
