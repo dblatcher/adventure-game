@@ -1,17 +1,21 @@
 Vue.component ('game-room', {
 	props: ['room'],
 	data: function() { return {
-		ident: this.room.id,
-		name: 'room(' + this.room.id + ')',
+		
 	}},
 	methods : {
 		clickHandler : function (event) {
 			this.$root.$emit('get-report', this, 'clicked');
-			this.$root.$emit('clicked', this, 'room', event);
-			
+			this.$root.$emit('clicked-room', this, event);	
 		},
 	},
 	computed: {
+		ident: function() {
+			return this.room.id;
+		},
+		name: function() {
+			return this.room.name;
+		},
 		styleObject : function() {
 			return {
 				width:  this.room.width + 'px',

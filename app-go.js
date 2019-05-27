@@ -64,6 +64,10 @@ var summonCharacter = {
 
 }
 
+var rooms = [
+	{id:'r001', name:'Swamp', url: "bg1.png", width:400, height:300, characters : [summonCharacter.jane(10,10)]},
+	{id:'r002', name:'Living room', url: "bg2.jpg", width:300, height:200, characters : [summonCharacter.mario(30,50),summonCharacter.jane(160,50),]}
+]
 
 var vm = new Vue({
   el:'#app',
@@ -75,61 +79,86 @@ var vm = new Vue({
       {id:'m', url: 'mario.png', row:2, col:3},
       {id:'w', url: 'woman.png', row:4, col:9},
     ], 	
-	characters : [summonCharacter.jane(30,50,'fake','Janis'),summonCharacter.jane(160,50),],
-	rooms: [
-		{id:'swamp', url: "bg1.png", width:400, height:300}
-	],
-	message: 'blank message'
+	characters : [],
+	rooms: rooms,
+	message: 'blank message',
+	roomNumber: 0,
+  },
+  computed : {
+	comp : function() {
+	
+		var list = this.$children[0].$children; // array of components in room
+		var result = {}
+		for (var i = 0; i<list.length; i++) {
+			result[list[i].ident] = list[i];
+		};
+		return result;
+	
+	}
   },
   methods : {
-	logEvent: function(event) {
-		console.log(event);
-	}  
+	changeRoom: function (rNum,data) {		
+		this.$emit('get-report',{name:'[game]'},'changing to room '+rNum+'')
+		this.characters.splice(0, this.characters.length);
+		this.characters.push(...this.rooms[rNum].characters);
+		this.roomNumber = rNum;
+		this.$emit('room-change-done',data);
+
+	},
+	getComp : function (ident) {
+		var list = this.$children[0].$children; // array of components in room
+		for (var i = 0; i<list.length; i++) {
+			if (list[i].ident === ident ){ return list[i]};
+		};
+		return false;
+	}
   },
 
-  mounted: function () {
-	var room = this.$children[0];  
-	var pc = getChildByIdent('pc',room);
+  mounted: function () { 
 	
-	pc.say('Hello, World. I am the player character.');
-	
-	//marchRightThenLeft( getChildByIdent('npc',room) );
-	 
+  
 	this.$on('get-report',function(component,data){
 		var now = new Date();
 		this.message = `${now.getHours()}:${now.getMinutes()}.${now.getSeconds()} : message from ${component.name}: ${data}.`
 	});
 	
-	this.$on('clicked', function (component,type,event){
+	this.$on('clicked-room', function (component,event){	
+		//TO DO -  generate path of steps to navigate around obsticles to closest valid point  
+		var pc = this.getComp('pc');
+		var order = {
+			y: (event.target.offsetHeight - event.clientY + event.target.offsetTop),
+			x: (event.clientX - event.target.offsetLeft),
+			action: 'walk'
+		};
+		var horizontal = order.x > pc.x ? 'right' : 'left';
+		var vertical   = order.y > pc.y ? 'up' : 'down';
+		var direction = Math.abs(order.x - pc.x) > Math.abs(order.y - pc.y) ? 
+			horizontal:
+			(pc.char.validDirections.includes(vertical) ? vertical : horizontal );
+		order.direction = direction;
 		
-		if (type === 'room') {
-			//TO DO -  generate path of steps to navigate around obsticles to closest valid point  
-			var order = {
-				y: (event.target.offsetHeight - event.clientY + event.target.offsetTop),
-				x: (event.clientX - event.target.offsetLeft),
-				action: 'walk'
-			};
-			
-			var horizontal = order.x > pc.x ? 'right' : 'left';
-			var vertical   = order.y > pc.y ? 'up' : 'down';
-			
-			var direction = Math.abs(order.x - pc.x) > Math.abs(order.y - pc.y) ? 
-				horizontal:
-				(pc.char.validDirections.includes(vertical) ? vertical : horizontal );
-			
-			order.direction = direction;
-			pc.destinationQueue = [order];
-		}
-		
+		pc.destinationQueue = [order];	
 	});
+	
+	this.$on('room-change-done', function (data){
+		var that = this;
+		setTimeout (function(){			
+			if (data === 'start') {
+				that.getComp('pc').say('Hello, World. I am the player character.');
+				that.getComp('pc').say('My name is ' + that.getComp('pc').name +'.');				
+			}
+		}, 50);
+	});
+	
+	this.changeRoom(0,'start');
 	
   }
 
 })
 
-var room = vm.$children[0];
-var pc = getChildByIdent('pc',room);
-var npc = getChildByIdent('npc',room);
+
+var pc = function() {return vm.roomContents.pc};
+
 
 function stop (character) {
 	character.destinationQueue = [];

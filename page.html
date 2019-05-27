@@ -21,7 +21,7 @@
 
 	<div id='app'>		
 		<p>{{message}}</p>
-		<game-room v-bind:room="rooms[0]">
+		<game-room v-bind:room="rooms[roomNumber]">
 			<character-c v-for="char in characters":key="char.id" v-bind:char='char'></character-c>
 		</game-room>
 	</div>

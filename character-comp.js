@@ -65,7 +65,7 @@ Vue.component('character-c', {
 			
 			var d = {x: order.x - this.x, y:order.y - this.y};
 			var absD = {x: Math.abs(d.x), y: Math.abs(d.y) };
-			var speed = 12;
+			var speed = 6;
 			var movement = {x:0,y:0};
 			
 			var rX = absD.x ? absD.x / ( absD.x + absD.y) : 0;
@@ -148,10 +148,8 @@ Vue.component('character-c', {
 	},
 	mounted : function() {		
 		var that = this;
-		setInterval (function(){
-			that.showNextFrame();
-			that.move();
-		},250);
+		setInterval (function(){that.showNextFrame()},100);
+		setInterval (function(){that.move()},50);
 	},
 	template: `
 	<article @click.stop="clickHandler(event)"
