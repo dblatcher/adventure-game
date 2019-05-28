@@ -14,13 +14,12 @@ Vue.component('sprite-image',{
 		margin: '0',
 		bottom:'0',
 		left:'0',
-		transform: 'translateX(-50%)'
       }
     }
   },
   template: `
-    <figure class="sprite">
+    <div class="sprite">
       <div v-bind:style="styleObject"></div>
-    </figure>
+    </div>
   `
 });

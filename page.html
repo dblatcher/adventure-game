@@ -21,6 +21,7 @@
 		border: 5px inset gray;
 		display: flex;
 		flex-wrap: wrap;
+		width:400px;
 	}
 		
 	.verb-menu__input {
@@ -60,6 +61,7 @@
 		<p>{{message}}</p>
 		<game-room v-bind:room="rooms[roomNumber]">
 			<character-c v-for="char in characters":key="char.id" v-bind:char='char'></character-c>
+			<world-item v-for="item in worldItems":key="item.id" v-bind:item='item'></character-c>
 		</game-room>
 		<verb-menu></verb-menu>
 	</div>
@@ -70,6 +72,7 @@
 	<script src="sprite-comp.js"></script>
 	<script src="speech-line-comp.js"></script>
 	<script src="character-comp.js"></script>
+	<script src="world-item-comp.js"></script>
 	<script src="verb-menu.js"></script>
 	<script src="app-go.js"></script>
 

@@ -20,7 +20,7 @@ Vue.component ('game-room', {
 			return {
 				width:  this.room.width + 'px',
 				height: this.room.height+ 'px',
-				backgroundSize: 'cover',
+				backgroundSize: '100% 100%',
 				backgroundImage: `url(${this.room.url})`,
 			}
 		}

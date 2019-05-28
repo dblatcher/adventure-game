@@ -44,7 +44,8 @@ Vue.component('character-c', {
 			width: this.scaledWidth+'px',
 			bottom: this.y+'px',
 			left: this.x+'px',
-			zIndex: 1000-this.y
+			zIndex: 1000-this.y,
+			transform: 'translateX(-50%)'
 		}}
 	},
 	methods : {

@@ -65,8 +65,23 @@ var summonCharacter = {
 }
 
 var rooms = [
-	{id:'r001', name:'Swamp', url: "bg1.png", width:400, height:300, characters : [summonCharacter.jane(10,10)]},
-	{id:'r002', name:'Living room', url: "bg2.jpg", width:300, height:200, characters : [summonCharacter.mario(30,50),summonCharacter.jane(160,50),]}
+	{id:'r001', name:'Swamp', url: "bg1.png", width:400, height:300, 
+	characters : [summonCharacter.jane(10,10)],worldItems:[]},
+	{id:'r002', name:'Living room', url: "bg2.jpg", width:400, height:250, 
+	characters : [summonCharacter.mario(30,50),summonCharacter.jane(160,50),],
+	worldItems : [		{
+			spritesUsed : ['door'],
+			id : 'door',
+			name : 'wooden door',
+			startX: 265, startY:25,
+			baseHeight:100, baseWidth:50,
+			startCycle : 'closed',
+			cycles: {
+				closed: [ ['door',0,0]  ],
+				open:   [ ['door',2,0]  ],
+				opening:   [ ['door',0,0],['door',1,0],['door',2,0]  ]
+			}
+		}]}
 ]
 
 var vm = new Vue({
@@ -78,11 +93,13 @@ var vm = new Vue({
       {id:2, url: 'boy2.png', row:4, col:4},
       {id:'m', url: 'mario.png', row:2, col:3},
       {id:'w', url: 'woman.png', row:4, col:9},
+      {id:'door', url: 'door.png', row:1, col:3},
     ], 	
 	characters : [],
+	worldItems : [],
 	rooms: rooms,
 	message: 'blank message',
-	roomNumber: 0,
+	roomNumber: 1,
   },
   computed : {
 	comp : function() {
@@ -101,6 +118,11 @@ var vm = new Vue({
 		this.$emit('get-report',{name:'[game]'},'changing to room '+rNum+'')
 		this.characters.splice(0, this.characters.length);
 		this.characters.push(...this.rooms[rNum].characters);
+
+		this.worldItems.splice(0, this.worldItems.length);
+		this.worldItems.push(...this.rooms[rNum].worldItems);
+		
+		
 		this.roomNumber = rNum;
 		this.$emit('room-change-done',data);
 
@@ -150,7 +172,7 @@ var vm = new Vue({
 		}, 50);
 	});
 	
-	this.changeRoom(0,'start');
+	this.changeRoom(this.roomNumber,'start');
 	
   }
 
