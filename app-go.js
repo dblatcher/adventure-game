@@ -66,7 +66,7 @@ var summonCharacter = {
 
 var rooms = [
 	{id:'r001', name:'Swamp', url: "bg1.png", width:400, height:300, 
-	characters : [summonCharacter.jane(10,10)],worldItems:[]},
+	characters : [summonCharacter.jane(10,10),summonCharacter.mario(310,0,{ident:'other', name:'luigi'})],worldItems:[]},
 	{id:'r002', name:'Living room', url: "bg2.jpg", width:400, height:250, 
 	characters : [summonCharacter.mario(30,50),summonCharacter.jane(160,50),],
 	worldItems : [		{
@@ -75,7 +75,7 @@ var rooms = [
 			name : 'wooden door',
 			startX: 265, startY:25,
 			baseHeight:100, baseWidth:50,
-			startCycle : 'closed',
+			status : 'closed',
 			cycles: {
 				closed: [ ['door',0,0]  ],
 				open:   [ ['door',2,0]  ],
@@ -102,16 +102,7 @@ var vm = new Vue({
 	roomNumber: 1,
   },
   computed : {
-	comp : function() {
-	
-		var list = this.$children[0].$children; // array of components in room
-		var result = {}
-		for (var i = 0; i<list.length; i++) {
-			result[list[i].ident] = list[i];
-		};
-		return result;
-	
-	}
+
   },
   methods : {
 	changeRoom: function (rNum,data) {		
@@ -127,12 +118,15 @@ var vm = new Vue({
 		this.$emit('room-change-done',data);
 
 	},
-	getComp : function (ident) {
+	getThings : function (ident) {
 		var list = this.$children[0].$children; // array of components in room
+		var result = {}
 		for (var i = 0; i<list.length; i++) {
 			if (list[i].ident === ident ){ return list[i]};
+			result[list[i].ident] = list[i];
 		};
-		return false;
+		if (ident) {return false};
+		return result;
 	}
   },
 
@@ -146,7 +140,7 @@ var vm = new Vue({
 	
 	this.$on('clicked-room', function (component,event){	
 		//TO DO -  generate path of steps to navigate around obsticles to closest valid point  
-		var pc = this.getComp('pc');
+		var pc = this.getThings('pc');
 		var order = {
 			y: (event.target.offsetHeight - event.clientY + event.target.offsetTop),
 			x: (event.clientX - event.target.offsetLeft),
@@ -166,8 +160,8 @@ var vm = new Vue({
 		var that = this;
 		setTimeout (function(){			
 			if (data === 'start') {
-				that.getComp('pc').say('Hello, World. I am the player character.');
-				that.getComp('pc').say('My name is ' + that.getComp('pc').name +'.');				
+				that.getThings('pc').say('Hello, World. I am the player character.');
+				that.getThings('pc').say('My name is ' + that.getThings('pc').name +'.');				
 			}
 		}, 50);
 	});

@@ -60,8 +60,14 @@
 	<div id='app'>		
 		<p>{{message}}</p>
 		<game-room v-bind:room="rooms[roomNumber]">
-			<character-c v-for="char in characters":key="char.id" v-bind:char='char'></character-c>
-			<world-item v-for="item in worldItems":key="item.id" v-bind:item='item'></character-c>
+			<character-c 
+				v-for="char in characters":key="rooms[roomNumber].id + '-' + char.id" 
+				v-bind:char='char'>
+			</character-c>
+			<world-item
+				v-for="item in worldItems":key="item.id" 
+				v-bind:item='item'>
+			</world-item>
 		</game-room>
 		<verb-menu></verb-menu>
 	</div>

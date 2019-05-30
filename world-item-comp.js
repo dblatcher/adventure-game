@@ -18,7 +18,6 @@ Vue.component('world-item', {
 		scale:this.item.initialScale || 1,
 		baseHeight: this.item.baseHeight || 100,
 		baseWidth: this.item.baseWidth || 100,
-		cycle: this.item.startCycle || 'neutral',
 		cycleFrame:0, cycleQueue:[],
 		}
 	},
@@ -26,7 +25,7 @@ Vue.component('world-item', {
 		scaledHeight : function() {return this.scale * this.baseHeight;},
 		scaledWidth : function() {return this.scale * this.baseWidth;},
 		frame : function() {			
-			var v= this.item.cycles[this.cycle][this.cycleFrame];
+			var v= this.item.cycles[this.item.status][this.cycleFrame];
 			return {sprite: v[0], fx:v[1], fy:v[2]}
 		},
 		styleObject : function () {return {
@@ -45,24 +44,18 @@ Vue.component('world-item', {
 			this.$root.$emit('get-report', this, 'clicked');
 		},
 
-		setCycle : function (animation, options = {}, callBack) {
+		setStatus : function (animation, options = {}) {
 			if (typeof animation  !== 'string') {return false;}
 			if (!this.item.cycles[animation]) {return false;}	
-			//this.actionOnLoop = options.loop || false;
-			this.cycle = animation; this.cycleFrame = 0;
-			//TO DO - MAKE COMPONENT SYNC WITH VM ROOM DATA - NOT PERSISTENT CHANGES IF PLAYER LEAVES ROOM
+			this.item.status = animation; this.cycleFrame = 0;
+			return this;
 		},
 		showNextFrame : function () {
-			var cycle = this.item.cycles[this.cycle] ;
+			var cycle = this.item.cycles[this.item.status] ;
 			var onLastFrame = !(cycle.length > this.cycleFrame+1);
 			this.cycleFrame = onLastFrame ? 0: this.cycleFrame + 1;
 			
-/* 			if (onLastFrame && !this.actionOnLoop) {
-				//this.$root.$emit('get-report',this,'last frame');
-				this.$emit('last-frame');
-				this.action = 'neutral';
-				this.actionOnLoop = true;
-			} */
+
 		},
 
 	},
@@ -73,7 +66,7 @@ Vue.component('world-item', {
 	template: `
 	<article @click.stop="clickHandler(event)"
 	v-bind:name="name" 
-	v-bind:action="cycle">
+	v-bind:status="item.status">
 		<div v-bind:style="styleObject">
 			<sprite-image v-for="sprite in this.spriteSet":key="sprite.id"
 				v-bind:sprite="sprite"
