@@ -16,6 +16,22 @@
 		margin: 1rem;
 	}
 	
+	.command-line {
+		margin: 1rem;
+		border: 5px inset gray;
+		display: flex;
+		flex-wrap: wrap;
+		width:400px;
+	}
+	
+	.command-line__sentence {
+		margin: 0;
+		padding: .25rem 1rem;
+	}
+	.command-line__last-phrase {
+		color: green;
+	}
+	
 	.verb-menu {
 		margin: 1rem;
 		border: 5px inset gray;
@@ -69,7 +85,8 @@
 				v-bind:item='item'>
 			</world-item>
 		</game-room>
-		<verb-menu></verb-menu>
+		<command-line v-bind:command='command'></command-line>
+		<verb-menu v-bind:verb-list='verbList'></verb-menu>
 	</div>
 
 	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
@@ -80,6 +97,7 @@
 	<script src="character-comp.js"></script>
 	<script src="world-item-comp.js"></script>
 	<script src="verb-menu.js"></script>
+	<script src="command-line.js"></script>
 	<script src="app-go.js"></script>
 
 </body>

@@ -43,6 +43,10 @@ Vue.component('world-item', {
 			console.log(this.name,'clicked',event)
 			this.$root.$emit('get-report', this, 'clicked');
 		},
+		hoverHandler : function (event) {
+			this.$root.$emit('get-report', this, event.type);
+			this.$root.$emit('hover-event', this, event);
+		},
 
 		setStatus : function () {
 			if (typeof arguments[0]  !== 'string') {return false;}
@@ -73,7 +77,7 @@ Vue.component('world-item', {
 		setInterval (function(){that.showNextFrame()},300);
 	},
 	template: `
-	<article @click.stop="clickHandler(event)"
+	<article @click.stop="clickHandler(event)" v-on:mouseover="hoverHandler(event)" v-on:mouseout="hoverHandler(event)"
 	v-bind:name="name" 
 	v-bind:status="item.status">
 		<div v-bind:style="styleObject">

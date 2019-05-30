@@ -85,11 +85,26 @@ var rooms = [
 		}]}
 ]
 
+function Verb (description, id, preposition) {
+	this.description = description;
+	this.id = id;
+	this.preposition = preposition || '[NO PREPOSITION]';
+	this.hasPreposition = !!(preposition);
+}
+
+var verbList = [new Verb('walk to','WALK'), new Verb('pick up','TAKE'),
+		new Verb('look at','LOOK'), new Verb('give','GIVE', 'to'),
+		new Verb('use','USE', 'with'), new Verb('talk to','TALK'),
+		new Verb('open','OPEN'), new Verb('close','SHUT')]
+
+
+
 var vm = new Vue({
   el:'#app',
 
   data: {
-    sprites : [
+    verbList : verbList,
+	sprites : [
       {id:0, url: 'boy.png', row:4, col:4},
       {id:2, url: 'boy2.png', row:4, col:4},
       {id:'m', url: 'mario.png', row:2, col:3},
@@ -101,9 +116,28 @@ var vm = new Vue({
 	rooms: rooms,
 	message: 'blank message',
 	roomNumber: 1,
+	verb: verbList[0],thingHoveredOn:null
   },
   computed : {
-
+	command : function() {
+			
+		var subject = null;
+		var needObject = true;
+		
+		var sentence = this.verb.description + ' ';
+		if (subject) {
+			sentence +=  subject.name+ ' ';			
+			if (needObject && this.verb.hasPreposition) {sentence += this.verb.preposition + ' ';}
+		}
+		
+		var undecidedNoun='';
+		if (this.thingHoveredOn) {undecidedNoun = this.thingHoveredOn.name;} 
+		
+		return {
+			sentence: sentence,
+			undecidedNoun: undecidedNoun
+		}
+	}
   },
   methods : {
 	changeRoom: function (rNum,data) {		
@@ -131,7 +165,7 @@ var vm = new Vue({
 	}
   },
 
-  mounted: function () { 
+  beforeMount: function () { 
 	
   
 	this.$on('get-report',function(component,data){
@@ -139,12 +173,34 @@ var vm = new Vue({
 		this.message = `${now.getHours()}:${now.getMinutes()}.${now.getSeconds()} : message from ${component.name}: ${data}.`
 	});
 	
+	this.$on('verb-picked',function(verbID) {
+		for (var i=0; i<this.verbList.length; i++) {
+			if (this.verbList[i].id === verbID ) {
+				this.verb = this.verbList[i];
+				return;
+			}
+		};
+	});
+	
+	this.$on('hover-event',function(component,event){
+		if (event.type=== 'mouseover') {
+			this.thingHoveredOn = component;
+		};
+		if (event.type=== 'mouseout' && this.thingHoveredOn === component) {
+			this.thingHoveredOn = null;
+		};	
+	});
+	
 	this.$on('clicked-room', function (component,event){	
-		//TO DO -  generate path of steps to navigate around obsticles to closest valid point  
+		//TO DO -  generate path of steps to navigate around obsticles to closest valid point
+		var roomElement = this.$el.getElementsByTagName('main')[0];
 		var pc = this.getThings('pc');
+		
+		//scaledHeightOfPcAsCssString = getComputedStyle(this.getThings().pc.$children[0].$el.children[0]).height
+		
 		var order = {
-			y: (event.target.offsetHeight - event.clientY + event.target.offsetTop),
-			x: (event.clientX - event.target.offsetLeft),
+			y: (roomElement.offsetHeight - event.clientY + roomElement.offsetTop-pc.scaledHeight/2),
+			x: (event.clientX - roomElement.offsetLeft),
 			action: 'walk'
 		};
 		var horizontal = order.x > pc.x ? 'right' : 'left';
@@ -199,10 +255,3 @@ function marchRightThenLeft(character) {
 
 }
 
-function getChildByIdent (ident,instance = vm) {
-  var rightChild = null ;
-  instance.$children.forEach((child) => {
-    if ( child.ident === ident ) {rightChild = child}
-  })
-  return rightChild;
-}

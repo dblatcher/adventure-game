@@ -50,9 +50,17 @@ Vue.component('character-c', {
 	},
 	methods : {
 		clickHandler : function (event) {
+			if (this.ident === 'pc') {return false};
+			event.stopPropagation();
 			console.log(this.name,'clicked',event)
 			this.$root.$emit('get-report', this, 'clicked');
 		},
+		hoverHandler : function (event) {
+			if (this.ident === 'pc') {return false};
+			this.$root.$emit('get-report', this, event.type);
+			this.$root.$emit('hover-event', this, event);
+		},
+		
 		move : function () {
 			if (this.destinationQueue.length === 0) {return false};
 			var order = this.destinationQueue[0];
@@ -153,7 +161,7 @@ Vue.component('character-c', {
 		setInterval (function(){that.move()},50);
 	},
 	template: `
-	<article @click.stop="clickHandler(event)"
+	<article @click="clickHandler(event)" v-on:mouseover="hoverHandler(event)" v-on:mouseout="hoverHandler(event)"
 	v-bind:name="name" 
 	v-bind:action="action">
 		<div v-bind:style="styleObject">
