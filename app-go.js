@@ -75,11 +75,12 @@ var rooms = [
 			name : 'wooden door',
 			startX: 265, startY:25,
 			baseHeight:100, baseWidth:50,
-			status : 'closed',
+			status : 'closed', queue : [],
 			cycles: {
 				closed: [ ['door',0,0]  ],
 				open:   [ ['door',2,0]  ],
-				opening:   [ ['door',0,0],['door',1,0],['door',2,0]  ]
+				opening:   [ ['door',0,0],['door',1,0],['door',2,0]  ],
+				closing:   [ ['door',2,0],['door',1,0],['door',0,0]  ]
 			}
 		}]}
 ]

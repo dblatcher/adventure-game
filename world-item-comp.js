@@ -44,10 +44,17 @@ Vue.component('world-item', {
 			this.$root.$emit('get-report', this, 'clicked');
 		},
 
-		setStatus : function (animation, options = {}) {
-			if (typeof animation  !== 'string') {return false;}
-			if (!this.item.cycles[animation]) {return false;}	
-			this.item.status = animation; this.cycleFrame = 0;
+		setStatus : function () {
+			if (typeof arguments[0]  !== 'string') {return false;}
+			if (!this.item.cycles[arguments[0]]) {return false;}
+			this.item.status = arguments[0]; this.cycleFrame = 0;
+
+			this.item.queue = [];
+			for (var i = 1; i < arguments.length; i++) {
+				if (typeof arguments[i]  === 'string' && this.item.cycles[arguments[i]]) {
+					this.item.queue.push(arguments[i]);
+				}
+			};
 			return this;
 		},
 		showNextFrame : function () {
@@ -55,13 +62,15 @@ Vue.component('world-item', {
 			var onLastFrame = !(cycle.length > this.cycleFrame+1);
 			this.cycleFrame = onLastFrame ? 0: this.cycleFrame + 1;
 			
-
+			if (onLastFrame && this.item.queue.length) {
+				this.item.status = this.item.queue.shift();				
+			};
 		},
 
 	},
 	mounted : function() {		
 		var that = this;
-		setInterval (function(){that.showNextFrame()},100);
+		setInterval (function(){that.showNextFrame()},300);
 	},
 	template: `
 	<article @click.stop="clickHandler(event)"
