@@ -85,6 +85,25 @@ var rooms = [
 		}]}
 ]
 
+function InventoryItem (id, name, url, startWith=false) {
+	this.id = id.toUpperCase() + "_I";
+	this.name=name;
+	this.url=url;
+	this.have=startWith;
+}
+inventoryItems = [
+new InventoryItem('bucket', 'bucket', 'bucket.png'),
+new InventoryItem('stick','lolly stick', 'stick.jpg'),
+new InventoryItem('shoe','red shoe', 'shoe.jpg',true),
+new InventoryItem('hammer','hammer', 'hammer.jpg',true),
+new InventoryItem('shoe2','red shoe', 'shoe.jpg',true),
+new InventoryItem('hammer2','hammer', 'hammer.jpg',true),
+new InventoryItem('shoe3','red shoe', 'shoe.jpg',true),
+new InventoryItem('bucket2','bucket', 'bucket.png',true),
+new InventoryItem('stick2','stick', 'stick.jpg',true),
+new InventoryItem('hammer4','hammer', 'hammer.jpg',true),
+];
+
 var vm = new Vue({
   el:'#app',
 
@@ -99,11 +118,14 @@ var vm = new Vue({
 	characters : [],
 	worldItems : [],
 	rooms: rooms,
+	inventoryItems: inventoryItems,
 	message: 'blank message',
 	roomNumber: 1,
   },
   computed : {
-
+	inventory : function() {
+		return this.inventoryItems.filter(function(i){return i.have});
+	}
   },
   methods : {
 	changeRoom: function (rNum,data) {		
