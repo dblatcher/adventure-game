@@ -194,8 +194,8 @@ var vm = new Vue({
 		//TO DO -  generate path of steps to navigate around obsticles to closest valid point  
 		var pc = this.getThings('pc');
 		var order = {
-			y: (event.target.offsetHeight - event.clientY + event.target.offsetTop),
-			x: (event.clientX - event.target.offsetLeft),
+			y: (event.target.offsetHeight - event.offsetY),
+			x: (event.offsetX),
 			action: 'walk'
 		};
 		var horizontal = order.x > pc.x ? 'right' : 'left';
