@@ -13,7 +13,7 @@
 		position:relative;
 		border: 5px inset gray;
 		overflow: hidden;
-		margin: 1rem;
+		margin: .5rem;
 	}
 	
 	.command-line {
@@ -33,11 +33,14 @@
 	}
 	
 	.verb-menu {
-		margin: 1rem;
+		margin: .5rem;
 		border: 5px inset gray;
 		display: flex;
 		flex-wrap: wrap;
-		width:400px;
+		justify-content:center;
+		width:300px;
+		position:relative;
+		float:left;
 	}
 		
 	.verb-menu__input {
@@ -68,6 +71,54 @@
 		color:black;
 	}
 	
+	.inventory-menu {
+		margin: .5rem;
+		border: 5px inset gray;
+		width:200px;
+
+		position: relative;
+		overflow:hidden;
+		float:left;
+	}
+
+
+	.inventory-menu__holder {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		width: 100%;
+		left: 0px;
+		position:relative;
+	}
+	
+	.inventory-menu__item {
+		flex-basis:50px;
+		box-sizing:border-box;
+		padding:5px;
+		margin:5px;
+		border: 1px solid black;
+		background-color: white;
+	}
+	
+	.inventory-menu__pic {
+		max-width: 100%;
+	}
+	
+	.inventory-menu__button { 
+		font-size: 200%;
+		color:gray;
+		opacity: .25;
+	}
+	.inventory-menu__button--back { 
+		float:left;
+	}
+	.inventory-menu__button--forward { 
+		float:right;
+	}
+	.inventory-menu__button--enabled { 
+		color: black;
+		opacity: 1;
+	}
 	
   </style>
 </head>
@@ -87,6 +138,8 @@
 		</game-room>
 		<command-line v-bind:command='command'></command-line>
 		<verb-menu v-bind:verb-list='verbList'></verb-menu>
+		<inventory-menu v-bind:items="inventory"></inventory-menu>
+
 	</div>
 
 	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
@@ -98,8 +151,10 @@
 	<script src="world-item-comp.js"></script>
 	<script src="verb-menu.js"></script>
 	<script src="command-line.js"></script>
+	<script src="inventory-menu.js"></script>
 	<script src="app-go.js"></script>
-
+	
+	
 </body>
 </html>
 
