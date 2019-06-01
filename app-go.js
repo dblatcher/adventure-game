@@ -64,38 +64,46 @@ var summonCharacter = {
 
 }
 
-var rooms = [
-	{id:'r001', name:'Swamp', url: "bg1.png", width:400, height:300, 
-	characters : [summonCharacter.jane(10,10),summonCharacter.mario(310,0,{ident:'other', name:'luigi'})],worldItems:[]},
-	{id:'r002', name:'Living room', url: "bg2.jpg", width:400, height:250, 
-	characters : [summonCharacter.mario(30,50),summonCharacter.jane(160,50),],
-	worldItems : [
-		{
+var worldItemModels = {
+	door: function () {
+		return {
 			spritesUsed : ['door'],
-			id : 'door',
-			name : 'wooden door',
-			startX: 265, startY:25,
-			baseHeight:100, baseWidth:50,
-			status : 'closed', queue : [],
 			cycles: {
 				closed: [ ['door',0,0]  ],
 				open:   [ ['door',2,0]  ],
 				opening:   [ ['door',0,0],['door',1,0],['door',2,0]  ],
 				closing:   [ ['door',2,0],['door',1,0],['door',0,0]  ]
 			}
-		},
-		{
-			spritesUsed : [],
-			id : 'window',
-			name : 'window',
-			startX: 120, startY:150,
-			baseHeight:100, baseWidth:145,
-			status : 'neutral', queue : [],
-			cycles: {
-				neutral: [ ],
-			}
-		}
-		
+		};
+	}
+};
+
+function WorldItem (id, name, x,y,width,height,status, model) {
+	this.id = id.toUpperCase() + "_W";
+	this.name = name;
+	this.startX = x || 0;
+	this.startY = y || 0;
+	this.baseWidth = width || 20;
+	this.baseHeight = height || 20;
+	this.status = status || 'neutral';
+	this.queue = [];
+	
+	if (model) {
+		Object.assign(this, model())
+	} else {
+		this.spritesUsed = [];
+		this.cycles = {neutral:[]};
+	}
+}
+
+var rooms = [
+	{id:'r001', name:'Swamp', url: "bg1.png", width:400, height:300, 
+	characters : [summonCharacter.jane(10,10),summonCharacter.mario(310,0,{ident:'other', name:'luigi'})],worldItems:[]},
+	{id:'r002', name:'Living room', url: "bg2.jpg", width:400, height:250, 
+	characters : [summonCharacter.mario(30,50),summonCharacter.jane(160,50),],
+	worldItems : [		
+		new WorldItem ('door','wooden door',265,25,50,100,'closed',worldItemModels.door),
+		new WorldItem ('winDow','nice window',120,150,100,145)
 	]
 	}
 ]
