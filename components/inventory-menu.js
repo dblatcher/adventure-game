@@ -38,7 +38,12 @@ methods: {
 	},
 	clickHandler(item) {
 		this.$parent.$emit('get-report',item,`clicked item with ID [${item.id}]`);
-	}
+	},
+	hoverHandler : function (event,item) {
+
+		this.$root.$emit('get-report', item, event.type);
+		this.$root.$emit('hover-event', item, event);
+	},
 },
 
 template: `
@@ -50,7 +55,8 @@ template: `
 	class="inventory-menu__button inventory-menu__button--forward"> &rarr; </button> 
 	
 	<div class="inventory-menu__holder">
-		<div @click="clickHandler(item)"class="inventory-menu__item" v-for="item, index in this.visibleItems":key="index">
+		<div @click="clickHandler(item)" v-on:mouseover="hoverHandler(event,item)" v-on:mouseout="hoverHandler(event,item)"
+		class="inventory-menu__item" v-for="item, index in this.visibleItems":key="index">
 			<img class="inventory-menu__pic" v-bind:src="item.url" v-bind:name="item.name"/>
 		</div>
 	<div>
