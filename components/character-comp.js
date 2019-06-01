@@ -52,8 +52,8 @@ Vue.component('character-c', {
 		clickHandler : function (event) {
 			if (this.ident === 'pc') {return false};
 			event.stopPropagation();
-			console.log(this.name,'clicked',event)
 			this.$root.$emit('get-report', this, 'clicked');
+			this.$root.$emit('clicked-thing', this.char);
 		},
 		hoverHandler : function (event) {
 			if (this.ident === 'pc') {return false};

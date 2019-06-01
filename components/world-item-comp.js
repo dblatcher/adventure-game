@@ -40,8 +40,8 @@ Vue.component('world-item', {
 	},
 	methods : {
 		clickHandler : function (event) {
-			console.log(this.name,'clicked',event)
 			this.$root.$emit('get-report', this, 'clicked');
+			this.$root.$emit('clicked-thing', this.item);
 		},
 		hoverHandler : function (event) {
 			this.$root.$emit('get-report', this, event.type);

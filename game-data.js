@@ -134,7 +134,7 @@ function Verb (description, id, preposition) {
 	this.description = description;
 	this.id = id;
 	this.preposition = preposition || '[NO PREPOSITION]';
-	this.hasPreposition = !!(preposition);
+	this.transitive = !!(preposition);
 }
 var verbList = [new Verb('walk to','WALK'), new Verb('pick up','TAKE'),
 		new Verb('look at','LOOK'), new Verb('give','GIVE', 'to'),

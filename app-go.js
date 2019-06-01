@@ -1,4 +1,43 @@
 
+function stop (character) {
+	character.destinationQueue = [];
+	character.act('wait');
+}
+
+function marchRightThenLeft(character) {
+	
+	var goLeftThenTurn = function () {
+		this.destinationQueue.push({x:character.x-150, y:character.y, action:'walk', direction: 'left'});
+		this.say(' ',100);
+		this.say('going left!');
+		this.$once('reached-destination', goRightThenTurn);
+	};
+	
+	var goRightThenTurn = function () {
+		this.destinationQueue.push({x:character.x+150, y:character.y,action:'walk', direction: 'right'});
+		this.say(' ',100);
+		this.say('going right!');
+		this.$once('reached-destination', goLeftThenTurn);
+	};
+	
+	goRightThenTurn.apply(character,[]);
+
+}
+
+function goTo (character,destination,action='walk') {
+	var order = Object.assign({}, destination,{action:action})
+	var horizontal = order.x > character.x ? 'right' : 'left';
+	var vertical   = order.y > character.y ? 'up' : 'down';
+		
+	order.direction = Math.abs(order.x - character.x) > Math.abs(order.y - character.y) ? 
+		horizontal:
+		character.char.validDirections.includes(vertical) ?
+			vertical : horizontal;
+	
+	
+	character.destinationQueue = [order];	
+}
+
 
 var vm = new Vue({
   el:'#app',
@@ -12,26 +51,30 @@ var vm = new Vue({
 	inventoryItems: inventoryItems,
 	message: 'blank message',
 	roomNumber: 1,
-	verb: verbList[0],thingHoveredOn:null
+	verb: verbList[0],thingHoveredOn:null, 
+	subject: null, needObject:false, object:null
   },
   computed : {
-	command : function() {
-			
-		var subject = null;
-		var needObject = true;
+	command : function() {		
+		
 		
 		var sentence = this.verb.description + ' ';
-		if (subject) {
-			sentence +=  subject.name+ ' ';			
-			if (needObject && this.verb.hasPreposition) {sentence += this.verb.preposition + ' ';}
+		if (this.subject) {
+			sentence +=  this.subject.name+ ' ';			
+			if (this.needObject) {sentence += this.verb.preposition + ' ';}
+		}
+		if (this.object) {
+			sentence +=  this.object.name;			
 		}
 		
-		var undecidedNoun='';
-		if (this.thingHoveredOn) {undecidedNoun = this.thingHoveredOn.name;} 
+		var completeCommand = (this.subject && ! this.needObject) || (this.subject && this.object)
+		var undecidedNoun='';	
+		if (!completeCommand && this.thingHoveredOn) {undecidedNoun = this.thingHoveredOn.name;} 
 		
 		return {
 			sentence: sentence,
-			undecidedNoun: undecidedNoun
+			undecidedNoun: undecidedNoun,
+			complete:completeCommand
 		}
 	},
 	
@@ -75,6 +118,7 @@ var vm = new Vue({
 	});
 	
 	this.$on('verb-picked',function(verbID) {
+		this.subject = null;
 		for (var i=0; i<this.verbList.length; i++) {
 			if (this.verbList[i].id === verbID ) {
 				this.verb = this.verbList[i];
@@ -96,22 +140,31 @@ var vm = new Vue({
 		//TO DO -  generate path of steps to navigate around obsticles to closest valid point
 		var roomElement = this.$el.getElementsByTagName('main')[0];
 		var pc = this.getThings('pc');
-		
 		//scaledHeightOfPcAsCssString = getComputedStyle(this.getThings().pc.$children[0].$el.children[0]).height
-		
-		var order = {
-			y: (event.target.offsetHeight - event.offsetY),
-			x: (event.offsetX),
-			action: 'walk'
+		goTo (this.getThings('pc'), {y: (event.target.offsetHeight - event.offsetY),x: (event.offsetX)});
+	});
+	
+	this.$on('clicked-thing', function(thing){
+		if (!this.subject) {
+			this.subject = thing;
+			if (this.verb.transitive) {
+				if (true) {  // test for non transitive use of transitive verb, like 'use lever'
+					this.needObject = true;
+				} else {
+					this.needObject = false;
+				}		
+			} else {
+				this.needObject = false;
+			}
+		} else {
+			if (!this.command.complete && thing !== this.subject) {
+				this.object = thing;
+			}
 		};
-		var horizontal = order.x > pc.x ? 'right' : 'left';
-		var vertical   = order.y > pc.y ? 'up' : 'down';
-		var direction = Math.abs(order.x - pc.x) > Math.abs(order.y - pc.y) ? 
-			horizontal:
-			(pc.char.validDirections.includes(vertical) ? vertical : horizontal );
-		order.direction = direction;
 		
-		pc.destinationQueue = [order];	
+		if (this.command.complete) {
+			console.log('command:',this.verb.description,this.subject.name,this.object ? this.object.name : '');
+		}
 	});
 	
 	this.$on('room-change-done', function (data){
@@ -130,29 +183,4 @@ var vm = new Vue({
 
 })
 
-
-function stop (character) {
-	character.destinationQueue = [];
-	character.act('wait');
-}
-
-function marchRightThenLeft(character) {
-	
-	var goLeftThenTurn = function () {
-		this.destinationQueue.push({x:character.x-150, y:character.y, action:'walk', direction: 'left'});
-		this.say(' ',100);
-		this.say('going left!');
-		this.$once('reached-destination', goRightThenTurn);
-	};
-	
-	var goRightThenTurn = function () {
-		this.destinationQueue.push({x:character.x+150, y:character.y,action:'walk', direction: 'right'});
-		this.say(' ',100);
-		this.say('going right!');
-		this.$once('reached-destination', goLeftThenTurn);
-	};
-	
-	goRightThenTurn.apply(character,[]);
-
-}
 
