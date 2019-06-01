@@ -35,6 +35,9 @@ methods: {
 		if (direction === 'forward') {
 			if (this.offset < this.items.length-this.maxVisible) {this.offset++};
 		}
+	},
+	clickHandler(item) {
+		this.$parent.$emit('get-report',item,`clicked item with ID [${item.id}]`);
 	}
 },
 
@@ -47,7 +50,7 @@ template: `
 	class="inventory-menu__button inventory-menu__button--forward"> &rarr; </button> 
 	
 	<div class="inventory-menu__holder">
-		<div class="inventory-menu__item" v-for="item, index in this.visibleItems":key="index">
+		<div @click="clickHandler(item)"class="inventory-menu__item" v-for="item, index in this.visibleItems":key="index">
 			<img class="inventory-menu__pic" v-bind:src="item.url" v-bind:name="item.name"/>
 		</div>
 	<div>

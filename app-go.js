@@ -156,9 +156,9 @@ var vm = new Vue({
   mounted: function () { 
 	
   
-	this.$on('get-report',function(component,data){
+	this.$on('get-report',function(thing,data){
 		var now = new Date();
-		this.message = `${now.getHours()}:${now.getMinutes()}.${now.getSeconds()} : message from ${component.name}: ${data}.`
+		this.message = `${now.getHours()}:${now.getMinutes()}.${now.getSeconds()} : message from ${thing.name}: ${data}.`
 	});
 	
 	this.$on('clicked-room', function (component,event){	
