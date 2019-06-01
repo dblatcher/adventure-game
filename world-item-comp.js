@@ -70,7 +70,9 @@ Vue.component('world-item', {
 	},
 	mounted : function() {		
 		var that = this;
-		setInterval (function(){that.showNextFrame()},300);
+		if (this.spriteSet.length > 0 ) {
+			setInterval (function(){that.showNextFrame()},300);
+		}
 	},
 	template: `
 	<article @click.stop="clickHandler(event)"

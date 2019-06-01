@@ -69,7 +69,8 @@ var rooms = [
 	characters : [summonCharacter.jane(10,10),summonCharacter.mario(310,0,{ident:'other', name:'luigi'})],worldItems:[]},
 	{id:'r002', name:'Living room', url: "bg2.jpg", width:400, height:250, 
 	characters : [summonCharacter.mario(30,50),summonCharacter.jane(160,50),],
-	worldItems : [		{
+	worldItems : [
+		{
 			spritesUsed : ['door'],
 			id : 'door',
 			name : 'wooden door',
@@ -82,7 +83,21 @@ var rooms = [
 				opening:   [ ['door',0,0],['door',1,0],['door',2,0]  ],
 				closing:   [ ['door',2,0],['door',1,0],['door',0,0]  ]
 			}
-		}]}
+		},
+		{
+			spritesUsed : [],
+			id : 'window',
+			name : 'window',
+			startX: 120, startY:150,
+			baseHeight:100, baseWidth:145,
+			status : 'neutral', queue : [],
+			cycles: {
+				neutral: [ ],
+			}
+		}
+		
+	]
+	}
 ]
 
 function InventoryItem (id, name, url, startWith=false) {
