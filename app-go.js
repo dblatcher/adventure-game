@@ -48,6 +48,7 @@ var vm = new Vue({
 	characters : [],
 	worldItems : [],
 	rooms: rooms,
+	interactionMatrix:interactionMatrix,
 	inventoryItems: inventoryItems,
 	message: 'blank message',
 	roomNumber: 1,
@@ -55,9 +56,7 @@ var vm = new Vue({
 	subject: null, needObject:false, object:null
   },
   computed : {
-	command : function() {		
-		
-		
+	command : function() {			
 		var sentence = this.verb.description + ' ';
 		if (this.subject) {
 			sentence +=  this.subject.name+ ' ';			
@@ -106,6 +105,38 @@ var vm = new Vue({
 		};
 		if (ident) {return false};
 		return result;
+	},
+	executeCommand : function (command) {
+		if (!command) {command = {verb: this.verb, subject: this.subject, object: this.object};}
+		
+		var interactionDone = false;
+		var defaultResponse = function() {
+			this.getThings('pc').say('I will not do that.');
+		}
+
+		//find array of conditions/response object matching the command
+		var thirdParam = command.object? command.object.id : 'intransitive';
+		var matchingList = [];
+		if (interactionMatrix[command.verb.id][command.subject.id] ) {
+			matchingList = interactionMatrix[command.verb.id][command.subject.id][thirdParam] || [];
+		}
+
+		//perform the first reponse on the list for which the condition tests pass
+		for (var i=0; i< matchingList.length; i++) {
+			// test for interactions[i].conditions being satisfied
+			if (false) {
+				console.log ('conditions not met',i);
+				continue;
+			}
+			console.log('interaction conditions satisfied')
+			
+			matchingList[i].response.apply(this,[]);
+			interactionDone = true;
+			break;
+		}
+		
+		if (!interactionDone) {defaultResponse.apply(this,[])}
+		this.subject = null; this.object = null; this.verb = this.verbList[0];
 	}
   },
 
@@ -148,10 +179,10 @@ var vm = new Vue({
 		if (!this.subject) {
 			this.subject = thing;
 			if (this.verb.transitive) {
-				if (true) {  // test for non transitive use of transitive verb, like 'use lever'
-					this.needObject = true;
-				} else {
+				if (interactionMatrix[this.verb.id][this.subject.id]  && interactionMatrix[this.verb.id][this.subject.id].intransitive ) {  // test for non transitive use of transitive verb, like 'use lever'
 					this.needObject = false;
+				} else {
+					this.needObject = true;
 				}		
 			} else {
 				this.needObject = false;
@@ -162,9 +193,7 @@ var vm = new Vue({
 			}
 		};
 		
-		if (this.command.complete) {
-			console.log('command:',this.verb.description,this.subject.name,this.object ? this.object.name : '');
-		}
+		if (this.command.complete) {this.executeCommand();}
 	});
 	
 	this.$on('room-change-done', function (data){

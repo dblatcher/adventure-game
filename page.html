@@ -22,7 +22,7 @@
 			</world-item>
 		</game-room>
 		<command-line v-bind:command='command'></command-line>
-		<verb-menu v-bind:verb-list='verbList'></verb-menu>
+		<verb-menu v-bind:verb-list='verbList' v-bind:picked='verb.id'></verb-menu>
 		<inventory-menu v-bind:items="inventory"></inventory-menu>
 
 	</div>

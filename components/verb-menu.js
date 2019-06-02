@@ -1,11 +1,9 @@
 Vue.component('verb-menu', {
 
-props:['verbList'],
+props:['verbList','picked'],
 
 data: function() {
-	return {
-		picked: this.verbList[0].id,
-	};
+
 },
 
 methods: {

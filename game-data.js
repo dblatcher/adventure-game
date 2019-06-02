@@ -154,3 +154,51 @@ inventoryItems = [
 	new InventoryItem('shoe','red shoe', 'shoe.jpg',true),
 	new InventoryItem('hammer','hammer', 'hammer.jpg',true),
 ];
+
+function Interaction (command,conditions,response) {
+	this.command = {
+		verb: command[0],
+		subject: command[1],
+		object: command[2] || false
+	}
+	this.conditions = conditions;
+	
+	this.response = response;
+}
+var interactions =[
+	new Interaction(['LOOK','WINDOW_W'],[],function(){
+		this.getThings('pc').say("I like this window")
+	}),
+	new Interaction(['OPEN','DOOR_W'],[],function(){
+		this.getThings('pc').say("ok");
+		this.getThings('DOOR_W').setStatus('opening','open');
+	}),
+	new Interaction(['SHUT','DOOR_W'],[],function(){
+		this.getThings('pc').say("ok");
+		this.getThings('DOOR_W').setStatus('closing','closed');
+	}),
+	new Interaction(['USE','SHOE_I'],[],function(){
+		this.getThings('pc').say("It doesn't fit me");
+	})
+]
+
+var interactionMatrix = {};
+verbList.forEach( verb => { interactionMatrix[verb.id]= {} }  );
+
+interactions.forEach (interaction => {
+	
+	if (!interactionMatrix[interaction.command.verb][interaction.command.subject]) {
+		interactionMatrix[interaction.command.verb][interaction.command.subject] = {}
+	}
+	
+	var thirdParam = interaction.command.object || 'intransitive'; 
+
+	if (!interactionMatrix[interaction.command.verb][interaction.command.subject][thirdParam]) {
+		interactionMatrix[interaction.command.verb][interaction.command.subject][thirdParam] = []
+	}
+	
+	var rightPlace = interactionMatrix[interaction.command.verb][interaction.command.subject][thirdParam];
+	
+	rightPlace.push ( {conditions:interaction.conditions, response: interaction.response} )
+	
+});
