@@ -177,6 +177,10 @@ var vm = new Vue({
 		this.message = `${now.getHours()}:${now.getMinutes()}.${now.getSeconds()} : message from ${thing.name}: ${data}.`
 	});
 	
+	this.$on('mile-stone',function(type,thing){
+		console.log(thing.name, type);
+	})
+	
 	this.$on('verb-picked',function(verbID) {
 		this.subject = null;
 		for (var i=0; i<this.verbList.length; i++) {
@@ -242,4 +246,4 @@ var vm = new Vue({
 
 })
 
-
+function pc(){return vm.getThings('pc')}

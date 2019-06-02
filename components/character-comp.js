@@ -19,7 +19,7 @@ Vue.component('character-c', {
 		baseHeight: this.char.baseHeight || 100,
 		baseWidth: this.char.baseWidth || 100,
 		saying:'', sayingQueue :[],
-		action:'wait', actFrame:0, actionOnLoop:true,
+		action:'wait', actFrame:0, actionOnLoop:true, actionQueue:[],
 		direction:this.char.validDirections[0],
 		destinationQueue:[]
 		}
@@ -52,12 +52,10 @@ Vue.component('character-c', {
 		clickHandler : function (event) {
 			if (this.ident === 'pc') {return false};
 			event.stopPropagation();
-			this.$root.$emit('get-report', this, 'clicked');
 			this.$root.$emit('clicked-thing', this.char);
 		},
 		hoverHandler : function (event) {
 			if (this.ident === 'pc') {return false};
-			this.$root.$emit('get-report', this, event.type);
 			this.$root.$emit('hover-event', this, event);
 		},
 		
@@ -89,16 +87,27 @@ Vue.component('character-c', {
 			this.y += movement.y;
 			
 			if (this.x ===  order.x && this.y === order.y) {
-				if (order.action) {this.act('wait');}
+				if (order.action) {this.act('wait',{loop:true});}
 				this.destinationQueue.shift();
 				if (this.destinationQueue.length === 0) {
-					//this.$root.$emit('get-report',this,'reached destination');
-					this.$emit('reached-destination');
+					this.$root.$emit('mile-stone','reached-destination',this);
 				};
 			}
 			
 		},
-		act : function (action, options = {}, callBack) {
+		actSequnce(){
+			if (typeof arguments[0] !== 'string' || typeof arguments[1] !== 'object') {return false};
+			
+			for (var i=2; i<arguments.length; i+=2) {
+				if (typeof arguments[i] === 'string' && typeof arguments[i+1] === 'object') {
+					this.actionQueue.push(
+						{action:arguments[i], options:arguments[i+1]}
+					);
+				}
+			};
+			this.act(arguments[0],arguments[1]);
+		},
+		act : function (action, options = {}) {
 			if (typeof action  !== 'string') {return false;}
 			if (!this.char.cycles[action]) {return false;}
 			
@@ -127,10 +136,15 @@ Vue.component('character-c', {
 			this.actFrame = onLastFrame ? 0: this.actFrame + 1;
 			
 			if (onLastFrame && !this.actionOnLoop) {
-				//this.$root.$emit('get-report',this,'last frame');
-				this.$emit('last-frame');
-				this.action = 'wait';
-				this.actionOnLoop = true;
+				this.$root.$emit('mile-stone','cycle-end',this);
+				if (this.actionQueue.length > 0){
+					this.act(this.actionQueue[0].action, this.actionQueue[0].options);
+					this.actionQueue.shift();
+				} else {
+					this.$root.$emit('mile-stone','actions-finished',this);
+					this.action = 'wait';
+					this.actionOnLoop = true;
+				}
 			}
 		},
 		say : function (text, time) {
@@ -151,6 +165,7 @@ Vue.component('character-c', {
 					setTimeout(endOfLine,newLine.time);
 				} else {
 					that.saying = '';
+					that.$root.$emit('mile-stone','speech-end',that);
 				}	
 			};
 		}
