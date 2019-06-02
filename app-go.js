@@ -143,6 +143,7 @@ var vm = new Vue({
 		this.subject = null; this.object = null; this.verb = this.verbList[0];
 	},
 	removeThing: function (id, options={} ) {
+		if (typeof id === 'object') {id=id.ident};
 		var currentList, permList, currentIndex, permIndex;
 		
 		if (id.endsWith('_W')) {
@@ -159,10 +160,10 @@ var vm = new Vue({
 		currentList.splice(currentIndex,1);
 		
 		if (!options.temporary) {
-		for (var i=0; i<permList.length; i++) {
-			if (permList[i].id === id) {permIndex = i; break;}
-		};
-		permList.splice(permIndex,1);			
+			for (var i=0; i<permList.length; i++) {
+				if (permList[i].id === id) {permIndex = i; break;}
+			};
+			permList.splice(permIndex,1);			
 		};
 		
 	}
