@@ -4,6 +4,7 @@ var sprites = [
   {id:'m', url: 'assets/sprites/mario.png', row:2, col:3},
   {id:'w', url: 'assets/sprites/woman.png', row:4, col:9},
   {id:'door', url: 'assets/sprites/door.png', row:1, col:3},
+  {id:'bucket', url: 'assets/sprites/bucket.png', row:1, col:1},
 ]
 
 
@@ -87,7 +88,15 @@ var worldItemModels = {
 				closing:   [ ['door',2,0],['door',1,0],['door',0,0]  ]
 			}
 		};
-	}
+	},
+	bucket: function () {
+		return {
+			spritesUsed : ['bucket'],
+			cycles: {
+				neutral: [ ['bucket',0,0]  ]
+			}
+		};
+	},
 };
 function WorldItem (id, name, x,y,width,height,status, model) {
 	this.id = id.toUpperCase() + "_W";
@@ -114,7 +123,8 @@ var rooms = [
 		new Character ('pc','Jane Smith',10,10,'white',characterModels.jane)
 	]
 	,worldItems:[
-		new WorldItem ('lake','lake',200,45,400,50)
+		new WorldItem ('lake','lake',200,45,400,50),
+		new WorldItem ('bucket','bucket',250,25,40,40,'neutral',worldItemModels.bucket)
 	]},
 	
 	{id:'LIVING_ROOM_R', name:'Living room', url: "assets/rooms/bg2.jpg", width:400, height:250, 
@@ -201,7 +211,10 @@ var interactions =[
 		this.getThings('pc').say("It's already closed.");
 	}),
 	
-	
+	new Interaction(['TAKE','BUCKET_W'],[],function(){
+		this.inventoryItems.filter(function(a){return a.id=='BUCKET_I'})[0].have = true;
+		this.$emit('remove-thing','BUCKET_W',{});
+	}),
 	
 	new Interaction(['USE','SHOE_I'],[],function(){
 		this.getThings('pc').say("It doesn't fit me");

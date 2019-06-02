@@ -200,6 +200,10 @@ var vm = new Vue({
 		if (this.command.complete) {this.executeCommand();}
 	});
 	
+	this.$on('remove-thing', function(id,options){
+		console.log(id + ' to be removed');
+	})
+	
 	this.$on('room-change-done', function (data){
 		var that = this;
 		setTimeout (function(){			
