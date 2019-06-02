@@ -213,7 +213,7 @@ var interactions =[
 	
 	new Interaction(['TAKE','BUCKET_W'],[],function(){
 		this.inventoryItems.filter(function(a){return a.id=='BUCKET_I'})[0].have = true;
-		this.$emit('remove-thing','BUCKET_W',{});
+		this.removeThing('BUCKET_W');
 	}),
 	
 	new Interaction(['USE','SHOE_I'],[],function(){

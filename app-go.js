@@ -141,6 +141,30 @@ var vm = new Vue({
 		
 		if (!interactionDone) {defaultResponse.apply(this,[])}
 		this.subject = null; this.object = null; this.verb = this.verbList[0];
+	},
+	removeThing: function (id, options={} ) {
+		var currentList, permList, currentIndex, permIndex;
+		
+		if (id.endsWith('_W')) {
+			currentList = this.worldItems;
+			permList = this.rooms[this.roomNumber].worldItems;
+		} else {
+			currentList = this.characters;
+			permList = this.rooms[this.roomNumber].characters;
+		};
+		
+		for (var i=0; i<currentList.length; i++) {
+			if (currentList[i].id === id) {currentIndex = i; break;}
+		};
+		currentList.splice(currentIndex,1);
+		
+		if (!options.temporary) {
+		for (var i=0; i<permList.length; i++) {
+			if (permList[i].id === id) {permIndex = i; break;}
+		};
+		permList.splice(permIndex,1);			
+		};
+		
 	}
   },
 
@@ -200,10 +224,7 @@ var vm = new Vue({
 		if (this.command.complete) {this.executeCommand();}
 	});
 	
-	this.$on('remove-thing', function(id,options){
-		console.log(id + ' to be removed');
-	})
-	
+
 	this.$on('room-change-done', function (data){
 		var that = this;
 		setTimeout (function(){			
