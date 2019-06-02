@@ -109,7 +109,7 @@ function WorldItem (id, name, x,y,width,height,status, model) {
 
 
 var rooms = [
-	{id:'r001', name:'Swamp', url: "assets/rooms/bg1.png", width:400, height:300, 
+	{id:'SWAMP_R', name:'Swamp', url: "assets/rooms/bg1.png", width:400, height:300, 
 	characters : [
 		new Character ('pc','Jane Smith',10,10,'white',characterModels.jane)
 	]
@@ -117,7 +117,7 @@ var rooms = [
 		new WorldItem ('lake','lake',200,45,400,50)
 	]},
 	
-	{id:'r002', name:'Living room', url: "assets/rooms/bg2.jpg", width:400, height:250, 
+	{id:'LIVING_ROOM_R', name:'Living room', url: "assets/rooms/bg2.jpg", width:400, height:250, 
 	characters : [
 		new Character ('luigi','Luigi',100,50,'green',characterModels.mario),
 		new Character ('pc','Jane Smith',160,50,'white',characterModels.jane)
@@ -169,14 +169,40 @@ var interactions =[
 	new Interaction(['LOOK','WINDOW_W'],[],function(){
 		this.getThings('pc').say("I like this window")
 	}),
-	new Interaction(['OPEN','DOOR_W'],[],function(){
+	
+
+	new Interaction(['OPEN','DOOR_W'],[
+		function(){return this.getThings('DOOR_W').item.status == 'closed'},
+	],function(){
 		this.getThings('pc').say("ok");
 		this.getThings('DOOR_W').setStatus('opening','open');
 	}),
-	new Interaction(['SHUT','DOOR_W'],[],function(){
+	
+	new Interaction(['OPEN','DOOR_W'],[],function(){
+		this.getThings('pc').say("It's not closed!");
+	}),
+
+	
+	new Interaction(['WALK','DOOR_W'],
+	[function(){return this.getThings('DOOR_W').item.status == 'open'}],
+	function(){
+		console.log('should be changing room');
+		this.changeRoom(0);
+	}),
+
+	new Interaction(['SHUT','DOOR_W'],
+	[function(){return this.getThings('DOOR_W').item.status == 'open'}],
+	function(){
 		this.getThings('pc').say("ok");
 		this.getThings('DOOR_W').setStatus('closing','closed');
 	}),
+	
+	new Interaction(['SHUT','DOOR_W'],[],function(){
+		this.getThings('pc').say("It's already closed.");
+	}),
+	
+	
+	
 	new Interaction(['USE','SHOE_I'],[],function(){
 		this.getThings('pc').say("It doesn't fit me");
 	})

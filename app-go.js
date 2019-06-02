@@ -109,7 +109,7 @@ var vm = new Vue({
 	executeCommand : function (command) {
 		if (!command) {command = {verb: this.verb, subject: this.subject, object: this.object};}
 		
-		var interactionDone = false;
+		var interactionDone = false, failedCondition = false;
 		var defaultResponse = function() {
 			this.getThings('pc').say('I will not do that.');
 		}
@@ -123,13 +123,17 @@ var vm = new Vue({
 
 		//perform the first reponse on the list for which the condition tests pass
 		for (var i=0; i< matchingList.length; i++) {
-			// test for interactions[i].conditions being satisfied
-			if (false) {
-				console.log ('conditions not met',i);
-				continue;
-			}
-			console.log('interaction conditions satisfied')
+			failedCondition = false;
 			
+			// test for matchingList[i].conditions being satisfied, if not skip to next 
+			for (var j=0; j<matchingList[i].conditions.length; j++) {
+				if (matchingList[i].conditions[j].apply(this,[]) == false) {
+					failedCondition = true;
+					break;
+				}
+			}
+			if (failedCondition) {continue};
+					
 			matchingList[i].response.apply(this,[]);
 			interactionDone = true;
 			break;
