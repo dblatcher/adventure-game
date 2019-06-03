@@ -1,8 +1,5 @@
 
-function stop (character) {
-	character.destinationQueue = [];
-	character.act('wait');
-}
+
 
 function marchRightThenLeft(character) {
 	
@@ -24,19 +21,7 @@ function marchRightThenLeft(character) {
 
 }
 
-function goTo (character,destination,action='walk') {
-	var order = Object.assign({}, destination,{action:action})
-	var horizontal = order.x > character.x ? 'right' : 'left';
-	var vertical   = order.y > character.y ? 'up' : 'down';
-		
-	order.direction = Math.abs(order.x - character.x) > Math.abs(order.y - character.y) ? 
-		horizontal:
-		character.char.validDirections.includes(vertical) ?
-			vertical : horizontal;
-	
-	
-	character.destinationQueue = [order];	
-}
+
 
 
 var vm = new Vue({
@@ -53,7 +38,8 @@ var vm = new Vue({
 	message: 'blank message',
 	roomNumber: 1,
 	verb: verbList[0],thingHoveredOn:null, 
-	subject: null, needObject:false, object:null
+	subject: null, needObject:false, object:null,
+	seqenceRef:1000
   },
   computed : {
 	command : function() {			
@@ -177,8 +163,8 @@ var vm = new Vue({
 		this.message = `${now.getHours()}:${now.getMinutes()}.${now.getSeconds()} : message from ${thing.name}: ${data}.`
 	});
 	
-	this.$on('mile-stone',function(type,thing){
-		console.log(thing.name, type);
+	this.$on('mile-stone',function(type,thing,order){
+		console.log(thing.name, type, order ? 'ref: '+order.ref:null);
 	})
 	
 	this.$on('verb-picked',function(verbID) {
@@ -205,7 +191,7 @@ var vm = new Vue({
 		var roomElement = this.$el.getElementsByTagName('main')[0];
 		var pc = this.getThings('pc');
 		//scaledHeightOfPcAsCssString = getComputedStyle(this.getThings().pc.$children[0].$el.children[0]).height
-		goTo (this.getThings('pc'), {y: (event.target.offsetHeight - event.offsetY),x: (event.offsetX)});
+		this.getThings('pc').goTo ( {y: (event.target.offsetHeight - event.offsetY),x: (event.offsetX), ref:false});
 	});
 	
 	this.$on('clicked-thing', function(thing){

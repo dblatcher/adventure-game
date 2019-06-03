@@ -33,7 +33,7 @@ var characterModels = {
 			validDirections : ['down','left','right','up'],
 			cycles : {
 				wait: [[0,0,0]],
-				talk: [[0,0,0],[2,0,0]],
+				talk: [[0,0,0],[2,0,0],[0,0,0],[2,0,0],[0,0,0],[2,0,0],[0,0,0],[2,0,0],[0,0,0],[2,0,0],[0,0,0],[2,0,0],[0,0,0],[2,0,0],[0,0,0],[2,0,0],[0,0,0],[2,0,0],[0,0,0],[2,0,0],[0,0,0],[2,0,0],[0,0,0],[2,0,0]],
 				walk: {
 					up 	  : [[0,0,1],[0,1,1],[0,2,1],[0,3,1]  ],
 					down  : [[0,0,0],[0,1,0],[0,2,0],[0,3,0]  ],
@@ -120,7 +120,8 @@ function WorldItem (id, name, x,y,width,height,status, model) {
 var rooms = [
 	{id:'SWAMP_R', name:'Swamp', url: "assets/rooms/bg1.png", width:400, height:300, 
 	characters : [
-		new Character ('pc','Jane Smith',10,10,'white',characterModels.jane)
+		new Character ('pc','Jane Smith',10,10,'white',characterModels.jane),
+		new Character ('billy','billy',200,10,'red',characterModels.billy)
 	]
 	,worldItems:[
 		new WorldItem ('lake','lake',200,45,400,50),
@@ -164,6 +165,11 @@ inventoryItems = [
 	new InventoryItem('shoe','red shoe', 'shoe.jpg',true),
 	new InventoryItem('hammer','hammer', 'hammer.jpg',true),
 ];
+
+
+var interactionMatrix = {};
+verbList.forEach( verb => { interactionMatrix[verb.id]= {} }  );
+
 
 function Interaction (command,conditions,response) {
 	this.command = {
@@ -214,6 +220,13 @@ var interactions =[
 	new Interaction(['TAKE','BUCKET_W'],[],function(){
 		this.inventoryItems.filter(function(a){return a.id=='BUCKET_I'})[0].have = true;
 		this.removeThing('BUCKET_W');
+		this.getThings('BILLY_C').doAction('talk',{ref:'mouth'});
+		this.getThings('BILLY_C').say('hey!');
+		this.getThings('BILLY_C').say('That\'s my bucket!');
+		
+		this.$once('mile-stone:mouth',function(){
+			this.getThings('BILLY_C').goTo({x:100,y:10,ref:'foot'});
+		})
 	}),
 	
 	new Interaction(['USE','SHOE_I'],[],function(){
@@ -221,8 +234,6 @@ var interactions =[
 	})
 ]
 
-var interactionMatrix = {};
-verbList.forEach( verb => { interactionMatrix[verb.id]= {} }  );
 
 interactions.forEach (interaction => {
 	
