@@ -50,32 +50,78 @@ Vue.component('character-c', {
 		}}
 	},
 	methods : {
-		clickHandler : function (event) {
-			if (this.ident === 'pc') {return false};
-			event.stopPropagation();
-			this.$root.$emit('clicked-thing', this.char);
+		doAction : function (action, options = {}, clearQueue = true) {
+			//validate inputs
+			if (typeof action  !== 'string') {return false;}
+			if (!this.char.cycles[action]) {return false;}
+			
+			// default options.direction to current direction
+			var currentDirection = this.actionQueue[0] ? this.actionQueue[0].direction : this.storedDirection;		
+			if (!options.direction) {options.direction = currentDirection};			
+			
+			//ensure options.direction is a direction supported by the character model's cycle;
+			var availableDirections = Object.keys(this.char.cycles[action]);
+			if (!availableDirections.includes(options.direction)) {
+				options.direction = availableDirections[0];
+			}
+			
+			var order = Object.assign({action:action, actFrame:0},options);			
+			if (clearQueue){
+				this.actionQueue.splice(0,this.actionQueue.length,order);
+			}	else {
+				this.actionQueue.push(order);
+			}
 		},
-		hoverHandler : function (event) {
-			if (this.ident === 'pc') {return false};
-			this.$root.$emit('hover-event', this, event);
-		},
-	
 
-		goTo: function (destination,action='walk') {
+		goTo: function (destination, options = {}, clearQueue = true) {
 			//to do:
 			//generate a series of orders as needs to go around obstacles
 			//make sure only the final order gets the ref property of the destination argument
 			//handle cases of unreachable destinations
-			var order = Object.assign({}, destination,{action:action});
+			
+			if (typeof options.action === 'undefined') {options.action = 'walk'}
+			
+			var order = Object.assign({x:destination.x, y:destination.y} ,options);
+			
 			var horizontal = order.x > this.x ? 'right' : 'left';
-			var vertical   = order.y > this.y ? 'up' : 'down';
-				
+			var vertical   = order.y > this.y ? 'up' : 'down';	
 			order.direction = Math.abs(order.x - this.x) > Math.abs(order.y - this.y) ? 
 				horizontal:
 				this.char.validDirections.includes(vertical) ?
 					vertical : horizontal;
+				
+			if (clearQueue){
+				this.destinationQueue.splice(0,this.destinationQueue.length,order);
+			} else {
+				this.destinationQueue.push(order);
+			}
+		},
+	
+		say : function (text, options = {}) {
+			if (typeof options.time !== 'number') {options.time = 1000}
+			var that = this;
 			
-			this.destinationQueue = [order];	
+			var order = Object.assign({text:text}, options);
+			
+			if (that.isTalking === false) {
+				that.saying = text;
+				setTimeout(function(){endOfLine(order)},order.time);
+			} else {
+				that.sayingQueue.push(order);
+			};
+			
+			function endOfLine (sayOrder) {
+				console.log(sayOrder)
+				if (that.sayingQueue.length) {
+					var nextOrder = that.sayingQueue.shift();
+					that.saying = nextOrder.text;
+					setTimeout(function(){endOfLine(nextOrder)},nextOrder.time);
+				} else {
+					that.saying = '';
+					that.$root.$emit('mile-stone','speech-end',that,sayOrder);
+					if (sayOrder.ref) {that.$root.$emit('mile-stone'+':'+sayOrder.ref)};					
+				}	
+			};
 		},
 	
 		move : function () {
@@ -111,47 +157,11 @@ Vue.component('character-c', {
 				this.destinationQueue.shift();
 				if (this.destinationQueue.length === 0) {
 					this.$root.$emit('mile-stone','reached-destination',this,moveOrder);
+					if(moveOrder.ref) {this.$root.$emit('mile-stone'+':'+moveOrder.ref)};
 				};
 			}
 			
-		},
-		
-		actSequence() {		
-			for (var i=0; i<arguments.length; i+=2) {
-				if (typeof arguments[i] === 'string' && typeof arguments[i+1] === 'object') {
-					this.actionQueue.push(
-						{action:arguments[i], options:arguments[i+1]}
-					);
-				}
-			};
-		},
-		
-		doAction : function (action, options = {}, clearQueue = true) {
-			//validate inputs
-			if (typeof action  !== 'string') {return false;}
-			if (!this.char.cycles[action]) {return false;}
-			
-			var order = {action:action, actFrame:0};
-			
-			//ensure options.direction is a direction supported by the character model's cycle;
-			var availableDirections = Object.keys(this.char.cycles[action]);
-			
-			var currentDirection = this.actionQueue[0] ? this.actionQueue[0].direction : this.storedDirection;
-			
-			if (!options.direction) {options.direction = currentDirection};
-			
-			if (!availableDirections.includes(options.direction)) {
-				options.direction = availableDirections[0];
-			}
-			
-			Object.assign(order,options);			
-			if (clearQueue){
-				this.actionQueue.splice(0,this.actionQueue.length,order);
-			}	else {
-				this.actionQueue.push(order);
-			}
-		},
-		
+		},				
 		showNextFrame : function () {
 			
 			var order = this.actionQueue[0] || {action:'wait',loop:true,direction:this.char.validDirections[0], actFrame:0};
@@ -169,36 +179,22 @@ Vue.component('character-c', {
 					
 				if (this.actionQueue.length === 0){
 					this.$root.$emit('mile-stone','actions-finished',this,order);
-					this.$root.$emit('mile-stone'+':'+order.ref);
+					if (order.ref) {this.$root.$emit('mile-stone'+':'+order.ref)};
 					this.storedDirection = order.direction;
 					this.doAction('wait',{loop:true, direction:order.direction} );
 				}
 				
 			}
 		},
-		
-		say : function (text, time) {
-			if (typeof time !== 'number') {time = 1000}
-			var that = this;
-			
-			if (that.isTalking === false) {
-				that.saying = text;
-				setTimeout(endOfLine,time);
-			} else {
-				that.sayingQueue.push({text:text, time:time});
-			};
-			
-			function endOfLine () {
-				if (that.sayingQueue.length) {
-					var newLine = that.sayingQueue.shift();
-					that.saying = newLine.text;
-					setTimeout(endOfLine,newLine.time);
-				} else {
-					that.saying = '';
-					that.$root.$emit('mile-stone','speech-end',that);
-				}	
-			};
-		}
+		clickHandler : function (event) {
+			if (this.ident === 'pc') {return false};
+			event.stopPropagation();
+			this.$root.$emit('clicked-thing', this.char);
+		},
+		hoverHandler : function (event) {
+			if (this.ident === 'pc') {return false};
+			this.$root.$emit('hover-event', this, event);
+		},		
 	},
 	
 	mounted : function() {		

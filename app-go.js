@@ -2,26 +2,25 @@
 
 
 function marchRightThenLeft(character) {
+	var ref = 'march_'+character.ident+Number(new Date);
 	
 	var goLeftThenTurn = function () {
-		this.destinationQueue.push({x:character.x-150, y:character.y, action:'walk', direction: 'left'});
-		this.say(' ',100);
+		character.goTo({x:character.x-150, y:character.y},{action:'walk', direction: 'left', ref:ref})
+		this.say(' ',{time: 50});
 		this.say('going left!');
-		this.$once('reached-destination', goRightThenTurn);
+		this.$root.$once('mile-stone:'+ref, function(){goRightThenTurn.apply(character)});
 	};
 	
 	var goRightThenTurn = function () {
-		this.destinationQueue.push({x:character.x+150, y:character.y,action:'walk', direction: 'right'});
-		this.say(' ',100);
+		character.goTo({x:character.x+150, y:character.y}, {action:'walk', direction: 'right', ref:ref});
+		this.say(' ',{time: 50});
 		this.say('going right!');
-		this.$once('reached-destination', goLeftThenTurn);
+		this.$root.$once('mile-stone:'+ref, function(){goLeftThenTurn.apply(character)});
 	};
 	
 	goRightThenTurn.apply(character,[]);
-
+	return ref;
 }
-
-
 
 
 var vm = new Vue({
@@ -96,10 +95,6 @@ var vm = new Vue({
 		if (!command) {command = {verb: this.verb, subject: this.subject, object: this.object};}
 		
 		var interactionDone = false, failedCondition = false;
-		var defaultResponse = function() {
-			this.getThings('pc').say('I will not do that.');
-		}
-
 		//find array of conditions/response object matching the command
 		var thirdParam = command.object? command.object.id : 'intransitive';
 		var matchingList = [];
@@ -125,7 +120,29 @@ var vm = new Vue({
 			break;
 		}
 		
-		if (!interactionDone) {defaultResponse.apply(this,[])}
+		
+		var defaultResponse = {
+			"WALK" : function() {this.getThings('pc').goTo(this.getThings(command.subject.id))},
+			"LOOK" : function() {
+				if (command.subject.id.endsWith('W')) {
+					this.getThings('pc').say(`It looks like a normal ${command.subject.name} to me.`);
+				} else {
+					this.getThings('pc').say(`I don't see anything special about ${command.subject.name}.`);
+				}
+			},
+			"misc" : function() {this.getThings('pc').say('I will not do that.');} 
+		};
+				
+		
+		if (!interactionDone) {
+			if (defaultResponse[command.verb.id]) {
+				defaultResponse[command.verb.id].apply(this,[])				
+			} else {
+				defaultResponse["misc"].apply(this,[])				
+			}
+		}
+		
+		
 		this.subject = null; this.object = null; this.verb = this.verbList[0];
 	},
 	removeThing: function (id, options={} ) {

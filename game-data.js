@@ -202,8 +202,13 @@ var interactions =[
 	new Interaction(['WALK','DOOR_W'],
 	[function(){return this.getThings('DOOR_W').item.status == 'open'}],
 	function(){
-		console.log('should be changing room');
-		this.changeRoom(0);
+		var ref = Number(new Date);
+		this.getThings('pc').goTo(this.getThings('DOOR_W'),{ref:ref})
+		
+		this.$once('mile-stone:'+ref, function(){
+			console.log('should be changing room');
+			this.changeRoom(0);			
+		})
 	}),
 
 	new Interaction(['SHUT','DOOR_W'],
@@ -225,7 +230,7 @@ var interactions =[
 		this.getThings('BILLY_C').say('That\'s my bucket!');
 		
 		this.$once('mile-stone:mouth',function(){
-			this.getThings('BILLY_C').goTo({x:100,y:10,ref:'foot'});
+			this.getThings('BILLY_C').goTo({x:100,y:10});
 		})
 	}),
 	
