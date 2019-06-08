@@ -135,6 +135,7 @@ Vue.component('character-c', {
 			};			
 			moveOrder.started = true;
 			
+			// determine movement - the 'step' the character will try to take.
 			var d = {x: moveOrder.x - this.x, y:moveOrder.y - this.y};
 			var absD = {x: Math.abs(d.x), y: Math.abs(d.y) };
 			var speed = 6;
@@ -147,11 +148,27 @@ Vue.component('character-c', {
 			movement.y = Math.min ( absD.y, speed*rY );
 			if (d.x < 0 ) {movement.x *= -1}
 			if (d.y < 0 ) {movement.y *= -1}
-			 
+			
+			
+			var obstacles = this.$root.obstacles;
+			for (var i=0; i<obstacles.length; i++) {
+				if (obstacles[i].containsPoint( this.x+movement.x, this.y+movement.y) ) {
+					console.log('obstacle hit');
+					movement = {x:0, y:0};
+					this.doAction('wait', {loop:true, direction:moveOrder.direction},true);
+					this.destinationQueue.shift();
+					if (this.destinationQueue.length === 0) {
+						this.$root.$emit('mile-stone','hit-obstacle',this,moveOrder);
+						if(moveOrder.ref) {this.$root.$emit('mile-stone-fail:'+moveOrder.ref)};
+					};
+				}
+			}
+			
 			this.x += movement.x;
 			this.y += movement.y;
 			
-			if (this.x ===  moveOrder.x && this.y === moveOrder.y) { //got there
+			// test if character got to the moveOrder destination, shift queue, report if finished
+			if (this.x ===  moveOrder.x && this.y === moveOrder.y) { 
 				this.doAction('wait', {loop:true, direction:moveOrder.direction},true);
 				
 				this.destinationQueue.shift();

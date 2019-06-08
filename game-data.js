@@ -127,18 +127,25 @@ var rooms = [
 		new WorldItem ('lake','lake',200,45,400,50),
 		new WorldItem ('house','path back to house',375,0,50,150),
 		new WorldItem ('bucket','bucket',250,25,40,40,'neutral',worldItemModels.bucket)
+	]
+	,obstacles:[
+		new Zone (200,45,400,50)
 	]},
 	
 	{id:'LIVING_ROOM_R', name:'Living room', url: "assets/rooms/bg2.jpg", width:400, height:250, 
 	characters : [
-		new Character ('luigi','Luigi',100,50,'green',characterModels.mario),
-		new Character ('pc','Jane Smith',160,50,'white',characterModels.jane)
+		new Character ('luigi','Luigi',135,21,'green',characterModels.mario),
+		new Character ('pc','Jane Smith',160,20,'white',characterModels.jane)
 	],
 	worldItems : [		
-		new WorldItem ('door','wooden door',265,25,50,100,'closed',worldItemModels.door),
-		new WorldItem ('winDow','nice window',120,150,100,145)
+		new WorldItem ('door','wooden door',265,30,50,100,'closed',worldItemModels.door),
+		new WorldItem ('window','nice window',120,150,100,145)
 	]
-	}
+	,obstacles:[
+		new Zone (200,32,400,200),
+		new Zone (135,20,200,200),
+	]},
+	
 ]
 
 

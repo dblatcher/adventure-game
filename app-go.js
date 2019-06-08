@@ -64,7 +64,10 @@ var vm = new Vue({
 	
 	inventory : function() {
 		return this.inventoryItems.filter(function(i){return i.have});
-	}
+	},
+	obstacles : function(){
+		return this.rooms[this.roomNumber].obstacles;
+	},
   },
   
   methods : {
@@ -77,6 +80,7 @@ var vm = new Vue({
 		this.worldItems.push(...this.rooms[rNum].worldItems);
 			
 		this.roomNumber = rNum;
+		this.thingHoveredOn = null;
 		this.resetListeners();
 		this.$emit('room-change-done',data);
 
