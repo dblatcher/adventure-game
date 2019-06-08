@@ -126,7 +126,7 @@ var vm = new Vue({
 		
 		
 		var defaultResponse = {
-			"WALK" : function() {this.getThings('pc').goTo(this.getThings(command.subject.id))},
+			"WALK" : function() {this.getThings('pc').goTo(this.getThings(command.subject.id).walkToPoint)},
 			"LOOK" : function() {
 				if (command.subject.id.endsWith('W')) {
 					this.getThings('pc').say(`It looks like a normal ${command.subject.name} to me.`);
@@ -182,7 +182,7 @@ var vm = new Vue({
 			var now = new Date();
 			thing = thing || {name:'[game]'};
 			order = order || {};
-			this.message = `${now.getHours()}:${now.getMinutes()}.${now.getSeconds()} - ${thing.name}: ${type} ${order.ref ? 'ref: '+order.ref:''}.`			
+			this.message = `${now.getHours()}:${now.getMinutes()}.${now.getSeconds()} - ${thing.name}: ${type} ${order.ref ? 'ref: '+order.ref:''}. `			
 			console.log(thing.name, type, order ? 'ref: '+order.ref:null);
 		})
 		

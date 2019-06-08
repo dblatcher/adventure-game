@@ -28,6 +28,9 @@ Vue.component('world-item', {
 			var v= this.item.cycles[this.item.status][this.cycleFrame];
 			return {sprite: v[0], fx:v[1], fy:v[2]}
 		},
+		walkToPoint: function() {
+			return {x:this.x + this.item.walkOffsetX, y:this.y + this.item.walkOffsetY}
+		},
 		styleObject : function () {return {
 			position: 'absolute',
 			height: this.scaledHeight+'px',

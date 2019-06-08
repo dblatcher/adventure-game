@@ -10,7 +10,6 @@
 <body>
 
 	<div id='app'>		
-		<p>{{message}}</p>
 		<game-room v-bind:room="rooms[roomNumber]">
 			<character-c 
 				v-for="char in characters":key="rooms[roomNumber].id + '-' + char.id" 
@@ -24,6 +23,7 @@
 		<command-line v-bind:command='command'></command-line>
 		<verb-menu v-bind:verb-list='verbList' v-bind:picked='verb.id'></verb-menu>
 		<inventory-menu v-bind:items="inventory"></inventory-menu>
+		<p>{{message}}</p>
 
 	</div>
 

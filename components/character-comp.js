@@ -39,6 +39,9 @@ Vue.component('character-c', {
 				this.char.cycles[currentOrder.action][currentOrder.actFrame];			
 			return {sprite: v[0], fx:v[1], fy:v[2]}
 		},
+		walkToPoint: function() {
+			return {x:this.x, y:this.y}
+		},
 		styleObject : function () {return {
 			position: 'absolute',
 			height: this.scaledHeight+'px',
