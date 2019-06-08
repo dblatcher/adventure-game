@@ -235,7 +235,6 @@ var interactions =[
 	}),
 	
 	new Interaction (['WALK','HOUSE_W'],[],function(){
-		console.log('!')
 		var ref = Number(new Date);
 		this.getThings('pc').goTo(this.getThings('HOUSE_W'),{ref:ref})
 		this.$once('mile-stone:'+ref, function(){

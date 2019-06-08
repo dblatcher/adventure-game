@@ -75,9 +75,9 @@ var vm = new Vue({
 
 		this.worldItems.splice(0, this.worldItems.length);
 		this.worldItems.push(...this.rooms[rNum].worldItems);
-		
-		
+			
 		this.roomNumber = rNum;
+		this.resetListeners();
 		this.$emit('room-change-done',data);
 
 	},
@@ -169,86 +169,88 @@ var vm = new Vue({
 			permList.splice(permIndex,1);			
 		};
 		
-	}
+	},
+	
+	resetListeners: function() {
+		this.$off();
+		this.$on('get-report',function(thing,data){
+			var now = new Date();
+			this.message = `${now.getHours()}:${now.getMinutes()}.${now.getSeconds()} : message from ${thing.name}: ${data}.`
+		});
+		
+		this.$on('mile-stone',function(type,thing,order){
+			console.log(thing.name, type, order ? 'ref: '+order.ref:null);
+		})
+		
+		this.$on('verb-picked',function(verbID) {
+			this.subject = null;
+			for (var i=0; i<this.verbList.length; i++) {
+				if (this.verbList[i].id === verbID ) {
+					this.verb = this.verbList[i];
+					return;
+				}
+			};
+		});
+		
+		this.$on('hover-event',function(component,event){
+			if (event.type=== 'mouseover') {
+				this.thingHoveredOn = component;
+			};
+			if (event.type=== 'mouseout' && this.thingHoveredOn === component) {
+				this.thingHoveredOn = null;
+			};	
+		});
+		
+		this.$on('clicked-room', function (component,event){	
+			//TO DO -  generate path of steps to navigate around obsticles to closest valid point
+			var roomElement = this.$el.getElementsByTagName('main')[0];
+			var pc = this.getThings('pc');
+			//scaledHeightOfPcAsCssString = getComputedStyle(this.getThings().pc.$children[0].$el.children[0]).height
+			this.getThings('pc').goTo ( {y: (event.target.offsetHeight - event.offsetY),x: (event.offsetX), ref:false});
+		});
+		
+		this.$on('clicked-thing', function(thing){
+			if (!this.subject) {
+				this.subject = thing;
+				if (this.verb.transitive) {
+					if (interactionMatrix[this.verb.id][this.subject.id]  && interactionMatrix[this.verb.id][this.subject.id].intransitive ) {  // test for non transitive use of transitive verb, like 'use lever'
+						this.needObject = false;
+					} else {
+						this.needObject = true;
+					}		
+				} else {
+					this.needObject = false;
+				}
+			} else {
+				if (!this.command.complete && thing !== this.subject) {
+					this.object = thing;
+				}
+			};
+			
+			if (this.command.complete) {this.executeCommand();}
+		});
+		
+
+		this.$on('room-change-done', function (callback){
+			this.$nextTick( function(){
+				if (typeof callback === "function") {
+					callback.apply(this,[]);
+				}
+			})
+		});
+		
+	},
   },
 
   beforeMount: function () { 
 	
-  
-	this.$on('get-report',function(thing,data){
-		var now = new Date();
-		this.message = `${now.getHours()}:${now.getMinutes()}.${now.getSeconds()} : message from ${thing.name}: ${data}.`
-	});
-	
-	this.$on('mile-stone',function(type,thing,order){
-		console.log(thing.name, type, order ? 'ref: '+order.ref:null);
-	})
-	
-	this.$on('verb-picked',function(verbID) {
-		this.subject = null;
-		for (var i=0; i<this.verbList.length; i++) {
-			if (this.verbList[i].id === verbID ) {
-				this.verb = this.verbList[i];
-				return;
-			}
-		};
-	});
-	
-	this.$on('hover-event',function(component,event){
-		if (event.type=== 'mouseover') {
-			this.thingHoveredOn = component;
-		};
-		if (event.type=== 'mouseout' && this.thingHoveredOn === component) {
-			this.thingHoveredOn = null;
-		};	
-	});
-	
-	this.$on('clicked-room', function (component,event){	
-		//TO DO -  generate path of steps to navigate around obsticles to closest valid point
-		var roomElement = this.$el.getElementsByTagName('main')[0];
-		var pc = this.getThings('pc');
-		//scaledHeightOfPcAsCssString = getComputedStyle(this.getThings().pc.$children[0].$el.children[0]).height
-		this.getThings('pc').goTo ( {y: (event.target.offsetHeight - event.offsetY),x: (event.offsetX), ref:false});
-	});
-	
-	this.$on('clicked-thing', function(thing){
-		if (!this.subject) {
-			this.subject = thing;
-			if (this.verb.transitive) {
-				if (interactionMatrix[this.verb.id][this.subject.id]  && interactionMatrix[this.verb.id][this.subject.id].intransitive ) {  // test for non transitive use of transitive verb, like 'use lever'
-					this.needObject = false;
-				} else {
-					this.needObject = true;
-				}		
-			} else {
-				this.needObject = false;
-			}
-		} else {
-			if (!this.command.complete && thing !== this.subject) {
-				this.object = thing;
-			}
-		};
+	//this.resetListeners();
 		
-		if (this.command.complete) {this.executeCommand();}
+	this.changeRoom(this.roomNumber,function() {
+		this.getThings('pc').say('Hello, World. I am the player character.');
+		this.getThings('pc').say('My name is ' + this.getThings('pc').name +'.');						
 	});
-	
 
-	this.$on('room-change-done', function (data){
-		
-
-		this.$nextTick( function(){
-			if (data === 'start') {
-				this.getThings('pc').say('Hello, World. I am the player character.');
-				this.getThings('pc').say('My name is ' + this.getThings('pc').name +'.');				
-			}
-		})
-		
-	});
-	
-
-	that.changeRoom(that.roomNumber,'start');
-
-	
   }
 
 })
