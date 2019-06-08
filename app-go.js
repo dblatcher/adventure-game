@@ -234,16 +234,20 @@ var vm = new Vue({
 	
 
 	this.$on('room-change-done', function (data){
-		var that = this;
-		setTimeout (function(){			
+		
+
+		this.$nextTick( function(){
 			if (data === 'start') {
-				that.getThings('pc').say('Hello, World. I am the player character.');
-				that.getThings('pc').say('My name is ' + that.getThings('pc').name +'.');				
+				this.getThings('pc').say('Hello, World. I am the player character.');
+				this.getThings('pc').say('My name is ' + this.getThings('pc').name +'.');				
 			}
-		}, 50);
+		})
+		
 	});
 	
-	this.changeRoom(this.roomNumber,'start');
+
+	that.changeRoom(that.roomNumber,'start');
+
 	
   }
 
