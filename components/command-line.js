@@ -1,23 +1,22 @@
 
 Vue.component('command-line', {
 
-props:['command'],
+props:['command','disabled'],
 
-data: function() {
-	return {
-
-	};
-},
-
-methods: {
-	
+computed: {
+	choosenText : function () {
+		return this.disabled ? '' : this.command.sentence;
+	},
+	possibleText : function () {
+		return this.disabled ? '' : this.command.undecidedNoun;
+	}
 },
 
 template: `
-<section class="command-line" v-bind:class="{'command-line--complete' : command.complete}">
+<section class="command-line" v-bind:class="{'command-line--complete' : command.complete, disabled:disabled}">
 
 	<p class="command-line__sentence">
-	{{command.sentence}}<span class="command-line__last-phrase">{{command.undecidedNoun}}</span>
+	{{choosenText}}<span class="command-line__last-phrase">{{possibleText}}</span>
 	</p>
 
 </section>

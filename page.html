@@ -21,9 +21,9 @@
 				v-bind:item='item'>
 			</world-item>
 		</game-room>
-		<command-line v-bind:command='command'></command-line>
-		<verb-menu v-bind:verb-list='verbList' v-bind:picked='verb.id'></verb-menu>
-		<inventory-menu v-bind:items="inventory"></inventory-menu>
+		<command-line v-bind:command='command' v-bind:disabled='gameStatus === "LIVE" ? false:true'></command-line>
+		<verb-menu v-bind:verb-list='verbList' v-bind:picked='verb.id' v-bind:disabled='gameStatus === "LIVE" ? false:true'></verb-menu>
+		<inventory-menu v-bind:items="inventory" v-bind:disabled='gameStatus === "LIVE" ? false:true'></inventory-menu>
 
 	</div>
 

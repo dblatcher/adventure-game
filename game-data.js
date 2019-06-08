@@ -223,14 +223,21 @@ var interactions =[
 	}),
 	
 	new Interaction(['TAKE','BUCKET_W'],[],function(){
+		var ref1 = 'one_'+Number(new Date);
+		var ref2 = 'two_'+Number(new Date);
+		
+		this.gameStatus = 'CUT'
 		this.inventoryItems.filter(function(a){return a.id=='BUCKET_I'})[0].have = true;
 		this.removeThing('BUCKET_W');
-		this.getThings('BILLY_C').doAction('talk',{ref:'mouth'});
+		this.getThings('BILLY_C').doAction('talk',{ref:ref1});
 		this.getThings('BILLY_C').say('hey!');
 		this.getThings('BILLY_C').say('That\'s my bucket!');
 		
-		this.$once('mile-stone:mouth',function(){
-			this.getThings('BILLY_C').goTo({x:100,y:10});
+		this.$once('mile-stone:'+ref1,function(){
+			this.getThings('BILLY_C').goTo({x:100,y:10},{ref:ref2});
+		})
+		this.$once('mile-stone:'+ref2,function(){
+			this.gameStatus = 'LIVE';
 		})
 	}),
 	

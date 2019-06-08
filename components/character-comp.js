@@ -111,7 +111,6 @@ Vue.component('character-c', {
 			};
 			
 			function endOfLine (sayOrder) {
-				console.log(sayOrder)
 				if (that.sayingQueue.length) {
 					var nextOrder = that.sayingQueue.shift();
 					that.saying = nextOrder.text;

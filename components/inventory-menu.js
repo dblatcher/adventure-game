@@ -1,6 +1,6 @@
 Vue.component('inventory-menu', {
 
-props:['items'],
+props:['items','disabled'],
 
 data: function() {
 	return {
@@ -29,6 +29,7 @@ computed: {
 
 methods: {
 	buttonHandler(direction) {
+		if (this.disabled) {return false;}
 		if (direction === 'back') {
 			if (this.offset > 0) {this.offset--};
 		}
@@ -48,7 +49,7 @@ methods: {
 },
 
 template: `
-<section class="inventory-menu">
+<section class="inventory-menu" v-bind:class="{disabled:disabled}">
 
 	<button @click="buttonHandler('back')" v-bind:class="{ 'inventory-menu__button--enabled': enableBack }"
 	class="inventory-menu__button inventory-menu__button--back"> &larr; </button> 

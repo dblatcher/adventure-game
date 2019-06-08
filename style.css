@@ -1,6 +1,4 @@
-body { 
-	background-color: linen; 
-}
+
 .room {
 	position:relative;
 	border: 5px inset gray;
@@ -14,7 +12,7 @@ body {
 	display: flex;
 	flex-wrap: wrap;
 	width:400px;
-	transition: background-color 0.75s;
+	transition: background-color 0.75s, opacity 0.75s;
 }
 
 .command-line--complete {
@@ -22,6 +20,7 @@ body {
 }
 
 .command-line__sentence {
+	min-height: 1.2em;
 	margin: 0;
 	padding: .25rem 1rem;
 }
@@ -41,6 +40,7 @@ body {
 	position:relative;
 	float:left;
 	box-sizing:border-box;
+	transition: background-color 0.75s, opacity 0.75s;
 }
 	
 .verb-menu__input {
@@ -76,10 +76,11 @@ input:checked~.verb-menu__label {
 	margin: .5rem;
 	border: 5px inset gray;
 	width:200px;
-	float:leftl
+	float:left;
 	position: relative;
 	overflow:hidden;
 	box-sizing:border-box;
+	transition: background-color 0.75s, opacity 0.75s;
 }
 
 
@@ -119,4 +120,9 @@ input:checked~.verb-menu__label {
 .inventory-menu__button--enabled { 
 	color: black;
 	opacity: 1;
+}
+
+.disabled {
+	opacity: .5;
+	background-color: lightgray;
 }

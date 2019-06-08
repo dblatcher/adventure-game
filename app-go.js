@@ -3,23 +3,36 @@
 
 function marchRightThenLeft(character) {
 	var ref = 'march_'+character.ident+Number(new Date);
+	var halt = false;
+	var X=character.x, Y=character.y;
+	
+	var controller = {
+		start: function(){
+			halt = false;
+			goRightThenTurn.apply(character,[]);
+		},
+		stop: function() {
+			halt = true;
+			character.$root.$off(ref);
+			character.goTo({x:character.x, y:character.y},{action:'walk'},true)		
+		}
+	}
 	
 	var goLeftThenTurn = function () {
-		character.goTo({x:character.x-150, y:character.y},{action:'walk', direction: 'left', ref:ref})
-		this.say(' ',{time: 50});
-		this.say('going left!');
+		character.goTo({x:X, y:Y},{action:'walk', direction: 'left', ref:ref},true)		
+		this.say('going left!',{time:500});
+		if (halt) {return};
 		this.$root.$once('mile-stone:'+ref, function(){goRightThenTurn.apply(character)});
 	};
 	
 	var goRightThenTurn = function () {
-		character.goTo({x:character.x+150, y:character.y}, {action:'walk', direction: 'right', ref:ref});
-		this.say(' ',{time: 50});
-		this.say('going right!');
+		character.goTo({x:X+200, y:Y}, {action:'walk', direction: 'right', ref:ref},true);
+		this.say('going right!',{time:500});
+		if (halt) {return};
 		this.$root.$once('mile-stone:'+ref, function(){goLeftThenTurn.apply(character)});
 	};
 	
-	goRightThenTurn.apply(character,[]);
-	return ref;
+	return controller;
 }
 
 
@@ -38,7 +51,7 @@ var vm = new Vue({
 	roomNumber: 1,
 	verb: verbList[0],thingHoveredOn:null, 
 	subject: null, needObject:false, object:null,
-	seqenceRef:1000
+	gameStatus: 'LIVE'
   },
   computed : {
 	command : function() {			
@@ -194,7 +207,7 @@ var vm = new Vue({
 		};
 	});
 	
-	this.$on('hover-event',function(component,event){
+	this.$on('hover-event',function(component,event) {
 		if (event.type=== 'mouseover') {
 			this.thingHoveredOn = component;
 		};
@@ -203,7 +216,9 @@ var vm = new Vue({
 		};	
 	});
 	
-	this.$on('clicked-room', function (component,event){	
+	this.$on('clicked-room', function (component,event) {
+		if (this.gameStatus !== 'LIVE') {return false;}
+		
 		//TO DO -  generate path of steps to navigate around obsticles to closest valid point
 		var roomElement = this.$el.getElementsByTagName('main')[0];
 		var pc = this.getThings('pc');
@@ -212,6 +227,7 @@ var vm = new Vue({
 	});
 	
 	this.$on('clicked-thing', function(thing){
+		if (this.gameStatus !== 'LIVE') {return false;}
 		if (!this.subject) {
 			this.subject = thing;
 			if (this.verb.transitive) {
