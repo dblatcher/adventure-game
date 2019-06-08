@@ -72,7 +72,7 @@ var vm = new Vue({
   
   methods : {
 	changeRoom: function (rNum,data) {		
-		this.$emit('get-report',{name:'[game]'},'changing to room '+rNum+'')
+		this.$emit('mile-stone','changing room to '+this.rooms[rNum].name)
 		this.characters.splice(0, this.characters.length);
 		this.characters.push(...this.rooms[rNum].characters);
 
@@ -177,12 +177,12 @@ var vm = new Vue({
 	
 	resetListeners: function() {
 		this.$off();
-		this.$on('get-report',function(thing,data){
-			var now = new Date();
-			this.message = `${now.getHours()}:${now.getMinutes()}.${now.getSeconds()} : message from ${thing.name}: ${data}.`
-		});
 		
 		this.$on('mile-stone',function(type,thing,order){
+			var now = new Date();
+			thing = thing || {name:'[game]'};
+			order = order || {};
+			this.message = `${now.getHours()}:${now.getMinutes()}.${now.getSeconds()} - ${thing.name}: ${type} ${order.ref ? 'ref: '+order.ref:''}.`			
 			console.log(thing.name, type, order ? 'ref: '+order.ref:null);
 		})
 		

@@ -111,7 +111,6 @@ Vue.component('character-c', {
 			};
 			
 			function endOfLine (sayOrder) {
-				console.log(sayOrder)
 				if (that.sayingQueue.length) {
 					var nextOrder = that.sayingQueue.shift();
 					that.saying = nextOrder.text;
@@ -153,14 +152,11 @@ Vue.component('character-c', {
 			var obstacles = this.$root.obstacles;
 			for (var i=0; i<obstacles.length; i++) {
 				if (obstacles[i].containsPoint( this.x+movement.x, this.y+movement.y) ) {
-					console.log('obstacle hit');
 					movement = {x:0, y:0};
+					this.$root.$emit('mile-stone','hit-obstacle',this,moveOrder);
+					if(moveOrder.ref) {this.$root.$emit('mile-stone-fail:'+moveOrder.ref)};
 					this.doAction('wait', {loop:true, direction:moveOrder.direction},true);
-					this.destinationQueue.shift();
-					if (this.destinationQueue.length === 0) {
-						this.$root.$emit('mile-stone','hit-obstacle',this,moveOrder);
-						if(moveOrder.ref) {this.$root.$emit('mile-stone-fail:'+moveOrder.ref)};
-					};
+					this.destinationQueue.shift();					
 				}
 			}
 			

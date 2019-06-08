@@ -5,7 +5,6 @@ Vue.component ('game-room', {
 	}},
 	methods : {
 		clickHandler : function (event) {
-			this.$root.$emit('get-report', this, 'clicked');
 			this.$root.$emit('clicked-room', this, event);	
 		},
 	},
