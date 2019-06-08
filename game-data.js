@@ -120,11 +120,12 @@ function WorldItem (id, name, x,y,width,height,status, model) {
 var rooms = [
 	{id:'SWAMP_R', name:'Swamp', url: "assets/rooms/bg1.png", width:400, height:300, 
 	characters : [
-		new Character ('pc','Jane Smith',10,10,'white',characterModels.jane),
+		new Character ('pc','Jane Smith',375,10,'white',characterModels.jane),
 		new Character ('billy','billy',200,10,'red',characterModels.billy)
 	]
 	,worldItems:[
 		new WorldItem ('lake','lake',200,45,400,50),
+		new WorldItem ('house','path back to house',375,0,50,150),
 		new WorldItem ('bucket','bucket',250,25,40,40,'neutral',worldItemModels.bucket)
 	]},
 	
@@ -206,7 +207,6 @@ var interactions =[
 		this.getThings('pc').goTo(this.getThings('DOOR_W'),{ref:ref})
 		
 		this.$once('mile-stone:'+ref, function(){
-			console.log('should be changing room');
 			this.changeRoom(0);			
 		})
 	}),
@@ -231,6 +231,15 @@ var interactions =[
 		
 		this.$once('mile-stone:mouth',function(){
 			this.getThings('BILLY_C').goTo({x:100,y:10});
+		})
+	}),
+	
+	new Interaction (['WALK','HOUSE_W'],[],function(){
+		console.log('!')
+		var ref = Number(new Date);
+		this.getThings('pc').goTo(this.getThings('HOUSE_W'),{ref:ref})
+		this.$once('mile-stone:'+ref, function(){
+			this.changeRoom(1);			
 		})
 	}),
 	
