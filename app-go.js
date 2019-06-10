@@ -81,6 +81,28 @@ var vm = new Vue({
 	obstacles : function(){
 		return this.rooms[this.roomNumber].obstacles;
 	},
+	grid : function() {
+		var obstacles = this.rooms[this.roomNumber].obstacles;
+		var cellSize = 10;	
+		var columns = Math.ceil(this.rooms[this.roomNumber].width/cellSize), 
+		rows = Math.ceil(this.rooms[this.roomNumber].height/cellSize),x,y, grid = [];
+		function cellValue(x,y){
+			var cell = {x: x*cellSize, y: y*cellSize, height:cellSize, width:cellSize}, i;
+			for (i=0; i<obstacles.length; i++) {
+				if (obstacles[i].overlaps(cell)) {return 0}
+			}
+			return 1;
+		}
+		
+		for (y = 0; y < rows; y++) {
+			grid.push([]);
+			for (x = 0; x < columns; x++) {
+				grid[y].push( cellValue (x,y));
+			}	
+		}		
+		return grid;	
+		
+	}
   },
   
   methods : {
@@ -188,6 +210,50 @@ var vm = new Vue({
 		
 	},
 	
+	findPath : function (startPoint, endPoint) {
+		
+		//TO DO test if direct route is possible - if so, use it!
+		
+		var g = new Graph(vm.grid,{diagonal:true}); 
+		var cellSize = 10;
+		var sx = Math.floor (startPoint.x / cellSize); 
+		var sy = Math.floor (startPoint.y / cellSize); 
+		var ex = Math.floor (endPoint.x / cellSize); 
+		var ey = Math.floor (endPoint.y / cellSize); 
+		
+		// TO DO if start or end is not accessible, find closest open point?
+		// To DECIDE what is open? what is closest
+		
+		console.log('s',sx,sy)
+		console.log('e',ex,ey)
+		gridPath = astar.search (g,g.grid[sy][sx],g.grid[ey][ex]); 
+		function getPointFromNode(node) {
+			return { // don't know why coord are reversed. It seems to work.
+			x: (node.y*cellSize) + cellSize/2, 
+			y : (node.x*cellSize) + cellSize/2, 
+			ox:node.x,
+			oy:node.y
+			}
+		}
+		
+		var path = [],i,l,dx,dy, dxn,dyn;
+		for (i=0; i< gridPath.length; i++) { 
+			path.push(getPointFromNode(gridPath[i]));		
+			l = path.length-1;
+			if (l >= 2 && i < gridPath.length-1 ) {
+				dx = path[l-2].x - path[l-1].x;
+				dy = path[l-2].y - path[l-1].y;
+				dxn = path[l-1].x - path[l].x;
+				dyn = path[l-1].y - path[l].y;
+				
+				if (dx === dxn && dy === dyn) {
+					path.pop();
+				}
+			}
+		}
+		return path;
+	},
+	
 	resetListeners: function() {
 		this.$off();
 		
@@ -223,7 +289,7 @@ var vm = new Vue({
 			var roomElement = this.$el.getElementsByTagName('main')[0];
 			var pc = this.getThings('pc');
 			//scaledHeightOfPcAsCssString = getComputedStyle(this.getThings().pc.$children[0].$el.children[0]).height
-			this.getThings('pc').goTo ( {y: (event.target.offsetHeight - event.offsetY),x: (event.offsetX), ref:false});
+			this.getThings('pc').goToViaPath ( {y: (event.target.offsetHeight - event.offsetY),x: (event.offsetX), ref:false});
 		});
 		
 		this.$on('clicked-thing', function(thing){

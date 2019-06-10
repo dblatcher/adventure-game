@@ -76,6 +76,38 @@ Vue.component('character-c', {
 			}
 		},
 
+		goToViaPath : function (destination, options = {}, clearQueue = true) {
+			if (typeof options.action === 'undefined') {options.action = 'walk'};
+			
+			var orders = [];
+			
+			var path = this.$root.findPath(this,destination); 
+			
+			if (path.length) {
+				var currentPoint, lastPoint, direction, horizontal,vertical; 
+				for (var i=0; i<path.length; i++) {
+					currentPoint = path[i]
+					lastPoint = i > 0 ? path[i-1] : this; 
+					horizontal = currentPoint.x > lastPoint.x ? 'right' : 'left';
+					vertical   = currentPoint.y > lastPoint.y ? 'up' : 'down';	
+					direction = Math.abs(currentPoint.x - lastPoint.x) > Math.abs(currentPoint.y - lastPoint.y) ? 
+						horizontal :
+						this.char.validDirections.includes(vertical) ? vertical : horizontal;
+						
+					orders.push({
+						x: path[i].x,
+						y: path[i].y,
+						direction:direction,
+						action:options.action
+					});
+				}
+				orders[orders.length-1].ref = options.ref;
+				console.log(orders);
+			}
+			
+			this.destinationQueue.push(...orders);
+		},
+		
 		goTo: function (destination, options = {}, clearQueue = true) {
 			//to do:
 			//generate a series of orders as needs to go around obstacles
@@ -132,7 +164,12 @@ Vue.component('character-c', {
 			
 			if (!moveOrder.started) {
 				if (moveOrder.action) {
-					this.doAction(moveOrder.action, {loop:true, direction: moveOrder.direction||this.direction},true);
+					console.log(moveOrder.action, moveOrder.direction)
+					console.log(this.actionQueue[0].action, this.actionQueue[0].direction)
+					if (moveOrder.action !== this.actionQueue[0].action || moveOrder.direction !== this.actionQueue[0].direction) {
+						console.log('!')
+						this.doAction(moveOrder.action, {loop:true, direction: moveOrder.direction||this.direction},true);
+					}
 				};
 			};			
 			moveOrder.started = true;
@@ -168,10 +205,10 @@ Vue.component('character-c', {
 			
 			// test if character got to the moveOrder destination, shift queue, report if finished
 			if (this.x ===  moveOrder.x && this.y === moveOrder.y) { 
-				this.doAction('wait', {loop:true, direction:moveOrder.direction},true);
 				
 				this.destinationQueue.shift();
 				if (this.destinationQueue.length === 0) {
+					this.doAction('wait', {loop:true, direction:moveOrder.direction},true);
 					this.$root.$emit('mile-stone','reached-destination',this,moveOrder);
 					if(moveOrder.ref) {this.$root.$emit('mile-stone'+':'+moveOrder.ref)};
 				};
