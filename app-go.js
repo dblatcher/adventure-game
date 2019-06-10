@@ -77,20 +77,24 @@ var vm = new Vue({
 	
 	inventory : function() {
 		return this.inventoryItems.filter(function(i){return i.have});
-	}
+	},
+	obstacles : function(){
+		return this.rooms[this.roomNumber].obstacles;
+	},
   },
   
   methods : {
 	changeRoom: function (rNum,data) {		
-		this.$emit('get-report',{name:'[game]'},'changing to room '+rNum+'')
+		this.$emit('mile-stone','changing room to '+this.rooms[rNum].name)
 		this.characters.splice(0, this.characters.length);
 		this.characters.push(...this.rooms[rNum].characters);
 
 		this.worldItems.splice(0, this.worldItems.length);
 		this.worldItems.push(...this.rooms[rNum].worldItems);
-		
-		
+			
 		this.roomNumber = rNum;
+		this.thingHoveredOn = null;
+		this.resetListeners();
 		this.$emit('room-change-done',data);
 
 	},
@@ -135,7 +139,7 @@ var vm = new Vue({
 		
 		
 		var defaultResponse = {
-			"WALK" : function() {this.getThings('pc').goTo(this.getThings(command.subject.id))},
+			"WALK" : function() {this.getThings('pc').goTo(this.getThings(command.subject.id).walkToPoint)},
 			"LOOK" : function() {
 				if (command.subject.id.endsWith('W')) {
 					this.getThings('pc').say(`It looks like a normal ${command.subject.name} to me.`);
@@ -182,85 +186,86 @@ var vm = new Vue({
 			permList.splice(permIndex,1);			
 		};
 		
-	}
+	},
+	
+	resetListeners: function() {
+		this.$off();
+		
+		this.$on('mile-stone',function(type,thing,order){
+			var now = new Date();
+			thing = thing || {name:'[game]'};
+			order = order || {};
+			this.message = `${now.getHours()}:${now.getMinutes()}.${now.getSeconds()} - ${thing.name}: ${type} ${order.ref ? 'ref: '+order.ref:''}. `			
+			console.log(thing.name, type, order ? 'ref: '+order.ref:null);
+		})
+		
+		this.$on('verb-picked',function(verbID) {
+			this.subject = null;
+			for (var i=0; i<this.verbList.length; i++) {
+				if (this.verbList[i].id === verbID ) {
+					this.verb = this.verbList[i];
+					return;
+				}
+			};
+		});
+		
+		this.$on('hover-event',function(component,event){
+			if (event.type=== 'mouseover') {
+				this.thingHoveredOn = component;
+			};
+			if (event.type=== 'mouseout' && this.thingHoveredOn === component) {
+				this.thingHoveredOn = null;
+			};	
+		});
+		
+		this.$on('clicked-room', function (component,event){	
+			//TO DO -  generate path of steps to navigate around obsticles to closest valid point
+			var roomElement = this.$el.getElementsByTagName('main')[0];
+			var pc = this.getThings('pc');
+			//scaledHeightOfPcAsCssString = getComputedStyle(this.getThings().pc.$children[0].$el.children[0]).height
+			this.getThings('pc').goTo ( {y: (event.target.offsetHeight - event.offsetY),x: (event.offsetX), ref:false});
+		});
+		
+		this.$on('clicked-thing', function(thing){
+			if (!this.subject) {
+				this.subject = thing;
+				if (this.verb.transitive) {
+					if (interactionMatrix[this.verb.id][this.subject.id]  && interactionMatrix[this.verb.id][this.subject.id].intransitive ) {  // test for non transitive use of transitive verb, like 'use lever'
+						this.needObject = false;
+					} else {
+						this.needObject = true;
+					}		
+				} else {
+					this.needObject = false;
+				}
+			} else {
+				if (!this.command.complete && thing !== this.subject) {
+					this.object = thing;
+				}
+			};
+			
+			if (this.command.complete) {this.executeCommand();}
+		});
+		
+
+		this.$on('room-change-done', function (callback){
+			this.$nextTick( function(){
+				if (typeof callback === "function") {
+					callback.apply(this,[]);
+				}
+			})
+		});
+		
+	},
   },
 
   beforeMount: function () { 
-	
-  
-	this.$on('get-report',function(thing,data){
-		var now = new Date();
-		this.message = `${now.getHours()}:${now.getMinutes()}.${now.getSeconds()} : message from ${thing.name}: ${data}.`
-	});
-	
-	this.$on('mile-stone',function(type,thing,order){
-		console.log(thing.name, type, order ? 'ref: '+order.ref:null);
-	})
-	
-	this.$on('verb-picked',function(verbID) {
-		this.subject = null;
-		for (var i=0; i<this.verbList.length; i++) {
-			if (this.verbList[i].id === verbID ) {
-				this.verb = this.verbList[i];
-				return;
-			}
-		};
-	});
-	
-	this.$on('hover-event',function(component,event) {
-		if (event.type=== 'mouseover') {
-			this.thingHoveredOn = component;
-		};
-		if (event.type=== 'mouseout' && this.thingHoveredOn === component) {
-			this.thingHoveredOn = null;
-		};	
-	});
-	
-	this.$on('clicked-room', function (component,event) {
-		if (this.gameStatus !== 'LIVE') {return false;}
 		
-		//TO DO -  generate path of steps to navigate around obsticles to closest valid point
-		var roomElement = this.$el.getElementsByTagName('main')[0];
-		var pc = this.getThings('pc');
-		//scaledHeightOfPcAsCssString = getComputedStyle(this.getThings().pc.$children[0].$el.children[0]).height
-		this.getThings('pc').goTo ( {y: (event.target.offsetHeight - event.offsetY),x: (event.offsetX), ref:false});
+	this.changeRoom(this.roomNumber,function() {
+		this.getThings('pc').say('Hello, World. I am the player character.');
+		this.getThings('pc').say('My name is ' + this.getThings('pc').name +'.');						
 	});
-	
-	this.$on('clicked-thing', function(thing){
-		if (this.gameStatus !== 'LIVE') {return false;}
-		if (!this.subject) {
-			this.subject = thing;
-			if (this.verb.transitive) {
-				if (interactionMatrix[this.verb.id][this.subject.id]  && interactionMatrix[this.verb.id][this.subject.id].intransitive ) {  // test for non transitive use of transitive verb, like 'use lever'
-					this.needObject = false;
-				} else {
-					this.needObject = true;
-				}		
-			} else {
-				this.needObject = false;
-			}
-		} else {
-			if (!this.command.complete && thing !== this.subject) {
-				this.object = thing;
-			}
-		};
-		
-		if (this.command.complete) {this.executeCommand();}
-	});
-	
 
-	this.$on('room-change-done', function (data){
-		var that = this;
-		setTimeout (function(){			
-			if (data === 'start') {
-				that.getThings('pc').say('Hello, World. I am the player character.');
-				that.getThings('pc').say('My name is ' + that.getThings('pc').name +'.');				
-			}
-		}, 50);
-	});
-	
-	this.changeRoom(this.roomNumber,'start');
-	
   }
 
 })

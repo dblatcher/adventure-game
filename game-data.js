@@ -67,11 +67,11 @@ var characterModels = {
 	}
 	
 }
-function Character(id,name,x,y,speechColor,model) {
+function Character(id,name,coords,speechColor,model) {
 	this.id = id.toLowerCase() === 'pc' ? 'pc' : id.toUpperCase()+"_C";
 	this.name = name;
-	this.startX = x;
-	this.startY = y;
+	this.startX = coords[0];
+	this.startY = coords[1];
 	this.speechColor= speechColor;
 	Object.assign(this,model());
 }
@@ -98,11 +98,14 @@ var worldItemModels = {
 		};
 	},
 };
-function WorldItem (id, name, x,y,width,height,status, model) {
+function WorldItem (id, name, coords ,width,height,status, model) {
 	this.id = id.toUpperCase() + "_W";
 	this.name = name;
-	this.startX = x || 0;
-	this.startY = y || 0;
+	this.startX = coords[0] || 0;
+	this.startY = coords[1] || 0;
+	this.walkOffsetX =  coords[2] || 0;
+	this.walkOffsetY =  coords[3] || 0;
+		
 	this.baseWidth = width || 20;
 	this.baseHeight = height || 20;
 	this.status = status || 'neutral';
@@ -120,24 +123,32 @@ function WorldItem (id, name, x,y,width,height,status, model) {
 var rooms = [
 	{id:'SWAMP_R', name:'Swamp', url: "assets/rooms/bg1.png", width:400, height:300, 
 	characters : [
-		new Character ('pc','Jane Smith',10,10,'white',characterModels.jane),
-		new Character ('billy','billy',200,10,'red',characterModels.billy)
+		new Character ('pc','Jane Smith',[375,10],'white',characterModels.jane),
+		new Character ('billy','billy',[200,10],'red',characterModels.billy)
 	]
 	,worldItems:[
-		new WorldItem ('lake','lake',200,45,400,50),
-		new WorldItem ('bucket','bucket',250,25,40,40,'neutral',worldItemModels.bucket)
+		new WorldItem ('lake','lake',[200,45],400,50),
+		new WorldItem ('house','path back to house',[375,0],50,150),
+		new WorldItem ('bucket','bucket',[250,25],40,40,'neutral',worldItemModels.bucket)
+	]
+	,obstacles:[
+		new Zone (200,45,400,50)
 	]},
 	
 	{id:'LIVING_ROOM_R', name:'Living room', url: "assets/rooms/bg2.jpg", width:400, height:250, 
 	characters : [
-		new Character ('luigi','Luigi',100,50,'green',characterModels.mario),
-		new Character ('pc','Jane Smith',160,50,'white',characterModels.jane)
+		new Character ('luigi','Luigi',[135,21],'green',characterModels.mario),
+		new Character ('pc','Jane Smith',[160,20],'white',characterModels.jane)
 	],
 	worldItems : [		
-		new WorldItem ('door','wooden door',265,25,50,100,'closed',worldItemModels.door),
-		new WorldItem ('winDow','nice window',120,150,100,145)
+		new WorldItem ('door','wooden door',[265,30,0,-20],50,100,'closed',worldItemModels.door),
+		new WorldItem ('window','nice window',[120,150],100,145)
 	]
-	}
+	,obstacles:[
+		new Zone (200,32,400,200),
+		new Zone (135,20,200,200),
+	]},
+	
 ]
 
 
@@ -203,10 +214,9 @@ var interactions =[
 	[function(){return this.getThings('DOOR_W').item.status == 'open'}],
 	function(){
 		var ref = Number(new Date);
-		this.getThings('pc').goTo(this.getThings('DOOR_W'),{ref:ref})
+		this.getThings('pc').goTo(this.getThings('DOOR_W').walkToPoint,{ref:ref})
 		
 		this.$once('mile-stone:'+ref, function(){
-			console.log('should be changing room');
 			this.changeRoom(0);			
 		})
 	}),
@@ -238,6 +248,14 @@ var interactions =[
 		})
 		this.$once('mile-stone:'+ref2,function(){
 			this.gameStatus = 'LIVE';
+		})
+	}),
+	
+	new Interaction (['WALK','HOUSE_W'],[],function(){
+		var ref = Number(new Date);
+		this.getThings('pc').goTo(this.getThings('HOUSE_W').walkToPoint,{ref:ref})
+		this.$once('mile-stone:'+ref, function(){
+			this.changeRoom(1);			
 		})
 	}),
 	

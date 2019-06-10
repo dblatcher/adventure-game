@@ -28,6 +28,9 @@ Vue.component('world-item', {
 			var v= this.item.cycles[this.item.status][this.cycleFrame];
 			return {sprite: v[0], fx:v[1], fy:v[2]}
 		},
+		walkToPoint: function() {
+			return {x:this.x + this.item.walkOffsetX, y:this.y + this.item.walkOffsetY}
+		},
 		styleObject : function () {return {
 			position: 'absolute',
 			height: this.scaledHeight+'px',
@@ -40,11 +43,9 @@ Vue.component('world-item', {
 	},
 	methods : {
 		clickHandler : function (event) {
-			this.$root.$emit('get-report', this, 'clicked');
 			this.$root.$emit('clicked-thing', this.item);
 		},
 		hoverHandler : function (event) {
-			this.$root.$emit('get-report', this, event.type);
 			this.$root.$emit('hover-event', this, event);
 		},
 

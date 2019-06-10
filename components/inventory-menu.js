@@ -38,12 +38,9 @@ methods: {
 		}
 	},
 	clickHandler(item) {
-		this.$parent.$emit('get-report',item,`clicked item with ID [${item.id}]`);
 		this.$root.$emit('clicked-thing', item);
 	},
 	hoverHandler : function (event,item) {
-
-		this.$root.$emit('get-report', item, event.type);
 		this.$root.$emit('hover-event', item, event);
 	},
 },
