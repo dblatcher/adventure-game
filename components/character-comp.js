@@ -82,6 +82,9 @@ Vue.component('character-c', {
 			var orders = [];
 			
 			var path = this.$root.findPath(this,destination); 
+			console.log(path);
+			
+			if (path.length === 0 ) {console.log(`No route found to [${destination.x},${destination.y}]`)};
 			
 			if (path.length) {
 				var currentPoint, lastPoint, direction, horizontal,vertical; 
@@ -102,7 +105,6 @@ Vue.component('character-c', {
 					});
 				}
 				orders[orders.length-1].ref = options.ref;
-				console.log(orders);
 			}
 			
 			this.destinationQueue.push(...orders);
@@ -110,8 +112,6 @@ Vue.component('character-c', {
 		
 		goTo: function (destination, options = {}, clearQueue = true) {
 			//to do:
-			//generate a series of orders as needs to go around obstacles
-			//make sure only the final order gets the ref property of the destination argument
 			//handle cases of unreachable destinations
 			
 			if (typeof options.action === 'undefined') {options.action = 'walk'}
@@ -164,10 +164,7 @@ Vue.component('character-c', {
 			
 			if (!moveOrder.started) {
 				if (moveOrder.action) {
-					console.log(moveOrder.action, moveOrder.direction)
-					console.log(this.actionQueue[0].action, this.actionQueue[0].direction)
 					if (moveOrder.action !== this.actionQueue[0].action || moveOrder.direction !== this.actionQueue[0].direction) {
-						console.log('!')
 						this.doAction(moveOrder.action, {loop:true, direction: moveOrder.direction||this.direction},true);
 					}
 				};

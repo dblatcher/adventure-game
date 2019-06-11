@@ -214,6 +214,15 @@ var vm = new Vue({
 		
 		//TO DO test if direct route is possible - if so, use it!
 		
+		var i, obstacles = this.rooms[this.roomNumber].obstacles, directPath = true;
+		for (i=0; i < obstacles.length; i++) {
+			if (obstacles[i].intersectsLineSegment(startPoint, endPoint)){
+				directPath = false;
+				break;
+			}
+		}
+		if (directPath) {return [{x:endPoint.x, y:endPoint.y}]};
+		
 		var g = new Graph(vm.grid,{diagonal:true}); 
 		var cellSize = 10;
 		var sx = Math.floor (startPoint.x / cellSize); 
@@ -224,15 +233,11 @@ var vm = new Vue({
 		// TO DO if start or end is not accessible, find closest open point?
 		// To DECIDE what is open? what is closest
 		
-		console.log('s',sx,sy)
-		console.log('e',ex,ey)
 		gridPath = astar.search (g,g.grid[sy][sx],g.grid[ey][ex]); 
 		function getPointFromNode(node) {
 			return { // don't know why coord are reversed. It seems to work.
 			x: (node.y*cellSize) + cellSize/2, 
 			y : (node.x*cellSize) + cellSize/2, 
-			ox:node.x,
-			oy:node.y
 			}
 		}
 		
