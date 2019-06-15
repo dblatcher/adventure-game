@@ -49,6 +49,7 @@ var vm = new Vue({
 	inventoryItems: inventoryItems,
 	message: 'blank message',
 	roomNumber: 1,
+	roomMeasure: {unit:'em',scale:0.05},
 	verb: verbList[0],thingHoveredOn:null, 
 	subject: null, needObject:false, object:null,
 	gameStatus: 'LIVE'
@@ -293,8 +294,21 @@ var vm = new Vue({
 			//TO DO -  generate path of steps to navigate around obsticles to closest valid point
 			var roomElement = this.$el.getElementsByTagName('main')[0];
 			var pc = this.getThings('pc');
+			
+			var clickCoordinPx = {x: (event.offsetX),y: (event.target.offsetHeight - event.offsetY)};
+			
+			
+			
+			var clickCoord = {
+				x : clickCoordinPx.x * this.$refs.room.room.width / this.$refs.room.$el.clientWidth,
+				y : clickCoordinPx.y * this.$refs.room.room.height / this.$refs.room.$el.clientHeight,
+				
+			};
+			
+			vm.$refs.coordinateDisplay.innerText = JSON.stringify(clickCoordinPx) + JSON.stringify(clickCoord);
+			
 			//scaledHeightOfPcAsCssString = getComputedStyle(this.getThings().pc.$children[0].$el.children[0]).height
-			this.getThings('pc').goToViaPath ( {y: (event.target.offsetHeight - event.offsetY),x: (event.offsetX), ref:false});
+			this.getThings('pc').goToViaPath ( {x:clickCoord.x, y:clickCoord.y, ref:false});
 		});
 		
 		this.$on('clicked-thing', function(thing){

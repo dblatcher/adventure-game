@@ -1,7 +1,7 @@
 
 Vue.component('character-c', {
 
-	props:['char'],
+	props:['char','measure'],
 	data: function() {		
 		var spriteSet = [];		
 		var fullSet = this.$root.$data.sprites;
@@ -44,10 +44,10 @@ Vue.component('character-c', {
 		},
 		styleObject : function () {return {
 			position: 'absolute',
-			height: this.scaledHeight+'px',
-			width: this.scaledWidth+'px',
-			bottom: this.y+'px',
-			left: this.x+'px',
+			height: (this.scaledHeight * this.measure.scale) + this.measure.unit,
+			width:  (this.scaledWidth  * this.measure.scale) + this.measure.unit,
+			bottom: (this.y  * this.measure.scale) + this.measure.unit,
+			left:   (this.x  * this.measure.scale) + this.measure.unit,
 			zIndex: 1000-this.y,
 			transform: 'translateX(-50%)'
 		}}
@@ -264,13 +264,14 @@ Vue.component('character-c', {
 				v-bind:height="sprite.p.scaledHeight"
 				v-bind:width="sprite.p.scaledWidth"
 				v-bind:index="sprite.p.frame.sprite"
+				v-bind:measure = "sprite.p.measure"
 				></sprite-image>
 		</div>
 		
 		<speech-line v-bind:style="{
 				position: 'absolute',
-				bottom: (y+scaledHeight)+'px',
-				left: x+'px'}"
+				bottom: ( (y+scaledHeight) * this.measure.scale )+this.measure.unit,
+				left: (x * this.measure.scale)+this.measure.unit}"
 			v-bind:text="saying"
 			v-bind:charCentre="x"
 			v-bind:color="char.speechColor"

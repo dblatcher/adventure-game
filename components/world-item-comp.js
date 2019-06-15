@@ -1,7 +1,7 @@
 
 Vue.component('world-item', {
 
-	props:['item'],
+	props:['item','measure'],
 	data: function() {		
 		var spriteSet = [];		
 		var fullSet = this.$root.$data.sprites;
@@ -33,10 +33,10 @@ Vue.component('world-item', {
 		},
 		styleObject : function () {return {
 			position: 'absolute',
-			height: this.scaledHeight+'px',
-			width: this.scaledWidth+'px',
-			bottom: this.y+'px',
-			left: this.x+'px',
+			height: (this.scaledHeight * this.measure.scale) + this.measure.unit,
+			width:  (this.scaledWidth  * this.measure.scale) + this.measure.unit,
+			bottom: (this.y  * this.measure.scale) + this.measure.unit,
+			left:   (this.x  * this.measure.scale) + this.measure.unit,
 			zIndex: 1000-this.y,
 			transform: 'translateX(-50%)'
 		}}
@@ -91,6 +91,7 @@ Vue.component('world-item', {
 				v-bind:height="sprite.p.scaledHeight"
 				v-bind:width="sprite.p.scaledWidth"
 				v-bind:index="sprite.p.frame.sprite"
+				v-bind:measure = "sprite.p.measure"
 				></sprite-image>
 		</div>
 					

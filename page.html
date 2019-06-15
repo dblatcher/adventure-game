@@ -10,15 +10,19 @@
 <body>
 
 	<div id='app'>		
-		<game-room v-bind:room="rooms[roomNumber]">
-			<character-c 
-				v-for="char in characters":key="rooms[roomNumber].id + '-' + char.id" 
-				v-bind:char='char'>
-			</character-c>
-			<world-item
-				v-for="item in worldItems":key="item.id" 
-				v-bind:item='item'>
-			</world-item>
+		<game-room ref="room" 
+			v-bind:room="rooms[roomNumber]" 
+			v-bind:measure="roomMeasure">
+				<character-c ref="characters"
+					v-for="char in characters":key="rooms[roomNumber].id + '-' + char.id"
+					v-bind:measure="roomMeasure"
+					v-bind:char='char'>
+				</character-c>
+				<world-item ref="items"
+					v-for="item in worldItems":key="item.id"
+					v-bind:measure="roomMeasure"
+					v-bind:item='item'>
+				</world-item>
 		</game-room>
 
 		<command-line v-bind:command='command' v-bind:disabled='gameStatus === "LIVE" ? false:true'></command-line>
@@ -26,6 +30,7 @@
 		<inventory-menu v-bind:items="inventory" v-bind:disabled='gameStatus === "LIVE" ? false:true'></inventory-menu>
 
 		<p>{{message}}</p>
+		<br/><p ref="coordinateDisplay"></p>
 
 	</div>
 

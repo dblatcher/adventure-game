@@ -1,5 +1,5 @@
 Vue.component ('game-room', {
-	props: ['room'],
+	props: ['room','measure'],
 	data: function() { return {
 		
 	}},
@@ -17,8 +17,8 @@ Vue.component ('game-room', {
 		},
 		styleObject : function() {
 			return {
-				width:  this.room.width + 'px',
-				height: this.room.height+ 'px',
+				width:  (this.room.width  * this.measure.scale) + this.measure.unit,
+				height: (this.room.height * this.measure.scale) + this.measure.unit,
 				backgroundSize: '100% 100%',
 				backgroundImage: `url(${this.room.url})`,
 			}

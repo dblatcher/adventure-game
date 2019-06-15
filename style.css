@@ -1,9 +1,9 @@
 
 .room {
 	position:relative;
-	border: 5px inset gray;
+
 	overflow: hidden;
-	margin: .5rem;
+
 }
 
 .command-line {

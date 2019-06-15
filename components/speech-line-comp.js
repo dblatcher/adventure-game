@@ -9,6 +9,7 @@ Vue.component('speech-line', {
 				margin: '0',
 				backgroundColor: 'rgba(0,0,0,.25)',
 				transform: function() {
+					// TO DO adjust for variable units
 					var lineWidth = that.text.length * (7.15); // guess at font width in px
 					var shiftLeft = -50;
 					if (that.charCentre < (lineWidth/2)) { 
