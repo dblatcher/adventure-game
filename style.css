@@ -2,6 +2,7 @@
 .room {
 	position:relative;
 	overflow: hidden;
+	flex-shrink:0;
 }
 
 .room-wrapper {
@@ -10,8 +11,8 @@
 	display: flex;	
 	justify-content:center;
 	align-items: center;
-	padding:1rem;
 	background-color: black;
+	paddin:.25rem;
 }
 
 .command-line {
