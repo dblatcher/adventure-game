@@ -1,7 +1,7 @@
 
 Vue.component('character-c', {
-
 	props:['char','measure'],
+
 	data: function() {		
 		var spriteSet = [];		
 		var fullSet = this.$root.$data.sprites;
@@ -24,6 +24,7 @@ Vue.component('character-c', {
 		destinationQueue:[]
 		}
 	},
+
 	computed :{
 		scaledHeight : function() {return this.scale * this.baseHeight;},
 		scaledWidth : function() {return this.scale * this.baseWidth;},
@@ -52,6 +53,7 @@ Vue.component('character-c', {
 			transform: 'translateX(-50%)'
 		}}
 	},
+	
 	methods : {
 		doAction : function (action, options = {}, clearQueue = true) {
 			//validate inputs
@@ -75,7 +77,6 @@ Vue.component('character-c', {
 				this.actionQueue.push(order);
 			}
 		},
-
 		goToViaPath : function (destination, options = {}, clearQueue = true) {
 			if (typeof options.action === 'undefined') {options.action = 'walk'};
 			
@@ -109,7 +110,6 @@ Vue.component('character-c', {
 			
 			this.destinationQueue.push(...orders);
 		},
-		
 		goTo: function (destination, options = {}, clearQueue = true) {
 			//to do:
 			//handle cases of unreachable destinations
@@ -131,7 +131,6 @@ Vue.component('character-c', {
 				this.destinationQueue.push(order);
 			}
 		},
-	
 		say : function (text, options = {}) {
 			if (typeof options.time !== 'number') {options.time = 1000}
 			var that = this;
@@ -157,7 +156,6 @@ Vue.component('character-c', {
 				}	
 			};
 		},
-	
 		move : function () {
 			if (this.destinationQueue.length === 0) {return false};
 			var moveOrder = this.destinationQueue[0];
