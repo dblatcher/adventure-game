@@ -1,6 +1,6 @@
 Vue.component('verb-menu', {
 
-props:['verbList','picked','disabled'],
+props:['verbList','picked'],
 
 data: function() {
 
@@ -18,7 +18,7 @@ mounted: function () {
 },
 
 template: `
-<form class="verb-menu" v-on:change="update" v-bind:class="{disabled:disabled}">
+<form class="verb-menu" v-on:change="update" >
 
 	<div class="verb-menu__option" v-for="verb, index in this.verbList":key="index">
 		<input class="verb-menu__input" type="radio" name="verb" v-bind:id="'verb_'+verb.id"  v-bind:value="verb.id" v-model="picked"/>

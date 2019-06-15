@@ -88,7 +88,7 @@ input:checked~.verb-menu__label {
 .inventory-menu {
 	overflow:hidden;
 	box-sizing:border-box;
-	transition: background-color 0.75s, opacity 0.75s;
+	transition: background-color 0.75s, opacity 1s;
 }
 
 
@@ -127,10 +127,9 @@ input:checked~.verb-menu__label {
 }
 .inventory-menu__button--enabled { 
 	color: black;
-	opacity: 1;
+	opacity: 1s;
 }
 
 .disabled {
-	opacity: .5;
-	background-color: lightgray;
+	opacity: .25;
 }

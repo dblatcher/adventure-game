@@ -1,6 +1,6 @@
 Vue.component('inventory-menu', {
 
-props:['items','disabled'],
+props:['items'],
 
 data: function() {
 	return {
@@ -46,7 +46,7 @@ methods: {
 },
 
 template: `
-<section class="inventory-menu" v-bind:class="{disabled:disabled}">
+<section class="inventory-menu">
 
 	<button @click="buttonHandler('back')" v-bind:class="{ 'inventory-menu__button--enabled': enableBack }"
 	class="inventory-menu__button inventory-menu__button--back"> &larr; </button> 

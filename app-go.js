@@ -47,7 +47,7 @@ var vm = new Vue({
 	inventoryItems: inventoryItems,
 	message: 'blank message',
 	roomNumber: 1,
-	roomMeasure: {unit:'em',scale:0.05},
+	roomMeasure: {unit:'em',scale:0.06},
 	verb: verbList[0],thingHoveredOn:null, 
 	subject: null, needObject:false, object:null,
 	gameStatus: 'LIVE'
