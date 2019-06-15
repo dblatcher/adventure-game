@@ -1,6 +1,4 @@
 
-
-
 function marchRightThenLeft(character) {
 	var ref = 'march_'+character.ident+Number(new Date);
 	var halt = false;
@@ -54,6 +52,7 @@ var vm = new Vue({
 	subject: null, needObject:false, object:null,
 	gameStatus: 'LIVE'
   },
+  
   computed : {
 	command : function() {			
 		var sentence = this.verb.description + ' ';
@@ -74,8 +73,7 @@ var vm = new Vue({
 			undecidedNoun: undecidedNoun,
 			complete:completeCommand
 		}
-	},
-	
+	},	
 	inventory : function() {
 		return this.inventoryItems.filter(function(i){return i.have});
 	},
@@ -122,8 +120,8 @@ var vm = new Vue({
 
 	},
 	getThings : function (ident) {
-		var list = this.$children[0].$children; // array of components in room
-		var result = {}
+		var list = [].concat(this.$refs.characters, this.$refs.items); // array of components in room
+		var result = {};
 		for (var i = 0; i<list.length; i++) {
 			if (list[i].ident === ident ){ return list[i]};
 			result[list[i].ident] = list[i];
@@ -210,7 +208,63 @@ var vm = new Vue({
 		};
 		
 	},
+	handleClickOnRoom: function (event){			
+		var pc = this.getThings('pc');
+		var room = this.$refs.room;		
+		var clickCoordinPx = {x: (event.offsetX),y: (room.$el.offsetHeight - event.offsetY)};
+		
+		var clickCoord = {
+			x : clickCoordinPx.x * room.room.width  / room.$el.clientWidth,
+			y : clickCoordinPx.y * room.room.height / room.$el.clientHeight,
+		};
 	
+		vm.$refs.coordinateDisplay.innerText = JSON.stringify(clickCoord);
+		this.getThings('pc').goToViaPath ( {x:clickCoord.x, y:clickCoord.y, ref:false});
+	},	
+	handleClickOnThing: function(thing) {
+		if (!this.subject) {
+			this.subject = thing;
+			if (this.verb.transitive) {
+				if (interactionMatrix[this.verb.id][this.subject.id]  && interactionMatrix[this.verb.id][this.subject.id].intransitive ) {  // test for non transitive use of transitive verb, like 'use lever'
+					this.needObject = false;
+				} else {
+					this.needObject = true;
+				}		
+			} else {
+				this.needObject = false;
+			}
+		} else {
+			if (!this.command.complete && thing !== this.subject) {
+				this.object = thing;
+			}
+		};
+		
+		if (this.command.complete) {this.executeCommand();}		
+	},	
+	pickVerb: function(verbID) {
+		this.subject = null;
+		for (var i=0; i<this.verbList.length; i++) {
+			if (this.verbList[i].id === verbID ) {
+				this.verb = this.verbList[i];
+				return;
+			}
+		};
+	},
+	reportEvent: function(type,thing,order){
+		var now = new Date();
+		thing = thing || {name:'[game]'};
+		order = order || {};
+		this.message = `${now.getHours()}:${now.getMinutes()}.${now.getSeconds()} - ${thing.name}: ${type} ${order.ref ? 'ref: '+order.ref:''}. `			
+		//console.log(thing.name, type, order ? 'ref: '+order.ref:null);
+	},
+	handleHoverEvent: function(component,event){
+		if (event.type=== 'mouseover') {
+			this.thingHoveredOn = component;
+		};
+		if (event.type=== 'mouseout' && this.thingHoveredOn === component) {
+			this.thingHoveredOn = null;
+		};	
+	},	
 	findPath : function (startPoint, endPoint) {
 		
 		//TO DO test if direct route is possible - if so, use it!
@@ -259,98 +313,29 @@ var vm = new Vue({
 		}
 		return path;
 	},
-	
+	callRoomChangeCallback: function (callback){
+		this.$nextTick( function(){
+			if (typeof callback === "function") {
+				callback.apply(this,[]);
+			}
+		})
+	},	
 	resetListeners: function() {
 		this.$off();
-		
-		this.$on('mile-stone',function(type,thing,order){
-			var now = new Date();
-			thing = thing || {name:'[game]'};
-			order = order || {};
-			this.message = `${now.getHours()}:${now.getMinutes()}.${now.getSeconds()} - ${thing.name}: ${type} ${order.ref ? 'ref: '+order.ref:''}. `			
-			console.log(thing.name, type, order ? 'ref: '+order.ref:null);
-		})
-		
-		this.$on('verb-picked',function(verbID) {
-			this.subject = null;
-			for (var i=0; i<this.verbList.length; i++) {
-				if (this.verbList[i].id === verbID ) {
-					this.verb = this.verbList[i];
-					return;
-				}
-			};
-		});
-		
-		this.$on('hover-event',function(component,event){
-			if (event.type=== 'mouseover') {
-				this.thingHoveredOn = component;
-			};
-			if (event.type=== 'mouseout' && this.thingHoveredOn === component) {
-				this.thingHoveredOn = null;
-			};	
-		});
-		
-		this.$on('clicked-room', function (component,event){	
-			//TO DO -  generate path of steps to navigate around obsticles to closest valid point
-			var roomElement = this.$el.getElementsByTagName('main')[0];
-			var pc = this.getThings('pc');
-			
-			var clickCoordinPx = {x: (event.offsetX),y: (event.target.offsetHeight - event.offsetY)};
-			
-			
-			
-			var clickCoord = {
-				x : clickCoordinPx.x * this.$refs.room.room.width / this.$refs.room.$el.clientWidth,
-				y : clickCoordinPx.y * this.$refs.room.room.height / this.$refs.room.$el.clientHeight,
-				
-			};
-			
-			vm.$refs.coordinateDisplay.innerText = JSON.stringify(clickCoordinPx) + JSON.stringify(clickCoord);
-			
-			//scaledHeightOfPcAsCssString = getComputedStyle(this.getThings().pc.$children[0].$el.children[0]).height
-			this.getThings('pc').goToViaPath ( {x:clickCoord.x, y:clickCoord.y, ref:false});
-		});
-		
-		this.$on('clicked-thing', function(thing){
-			if (!this.subject) {
-				this.subject = thing;
-				if (this.verb.transitive) {
-					if (interactionMatrix[this.verb.id][this.subject.id]  && interactionMatrix[this.verb.id][this.subject.id].intransitive ) {  // test for non transitive use of transitive verb, like 'use lever'
-						this.needObject = false;
-					} else {
-						this.needObject = true;
-					}		
-				} else {
-					this.needObject = false;
-				}
-			} else {
-				if (!this.command.complete && thing !== this.subject) {
-					this.object = thing;
-				}
-			};
-			
-			if (this.command.complete) {this.executeCommand();}
-		});
-		
-
-		this.$on('room-change-done', function (callback){
-			this.$nextTick( function(){
-				if (typeof callback === "function") {
-					callback.apply(this,[]);
-				}
-			})
-		});
-		
+		this.$on('verb-picked',this.pickVerb);	
+		this.$on('hover-event',this.handleHoverEvent);	
+		this.$on('mile-stone',this.reportEvent);
+		this.$on('clicked-room', this.handleClickOnRoom);
+		this.$on('clicked-thing', this.handleClickOnThing);
+		this.$on('room-change-done', this.callRoomChangeCallback);
 	},
   },
 
   beforeMount: function () { 
-		
 	this.changeRoom(this.roomNumber,function() {
 		this.getThings('pc').say('Hello, World. I am the player character.');
 		this.getThings('pc').say('My name is ' + this.getThings('pc').name +'.');						
 	});
-
   }
 
 })
