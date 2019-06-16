@@ -11,67 +11,61 @@ var sprites = [
 
 
 var characterModels = {
-	mario : function() {
-		return {
-			baseHeight:75,baseWidth:50,
-			spritesUsed:['m'],
-			validDirections : ['right','left'],
-			cycles : {
-				wait: {
-					right: [ ['m',0,0] ],
-					left : [ ['m',2,1] ],
-				},
-				walk: {
-					right:[ ['m',0,0],['m',1,0],['m',2,0]  ],
-					left: [ ['m',2,1],['m',1,1],['m',0,1]  ]
-				}
+	mario : {
+		baseHeight:75,baseWidth:50,
+		spritesUsed:['m'],
+		validDirections : ['right','left'],
+		cycles : {
+			wait: {
+				right: [ ['m',0,0] ],
+				left : [ ['m',2,1] ],
+			},
+			walk: {
+				right:[ ['m',0,0],['m',1,0],['m',2,0]  ],
+				left: [ ['m',2,1],['m',1,1],['m',0,1]  ]
 			}
-		};
+		}		
 	},
-	billy : function() {
-		return {
-			baseHeight:50,baseWidth:50,
-			spritesUsed:[2,0],
-			validDirections : ['down','left','right','up'],
-			cycles : {
-				wait: [[0,0,0]],
-				talk: [[0,0,0],[2,0,0],[0,0,0],[2,0,0],[0,0,0],[2,0,0],[0,0,0],[2,0,0],[0,0,0],[2,0,0],[0,0,0],[2,0,0],[0,0,0],[2,0,0],[0,0,0],[2,0,0],[0,0,0],[2,0,0],[0,0,0],[2,0,0],[0,0,0],[2,0,0],[0,0,0],[2,0,0]],
-				walk: {
-					up 	  : [[0,0,1],[0,1,1],[0,2,1],[0,3,1]  ],
-					down  : [[0,0,0],[0,1,0],[0,2,0],[0,3,0]  ],
-					left  : [[0,0,2],[0,1,2],[0,2,2],[0,3,2]  ],
-					right : [[0,0,3],[0,1,3],[0,2,3],[0,3,3]  ],
-				}
-			}	
-		}
-	},
-	jane : function() {
-		return {			
-			baseHeight:75,baseWidth:50,
-			spritesUsed:['w','w2'],
-			validDirections : ['down','left','right','up'],
-			cycles : {
-				wait : {
-					up 	  : [ ['w',0,0] ],
-					left  : [ ['w',0,1] ],
-					down  : [ ['w',0,2] ],
-					right : [ ['w',0,3] ],
-				},
-				walk : {
-					up 	  : [ ['w',0,0],['w',1,0],['w',2,0],['w',3,0], ['w',4,0],['w',5,0],['w',6,0],['w',7,0], ['w',8,0] ],
-					left  : [ ['w',0,1],['w',1,1],['w',2,1],['w',3,1], ['w',4,1],['w',5,1],['w',6,1],['w',7,1], ['w',8,1] ],
-					down  : [ ['w',0,2],['w',1,2],['w',2,2],['w',3,2], ['w',4,2],['w',5,2],['w',6,2],['w',7,2], ['w',8,2] ],
-					right : [ ['w',0,3],['w',1,3],['w',2,3],['w',3,3], ['w',4,3],['w',5,3],['w',6,3],['w',7,3], ['w',8,3] ] ,
-					
-				},
-				talk : {
-					up 	  : [ ['w',0,0], ['w2',0,0], ['w2',1,0],['w2',2,0] ],
-					left  : [ ['w',0,1], ['w2',0,1], ['w2',1,1],['w2',2,1] ],
-					down  : [ ['w',0,2], ['w2',0,2], ['w2',1,2],['w2',2,2] ],
-					right : [ ['w',0,3], ['w2',0,3], ['w2',1,3],['w2',2,3] ] ,
-				},
+	billy : {
+		baseHeight:50,baseWidth:50,
+		spritesUsed:[2,0],
+		validDirections : ['down','left','right','up'],
+		cycles : {
+			wait: [[0,0,0]],
+			talk: [[0,0,0],[2,0,0],],
+			walk: {
+				up 	  : [[0,0,1],[0,1,1],[0,2,1],[0,3,1]  ],
+				down  : [[0,0,0],[0,1,0],[0,2,0],[0,3,0]  ],
+				left  : [[0,0,2],[0,1,2],[0,2,2],[0,3,2]  ],
+				right : [[0,0,3],[0,1,3],[0,2,3],[0,3,3]  ],
 			}
-		}
+		}	
+	},
+	jane : {			
+		baseHeight:75,baseWidth:50,
+		spritesUsed:['w','w2'],
+		validDirections : ['down','left','right','up'],
+		cycles : {
+			wait : {
+				up 	  : [ ['w',0,0] ],
+				left  : [ ['w',0,1] ],
+				down  : [ ['w',0,2] ],
+				right : [ ['w',0,3] ],
+			},
+			walk : {
+				up 	  : [ ['w',0,0],['w',1,0],['w',2,0],['w',3,0], ['w',4,0],['w',5,0],['w',6,0],['w',7,0], ['w',8,0] ],
+				left  : [ ['w',0,1],['w',1,1],['w',2,1],['w',3,1], ['w',4,1],['w',5,1],['w',6,1],['w',7,1], ['w',8,1] ],
+				down  : [ ['w',0,2],['w',1,2],['w',2,2],['w',3,2], ['w',4,2],['w',5,2],['w',6,2],['w',7,2], ['w',8,2] ],
+				right : [ ['w',0,3],['w',1,3],['w',2,3],['w',3,3], ['w',4,3],['w',5,3],['w',6,3],['w',7,3], ['w',8,3] ] ,
+				
+			},
+			talk : {
+				up 	  : [ ['w',0,0], ['w2',0,0], ['w2',1,0],['w2',2,0] ],
+				left  : [ ['w',0,1], ['w2',0,1], ['w2',1,1],['w2',2,1] ],
+				down  : [ ['w',0,2], ['w2',0,2], ['w2',1,2],['w2',2,2] ],
+				right : [ ['w',0,3], ['w2',0,3], ['w2',1,3],['w2',2,3] ] ,
+			},
+		}	
 	}
 	
 }
@@ -81,39 +75,33 @@ function Character(id,name,coords,speechColor,model) {
 	this.startX = coords[0];
 	this.startY = coords[1];
 	this.speechColor= speechColor;
-	Object.assign(this,model());
+	Object.assign(this,model);
 }
 
 
 var worldItemModels = {
-	door: function () {
-		return {
-			spritesUsed : ['door'],
-			cycles: {
-				closed: [ ['door',0,0]  ],
-				open:   [ ['door',2,0]  ],
-				opening:   [ ['door',0,0],['door',1,0],['door',2,0]  ],
-				closing:   [ ['door',2,0],['door',1,0],['door',0,0]  ]
-			}
-		};
+	door: {
+		spritesUsed : ['door'],
+		cycles: {
+			closed: [ ['door',0,0]  ],
+			open:   [ ['door',2,0]  ],
+			opening:   [ ['door',0,0],['door',1,0],['door',2,0]  ],
+			closing:   [ ['door',2,0],['door',1,0],['door',0,0]  ]
+		}
 	},
-	bucket: function () {
-		return {
-			spritesUsed : ['bucket'],
-			cycles: {
-				neutral: [ ['bucket',0,0]  ]
-			}
-		};
+	bucket:  {
+		spritesUsed : ['bucket'],
+		cycles: {
+			neutral: [ ['bucket',0,0]  ]
+		}
 	},
-	fire: function () {
-		return {
-			spritesUsed : ['fire'],
-			cycles: {
-				burning: [ ['fire',0,0],['fire',1,0],['fire',2,0],['fire',3,0],  ],
-				extinguishing: [ ['fire',0,1],['fire',1,1],['fire',2,1],['fire',3,1],['fire',2,1],['fire',3,1],['fire',2,1],['fire',3,1],  ],
-				out: [ ['fire',2,1],  ],
-			}
-		};
+	fire: {
+		spritesUsed : ['fire'],
+		cycles: {
+			burning: [ ['fire',0,0],['fire',1,0],['fire',2,0],['fire',3,0],  ],
+			extinguishing: [ ['fire',0,1],['fire',1,1],['fire',2,1],['fire',3,1],['fire',2,1],['fire',3,1],['fire',2,1],['fire',3,1],  ],
+			out: [ ['fire',2,1],  ],
+		}
 	},
 };
 function WorldItem (id, name, coords ,width,height,initialCycle, model) {
@@ -130,7 +118,7 @@ function WorldItem (id, name, coords ,width,height,initialCycle, model) {
 	this.queue = [];
 	
 	if (model) {
-		Object.assign(this, model())
+		Object.assign(this, model);
 	} else {
 		this.spritesUsed = [];
 		this.cycles = {neutral:[]};
@@ -178,10 +166,14 @@ function Verb (description, id, preposition) {
 	this.transitive = !!(preposition);
 }
 var verbList = [
-	new Verb('walk to','WALK'), new Verb('pick up','TAKE'),
-	new Verb('look at','LOOK'), new Verb('give','GIVE', 'to'),
-	new Verb('use','USE', 'with'), new Verb('talk to','TALK'),
-	new Verb('open','OPEN'), new Verb('close','SHUT')
+	new Verb('walk to','WALK'),
+	new Verb('pick up','TAKE'),
+	new Verb('look at','LOOK'),
+	new Verb('give','GIVE', 'to'),
+	new Verb('use','USE', 'with'),
+	new Verb('talk to','TALK'),
+	new Verb('open','OPEN'),
+	new Verb('close','SHUT')
 ];
 
 
@@ -197,10 +189,6 @@ inventoryItems = [
 	new InventoryItem('shoe','red shoe', 'shoe.jpg',true),
 	new InventoryItem('hammer','hammer', 'hammer.jpg',true),
 ];
-
-
-var interactionMatrix = {};
-verbList.forEach( verb => { interactionMatrix[verb.id]= {} }  );
 
 
 function Interaction (command,conditions,response) {
@@ -327,6 +315,9 @@ var interactions =[
 	}),
 ]
 
+
+var interactionMatrix = {};
+verbList.forEach( verb => { interactionMatrix[verb.id]= {} }  );
 
 interactions.forEach (interaction => {
 	

@@ -17,7 +17,7 @@ Vue.component('world-item', {
 		scale:this.item.initialScale || 1,
 		baseHeight: this.item.baseHeight || 100,
 		baseWidth: this.item.baseWidth || 100,
-		cycleFrame:0, cycleQueue:[],
+		cycleFrame:0
 		}
 	},
 	computed :{
