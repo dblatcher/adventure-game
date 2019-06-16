@@ -10,18 +10,18 @@ Vue.component('character-c', {
 		};
 		
 		return {
-		spriteSet : spriteSet,
-		ident: this.char.id,
-		name: this.char.name,
-		x: this.char.startX ? Number (this.char.startX) : 0, 
-		y: this.char.startY ? Number (this.char.startY) : 0,
-		scale:this.char.initialScale || 1,
-		baseHeight: this.char.baseHeight || 100,
-		baseWidth: this.char.baseWidth || 100,
-		saying:'', sayingQueue :[],
-		actionQueue:[],
-		behaviour: {action:'wait', direction:this.char.validDirections[0], actFrame:0},
-		destinationQueue:[]
+			spriteSet : spriteSet,
+			ident: this.char.id,
+			name: this.char.name,
+			x: this.char.startX ? Number (this.char.startX) : 0, 
+			y: this.char.startY ? Number (this.char.startY) : 0,
+			scale:this.char.initialScale || 1,
+			baseHeight: this.char.baseHeight || 100,
+			baseWidth: this.char.baseWidth || 100,
+			saying:'', sayingQueue :[],
+			actionQueue:[],
+			behaviour: {action:'wait', direction:this.char.validDirections[0], actFrame:0},
+			destinationQueue:[]
 		}
 	},
 
@@ -140,13 +140,21 @@ Vue.component('character-c', {
 		},
 		say : function (text, options = {}) {
 			if (typeof options.time !== 'number') {options.time = 1000}
+			if (typeof options.action !== 'string') {options.action = 'talk'}
 			var that = this;
 			
 			var order = Object.assign({text:text}, options);
 			
+			
 			if (that.isTalking === false) {
 				that.saying = text;
 				setTimeout(function(){endOfLine(order)},order.time);
+				if (that.destinationQueue.length === 0) { //not moving
+					if (that.char.cycles[order.action]) { //and the character model has a cycle matching the action options 
+						that.behaviour.action = order.action;
+						that.behaviour.actFrame = 0;
+					}
+				}
 			} else {
 				that.sayingQueue.push(order);
 			};
@@ -158,6 +166,8 @@ Vue.component('character-c', {
 					setTimeout(function(){endOfLine(nextOrder)},nextOrder.time);
 				} else {
 					that.saying = '';
+					that.behaviour.action = 'wait';
+						that.behaviour.actFrame = 0;
 					that.$root.$emit('mile-stone','speech-end',that,sayOrder);
 					if (sayOrder.ref) {that.$root.$emit('mile-stone'+':'+sayOrder.ref)};					
 				}	

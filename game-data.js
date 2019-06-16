@@ -3,6 +3,7 @@ var sprites = [
   {id:2, url: 'assets/sprites/boy2.png', row:4, col:4},
   {id:'m', url: 'assets/sprites/mario.png', row:2, col:3},
   {id:'w', url: 'assets/sprites/woman.png', row:4, col:9},
+  {id:'w2', url: 'assets/sprites/woman2b.png', row:4, col:3},
   {id:'door', url: 'assets/sprites/door.png', row:1, col:3},
   {id:'bucket', url: 'assets/sprites/bucket.png', row:1, col:1},
 ]
@@ -46,7 +47,7 @@ var characterModels = {
 	jane : function() {
 		return {			
 			baseHeight:75,baseWidth:50,
-			spritesUsed:['w'],
+			spritesUsed:['w','w2'],
 			validDirections : ['down','left','right','up'],
 			cycles : {
 				wait : {
@@ -61,6 +62,12 @@ var characterModels = {
 					down  : [ ['w',0,2],['w',1,2],['w',2,2],['w',3,2], ['w',4,2],['w',5,2],['w',6,2],['w',7,2], ['w',8,2] ],
 					right : [ ['w',0,3],['w',1,3],['w',2,3],['w',3,3], ['w',4,3],['w',5,3],['w',6,3],['w',7,3], ['w',8,3] ] ,
 					
+				},
+				talk : {
+					up 	  : [ ['w',0,0], ['w2',0,0], ['w2',1,0],['w2',2,0] ],
+					left  : [ ['w',0,1], ['w2',0,1], ['w2',1,1],['w2',2,1] ],
+					down  : [ ['w',0,2], ['w2',0,2], ['w2',1,2],['w2',2,2] ],
+					right : [ ['w',0,3], ['w2',0,3], ['w2',1,3],['w2',2,3] ] ,
 				},
 			}
 		}
@@ -239,16 +246,21 @@ var interactions =[
 		this.gameStatus = 'CUT'
 		this.inventoryItems.filter(function(a){return a.id=='BUCKET_I'})[0].have = true;
 		this.removeThing('BUCKET_W');
-		this.getThings('BILLY_C').doAction('talk',{ref:ref1});
-		this.getThings('BILLY_C').say('hey!');
-		this.getThings('BILLY_C').say('That\'s my bucket!');
 		
-		this.$once('mile-stone:'+ref1,function(){
-			this.getThings('BILLY_C').goTo({x:100,y:10},{ref:ref2});
-		})
-		this.$once('mile-stone:'+ref2,function(){
-			this.gameStatus = 'LIVE';
-		})
+		var billy = this.getThings('BILLY_C');
+		
+		if (billy) {		
+			billy.say('hey!');
+			billy.say('That\'s my bucket!',{ref:ref1});
+			
+			this.$once('mile-stone:'+ref1,function(){
+				billy.goTo({x:100,y:10},{ref:ref2});
+			})
+			this.$once('mile-stone:'+ref2,function(){
+				this.gameStatus = 'LIVE';
+			})
+		
+		} else {this.gameStatus = 'LIVE';}
 	}),
 	
 	new Interaction (['WALK','HOUSE_W'],[],function(){
