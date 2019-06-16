@@ -12,7 +12,6 @@ Vue.component('world-item', {
 		return {
 		spriteSet : spriteSet,
 		ident: this.item.id,
-		name: this.item.name,
 		x: this.item.startX ? Number (this.item.startX) : 0, 
 		y: this.item.startY ? Number (this.item.startY) : 0,
 		scale:this.item.initialScale || 1,
@@ -29,6 +28,10 @@ Vue.component('world-item', {
 			return {sprite: v[0], fx:v[1], fy:v[2]}
 		},
 		status : function() {return this.item.status.cycle},
+		name : {
+			get: function () {return this.item.name},
+			set: function(v) {this.item.name = v}
+		},
 		walkToPoint: function() {
 			return {x:this.x + this.item.walkOffsetX, y:this.y + this.item.walkOffsetY}
 		},

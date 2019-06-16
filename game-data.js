@@ -313,6 +313,7 @@ var interactions =[
 		this.$once('mile-stone:'+ref3, function(){
 			billy.say('hey!');
 			billy.say('That was my fire!',{ref:ref4});
+			fire.name = 'sticks';
 		});
 		this.$once('mile-stone:'+ref4, function(){
 			this.gameStatus = 'LIVE'
