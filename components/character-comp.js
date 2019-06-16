@@ -19,8 +19,8 @@ Vue.component('character-c', {
 		baseHeight: this.char.baseHeight || 100,
 		baseWidth: this.char.baseWidth || 100,
 		saying:'', sayingQueue :[],
-		actionQueue:[{action:'wait',loop:true,direction:this.char.validDirections[0], actFrame:0}],
-		storedDirection : this.char.validDirections[0],
+		actionQueue:[],
+		behaviour: {action:'wait', direction:this.char.validDirections[0], actFrame:0},
 		destinationQueue:[]
 		}
 	},
@@ -32,8 +32,16 @@ Vue.component('character-c', {
 			get: function() {return this.saying !== ''},
 			set: function(v) {if (v===false){this.saying=''; this.sayingQueue=[]}}
 		},
+		currentAction : function () {
+			return (this.actionQueue.length) ? 
+				this.actionQueue[0].action : this.behaviour.action;
+		},
+		currentDirection : function () {
+			return (this.actionQueue.length) ? 
+				this.actionQueue[0].direction : this.behaviour.direction;
+		}, 
 		frame : function() {
-			var currentOrder = this.actionQueue[0] || {standby:true, action:'wait',loop:true,direction:this.storedDirection, actFrame:0}
+			var currentOrder = this.actionQueue[0] || this.behaviour;
 			var directionNeeded = !Array.isArray(this.char.cycles[currentOrder.action]);
 			var v = directionNeeded ? 
 				this.char.cycles[currentOrder.action][currentOrder.direction][currentOrder.actFrame]:
@@ -61,8 +69,7 @@ Vue.component('character-c', {
 			if (!this.char.cycles[action]) {return false;}
 			
 			// default options.direction to current direction
-			var currentDirection = this.actionQueue[0] ? this.actionQueue[0].direction : this.storedDirection;		
-			if (!options.direction) {options.direction = currentDirection};			
+			if (!options.direction) {options.direction = this.currentDirection};			
 			
 			//ensure options.direction is a direction supported by the character model's cycle;
 			var availableDirections = Object.keys(this.char.cycles[action]);
@@ -83,7 +90,7 @@ Vue.component('character-c', {
 			var orders = [];
 			
 			var path = this.$root.findPath(this,destination); 
-			console.log(path);
+			//console.log(path);
 			
 			if (path.length === 0 ) {console.log(`No route found to [${destination.x},${destination.y}]`)};
 			
@@ -162,8 +169,10 @@ Vue.component('character-c', {
 			
 			if (!moveOrder.started) {
 				if (moveOrder.action) {
-					if (moveOrder.action !== this.actionQueue[0].action || moveOrder.direction !== this.actionQueue[0].direction) {
-						this.doAction(moveOrder.action, {loop:true, direction: moveOrder.direction||this.direction},true);
+					if (moveOrder.action !== this.currentAction || moveOrder.direction !== this.currentDirection) {
+						this.behaviour.action = moveOrder.action;
+						this.behaviour.direction = moveOrder.direction;
+						this.behaviour.actFrame = 0;
 					}
 				};
 			};			
@@ -182,15 +191,17 @@ Vue.component('character-c', {
 			movement.y = Math.min ( absD.y, speed*rY );
 			if (d.x < 0 ) {movement.x *= -1}
 			if (d.y < 0 ) {movement.y *= -1}
-			
-			
+					
 			var obstacles = this.$root.obstacles;
 			for (var i=0; i<obstacles.length; i++) {
 				if (obstacles[i].containsPoint( this.x+movement.x, this.y+movement.y) ) {
 					movement = {x:0, y:0};
 					this.$root.$emit('mile-stone','hit-obstacle',this,moveOrder);
 					if(moveOrder.ref) {this.$root.$emit('mile-stone-fail:'+moveOrder.ref)};
-					this.doAction('wait', {loop:true, direction:moveOrder.direction},true);
+					//this.doAction('wait', {loop:true, direction:moveOrder.direction},true);
+					this.behaviour.action = 'wait';
+					this.behaviour.direction = moveOrder.direction;
+					this.behaviour.actFrame = 0;
 					this.destinationQueue.shift();					
 				}
 			}
@@ -203,7 +214,10 @@ Vue.component('character-c', {
 				
 				this.destinationQueue.shift();
 				if (this.destinationQueue.length === 0) {
-					this.doAction('wait', {loop:true, direction:moveOrder.direction},true);
+					//this.doAction('wait', {loop:true, direction:moveOrder.direction},true);
+					this.behaviour.action = 'wait';
+					this.behaviour.direction = moveOrder.direction;
+					this.behaviour.actFrame = 0;
 					this.$root.$emit('mile-stone','reached-destination',this,moveOrder);
 					if(moveOrder.ref) {this.$root.$emit('mile-stone'+':'+moveOrder.ref)};
 				};
@@ -212,7 +226,7 @@ Vue.component('character-c', {
 		},				
 		showNextFrame : function () {
 			
-			var order = this.actionQueue[0] || {action:'wait',loop:true,direction:this.char.validDirections[0], actFrame:0};
+			var order = this.actionQueue[0] || this.behaviour;
 			
 			var directionNeeded = !Array.isArray(this.char.cycles[order.action]);
 			var cycle = directionNeeded ? 
@@ -222,14 +236,13 @@ Vue.component('character-c', {
 			var onLastFrame = !(cycle.length > order.actFrame+1);
 			order.actFrame = onLastFrame ? 0 : order.actFrame + 1;
 			
-			if (onLastFrame && !order.loop) {
+			if (onLastFrame && (!order.loop && order !==  this.behaviour)) {
 				this.actionQueue.shift();
 					
 				if (this.actionQueue.length === 0){
 					this.$root.$emit('mile-stone','actions-finished',this,order);
 					if (order.ref) {this.$root.$emit('mile-stone'+':'+order.ref)};
-					this.storedDirection = order.direction;
-					this.doAction('wait',{loop:true, direction:order.direction} );
+					
 				}
 				
 			}
@@ -253,7 +266,7 @@ Vue.component('character-c', {
 	template: `
 	<article @click="clickHandler(event)" v-on:mouseover="hoverHandler(event)" v-on:mouseout="hoverHandler(event)"
 	v-bind:name="name" 
-	v-bind:action="actionQueue[0].action">
+	v-bind:action="currentAction">
 		<div v-bind:style="styleObject">
 			<sprite-image v-for="sprite in this.spriteSet":key="sprite.id"
 				v-bind:sprite="sprite"
