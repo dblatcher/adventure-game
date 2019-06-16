@@ -89,6 +89,7 @@ input:checked~.verb-menu__label {
 	overflow:hidden;
 	box-sizing:border-box;
 	transition: background-color 0.75s, opacity 1s;
+	display: flex;
 }
 
 
@@ -97,11 +98,10 @@ input:checked~.verb-menu__label {
 	flex-wrap: wrap;
 	justify-content: center;
 	margin: 0 2rem;
-	left: 0px;
-	position:relative;
 }
 
 .inventory-menu__item {
+	position:relative;
 	flex-basis:45px;
 	box-sizing:border-box;
 	padding:3px;
@@ -119,15 +119,10 @@ input:checked~.verb-menu__label {
 	color:gray;
 	opacity: .25;
 }
-.inventory-menu__button--back { 
-	float:left;
-}
-.inventory-menu__button--forward { 
-	float:right;
-}
+
 .inventory-menu__button--enabled { 
 	color: black;
-	opacity: 1s;
+	opacity: 1;
 }
 
 .disabled {

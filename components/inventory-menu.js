@@ -50,17 +50,23 @@ template: `
 
 	<button @click="buttonHandler('back')" v-bind:class="{ 'inventory-menu__button--enabled': enableBack }"
 	class="inventory-menu__button inventory-menu__button--back"> &larr; </button> 
-	<button @click="buttonHandler('forward')" v-bind:class="{ 'inventory-menu__button--enabled': enableForward }" 
-	class="inventory-menu__button inventory-menu__button--forward"> &rarr; </button> 
 	
 	<div class="inventory-menu__holder">
-		<div @click="clickHandler(item)" v-on:mouseover="hoverHandler(event,item)" v-on:mouseout="hoverHandler(event,item)"
-		class="inventory-menu__item" v-for="item, index in this.visibleItems":key="index">
+	
+		<div @click="clickHandler(item)" 
+		v-on:mouseover="hoverHandler(event,item)" 
+		v-on:mouseout="hoverHandler(event,item)"
+		class="inventory-menu__item" 
+		v-for="item, index in this.visibleItems":key="index">
 			<img class="inventory-menu__pic" v-bind:src="item.url" v-bind:name="item.name"/>
 		</div>
-	<div>
+		
+	</div>
 	
-</section>
+	<button @click="buttonHandler('forward')" v-bind:class="{ 'inventory-menu__button--enabled': enableForward }" 
+	class="inventory-menu__button inventory-menu__button--forward"> &rarr; </button> 
+
+	</section>
 `
 
 
