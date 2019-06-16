@@ -6,6 +6,7 @@ var sprites = [
   {id:'w2', url: 'assets/sprites/woman2b.png', row:4, col:3},
   {id:'door', url: 'assets/sprites/door.png', row:1, col:3},
   {id:'bucket', url: 'assets/sprites/bucket.png', row:1, col:1},
+  {id:'fire', url: 'assets/sprites/fire.png', row:2, col:4},
 ]
 
 
@@ -104,8 +105,18 @@ var worldItemModels = {
 			}
 		};
 	},
+	fire: function () {
+		return {
+			spritesUsed : ['fire'],
+			cycles: {
+				burning: [ ['fire',0,0],['fire',1,0],['fire',2,0],['fire',3,0],  ],
+				extinguishing: [ ['fire',0,1],['fire',1,1],['fire',2,1],['fire',3,1],['fire',2,1],['fire',3,1],['fire',2,1],['fire',3,1],  ],
+				out: [ ['fire',2,1],  ],
+			}
+		};
+	},
 };
-function WorldItem (id, name, coords ,width,height,status, model) {
+function WorldItem (id, name, coords ,width,height,initialCycle, model) {
 	this.id = id.toUpperCase() + "_W";
 	this.name = name;
 	this.startX = coords[0] || 0;
@@ -115,7 +126,7 @@ function WorldItem (id, name, coords ,width,height,status, model) {
 		
 	this.baseWidth = width || 20;
 	this.baseHeight = height || 20;
-	this.status = status || 'neutral';
+	this.status = {cycle: initialCycle||'neutral'};
 	this.queue = [];
 	
 	if (model) {
@@ -136,7 +147,8 @@ var rooms = [
 	,worldItems:[
 		new WorldItem ('lake','lake',[200,45],400,50),
 		new WorldItem ('house','path back to house',[375,0],50,150),
-		new WorldItem ('bucket','bucket',[250,25],40,40,'neutral',worldItemModels.bucket)
+		new WorldItem ('bucket','bucket',[250,25],40,40,'neutral',worldItemModels.bucket),
+		new WorldItem ('fire','fire',[145,30,20,0],40,40,'burning',worldItemModels.fire),
 	]
 	,obstacles:[
 		new Zone (200,45,400,50)
@@ -165,10 +177,12 @@ function Verb (description, id, preposition) {
 	this.preposition = preposition || '[NO PREPOSITION]';
 	this.transitive = !!(preposition);
 }
-var verbList = [new Verb('walk to','WALK'), new Verb('pick up','TAKE'),
-		new Verb('look at','LOOK'), new Verb('give','GIVE', 'to'),
-		new Verb('use','USE', 'with'), new Verb('talk to','TALK'),
-		new Verb('open','OPEN'), new Verb('close','SHUT')];
+var verbList = [
+	new Verb('walk to','WALK'), new Verb('pick up','TAKE'),
+	new Verb('look at','LOOK'), new Verb('give','GIVE', 'to'),
+	new Verb('use','USE', 'with'), new Verb('talk to','TALK'),
+	new Verb('open','OPEN'), new Verb('close','SHUT')
+];
 
 
 function InventoryItem (id, name, url, startWith=false) {
@@ -206,7 +220,7 @@ var interactions =[
 	
 
 	new Interaction(['OPEN','DOOR_W'],[
-		function(){return this.getThings('DOOR_W').item.status == 'closed'},
+		function(){return this.getThings('DOOR_W').item.status.cycle == 'closed'},
 	],function(){
 		this.getThings('pc').say("ok");
 		this.getThings('DOOR_W').setStatus('opening','open');
@@ -218,7 +232,7 @@ var interactions =[
 
 	
 	new Interaction(['WALK','DOOR_W'],
-	[function(){return this.getThings('DOOR_W').item.status == 'open'}],
+	[function(){return this.getThings('DOOR_W').item.status.cycle == 'open'}],
 	function(){
 		var ref = Number(new Date);
 		this.getThings('pc').goTo(this.getThings('DOOR_W').walkToPoint,{ref:ref})
@@ -229,7 +243,7 @@ var interactions =[
 	}),
 
 	new Interaction(['SHUT','DOOR_W'],
-	[function(){return this.getThings('DOOR_W').item.status == 'open'}],
+	[function(){return this.getThings('DOOR_W').item.status.cycle == 'open'}],
 	function(){
 		this.getThings('pc').say("ok");
 		this.getThings('DOOR_W').setStatus('closing','closed');
@@ -273,7 +287,43 @@ var interactions =[
 	
 	new Interaction(['USE','SHOE_I'],[],function(){
 		this.getThings('pc').say("It doesn't fit me");
-	})
+	}),
+	
+	new Interaction(['USE','BUCKET_I','FIRE_W'],
+	[function(){return this.getThings('FIRE_W').item.status.cycle == 'burning'}],
+	function() {
+		var ref1 = 'one_'+Number(new Date);
+		var ref2 = 'two_'+Number(new Date);
+		var ref3 = 'three_'+Number(new Date);
+		var ref4 = 'four_'+Number(new Date);
+		this.gameStatus = 'CUT'
+		
+		var fire = this.getThings('FIRE_W');
+		var billy = this.getThings('BILLY_C');
+		
+		this.getThings('pc').say("put out fire?");
+		this.getThings('pc').say("okay",{ref:ref1});
+		
+		this.$once('mile-stone:'+ref1, function(){
+			this.getThings('pc').goToViaPath(fire.walkToPoint,{ref:ref2});
+		});
+		this.$once('mile-stone:'+ref2, function(){
+			fire.setStatus('extinguishing',{cycle:'out', ref:ref3} );
+		});
+		this.$once('mile-stone:'+ref3, function(){
+			billy.say('hey!');
+			billy.say('That was my fire!',{ref:ref4});
+		});
+		this.$once('mile-stone:'+ref4, function(){
+			this.gameStatus = 'LIVE'
+		});
+		
+	}),
+	
+	new Interaction(['USE','BUCKET_I','FIRE_W'],[],
+	function() {
+		this.getThings('pc').say("It's out already.");
+	}),
 ]
 
 

@@ -24,10 +24,11 @@ Vue.component('world-item', {
 	computed :{
 		scaledHeight : function() {return this.scale * this.baseHeight;},
 		scaledWidth : function() {return this.scale * this.baseWidth;},
-		frame : function() {			
-			var v= this.item.cycles[this.item.status][this.cycleFrame];
+		frame : function() {
+			var v= this.item.cycles[this.item.status.cycle][this.cycleFrame];
 			return {sprite: v[0], fx:v[1], fy:v[2]}
 		},
+		status : function() {return this.item.status.cycle},
 		walkToPoint: function() {
 			return {x:this.x + this.item.walkOffsetX, y:this.y + this.item.walkOffsetY}
 		},
@@ -50,39 +51,59 @@ Vue.component('world-item', {
 		},
 
 		setStatus : function () {
-			if (typeof arguments[0]  !== 'string') {return false;}
-			if (!this.item.cycles[arguments[0]]) {return false;}
-			this.item.status = arguments[0]; this.cycleFrame = 0;
+			function procesArgument (a){
+				if (typeof a === 'string') {return {cycle:a}}
+				return a;
+			}
+			
+			var orders = [];
+			for (var i = 0; i < arguments.length; i++) {
+				orders.push(
+					typeof arguments[i] === 'string' ? {cycle:arguments[i]} : arguments[i]
+				);
+			}
+			
+			if ( !this.item.cycles[orders[0].cycle]) {return false};
+			this.item.status = orders[0]; this.cycleFrame = 0;
 
 			this.item.queue = [];
-			for (var i = 1; i < arguments.length; i++) {
-				if (typeof arguments[i]  === 'string' && this.item.cycles[arguments[i]]) {
-					this.item.queue.push(arguments[i]);
+			for (var i = 1; i < orders.length; i++) {
+				if ( this.item.cycles[orders[i].cycle]) {
+					this.item.queue.push(orders[i]);
 				}
 			};
 			return this;
 		},
 		showNextFrame : function () {
-			var cycle = this.item.cycles[this.item.status] ;
+			var cycle = this.item.cycles[this.item.status.cycle] ;
 			var onLastFrame = !(cycle.length > this.cycleFrame+1);
 			this.cycleFrame = onLastFrame ? 0: this.cycleFrame + 1;
 			
-			if (onLastFrame && this.item.queue.length) {
-				this.item.status = this.item.queue.shift();				
-			};
+			if (onLastFrame) {				
+				if (this.item.queue.length) {
+					this.item.status = this.item.queue.shift();
+					if (this.item.status.ref) {
+						this.$root.$emit('mile-stone:'+this.item.status.ref)
+					}
+					if (this.item.queue.length === 0) {
+						this.$root.$emit('mile-stone','reached last animation:'+this.item.status.cycle,this);
+					}
+				};
+			}
+			
 		},
 
 	},
 	mounted : function() {		
 		var that = this;
 		if (this.spriteSet.length > 0 ) {
-			setInterval (function(){that.showNextFrame()},300);
+			setInterval (function(){that.showNextFrame()},250);
 		}
 	},
 	template: `
 	<article @click.stop="clickHandler(event)" v-on:mouseover="hoverHandler(event)" v-on:mouseout="hoverHandler(event)"
 	v-bind:name="name" 
-	v-bind:status="item.status">
+	v-bind:status="status">
 		<div v-bind:style="styleObject">
 			<sprite-image v-for="sprite in this.spriteSet":key="sprite.id"
 				v-bind:sprite="sprite"
