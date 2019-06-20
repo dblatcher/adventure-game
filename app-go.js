@@ -77,6 +77,12 @@ var vm = new Vue({
 	inventory : function() {
 		return this.inventoryItems.filter(function(i){return i.have});
 	},
+	dialogChoices : function () {
+		return [
+			{text:'blah'},
+			{text:'bye'}
+		]
+	},
 	obstacles : function(){
 		return this.rooms[this.roomNumber].obstacles;
 	},
@@ -208,7 +214,8 @@ var vm = new Vue({
 		};
 		
 	},
-	handleClickOnRoom: function (event){			
+	handleClickOnRoom: function (event){
+		if (this.gameStatus !== 'LIVE') {return false};
 		var pc = this.getThings('pc');
 		var room = this.$refs.room;		
 		var clickCoordinPx = {x: (event.offsetX),y: (room.$el.offsetHeight - event.offsetY)};
@@ -222,6 +229,7 @@ var vm = new Vue({
 		this.getThings('pc').goToViaPath ( {x:clickCoord.x, y:clickCoord.y, ref:false});
 	},	
 	handleClickOnThing: function(thing) {
+		if (this.gameStatus !== 'LIVE') {return false};
 		if (!this.subject) {
 			this.subject = thing;
 			if (this.verb.transitive) {

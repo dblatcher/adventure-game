@@ -125,6 +125,26 @@ input:checked~.verb-menu__label {
 	opacity: 1;
 }
 
+
+.dialog-menu {
+	margin: .5rem;
+	border: 5px inset gray;
+	padding:.5rem;
+}
+
+.dialog-menu__choice {
+	color:gray;
+	cursor:pointer;
+}
+
+.dialog-menu__choice:hover {
+	color:red;
+}
+
+.hidden {
+	display:none;
+}
+
 .disabled {
 	opacity: .25;
 }

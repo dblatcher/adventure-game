@@ -11,7 +11,7 @@
 <body>
 
 	<div id='app'>
-
+		<p>{{message}}<span ref="coordinateDisplay"></span></p>
 		<div class="room-wrapper">
 			<game-room ref="room" 
 				v-bind:room="rooms[roomNumber]" 
@@ -29,15 +29,24 @@
 			</game-room>
 		</div>
 
-		<command-line v-bind:command='command' v-bind:disabled='gameStatus === "LIVE" ? false:true'></command-line>
+		<command-line 
+			v-bind:command='command' 
+			v-bind:class="{hidden:gameStatus === 'LIVE' ? false:true}"
+		></command-line>
 		
-		<div class="menu-wrapper" v-bind:class="{disabled:gameStatus === 'LIVE' ? false:true}">
+		<div class="menu-wrapper"
+			v-bind:class="{hidden:gameStatus === 'LIVE' ? false:true}"
+			>
 			<verb-menu v-bind:verb-list='verbList' v-bind:picked='verb.id' ></verb-menu>
 			<inventory-menu v-bind:items="inventory" ></inventory-menu>
 		</div>
 
-		<p>{{message}}</p>
-		<br/><p ref="coordinateDisplay"></p>
+		<dialog-menu
+			v-bind:choices="dialogChoices"
+			v-bind:class="{hidden:gameStatus === 'CONVERSATION' ? false:true}"
+		></dialog-menu>
+
+
 
 	</div>
 
@@ -56,6 +65,7 @@
 	<script src="components/verb-menu.js"></script>
 	<script src="components/command-line.js"></script>
 	<script src="components/inventory-menu.js"></script>
+	<script src="components/dialog-menu.js"></script>
 	
 	<script src="game-data.js"></script>
 	<script src="app-go.js"></script>
