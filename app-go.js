@@ -257,23 +257,28 @@ var vm = new Vue({
 		
 		this.gameStatus = "CUTSCENE";
 		
-		var que = function(that,c,queuedSpeakerId) {
+		var que = function(that,c,queuedActorId) {
 			that.$once(
 				'mile-stone:dialog'+(c-1),
 				function(){
-					that.getThings(queuedSpeakerId).say(choice.script[c].text,{ref:'dialog'+c});
+					if (that.getThings(queuedActorId)[choice.script[c].orderType](choice.script[c].text,{ref:'dialog'+c})=== false)
+					{
+						console.error('invalid command '+ choice.script[c].orderType + ':'+ choice.script[c].text +' in dialog.',choice.dialogBranch.label + ' in ' + choice.dialogBranch.conversation.label);
+						that.$emit('mile-stone:dialog'+c);
+					}
+					
 				}
 			)
 		};
 		
-		var speakerId;
+		var actorId;
 		for (var i=0; i<choice.script.length; i++) {
-			speakerId = choice.script[i].speaker;
-			if (speakerId === 'npc') {speakerId = this.interlocutor};
+			actorId = choice.script[i].actor;
+			if (actorId === 'npc') {actorId = this.interlocutor};
 			if ( i == 0) { 
-				this.getThings(speakerId).say(choice.script[i].text,{ref:'dialog'+i});
+				this.getThings(actorId)[choice.script[i].orderType](choice.script[i].text,{ref:'dialog'+i});
 			} else { // queue next line
-				que(this,i,speakerId);	
+				que(this,i,actorId);	
 			}
 			
 		};
