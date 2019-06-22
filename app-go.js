@@ -225,7 +225,7 @@ var vm = new Vue({
 			y : clickCoordinPx.y * room.room.height / room.$el.clientHeight,
 		};
 	
-		vm.$refs.coordinateDisplay.innerText = JSON.stringify(clickCoord);
+		vm.$refs.coordinateDisplay.innerText = `[${Math.round(clickCoord.x)} , ${Math.round(clickCoord.y)}]`
 		this.getThings('pc').goToViaPath ( {x:clickCoord.x, y:clickCoord.y, ref:false});
 	},	
 	handleClickOnThing: function(thing) {
