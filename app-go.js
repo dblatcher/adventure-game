@@ -46,11 +46,13 @@ var vm = new Vue({
 	interactionMatrix:interactionMatrix,
 	inventoryItems: inventoryItems,
 	message: 'blank message',
-	roomNumber: 0,
+	roomNumber: 1,
 	roomMeasure: {unit:'em',scale:0.06},
 	verb: verbList[0],thingHoveredOn:null, 
 	subject: null, needObject:false, object:null,
-	gameStatus: 'LIVE'
+	gameStatus: 'LIVE',
+	conversation: null,
+	interlocutor: null,
   },
   
   computed : {
@@ -78,10 +80,8 @@ var vm = new Vue({
 		return this.inventoryItems.filter(function(i){return i.have});
 	},
 	dialogChoices : function () {
-		return [
-			{text:'blah'},
-			{text:'bye'}
-		]
+		if (!this.conversation) return [];
+		return this.conversation.getOptions();
 	},
 	obstacles : function(){
 		return this.rooms[this.roomNumber].obstacles;
@@ -230,6 +230,9 @@ var vm = new Vue({
 	},	
 	handleClickOnThing: function(thing) {
 		if (this.gameStatus !== 'LIVE') {return false};
+		
+		
+		if (this.verb.id === 'WALK' && thing.id.endsWith('_I')) {return false};
 		if (!this.subject) {
 			this.subject = thing;
 			if (this.verb.transitive) {
@@ -249,6 +252,47 @@ var vm = new Vue({
 		
 		if (this.command.complete) {this.executeCommand();}		
 	},	
+	handleDialogChoice: function(choice) {
+		console.log(choice);
+		
+		this.gameStatus = "CUTSCENE";
+		
+		var que = function(that,c,queuedSpeakerId) {
+			that.$once(
+				'mile-stone:dialog'+(c-1),
+				function(){
+					that.getThings(queuedSpeakerId).say(choice.script[c].text,{ref:'dialog'+c});
+				}
+			)
+		};
+		
+		var speakerId;
+		for (var i=0; i<choice.script.length; i++) {
+			speakerId = choice.script[i].speaker;
+			if (speakerId === 'npc') {speakerId = this.interlocutor};
+			if ( i == 0) { 
+				this.getThings(speakerId).say(choice.script[i].text,{ref:'dialog'+i});
+			} else { // queue next line
+				que(this,i,speakerId);	
+			}
+			
+		};
+		
+		this.$once('mile-stone:dialog'+(i-1),function(){		
+			if (choice.canOnlySayOnce) {			
+				this.conversation.getOptions().splice( this.conversation.getOptions().indexOf(choice),1 );
+			}
+			if (choice.changesBranch) {
+				this.conversation.currentBranch = choice.changesBranch;
+			} 			
+			if (typeof choice.consequence === 'function' ) {choice.consequence(this,choice)};
+			
+			this.gameStatus = choice.ends ? "LIVE" : "CONVERSATION";
+			
+		})
+		
+		
+	},
 	pickVerb: function(verbID) {
 		this.subject = null;
 		for (var i=0; i<this.verbList.length; i++) {
@@ -335,6 +379,7 @@ var vm = new Vue({
 		this.$on('mile-stone',this.reportEvent);
 		this.$on('clicked-room', this.handleClickOnRoom);
 		this.$on('clicked-thing', this.handleClickOnThing);
+		this.$on('dialog-choice', this.handleDialogChoice);
 		this.$on('room-change-done', this.callRoomChangeCallback);
 	},
   },

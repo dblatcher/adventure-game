@@ -32,7 +32,7 @@ template: `
 	<p @click="clickHandler(choice)" 
 	class="dialog-menu__choice" 
 	v-for="choice, index in this.choices":key="index">
-		{{choice.text}}
+		{{choice.optionText}}
 	</p>
 </section>
 `
