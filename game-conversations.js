@@ -30,6 +30,8 @@ function DialogChoice (optionText,script,config={}) {
 
 function DialogBranch (label, choices) {
 	this.label = label;
+	for (var i=0; i<choices.length; i++){choices[i].dialogBranch=this}
+	
 	this.choices = choices;
 	this.originalChoices = [].concat(choices);
 }
