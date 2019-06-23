@@ -14,16 +14,6 @@ Vue.component('speech-line', {
 				}(),
 				backgroundColor: 'rgba(0,0,0,.5)',
 				transform: 'translateY(-1em)',
-				/* 				
-				transform: function() {
-					// TO DO adjust for variable units
-					var lineWidth = that.text.length * (7.15); // guess at font width in px
-					var shiftLeft = -50;
-					if (that.charCentre < (lineWidth/2)) { 
-						shiftLeft = -50 * (that.charCentre/(lineWidth/2));  
-					}
-					return `translateX(${shiftLeft}%)`;
-				}(), */
 				zIndex:2000,
 				fontFamily:'monospace'
 			}

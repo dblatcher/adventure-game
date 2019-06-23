@@ -129,7 +129,7 @@ var interactions =[
 	function() {
 		this.gameStatus = "CONVERSATION";
 		this.interlocutor = 'LUIGI_C';
-		this.conversation = conversationWithLuigi;
+		this.conversation = this.conversations.withLuigi;
 	}),
 ]
 

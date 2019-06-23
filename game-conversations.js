@@ -70,9 +70,11 @@ Conversation.prototype.getOptions = function () {
 }
 
 
-var conversationWithLuigi = new Conversation ('Talking to Luigi','start');
+var conversations = {};
 
-conversationWithLuigi.addBranch (new DialogBranch(
+conversations.withLuigi = new Conversation ('Talking to Luigi','start');
+
+conversations.withLuigi.addBranch (new DialogBranch(
 	'start', [
 		new DialogChoice ('Who are you?',
 			['npc::Green Mario...','npc::...also called Luigi.'],
@@ -87,10 +89,7 @@ conversationWithLuigi.addBranch (new DialogBranch(
 			['npc::what do you want to know?'],
 			{changesBranch:'plumbing'}),
 		new DialogChoice ('can you dance?',
-			[  
-				'npc::Just watch!',
-				'npc##dance'
-			]),
+			['npc::Just watch!','npc##dance']),
 		new DialogChoice ('Goodbye',
 			['npc::Bye Bye','npc##walk'], 
 			{ends:true})
@@ -98,7 +97,7 @@ conversationWithLuigi.addBranch (new DialogBranch(
 
 ))
 
-conversationWithLuigi.addBranch (new DialogBranch(
+conversations.withLuigi.addBranch (new DialogBranch(
 	'plumbing', [
 		new DialogChoice ('What is a ballcock?',
 			['pc::What is a ball...','npc::ballcock? its the thing that tells the toilet if it\'s ready to flush.'],
