@@ -151,7 +151,7 @@ var rooms = [
 	
 	{id:'LIVING_ROOM_R', name:'Living room', url: "assets/rooms/bg2.jpg", width:400, height:250, 
 	characters : [
-		new Character ('luigi','Luigi',[135,21],'green',characterModels.mario),
+		new Character ('luigi','Luigi',[135,21],'lightgreen',characterModels.mario),
 		new Character ('pc','Jane Smith',[160,20],'white',characterModels.jane)
 	],
 	worldItems : [		

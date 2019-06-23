@@ -290,7 +290,6 @@ Vue.component('character-c', {
 		</div>
 		
 		<speech-line v-bind:style="{
-				position: 'absolute',
 				bottom: ( (y+scaledHeight) * this.measure.scale )+this.measure.unit,
 				left: (x * this.measure.scale)+this.measure.unit}"
 			v-bind:text="saying"

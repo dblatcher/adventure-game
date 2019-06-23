@@ -5,10 +5,17 @@ Vue.component('speech-line', {
 			var that = this;
 			return {
 				color:this.color,
+				position:'absolute',
 				fontWeight:'600',
 				margin: '0',
-				backgroundColor: 'rgba(0,0,0,.25)',
-/* 				transform: function() {
+				borderRadius:'.5em',
+				padding: function() {
+					return that.text === '' ? '0': '.5em'
+				}(),
+				backgroundColor: 'rgba(0,0,0,.5)',
+				transform: 'translateY(-1em)',
+				/* 				
+				transform: function() {
 					// TO DO adjust for variable units
 					var lineWidth = that.text.length * (7.15); // guess at font width in px
 					var shiftLeft = -50;
