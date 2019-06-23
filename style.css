@@ -135,6 +135,9 @@ input:checked~.verb-menu__label {
 .dialog-menu__choice {
 	color:gray;
 	cursor:pointer;
+	margin-block-start: .25em;
+    margin-block-end: .25em;
+	transition: color 1.5s;
 }
 
 .dialog-menu__choice:hover {

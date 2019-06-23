@@ -90,12 +90,12 @@ conversations.withLuigi.addBranch (new DialogBranch(
 			{changesBranch:'plumbing'}),
 		new DialogChoice ('can you dance?',
 			['npc::Just watch!','npc##dance']),
+		new DialogChoice ('Let\'s play rock paper scissors',[],{changesBranch:'rockPaperScissors'}),
 		new DialogChoice ('Goodbye',
 			['npc::Bye Bye','npc##walk'], 
 			{ends:true})
 	]
-
-))
+));
 
 conversations.withLuigi.addBranch (new DialogBranch(
 	'plumbing', [
@@ -106,5 +106,21 @@ conversations.withLuigi.addBranch (new DialogBranch(
 			[], 
 			{changesBranch:'start'})
 	]
+));
 
-))
+conversations.withLuigi.addBranch (new DialogBranch(
+	'rockPaperScissors', [
+		new DialogChoice ('rock',
+			['pc::rock','npc::scissors','pc::I win!'],
+			{firstLineUnsaid:true}),
+		new DialogChoice ('paper',
+			['pc::paper','npc::scissors','pc::you win!'],
+			{firstLineUnsaid:true}),
+		new DialogChoice ('scissors',
+			['pc::scissors','npc::scissors','pc::a draw!','npc::a draw!'],
+			{firstLineUnsaid:true}),
+		new DialogChoice ('no more.',
+			[], 
+			{changesBranch:'start'})
+	]
+));
