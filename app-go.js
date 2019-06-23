@@ -46,7 +46,7 @@ var vm = new Vue({
 	interactionMatrix:interactionMatrix,
 	inventoryItems: inventoryItems,
 	message: 'blank message',
-	roomNumber: 1,
+	roomNumber: 0,
 	roomMeasure: {unit:'em',scale:0.06},
 	verb: verbList[0],thingHoveredOn:null, 
 	subject: null, needObject:false, object:null,

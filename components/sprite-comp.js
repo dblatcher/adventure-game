@@ -2,14 +2,22 @@ Vue.component('sprite-image',{
 
   props: ['width','height','sprite','fx','fy','index','measure'],
   computed :{	
-    styleObject: function(){
-      return {
+	styleObject: function(){
+      
+	  var rH = (this.sprite.relativeHeight || 1);
+	  var rW = (this.sprite.relativeWidth || 1);
+	  var backgroundSizeWidth       = rW * this.sprite.col*this.width* this.measure.scale;
+	  var backgroundSizeHeight      = rH * this.sprite.row*this.height* this.measure.scale;
+	  var backgroundPositionXOffset = -this.fx*this.width * rW * this.measure.scale;
+	  var backgroundPositionYOffset = -this.fy*this.height* rH * this.measure.scale;
+	  
+	  return {
 		display: this.index == this.sprite.id ? 'block' : 'none',
 		backgroundImage: `url(${this.sprite.url})`,
-        height: (this.height * this.measure.scale) + this.measure.unit,
-        width:  (this.width * this.measure.scale) + this.measure.unit,
-        backgroundSize: `${this.sprite.col*this.width* this.measure.scale}${this.measure.unit} ${this.sprite.row*this.height* this.measure.scale}${this.measure.unit}`,
-        backgroundPosition: `${-this.fx*this.width* this.measure.scale}${this.measure.unit} ${-this.fy*this.height* this.measure.scale}${this.measure.unit}`,
+        height: ( rH * this.height * this.measure.scale) + this.measure.unit,
+        width:  ( rW * this.width  * this.measure.scale) + this.measure.unit,
+        backgroundSize: `${backgroundSizeWidth}${this.measure.unit} ${backgroundSizeHeight}${this.measure.unit}`,
+        backgroundPosition: `${backgroundPositionXOffset}${this.measure.unit} ${backgroundPositionYOffset}${this.measure.unit}`,
 		position: 'absolute',
 		margin: '0',
 		bottom:'0',

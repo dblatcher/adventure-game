@@ -1,6 +1,9 @@
 var sprites = [
   {id:0, url: 'assets/sprites/boy.png', row:4, col:4},
   {id:2, url: 'assets/sprites/boy2.png', row:4, col:4},
+  {id:'bf', url: 'assets/sprites/boy-flag.png', row:1, col:3, relativeHeight:2},
+  {id:'bfr', url: 'assets/sprites/boy-flag-raise.png', row:1, col:1, relativeWidth:2},
+  
   {id:'m', url: 'assets/sprites/mario.png', row:2, col:3},
   {id:'w', url: 'assets/sprites/woman.png', row:4, col:9},
   {id:'w2', url: 'assets/sprites/woman2b.png', row:4, col:3},
@@ -29,10 +32,13 @@ var characterModels = {
 	},
 	billy : {
 		baseHeight:50,baseWidth:50,
-		spritesUsed:[2,0],
+		spritesUsed:[2,0,'bf','bfr'],
 		validDirections : ['down','left','right','up'],
 		cycles : {
 			wait: [[0,0,0]],
+			waveFlag: [['bf',0,1],['bf',1,1],['bf',2,1]],
+			raiseFlag: [[0,0,0],['bfr',0,0],['bfr',0,0]],
+			lowerFlag: [['bfr',0,0],['bfr',0,0],[0,0,0]],
 			talk: [[0,0,0],[2,0,0],],
 			walk: {
 				up 	  : [[0,0,1],[0,1,1],[0,2,1],[0,3,1]  ],
