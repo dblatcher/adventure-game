@@ -257,6 +257,7 @@ var vm = new Vue({
 	
 	handleDialogChoice: function (choice) {
 		var theApp = this, script = choice.script;
+		theApp.gameStatus = 'CUTSCENE';
 		
 		executeScriptItem = function (index) {
 			var actorId;
@@ -312,52 +313,7 @@ var vm = new Vue({
 		executeScriptItem(0)
 	},
 	
-	handleDialogChoice_old: function(choice) {
-		console.log(choice);
-		
-		this.gameStatus = "CUTSCENE";
-		
-		var que = function(that,c,queuedActorId) {
-			that.$once(
-				'mile-stone:dialog'+(c-1),
-				function(){
-					if (that.getThings(queuedActorId)[choice.script[c].orderType](choice.script[c].text,{ref:'dialog'+c})=== false)
-					{
-						console.error('invalid command '+ choice.script[c].orderType + ':'+ choice.script[c].text +' in dialog.',choice.dialogBranch.label + ' in ' + choice.dialogBranch.conversation.label);
-						that.$emit('mile-stone:dialog'+c);
-					}
-					
-				}
-			)
-		};
-		
-		var actorId;
-		for (var i=0; i<choice.script.length; i++) {
-			actorId = choice.script[i].actor;
-			if (actorId === 'npc') {actorId = this.interlocutor};
-			if ( i == 0) { 
-				this.getThings(actorId)[choice.script[i].orderType](choice.script[i].text,{ref:'dialog'+i});
-			} else { // queue next line
-				que(this,i,actorId);	
-			}
-			
-		};
-		
-		this.$once('mile-stone:dialog'+(i-1),function(){		
-			if (choice.canOnlySayOnce) {			
-				this.conversation.getOptions().splice( this.conversation.getOptions().indexOf(choice),1 );
-			}
-			if (choice.changesBranch) {
-				this.conversation.currentBranch = choice.changesBranch;
-			} 			
-			if (typeof choice.consequence === 'function' ) {choice.consequence(this,choice)};
-			
-			this.gameStatus = choice.ends ? "LIVE" : "CONVERSATION";
-			
-		})
-		
-		
-	},
+
 	pickVerb: function(verbID) {
 		this.subject = null;
 		for (var i=0; i<this.verbList.length; i++) {
