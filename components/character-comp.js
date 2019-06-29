@@ -138,6 +138,52 @@ Vue.component('character-c', {
 				this.destinationQueue.push(order);
 			}
 		},
+		
+		promiseSay : function (text, options = {} ){
+			if (typeof options.time !== 'number') {options.time = 1000}
+			if (typeof options.action !== 'string') {options.action = 'talk'}
+			var currentOrder = Object.assign({text:text}, options);
+			
+			var that = this;
+			
+			executeOrder = function (order,resolve) {		
+				that.saying = order.text;
+				if (that.destinationQueue.length === 0) { //not moving
+					if (that.char.cycles[order.action]) { //and the character model has a cycle matching the action options 
+						that.behaviour.action = order.action;
+						that.behaviour.actFrame = 0;
+					}
+				}
+				setTimeout(function(){
+					console.log(that.name + ' finished saying \"' + order.text + '\".');
+					if (typeof order.callback == 'function') {order.callback()};
+					
+					if (that.sayingQueue.length > 0) {
+						executeOrder (that.sayingQueue.shift(),resolve);
+					} else {
+						that.saying = '';
+						if (that.destinationQueue.length === 0) { //not moving
+							that.behaviour.action = 'wait';
+							that.behaviour.actFrame = 0;
+						}
+						resolve(that.ident + ':sayingQueue finished');						
+					};	
+				
+				},order.time);
+				
+			};
+			
+			if (that.isTalking === false) {
+				return new Promise ( function (resolve, reject) {
+					executeOrder (currentOrder, resolve);
+				});
+			} else {
+				that.sayingQueue.push(currentOrder);
+			};
+			
+			
+		},
+		
 		say : function (text, options = {}) {
 			if (typeof options.time !== 'number') {options.time = 1000}
 			if (typeof options.action !== 'string') {options.action = 'talk'}
@@ -167,7 +213,7 @@ Vue.component('character-c', {
 				} else {
 					that.saying = '';
 					that.behaviour.action = 'wait';
-						that.behaviour.actFrame = 0;
+					that.behaviour.actFrame = 0;
 					that.$root.$emit('mile-stone','speech-end',that,sayOrder);
 					if (sayOrder.ref) {that.$root.$emit('mile-stone'+':'+sayOrder.ref)};					
 				}	

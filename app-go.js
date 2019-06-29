@@ -18,14 +18,14 @@ function marchRightThenLeft(character) {
 	
 	var goLeftThenTurn = function () {
 		character.goTo({x:X, y:Y},{action:'walk', direction: 'left', ref:ref},true)		
-		this.say('going left!',{time:500});
+		this.promiseSay('going left!',{time:500});
 		if (halt) {return};
 		this.$root.$once('mile-stone:'+ref, function(){goRightThenTurn.apply(character)});
 	};
 	
 	var goRightThenTurn = function () {
 		character.goTo({x:X+200, y:Y}, {action:'walk', direction: 'right', ref:ref},true);
-		this.say('going right!',{time:500});
+		this.promiseSay('going right!',{time:500});
 		if (halt) {return};
 		this.$root.$once('mile-stone:'+ref, function(){goLeftThenTurn.apply(character)});
 	};
@@ -48,7 +48,7 @@ var vm = new Vue({
 	conversations:conversations,
 	message: 'blank message',
 	roomNumber: 0,
-	roomMeasure: {unit:'em',scale:0.06},
+	roomMeasure: {unit:'em',scale:0.05},
 	verb: verbList[0],thingHoveredOn:null, 
 	subject: null, needObject:false, object:null,
 	gameStatus: 'LIVE',
@@ -170,12 +170,12 @@ var vm = new Vue({
 			"WALK" : function() {this.getThings('pc').goTo(this.getThings(command.subject.id).walkToPoint)},
 			"LOOK" : function() {
 				if (command.subject.id.endsWith('W')) {
-					this.getThings('pc').say(`It looks like a normal ${command.subject.name} to me.`);
+					this.getThings('pc').promiseSay(`It looks like a normal ${command.subject.name} to me.`);
 				} else {
-					this.getThings('pc').say(`I don't see anything special about ${command.subject.name}.`);
+					this.getThings('pc').promiseSay(`I don't see anything special about ${command.subject.name}.`);
 				}
 			},
-			"misc" : function() {this.getThings('pc').say('I will not do that.');} 
+			"misc" : function() {this.getThings('pc').promiseSay('I will not do that.');} 
 		};
 				
 		
@@ -392,8 +392,8 @@ var vm = new Vue({
 
   beforeMount: function () { 
 	this.changeRoom(this.roomNumber,function() {
-		this.getThings('pc').say('Hello, World. I am the player character.');
-		this.getThings('pc').say('My name is ' + this.getThings('pc').name +'.');						
+		this.getThings('pc').promiseSay('Hello, World. I am the player character.')
+		.then ( this.getThings('pc').promiseSay('My name is ' + this.getThings('pc').name +'.'));
 	});
   }
 
