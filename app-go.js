@@ -392,10 +392,10 @@ var vm = new Vue({
 
   beforeMount: function () { 
 	this.changeRoom(this.roomNumber,function() {
-		this.getThings('pc').promiseSay('Hello, World. I am the player character.',{time:3000})
+		this.getThings('pc').promiseSay('Hello, World. I am the player character.',{time:2000})
 		.then ( (r) => {
 			console.log(r);
-			return this.getThings('pc').promiseDoAction('walk',{direction:'up'}) 
+			return this.getThings('pc').promiseDoAction('wave',{direction:'up'}) 
 		})
 		.then ( (r) => {
 			console.log(r);

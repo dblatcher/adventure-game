@@ -7,6 +7,7 @@ var sprites = [
   {id:'m', url: 'assets/sprites/mario.png', row:2, col:3},
   {id:'w', url: 'assets/sprites/woman.png', row:4, col:9},
   {id:'w2', url: 'assets/sprites/woman2b.png', row:4, col:3},
+  {id:'w-wave', url: 'assets/sprites/womanWave.png', row:1, col:3},
   {id:'door', url: 'assets/sprites/door.png', row:1, col:3},
   {id:'bucket', url: 'assets/sprites/bucket.png', row:1, col:1},
   {id:'fire', url: 'assets/sprites/fire.png', row:2, col:4},
@@ -50,7 +51,7 @@ var characterModels = {
 	},
 	jane : {			
 		baseHeight:75,baseWidth:50,
-		spritesUsed:['w','w2'],
+		spritesUsed:['w','w2','w-wave'],
 		validDirections : ['down','left','right','up'],
 		cycles : {
 			wait : {
@@ -72,6 +73,9 @@ var characterModels = {
 				down  : [ ['w',0,2], ['w2',0,2], ['w2',1,2],['w2',2,2] ],
 				right : [ ['w',0,3], ['w2',0,3], ['w2',1,3],['w2',2,3] ] ,
 			},
+			wave : 
+				[ ['w-wave',0,0], ['w-wave',1,0],['w-wave',2,0],['w-wave',0,0], ['w-wave',1,0],['w-wave',2,0] ]
+			,
 		}	
 	}
 	
