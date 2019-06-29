@@ -167,7 +167,7 @@ var vm = new Vue({
 		
 		
 		var defaultResponse = {
-			"WALK" : function() {this.getThings('pc').goTo(this.getThings(command.subject.id).walkToPoint)},
+			"WALK" : function() {this.getThings('pc').goToViaPath(this.getThings(command.subject.id).walkToPoint)},
 			"LOOK" : function() {
 				if (command.subject.id.endsWith('W')) {
 					this.getThings('pc').promiseSay(`It looks like a normal ${command.subject.name} to me.`);

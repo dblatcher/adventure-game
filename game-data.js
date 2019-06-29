@@ -156,7 +156,7 @@ var rooms = [
 	],
 	worldItems : [		
 		new WorldItem ('door','wooden door',[265,30,0,-20],50,100,'closed',worldItemModels.door),
-		new WorldItem ('window','nice window',[120,150],100,145)
+		new WorldItem ('window','nice window',[120,150,0,-140],100,145)
 	]
 	,obstacles:[
 		new Zone (200,32,400,200),
