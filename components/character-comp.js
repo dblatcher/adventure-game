@@ -202,7 +202,6 @@ Vue.component('character-c', {
 					}
 				}
 				setTimeout(function(){
-					console.log(that.name + ' finished saying \"' + order.text + '\".');
 					if (typeof order.callback == 'function') {order.callback()};
 					
 					if (that.sayingQueue.length > 0) {
@@ -213,7 +212,7 @@ Vue.component('character-c', {
 							that.behaviour.action = 'wait';
 							that.behaviour.actFrame = 0;
 						}
-						resolve(that.ident + ':sayingQueue finished');						
+						resolve(that.name+' finished saying \"'+order.text + '\".');						
 					};	
 				
 				},order.time);

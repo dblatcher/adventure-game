@@ -5,9 +5,20 @@ function DialogChoice (optionText,script,config={}) {
 	if (!config.firstLineUnsaid) {
 		script.unshift(optionText);
 	}
-	this.script = [];
+	this.script = []; 
+	var groupOfLines; 
 	for (var i=0; i< script.length; i++) {
-		this.script.push(parseScriptLine(script[i]))
+		
+		if (Array.isArray(script[i])) {
+			groupOfLines = [];
+			for (var j=0; j< script[i].length; j++) {
+				groupOfLines.push ( parseScriptLine(script[i][j]) );
+			};
+			this.script.push(groupOfLines);
+		} else {
+			this.script.push(parseScriptLine(script[i]))	
+		}
+		
 	}
 	
 	this.consequence = config.consequence || null;
@@ -19,14 +30,14 @@ function DialogChoice (optionText,script,config={}) {
 	function parseScriptLine(line) {
 		if (typeof line === 'object') {return line};
 		
-		var parsedLine = {orderType:'say', options:{}};
+		var parsedLine = {orderType:'promiseSay', options:{}};
 		
 		var separatorIndex=false;
 		if (line.indexOf('::') != -1) {
-			parsedLine.orderType = 'say';
+			parsedLine.orderType = 'promiseSay';
 			separatorIndex = line.indexOf('::');
 		} else if (line.indexOf('##') != -1) {
-			parsedLine.orderType = 'doAction';
+			parsedLine.orderType = 'promiseDoAction';
 			separatorIndex = line.indexOf('##');
 		};
 		
@@ -81,8 +92,8 @@ conversations.withLuigi.addBranch (new DialogBranch(
 			{canOnlySayOnce:true}),
 		new DialogChoice ('Do you have a hammer?',
 			['npc::Sure.','npc::Take it'],
-			{canOnlySayOnce:true, consequence:function(theApp,choice){
-				console.log(this);
+			{canOnlySayOnce:true,
+			consequence:function(theApp,choice){
 				theApp.inventoryItems.filter(function(a){return a.id=='HAMMER_I'})[0].have = true;
 			}}),
 		new DialogChoice ('Do you know anything about plumbing?',
@@ -111,13 +122,13 @@ conversations.withLuigi.addBranch (new DialogBranch(
 conversations.withLuigi.addBranch (new DialogBranch(
 	'rockPaperScissors', [
 		new DialogChoice ('rock',
-			['pc::rock','npc::scissors','pc::I win!'],
+			[ ['pc::rock','npc::scissors'] ,'pc::I win!'],
 			{firstLineUnsaid:true}),
 		new DialogChoice ('paper',
-			['pc::paper','npc::scissors','pc::you win!'],
+			[ ['pc::paper','npc::scissors'],'pc::you win!'],
 			{firstLineUnsaid:true}),
 		new DialogChoice ('scissors',
-			['pc::scissors','npc::scissors','pc::a draw!','npc::a draw!'],
+			[['pc::scissors','npc::scissors'],['pc::a draw!','npc::a draw!']],
 			{firstLineUnsaid:true}),
 		new DialogChoice ('no more.',
 			[], 

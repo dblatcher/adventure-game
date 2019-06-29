@@ -253,7 +253,66 @@ var vm = new Vue({
 		
 		if (this.command.complete) {this.executeCommand();}		
 	},	
-	handleDialogChoice: function(choice) {
+	
+	
+	handleDialogChoice: function (choice) {
+		var theApp = this, script = choice.script;
+		
+		executeScriptItem = function (index) {
+			var actorId;
+			
+			function findActorId(item){
+				id = item.actor;
+				if (id === 'npc') {id = theApp.interlocutor};
+				return id;
+			}
+		
+			function handleEndOfScript() {
+				if (choice.canOnlySayOnce) {			
+					theApp.conversation.getOptions().splice( theApp.conversation.getOptions().indexOf(choice),1 );
+				}
+				if (choice.changesBranch) {
+					theApp.conversation.currentBranch = choice.changesBranch;
+				} 			
+				if (typeof choice.consequence === 'function' ) {choice.consequence(theApp,choice)};
+				
+				theApp.gameStatus = choice.ends ? "LIVE" : "CONVERSATION";
+			};
+
+			function nextItemOrEnd () {
+				if (index === script.length-1) {
+					handleEndOfScript();
+				} else {
+					executeScriptItem(index+1);
+				}
+			};
+			
+			if (Array.isArray(script[index])) {				
+				var promiseSet = [];
+				for (var j=0; j< script[index].length; j++){
+					actorId = findActorId(script[index][j]);
+					promiseSet.push(
+						theApp.getThings(actorId)[script[index][j].orderType](script[index][j].text)
+					);
+				};
+				Promise.all(promiseSet)
+				.then( nextItemOrEnd  )
+				
+			} else {
+				actorId = findActorId(script[index]);
+				theApp.getThings(actorId)[script[index].orderType](script[index].text)
+				.then( nextItemOrEnd );	
+			};	
+			
+			
+			
+			
+		};
+		
+		executeScriptItem(0)
+	},
+	
+	handleDialogChoice_old: function(choice) {
 		console.log(choice);
 		
 		this.gameStatus = "CUTSCENE";
@@ -394,11 +453,9 @@ var vm = new Vue({
 	this.changeRoom(this.roomNumber,function() {
 		this.getThings('pc').promiseSay('Hello, World. I am the player character.',{time:2000})
 		.then ( (r) => {
-			console.log(r);
 			return this.getThings('pc').promiseDoAction('wave',{direction:'up'}) 
 		})
 		.then ( (r) => {
-			console.log(r);
 			return this.getThings('pc').promiseSay('My name is ' + this.getThings('pc').name +'.')
 		});
 	});
