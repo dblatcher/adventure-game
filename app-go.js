@@ -392,8 +392,15 @@ var vm = new Vue({
 
   beforeMount: function () { 
 	this.changeRoom(this.roomNumber,function() {
-		this.getThings('pc').promiseSay('Hello, World. I am the player character.')
-		.then ( this.getThings('pc').promiseSay('My name is ' + this.getThings('pc').name +'.'));
+		this.getThings('pc').promiseSay('Hello, World. I am the player character.',{time:3000})
+		.then ( (r) => {
+			console.log(r);
+			return this.getThings('pc').promiseDoAction('walk',{direction:'up'}) 
+		})
+		.then ( (r) => {
+			console.log(r);
+			return this.getThings('pc').promiseSay('My name is ' + this.getThings('pc').name +'.')
+		});
 	});
   }
 
