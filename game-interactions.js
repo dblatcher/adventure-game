@@ -34,7 +34,7 @@ var interactions =[
 	[function(){return this.getThings('DOOR_W').item.status.cycle == 'open'}],
 	function(){
 		var ref = Number(new Date);
-		this.getThings('pc').goTo(this.getThings('DOOR_W').walkToPoint,{ref:ref})
+		this.getThings('pc').goToViaPath(this.getThings('DOOR_W').walkToPoint,{ref:ref})
 		
 		this.$once('mile-stone:'+ref, function(){
 			this.changeRoom(0);			
@@ -67,7 +67,7 @@ var interactions =[
 				billy.promiseSay('I am not happy.')
 			)
 			.then( (r) =>{
-				billy.goTo({x:100,y:10},{ref:ref1});
+				billy.goToViaPath({x:100,y:10},{ref:ref1});
 			} )
 		
 			this.$once('mile-stone:'+ref1,function(){
@@ -78,7 +78,7 @@ var interactions =[
 	
 	new Interaction (['WALK','HOUSE_W'],[],function(){
 		var ref = Number(new Date);
-		this.getThings('pc').goTo(this.getThings('HOUSE_W').walkToPoint,{ref:ref})
+		this.getThings('pc').goToViaPath(this.getThings('HOUSE_W').walkToPoint,{ref:ref})
 		this.$once('mile-stone:'+ref, function(){
 			this.changeRoom(1);			
 		})

@@ -12,12 +12,12 @@ function marchRightThenLeft(character) {
 		stop: function() {
 			halt = true;
 			character.$root.$off(ref);
-			character.goTo({x:character.x, y:character.y},{action:'walk'},true)		
+			character.goToViaPath({x:character.x, y:character.y},{action:'walk'},true)		
 		}
 	}
 	
 	var goLeftThenTurn = function () {
-		character.goTo({x:X, y:Y},{action:'walk', direction: 'left', ref:ref},true)		
+		character.goToViaPath({x:X, y:Y},{action:'walk', direction: 'left', ref:ref},true)		
 		this.promiseSay('going left!',{time:500});
 		if (halt) {return};
 		this.$root.$once('mile-stone:'+ref, function(){goRightThenTurn.apply(character)});
