@@ -34,11 +34,12 @@ var interactions =[
 	[function(){return this.getThings('DOOR_W').item.status.cycle == 'open'}],
 	function(){
 		var ref = Number(new Date);
-		this.getThings('pc').goTo(this.getThings('DOOR_W').walkToPoint,{ref:ref})
 		
-		this.$once('mile-stone:'+ref, function(){
-			this.changeRoom(0);			
-		})
+		this.getThings('pc').promiseGoTo(this.getThings('DOOR_W').walkToPoint)
+		.then( (feedback) => {
+			if (feedback.reached) {	this.changeRoom(0);	}
+		} );
+		
 	}),
 
 	new Interaction(['SHUT','DOOR_W'],
@@ -63,16 +64,10 @@ var interactions =[
 		
 		if (billy) {	
 			billy.promiseSay('Hey, that\'s my bucket!')
-			.then ( 
-				billy.promiseSay('I am not happy.')
-			)
-			.then( (r) =>{
-				billy.goTo({x:100,y:10},{ref:ref1});
-			} )
+			.then((r) => { return billy.promiseSay('I am not happy.'); })
+			.then((r) => { return billy.promiseGoTo({x:100,y:10}); })
+			.then((r) => { this.gameStatus = 'LIVE'; });
 		
-			this.$once('mile-stone:'+ref1,function(){
-				this.gameStatus = 'LIVE';
-			})		
 		} else {this.gameStatus = 'LIVE';}
 	}),
 	
@@ -96,7 +91,6 @@ var interactions =[
 	new Interaction(['USE','BUCKET_I','FIRE_W'],
 	[function(){return this.getThings('FIRE_W').item.status.cycle == 'burning'}],
 	function() {
-		var ref2 = 'two_'+Number(new Date);
 		var ref3 = 'three_'+Number(new Date);
 		this.gameStatus = 'CUT'
 		
@@ -106,22 +100,18 @@ var interactions =[
 		var theApp = this;
 		
 		pc.promiseSay ("put out fire?")
-		.then (pc.promiseSay("okay"))
-		.then ( function() { 
-			pc.goTo(fire.walkToPoint,{ref:ref2}) 
-		});
-				
-		this.$once('mile-stone:'+ref2, function(){
+		.then ( (r) => {return pc.promiseSay("okay")})
+		.then ( (r) => {return pc.promiseGoTo(fire.walkToPoint)})
+		.then ( (r) => { 
 			fire.setStatus('extinguishing',{cycle:'out', ref:ref3} );
 		});
+				
 		this.$once('mile-stone:'+ref3, function(){
 			billy.promiseSay('hey!')
-			.then( billy.promiseSay ('That was my fire!'))
-			.then (function() {
-				
+			.then ( (r) => {return billy.promiseSay("That was my fire!")} )			
+			.then ( (r) => {		
 				fire.name = 'sticks';
-				theApp.gameStatus = 'LIVE'
-				
+				theApp.gameStatus = 'LIVE'		
 			});
 			
 		});

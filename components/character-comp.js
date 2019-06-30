@@ -95,7 +95,6 @@ Vue.component('character-c', {
 					// order.actFrame is updated by showNextFrame
 					count++; 
 					if (count > 0 && order.actFrame == 0) {
-						console.log('cycle end')
 						clearInterval(timer);
 						resolve(that.ident + ' finished action:' + order.action);
 					}
@@ -176,6 +175,13 @@ Vue.component('character-c', {
 			if (path.length === 0 ) {
 				return Promise.resolve( {reached: false, reason:'no route',  message:`No route found to [${destination.x},${destination.y}]`})
 			};
+			
+			// findPath may not point to the extact point (adjusts to navigate obstacles).
+			// addjust destination so this isn't confused with a destination change triggered by player
+			destination.x = path[path.length-1].x;
+			destination.y = path[path.length-1].y;
+			
+			
 			
 			return new Promise (function (resolve, reject) {
 
@@ -343,6 +349,7 @@ Vue.component('character-c', {
 			for (var i=0; i<obstacles.length; i++) {
 				if (obstacles[i].containsPoint( this.x+movement.x, this.y+movement.y) ) {
 					movement = {x:0, y:0};
+					console.log('hit-obstacle', moveOrder);
 					this.$root.$emit('mile-stone','hit-obstacle',this,moveOrder);
 					if(moveOrder.ref) {this.$root.$emit('mile-stone-fail:'+moveOrder.ref)};
 					//this.doAction('wait', {loop:true, direction:moveOrder.direction},true);
@@ -352,7 +359,6 @@ Vue.component('character-c', {
 					this.destinationQueue.shift();					
 				}
 			}
-			
 			this.x += movement.x;
 			this.y += movement.y;
 			
