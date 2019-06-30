@@ -131,13 +131,15 @@ Vue.component('character-c', {
 				this.actionQueue.push(order);
 			}
 		},
+
+
 		goTo : function (destination, options = {}, clearQueue = true) {
 			if (typeof options.action === 'undefined') {options.action = 'walk'};
 			
 			var orders = [];
 			
 			var path = this.$root.findPath(this,destination); 
-			//console.log(path);
+			console.log(path);
 			
 			if (path.length === 0 ) {console.log(`No route found to [${destination.x},${destination.y}]`)};
 			
@@ -163,6 +165,70 @@ Vue.component('character-c', {
 			}
 			
 			this.destinationQueue.push(...orders);
+		},
+
+		promiseGoTo : function (destination, options = {}) {
+			
+			if (typeof options.action === 'undefined') {options.action = 'walk'};
+			var path = this.$root.findPath(this,destination); 
+			var that = this;
+			
+			if (path.length === 0 ) {
+				return Promise.resolve( {reached: false, reason:'no route',  message:`No route found to [${destination.x},${destination.y}]`})
+			};
+			
+			return new Promise (function (resolve, reject) {
+
+				
+				// create list of orders
+				var orders = [], currentPoint, lastPoint, direction, horizontal,vertical; 
+				for (var i=0; i<path.length; i++) {
+					currentPoint = path[i]
+					lastPoint = i > 0 ? path[i-1] : that; 
+					horizontal = currentPoint.x > lastPoint.x ? 'right' : 'left';
+					vertical   = currentPoint.y > lastPoint.y ? 'up' : 'down';	
+					direction = Math.abs(currentPoint.x - lastPoint.x) > Math.abs(currentPoint.y - lastPoint.y) ? 
+						horizontal :
+						that.char.validDirections.includes(vertical) ? vertical : horizontal;
+						
+					orders.push({
+						x: path[i].x,
+						y: path[i].y,
+						direction:direction,
+						action:options.action
+					});
+				}
+				
+				that.destinationQueue = orders;
+				
+				
+				function takeStepAndCheckIfFinished (resolve ) {
+					
+					var queEnd = that.destinationQueue[that.destinationQueue.length-1];
+					
+					if (queEnd.x !== destination.x || queEnd.y !== destination.y) {
+						//queEnd has changed -  no longer going to destination
+						clearInterval(timer);
+						resolve ( {reached:false, reason:'destination change',  message:`Not going to [${destination.x},${destination.y}] any more`} )
+					}
+					
+					that.move(); // take step, shift destinationQueue if reached its end point
+					
+					if (that.destinationQueue.length === 0) { //finished orders
+						clearInterval(timer);
+						if (destination.x === that.x && destination.y === that.y) {
+							resolve({reached:true, message:`Reached [${destination.x},${destination.y}]`});
+						} else {
+							resolve({reached:false, message:`Did not reach [${destination.x},${destination.y}]`});
+							
+						}
+					} 
+					
+				};
+				
+				var timer = setInterval ( function(){takeStepAndCheckIfFinished (resolve) }, 50);
+			});
+			
 		},
 		
 		promiseSay : function (text, options = {} ){
@@ -297,8 +363,8 @@ Vue.component('character-c', {
 				if (this.destinationQueue.length === 0) {
 					//this.doAction('wait', {loop:true, direction:moveOrder.direction},true);
 					this.behaviour.action = 'wait';
-					this.behaviour.direction = moveOrder.direction;
 					this.behaviour.actFrame = 0;
+					this.behaviour.direction = moveOrder.direction;
 					this.$root.$emit('mile-stone','reached-destination',this,moveOrder);
 					if(moveOrder.ref) {this.$root.$emit('mile-stone'+':'+moveOrder.ref)};
 				};
@@ -342,7 +408,7 @@ Vue.component('character-c', {
 	mounted : function() {		
 		var that = this;
 		setInterval (function(){that.showNextFrame()},100);
-		setInterval (function(){that.move()},50);
+//		setInterval (function(){that.move()},50);
 	},
 	template: `
 	<article @click="clickHandler(event)" v-on:mouseover="hoverHandler(event)" v-on:mouseout="hoverHandler(event)"

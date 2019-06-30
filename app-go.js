@@ -167,7 +167,7 @@ var vm = new Vue({
 		
 		
 		var defaultResponse = {
-			"WALK" : function() {this.getThings('pc').goTo(this.getThings(command.subject.id).walkToPoint)},
+			"WALK" : function() {this.getThings('pc').promiseGoTo(this.getThings(command.subject.id).walkToPoint)},
 			"LOOK" : function() {
 				if (command.subject.id.endsWith('W')) {
 					this.getThings('pc').promiseSay(`It looks like a normal ${command.subject.name} to me.`);
@@ -227,7 +227,7 @@ var vm = new Vue({
 		};
 	
 		vm.$refs.coordinateDisplay.innerText = `[${Math.round(clickCoord.x)} , ${Math.round(clickCoord.y)}]`
-		this.getThings('pc').goTo ( {x:clickCoord.x, y:clickCoord.y, ref:false});
+		this.getThings('pc').promiseGoTo ( {x:clickCoord.x, y:clickCoord.y, ref:false});
 	},	
 	handleClickOnThing: function(thing) {
 		if (this.gameStatus !== 'LIVE') {return false};

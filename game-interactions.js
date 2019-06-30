@@ -78,10 +78,15 @@ var interactions =[
 	
 	new Interaction (['WALK','HOUSE_W'],[],function(){
 		var ref = Number(new Date);
-		this.getThings('pc').goTo(this.getThings('HOUSE_W').walkToPoint,{ref:ref})
-		this.$once('mile-stone:'+ref, function(){
-			this.changeRoom(1);			
-		})
+		this.getThings('pc').promiseGoTo(this.getThings('HOUSE_W').walkToPoint)
+		.then( (feedback)=> {
+			console.log(feedback.message);
+			if (feedback.reached) {
+				this.changeRoom(1);			
+				
+			};
+		});
+		
 	}),
 	
 	new Interaction(['USE','SHOE_I'],[],function(){
