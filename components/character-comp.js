@@ -131,7 +131,7 @@ Vue.component('character-c', {
 				this.actionQueue.push(order);
 			}
 		},
-		goToViaPath : function (destination, options = {}, clearQueue = true) {
+		goTo : function (destination, options = {}, clearQueue = true) {
 			if (typeof options.action === 'undefined') {options.action = 'walk'};
 			
 			var orders = [];
@@ -163,27 +163,6 @@ Vue.component('character-c', {
 			}
 			
 			this.destinationQueue.push(...orders);
-		},
-		goTo: function (destination, options = {}, clearQueue = true) {
-			//to do:
-			//handle cases of unreachable destinations
-			
-			if (typeof options.action === 'undefined') {options.action = 'walk'}
-			
-			var order = Object.assign({x:destination.x, y:destination.y} ,options);
-			
-			var horizontal = order.x > this.x ? 'right' : 'left';
-			var vertical   = order.y > this.y ? 'up' : 'down';	
-			order.direction = Math.abs(order.x - this.x) > Math.abs(order.y - this.y) ? 
-				horizontal:
-				this.char.validDirections.includes(vertical) ?
-					vertical : horizontal;
-				
-			if (clearQueue){
-				this.destinationQueue.splice(0,this.destinationQueue.length,order);
-			} else {
-				this.destinationQueue.push(order);
-			}
 		},
 		
 		promiseSay : function (text, options = {} ){

@@ -12,12 +12,12 @@ function marchRightThenLeft(character) {
 		stop: function() {
 			halt = true;
 			character.$root.$off(ref);
-			character.goToViaPath({x:character.x, y:character.y},{action:'walk'},true)		
+			character.goTo({x:character.x, y:character.y},{action:'walk'},true)		
 		}
 	}
 	
 	var goLeftThenTurn = function () {
-		character.goToViaPath({x:X, y:Y},{action:'walk', direction: 'left', ref:ref},true)		
+		character.goTo({x:X, y:Y},{action:'walk', direction: 'left', ref:ref},true)		
 		this.promiseSay('going left!',{time:500});
 		if (halt) {return};
 		this.$root.$once('mile-stone:'+ref, function(){goRightThenTurn.apply(character)});
@@ -167,7 +167,7 @@ var vm = new Vue({
 		
 		
 		var defaultResponse = {
-			"WALK" : function() {this.getThings('pc').goToViaPath(this.getThings(command.subject.id).walkToPoint)},
+			"WALK" : function() {this.getThings('pc').goTo(this.getThings(command.subject.id).walkToPoint)},
 			"LOOK" : function() {
 				if (command.subject.id.endsWith('W')) {
 					this.getThings('pc').promiseSay(`It looks like a normal ${command.subject.name} to me.`);
@@ -227,7 +227,7 @@ var vm = new Vue({
 		};
 	
 		vm.$refs.coordinateDisplay.innerText = `[${Math.round(clickCoord.x)} , ${Math.round(clickCoord.y)}]`
-		this.getThings('pc').goToViaPath ( {x:clickCoord.x, y:clickCoord.y, ref:false});
+		this.getThings('pc').goTo ( {x:clickCoord.x, y:clickCoord.y, ref:false});
 	},	
 	handleClickOnThing: function(thing) {
 		if (this.gameStatus !== 'LIVE') {return false};
