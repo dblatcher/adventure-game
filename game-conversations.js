@@ -30,14 +30,14 @@ function DialogChoice (optionText,script,config={}) {
 	function parseScriptLine(line) {
 		if (typeof line === 'object') {return line};
 		
-		var parsedLine = {orderType:'promiseSay', options:{}};
+		var parsedLine = {orderType:'say', options:{}};
 		
 		var separatorIndex=false;
 		if (line.indexOf('::') != -1) {
-			parsedLine.orderType = 'promiseSay';
+			parsedLine.orderType = 'say';
 			separatorIndex = line.indexOf('::');
 		} else if (line.indexOf('##') != -1) {
-			parsedLine.orderType = 'promiseDoAction';
+			parsedLine.orderType = 'doAction';
 			separatorIndex = line.indexOf('##');
 		};
 		

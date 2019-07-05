@@ -62,9 +62,8 @@ Vue.component('character-c', {
 		}}
 	},
 	
-	methods : {
-		
-		promiseDoAction (action, options = {}) {
+	methods : {	
+		doAction : function (action, options = {}) {
 			//validate inputs
 			if (typeof action  !== 'string') {
 				console.warn ('Action order skipped: non-string value for ' + this.name+'.')
@@ -92,8 +91,7 @@ Vue.component('character-c', {
 			
 			var currentOrder = Object.assign({action:action, actFrame:0},options);
 			var that = this;
-
-			
+	
 			function execute(order, resolve) {
 				that.actionQueue = [order];	
 				var count = 0;
@@ -110,72 +108,11 @@ Vue.component('character-c', {
 				},100);
 			}
 			
-
 			return new Promise ( function (resolve, reject) {
 				execute (currentOrder, resolve);
 			});
-			
-			
-		},
-		
-		doAction : function (action, options = {}, clearQueue = true) {
-			//validate inputs
-			if (typeof action  !== 'string') {return false;}
-			if (!this.char.cycles[action]) {return false;}
-			
-			// default options.direction to current direction
-			if (!options.direction) {options.direction = this.currentDirection};			
-			
-			//ensure options.direction is a direction supported by the character model's cycle;
-			var availableDirections = Object.keys(this.char.cycles[action]);
-			if (!availableDirections.includes(options.direction)) {
-				options.direction = availableDirections[0];
-			}
-			
-			var order = Object.assign({action:action, actFrame:0},options);			
-			if (clearQueue){
-				this.actionQueue.splice(0,this.actionQueue.length,order);
-			}	else {
-				this.actionQueue.push(order);
-			}
-		},
-
-
-		goTo : function (destination, options = {}, clearQueue = true) {
-			if (typeof options.action === 'undefined') {options.action = 'walk'};
-			
-			var orders = [];
-			
-			var path = this.$root.findPath(this,destination); 
-			console.log(path);
-			
-			if (path.length === 0 ) {console.log(`No route found to [${destination.x},${destination.y}]`)};
-			
-			if (path.length) {
-				var currentPoint, lastPoint, direction, horizontal,vertical; 
-				for (var i=0; i<path.length; i++) {
-					currentPoint = path[i]
-					lastPoint = i > 0 ? path[i-1] : this; 
-					horizontal = currentPoint.x > lastPoint.x ? 'right' : 'left';
-					vertical   = currentPoint.y > lastPoint.y ? 'up' : 'down';	
-					direction = Math.abs(currentPoint.x - lastPoint.x) > Math.abs(currentPoint.y - lastPoint.y) ? 
-						horizontal :
-						this.char.validDirections.includes(vertical) ? vertical : horizontal;
-						
-					orders.push({
-						x: path[i].x,
-						y: path[i].y,
-						direction:direction,
-						action:options.action
-					});
-				}
-				orders[orders.length-1].ref = options.ref;
-			}
-			
-			this.destinationQueue.push(...orders);
-		},
-
-		promiseGoTo : function (destination, options = {}) {
+		},	
+		goTo : function (destination, options = {}) {
 			
 			if (typeof options.action === 'undefined') {options.action = 'walk'};
 			var path = this.$root.findPath(this,destination); 
@@ -243,9 +180,8 @@ Vue.component('character-c', {
 				var timer = setInterval ( function(){takeStepAndCheckIfFinished (resolve) }, 50);
 			});
 			
-		},
-		
-		promiseSay : function (text, options = {} ){
+		},		
+		say : function (text, options = {} ){
 			if (typeof options.time !== 'number') {options.time = 1000}
 			if (typeof options.action !== 'string') {options.action = 'talk'}
 			var currentOrder = Object.assign({text:text}, options);
@@ -289,44 +225,7 @@ Vue.component('character-c', {
 				that.sayingQueue.push(currentOrder);
 			};
 			
-			
-		},
-		
-		say : function (text, options = {}) {
-			if (typeof options.time !== 'number') {options.time = 1000}
-			if (typeof options.action !== 'string') {options.action = 'talk'}
-			var that = this;
-			
-			var order = Object.assign({text:text}, options);
-			
-			
-			if (that.isTalking === false) {
-				that.saying = text;
-				setTimeout(function(){endOfLine(order)},order.time);
-				if (that.destinationQueue.length === 0) { //not moving
-					if (that.char.cycles[order.action]) { //and the character model has a cycle matching the action options 
-						that.behaviour.action = order.action;
-						that.behaviour.actFrame = 0;
-					}
-				}
-			} else {
-				that.sayingQueue.push(order);
-			};
-			
-			function endOfLine (sayOrder) {
-				if (that.sayingQueue.length) {
-					var nextOrder = that.sayingQueue.shift();
-					that.saying = nextOrder.text;
-					setTimeout(function(){endOfLine(nextOrder)},nextOrder.time);
-				} else {
-					that.saying = '';
-					that.behaviour.action = 'wait';
-					that.behaviour.actFrame = 0;
-					that.$root.$emit('mile-stone','speech-end',that,sayOrder);
-					if (sayOrder.ref) {that.$root.$emit('mile-stone'+':'+sayOrder.ref)};					
-				}	
-			};
-		},
+		},		
 		move : function () {
 			if (this.destinationQueue.length === 0) {return false};
 			var moveOrder = this.destinationQueue[0];
@@ -425,7 +324,6 @@ Vue.component('character-c', {
 	mounted : function() {		
 		var that = this;
 		setInterval (function(){that.showNextFrame()},100);
-//		setInterval (function(){that.move()},50);
 	},
 	template: `
 	<article @click="clickHandler(event)" v-on:mouseover="hoverHandler(event)" v-on:mouseout="hoverHandler(event)"

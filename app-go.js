@@ -18,14 +18,14 @@ function marchRightThenLeft(character) {
 	
 	var goLeftThenTurn = function () {
 		character.goTo({x:X, y:Y},{action:'walk', direction: 'left', ref:ref},true)		
-		this.promiseSay('going left!',{time:500});
+		this.say('going left!',{time:500});
 		if (halt) {return};
 		this.$root.$once('mile-stone:'+ref, function(){goRightThenTurn.apply(character)});
 	};
 	
 	var goRightThenTurn = function () {
 		character.goTo({x:X+200, y:Y}, {action:'walk', direction: 'right', ref:ref},true);
-		this.promiseSay('going right!',{time:500});
+		this.say('going right!',{time:500});
 		if (halt) {return};
 		this.$root.$once('mile-stone:'+ref, function(){goLeftThenTurn.apply(character)});
 	};
@@ -167,15 +167,15 @@ var vm = new Vue({
 		
 		
 		var defaultResponse = {
-			"WALK" : function() {this.getThings('pc').promiseGoTo(this.getThings(command.subject.id).walkToPoint)},
+			"WALK" : function() {this.getThings('pc').goTo(this.getThings(command.subject.id).walkToPoint)},
 			"LOOK" : function() {
 				if (command.subject.id.endsWith('W')) {
-					this.getThings('pc').promiseSay(`It looks like a normal ${command.subject.name} to me.`);
+					this.getThings('pc').say(`It looks like a normal ${command.subject.name} to me.`);
 				} else {
-					this.getThings('pc').promiseSay(`I don't see anything special about ${command.subject.name}.`);
+					this.getThings('pc').say(`I don't see anything special about ${command.subject.name}.`);
 				}
 			},
-			"misc" : function() {this.getThings('pc').promiseSay('I will not do that.');} 
+			"misc" : function() {this.getThings('pc').say('I will not do that.');} 
 		};
 				
 		
@@ -227,7 +227,7 @@ var vm = new Vue({
 		};
 	
 		vm.$refs.coordinateDisplay.innerText = `[${Math.round(clickCoord.x)} , ${Math.round(clickCoord.y)}]`
-		this.getThings('pc').promiseGoTo ( {x:clickCoord.x, y:clickCoord.y, ref:false});
+		this.getThings('pc').goTo ( {x:clickCoord.x, y:clickCoord.y, ref:false});
 	},	
 	handleClickOnThing: function(thing) {
 		if (this.gameStatus !== 'LIVE') {return false};
@@ -407,12 +407,12 @@ var vm = new Vue({
 
   beforeMount: function () { 
 	this.changeRoom(this.roomNumber,function() {
-		this.getThings('pc').promiseSay('Hello, World. I am the player character.',{time:2000})
+		this.getThings('pc').say('Hello, World. I am the player character.',{time:2000})
 		.then ( (r) => {
-			return this.getThings('pc').promiseDoAction('wave',{direction:'up'}) 
+			return this.getThings('pc').doAction('wave',{direction:'up'}) 
 		})
 		.then ( (r) => {
-			return this.getThings('pc').promiseSay('My name is ' + this.getThings('pc').name +'.')
+			return this.getThings('pc').say('My name is ' + this.getThings('pc').name +'.')
 		});
 	});
   }
