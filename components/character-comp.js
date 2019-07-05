@@ -68,11 +68,17 @@ Vue.component('character-c', {
 			//validate inputs
 			if (typeof action  !== 'string') {
 				console.warn ('Action order skipped: non-string value for ' + this.name+'.')
-				return Promise.resolve('Action order skipped: non-string value for ' + this.name+'.');
+				return Promise.resolve({
+					finished:true,
+					message:'Action order skipped: non-string value for ' + this.name+'.'
+				});
 			}
 			if (!this.char.cycles[action]) {
 				console.warn ('Action order skipped: ' + action +' is not a cycle of' + this.name+'.')
-				return Promise.resolve('Action order skipped: ' + action +' is not a cycle of' + this.name+'.');
+				return Promise.resolve({
+					finished:true,
+					message: 'Action order skipped: ' + action +' is not a cycle of' + this.name+'.'
+				});
 			}
 			
 			// default options.direction to current direction
@@ -96,7 +102,10 @@ Vue.component('character-c', {
 					count++; 
 					if (count > 0 && order.actFrame == 0) {
 						clearInterval(timer);
-						resolve(that.ident + ' finished action:' + order.action);
+						resolve({
+							finished: true,
+							message:that.ident + ' finished action:' + order.action
+						});
 					}
 				},100);
 			}
@@ -173,7 +182,7 @@ Vue.component('character-c', {
 			var that = this;
 			
 			if (path.length === 0 ) {
-				return Promise.resolve( {reached: false, reason:'no route',  message:`No route found to [${destination.x},${destination.y}]`})
+				return Promise.resolve( {finished: false, reason:'no route',  message:`No route found to [${destination.x},${destination.y}]`})
 			};
 			
 			// findPath may not point to the extact point (adjusts to navigate obstacles).
@@ -184,8 +193,7 @@ Vue.component('character-c', {
 			
 			
 			return new Promise (function (resolve, reject) {
-
-				
+			
 				// create list of orders
 				var orders = [], currentPoint, lastPoint, direction, horizontal,vertical; 
 				for (var i=0; i<path.length; i++) {
@@ -215,7 +223,7 @@ Vue.component('character-c', {
 					if (queEnd.x !== destination.x || queEnd.y !== destination.y) {
 						//queEnd has changed -  no longer going to destination
 						clearInterval(timer);
-						resolve ( {reached:false, reason:'destination change',  message:`Not going to [${destination.x},${destination.y}] any more`} )
+						resolve ( {finished:false, reason:'destination change',  message:`Not going to [${destination.x},${destination.y}] any more`} )
 					}
 					
 					that.move(); // take step, shift destinationQueue if reached its end point
@@ -223,9 +231,9 @@ Vue.component('character-c', {
 					if (that.destinationQueue.length === 0) { //finished orders
 						clearInterval(timer);
 						if (destination.x === that.x && destination.y === that.y) {
-							resolve({reached:true, message:`Reached [${destination.x},${destination.y}]`});
+							resolve({finished:true, message:`Reached [${destination.x},${destination.y}]`});
 						} else {
-							resolve({reached:false, message:`Did not reach [${destination.x},${destination.y}]`});
+							resolve({finished:false, message:`Did not reach [${destination.x},${destination.y}]`});
 							
 						}
 					} 
@@ -263,7 +271,10 @@ Vue.component('character-c', {
 							that.behaviour.action = 'wait';
 							that.behaviour.actFrame = 0;
 						}
-						resolve(that.name+' finished saying \"'+order.text + '\".');						
+						resolve({
+							finished:true,
+							message: that.name+' finished saying \"'+order.text + '\".'
+						});						
 					};	
 				
 				},order.time);

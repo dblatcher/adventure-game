@@ -52,30 +52,53 @@ Vue.component('world-item', {
 		hoverHandler : function (event) {
 			this.$root.$emit('hover-event', this, event);
 		},
-
 		setStatus : function () {
 			function procesArgument (a){
 				if (typeof a === 'string') {return {cycle:a}}
 				return a;
 			}
 			
-			var orders = [];
+			var orders = [], nextOrder;
 			for (var i = 0; i < arguments.length; i++) {
-				orders.push(
-					typeof arguments[i] === 'string' ? {cycle:arguments[i]} : arguments[i]
-				);
+				nextOrder = procesArgument (arguments[i]) 
+				if (this.item.cycles[nextOrder.cycle]) { 
+					orders.push(nextOrder);
+				} else {console.warn ( `${this.ident} does not cycle ${nextOrder.cycle}.` ) }
 			}
 			
-			if ( !this.item.cycles[orders[0].cycle]) {return false};
-			this.item.status = orders[0]; this.cycleFrame = 0;
-
-			this.item.queue = [];
-			for (var i = 1; i < orders.length; i++) {
-				if ( this.item.cycles[orders[i].cycle]) {
-					this.item.queue.push(orders[i]);
-				}
+			if (orders.length === 0 ) { return Promise.resolve('no valid orders')};
+			
+			this.item.queue = orders;
+			lastOrder = this.item.queue[this.item.queue.length-1];
+			this.cycleFrame = 0;
+			var that = this;
+			
+			function watchQueue(resolve) {
+				var timer = setInterval (function(){
+					if (that.item.queue[0] === lastOrder) {
+						clearInterval(timer);
+						resolve({
+							finished:true,
+							message: that.ident + ' finished sequence ending in ' + lastOrder.cycle
+						});
+					}
+					
+					if (that.item.queue.indexOf(lastOrder) === -1) {
+						clearInterval(timer);
+						resolve({
+							finished: false,
+							message: that.ident + ' no longer doing sequence ending with ' + lastOrder.cycle
+						});
+					}
+					
+				},100);
 			};
-			return this;
+			
+			return new Promise( function(resolve, reject) {
+				watchQueue(resolve);
+			});
+			
+			
 		},
 		showNextFrame : function () {
 			var cycle = this.item.cycles[this.item.status.cycle] ;

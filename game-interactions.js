@@ -37,7 +37,7 @@ var interactions =[
 		
 		this.getThings('pc').promiseGoTo(this.getThings('DOOR_W').walkToPoint)
 		.then( (feedback) => {
-			if (feedback.reached) {	this.changeRoom(0);	}
+			if (feedback.finished) {	this.changeRoom(0);	}
 		} );
 		
 	}),
@@ -76,9 +76,8 @@ var interactions =[
 		this.getThings('pc').promiseGoTo(this.getThings('HOUSE_W').walkToPoint)
 		.then( (feedback)=> {
 			console.log(feedback.message);
-			if (feedback.reached) {
-				this.changeRoom(1);			
-				
+			if (feedback.finished) {
+				this.changeRoom(1);				
 			};
 		});
 		
@@ -102,19 +101,15 @@ var interactions =[
 		pc.promiseSay ("put out fire?")
 		.then ( (r) => {return pc.promiseSay("okay")})
 		.then ( (r) => {return pc.promiseGoTo(fire.walkToPoint)})
-		.then ( (r) => { 
-			fire.setStatus('extinguishing',{cycle:'out', ref:ref3} );
+		.then ( (r) => {return fire.setStatus('extinguishing','out' )})
+		.then ( (r) => {return billy.promiseSay('hey!')})	
+		.then ( (r) => {return billy.promiseSay("That was my fire!")} )			
+		.then ( (r) => {		
+			fire.name = 'sticks';
+			theApp.gameStatus = 'LIVE'		
 		});
-				
-		this.$once('mile-stone:'+ref3, function(){
-			billy.promiseSay('hey!')
-			.then ( (r) => {return billy.promiseSay("That was my fire!")} )			
-			.then ( (r) => {		
-				fire.name = 'sticks';
-				theApp.gameStatus = 'LIVE'		
-			});
 			
-		});
+		
 
 		
 	}),
