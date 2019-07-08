@@ -47,7 +47,7 @@ var vm = new Vue({
 	inventoryItems: inventoryItems,
 	conversations:conversations,
 	message: 'blank message',
-	roomNumber: 0,
+	roomNumber: 2,
 	roomMeasure: {unit:'em',scale:0.05},
 	verb: verbList[0],thingHoveredOn:null, 
 	subject: null, needObject:false, object:null,
@@ -89,13 +89,13 @@ var vm = new Vue({
 	},
 	grid : function() {
 		var obstacles = this.rooms[this.roomNumber].obstacles;
-		var cellSize = 10;	
+		var cellSize = 5;	
 		var columns = Math.ceil(this.rooms[this.roomNumber].width/cellSize), 
 		rows = Math.ceil(this.rooms[this.roomNumber].height/cellSize),x,y, grid = [];
 		function cellValue(x,y){
-			var cell = {x: x*cellSize, y: y*cellSize, height:cellSize, width:cellSize}, i;
+			var cell = new RectZone (x*cellSize, y*cellSize, cellSize, cellSize, false), i;
 			for (i=0; i<obstacles.length; i++) {
-				if (obstacles[i].overlaps(cell)) {return 0}
+				if (obstacles[i].overlapsRectangle(cell)) {return 0}
 			}
 			return 1;
 		}
@@ -126,7 +126,7 @@ var vm = new Vue({
 		this.$emit('room-change-done',data);
 
 	},
-	getThings : function (ident) {
+	getThings : function (ident) {		
 		var list = [].concat(this.$refs.characters, this.$refs.items); // array of components in room
 		var result = {};
 		for (var i = 0; i<list.length; i++) {
@@ -352,7 +352,7 @@ var vm = new Vue({
 		if (directPath) {return [{x:endPoint.x, y:endPoint.y}]};
 		
 		var g = new Graph(vm.grid,{diagonal:true}); 
-		var cellSize = 10;
+		var cellSize = 5;
 		var sx = Math.floor (startPoint.x / cellSize); 
 		var sy = Math.floor (startPoint.y / cellSize); 
 		var ex = Math.floor (endPoint.x / cellSize); 

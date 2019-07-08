@@ -150,7 +150,7 @@ var rooms = [
 		new WorldItem ('fire','fire',[145,30,20,0],40,40,'burning',worldItemModels.fire),
 	]
 	,obstacles:[
-		new Zone (200,45,400,50)
+		new RectZone (200,45,400,50,true)
 	]},
 	
 	{id:'LIVING_ROOM_R', name:'Living room', url: "assets/rooms/bg2.jpg", width:400, height:250, 
@@ -163,10 +163,21 @@ var rooms = [
 		new WorldItem ('window','nice window',[120,150,0,-140],100,145)
 	]
 	,obstacles:[
-		new Zone (200,32,400,200),
-		new Zone (135,20,200,200),
+		new RectZone (200,32,400,200,true),
+		new RectZone (135,20,200,200,true),
 	]},
 	
+	{id:'TEST_ROOM_R', name: 'test room', url:"assets/rooms/testroom.png", width:400, height:300,
+	characters : [
+		new Character ('pc','Jane Smith',[200,20],'white',characterModels.jane)
+		],
+	worldItems:[],
+	obstacles:[
+		new PolyZone ([ [0,0],[83,126],[83,251],[0,300]  ]),
+		new RectZone (83,126, 296-83 ,120 ,false),
+		new PolyZone ([ [275,35], [305,35], [290,90]  ]),
+	],
+	}
 ]
 
 

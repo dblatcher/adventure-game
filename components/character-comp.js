@@ -326,7 +326,8 @@ Vue.component('character-c', {
 		setInterval (function(){that.showNextFrame()},100);
 	},
 	template: `
-	<article @click="clickHandler(event)" v-on:mouseover="hoverHandler(event)" v-on:mouseout="hoverHandler(event)"
+	<article @click="clickHandler(event)" v-on:mouseover="hoverHandler(event)"
+	v-on:mouseout="hoverHandler(event)"
 	v-bind:name="name" 
 	v-bind:action="currentAction">
 		<div v-bind:style="styleObject">
