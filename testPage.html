@@ -62,10 +62,9 @@
 		ctx.fill();
 	};
 	
-	function plotGrid(size, zone) {
+	function testGrid(size, zone) {
 		var rows = Math.ceil(h/size);
 		var cols = Math.ceil(w/size);
-	
 		var cell;
 	
 		for (i=0; i<cols; i++) {
@@ -73,31 +72,50 @@
 			
 				cell = new RectZone(i*size, j*size,size,size);
 				
-				plotZone(cell, zone.overlapsRectangle(cell) ? 'red' : 'green', true );
+				plotZone(cell, zone.overlapsRectangle(cell) ? 'rgba(200,0,0,0.3)' : 'rgba(0,200,0,0.3)', true );
 			
 			}
 		}
 	
 	}
 	
+	function testPoint (x,y,zone) {
+		var p = new Point (x,y);
+		ctx.beginPath();
+		ctx.moveTo(p.x-5, h-p.y-5);
+		ctx.lineTo(p.x+5,h-p.y+5);
+		ctx.moveTo(p.x+5, h-p.y-5);
+		ctx.lineTo(p.x-5,h-p.y+5);
+		ctx.strokeStyle= 'black';
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.moveTo(p.x-5, h-p.y-5);
+		ctx.lineTo(p.x+5,h-p.y+5);
+		ctx.moveTo(p.x+5, h-p.y-5);
+		ctx.lineTo(p.x-5,h-p.y+5);
+		ctx.strokeStyle= zone.containsPoint(p)? "red" : "green";
+		ctx.stroke();
+
+	}
+
+	function plotLine(p1,p2,color='black') {
+		ctx.beginPath();
+		ctx.moveTo(p1.x,h-p1.y);
+		ctx.lineTo(p2.x,h-p2.y);
+		ctx.strokeStyle=color;
+		ctx.stroke();
+	}
+
 	//plotBackground(rooms[2]);
 	var z = rooms[2].obstacles[2];
-	plotGrid(10,z);
+	testGrid(5,z);
 	plotZone(z,'blue');
-	//plotZone(rooms[2].obstacles[1])
-	//plotZone(rooms[2].obstacles[2])
-	
-	
-	var p1=new Point(20,10);
-	var p2=new Point(200,180);
-	
-	ctx.beginPath();
-	ctx.moveTo(p1.x,h-p1.y);
-	ctx.lineTo(p2.x,h-p2.y);
-	ctx.strokeStyle="black";
-	ctx.stroke();
-	
-	console.log(z.intersectsLineSegment(p1,p2)) 
+
+	for(r=0; r<400; r++){
+	//	 testPoint( Math.random()*w, Math.random()*h,z )
+	}
+	testPoint( 30, 50,z )
 	
 	</script>
 	

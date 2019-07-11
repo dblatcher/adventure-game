@@ -148,7 +148,7 @@ PolyZone.prototype.containsPoint = function () {
     var intersections = 0;
 
     for (var c=0; c < n; c++ ) {
-        if (Point.doLineSegmentsIntersect(point, extreme, this.corners[c], this.corners[c + 1 < n.length ? c+1 : 0] ) ) {intersections++}
+        if (Point.doLineSegmentsIntersect(point, extreme, this.corners[c], this.corners[c + 1 < n ? c+1 : 0] ) ) {intersections++}
     };
 
     //if a line from the point to the extreme crosses lines of the polygon an odd number of time, the point is inside
@@ -198,7 +198,7 @@ PolyZone.prototype.overlapsRectangle = function (rectangle) {
 	for (var i=0; i < n; i++ ) {
 		for (var j=0; j < 4; j++ ) {	
 			if (Point.doLineSegmentsIntersect(
-			this.corners[i], this.corners[i + 1 < n.length ? i+1 : 0] , 
+			this.corners[i], this.corners[i + 1 < n ? i+1 : 0] , 
 			rCorners[j], rCorners[j + 1 < 4 ? j+1 : 0]
 			) ) {return true}
 		}
@@ -224,7 +224,7 @@ PolyZone.prototype.intersectsLineSegment = function (point1, point2) {
 		point1,
 		point2,
 		this.corners[i], 
-		this.corners[i + 1 < n.length ? i+1 : 0])) {
+		this.corners[i + 1 < n ? i+1 : 0])) {
 			return true
 		};
 	
