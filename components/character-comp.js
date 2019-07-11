@@ -26,8 +26,8 @@ Vue.component('character-c', {
 	},
 
 	computed :{
-		scaledHeight : function() {return this.scale * this.baseHeight;},
-		scaledWidth : function() {return this.scale * this.baseWidth;},
+		scaledHeight : function() {return this.scale * this.baseHeight * this.zoneEffects.scale();},
+		scaledWidth : function() {return this.scale * this.baseWidth* this.zoneEffects.scale();},
 		isTalking : {
 			get: function() {return this.saying !== ''},
 			set: function(v) {if (v===false){this.saying=''; this.sayingQueue=[]}}
@@ -51,15 +51,34 @@ Vue.component('character-c', {
 		walkToPoint: function() {
 			return {x:this.x, y:this.y}
 		},
-		styleObject : function () {return {
+		styleObject : function () { return {
 			position: 'absolute',
 			height: (this.scaledHeight * this.measure.scale) + this.measure.unit,
 			width:  (this.scaledWidth  * this.measure.scale) + this.measure.unit,
 			bottom: (this.y  * this.measure.scale) + this.measure.unit,
 			left:   (this.x  * this.measure.scale) + this.measure.unit,
 			zIndex: 1000-this.y,
-			transform: 'translateX(-50%)'
-		}}
+			transform: 'translateX(-50%)',
+			filter: this.zoneEffects.filter,
+		}},
+		zoneEffects : function() {
+			var result= {
+				filter:"",
+				scale:function(){return 1},
+			};
+			var effectZones = this.$root.rooms[this.$root.roomNumber].effectZones;
+			for (var i=0; i<effectZones.length; i++) {
+				if (effectZones[i].zone.containsPoint(this)) {
+					if (effectZones[i].effect.filter) {
+						result.filter += effectZones[i].effect.filter + ' ';
+					}
+					if (effectZones[i].effect.scale) {
+						result.scale = effectZones[i].effect.scale.bind(this);
+					}
+				}
+			}
+			return result;
+		},
 	},
 	
 	methods : {	

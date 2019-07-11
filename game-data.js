@@ -136,9 +136,26 @@ function WorldItem (id, name, coords ,width,height,initialCycle, model) {
 	}
 }
 
+function Room (id, name, backgroundUrl, width,height, contents) {
+	this.id = this.id = id.toUpperCase()+"_R";
+	this.name = name;
+	this.url = backgroundUrl;
+	this.width = width;
+	this.height = height;
+	this.characters = contents.characters || [];
+	this.worldItems = contents.worldItems || [];
+	this.obstacles = contents.obstacles || [];
+	this.effectZones = contents.effectZones || [];
+}
+
+function EffectZone (zone,effect) {
+	this.zone = zone,
+	this.effect = effect;
+}
 
 var rooms = [
-	{id:'SWAMP_R', name:'Swamp', url: "assets/rooms/bg1.png", width:400, height:300, 
+	
+	new Room ('swamp','swamp',"assets/rooms/bg1.png", 400, 300, {
 	characters : [
 		new Character ('pc','Jane Smith',[375,10],'white',characterModels.jane),
 		new Character ('billy','billy',[200,10],'red',characterModels.billy)
@@ -148,12 +165,12 @@ var rooms = [
 		new WorldItem ('house','path back to house',[375,0],50,150),
 		new WorldItem ('bucket','bucket',[250,25],40,40,'neutral',worldItemModels.bucket),
 		new WorldItem ('fire','fire',[145,30,20,0],40,40,'burning',worldItemModels.fire),
-	]
-	,obstacles:[
+	],
+	obstacles:[
 		new RectZone (200,45,400,50,true)
-	]},
-	
-	{id:'LIVING_ROOM_R', name:'Living room', url: "assets/rooms/bg2.jpg", width:400, height:250, 
+	]}),
+	 
+	new Room ('LIVING_ROOM', 'Living room', "assets/rooms/bg2.jpg", 400, 250,{
 	characters : [
 		new Character ('luigi','Luigi',[135,21],'lightgreen',characterModels.mario),
 		new Character ('pc','Jane Smith',[160,20],'white',characterModels.jane)
@@ -161,25 +178,30 @@ var rooms = [
 	worldItems : [		
 		new WorldItem ('door','wooden door',[265,30,0,-20],50,100,'closed',worldItemModels.door),
 		new WorldItem ('window','nice window',[120,150,0,-140],100,145)
-	]
-	,obstacles:[
+	],
+	obstacles:[
 		new RectZone (200,32,400,200,true),
 		new RectZone (135,20,200,200,true),
-	]},
+	]}),
 	
-	{id:'TEST_ROOM_R', name: 'test room', url:"assets/rooms/testroom.png", width:400, height:300,
+	new Room ('TEST_ROOM', 'test room', "assets/rooms/testroom.png", 400, 300, {
 	characters : [
 		new Character ('pc','Jane Smith',[200,20],'white',characterModels.jane)
 		],
-	worldItems:[],
+	effectZones:[
+		new EffectZone(
+		new PolyZone ([ [184,90], [219,78],[206,60],[160,60],[150,78] ]),
+		{ filter:'sepia(100%) brightness(60%)'}),
+		new EffectZone(
+		new RectZone (0,0,400,200),
+		{ scale:function(){return 1.5- this.y/200} }),
+	],
 	obstacles:[
 		new PolyZone ([ [0,0],[83,126],[83,251],[0,300]  ]),
 		new RectZone (83,126, 296-83 ,120 ,false),
 		new PolyZone ([ [275,35], [305,35], [290,90]  ]),
 		new PolyZone ([ [296,130], [296,250], [400,300], [400,0] ]),
-		new PolyZone ([ [184,90], [219,78],[206,60],[160,60],[150,78] ]),
-	],
-	}
+	]}),
 ]
 
 
