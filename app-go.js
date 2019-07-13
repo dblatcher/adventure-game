@@ -221,6 +221,13 @@ var vm = new Vue({
 		var room = this.$refs.room;		
 		var clickCoordinPx = {x: (event.offsetX),y: (room.$el.offsetHeight - event.offsetY)};
 		
+		if (event.target !== room.$el ) {
+			clickCoordinPx.x += event.target.getClientRects()[0].x;
+			clickCoordinPx.x -= room.$el.getClientRects()[0].x;	
+			clickCoordinPx.y -= event.target.getClientRects()[0].y;
+			clickCoordinPx.y += room.$el.getClientRects()[0].y;
+		}
+		
 		var clickCoord = {
 			x : clickCoordinPx.x * room.room.width  / room.$el.clientWidth,
 			y : clickCoordinPx.y * room.room.height / room.$el.clientHeight,
@@ -407,13 +414,13 @@ var vm = new Vue({
 
   beforeMount: function () { 
 	this.changeRoom(this.roomNumber,function() {
-		this.getThings('pc').say('Hello, World. I am the player character.',{time:2000})
-		.then ( (r) => {
-			return this.getThings('pc').doAction('wave',{direction:'up'}) 
-		})
-		.then ( (r) => {
-			return this.getThings('pc').say('My name is ' + this.getThings('pc').name +'.')
-		});
+	//	this.getThings('pc').say('Hello, World. I am the player character.',{time:2000})
+	//	.then ( (r) => {
+	//		return this.getThings('pc').doAction('wave',{direction:'up'}) 
+	//	})
+	//	.then ( (r) => {
+	//		return this.getThings('pc').say('My name is ' + this.getThings('pc').name +'.')
+	//	});
 	});
   }
 
