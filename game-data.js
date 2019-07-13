@@ -146,11 +146,21 @@ function Room (id, name, backgroundUrl, width,height, contents) {
 	this.worldItems = contents.worldItems || [];
 	this.obstacles = contents.obstacles || [];
 	this.effectZones = contents.effectZones || [];
+	this.foregrounds = contents.foregrounds || [];
 }
 
 function EffectZone (zone,effect) {
 	this.zone = zone,
 	this.effect = effect;
+}
+
+function Foreground (url, coords, size, style) {
+	this.url=url;
+	this.x=coords[0];
+	this.y=coords[1];
+	this.width=size[0];
+	this.height=size[1];
+	this.style = style || {};
 }
 
 var rooms = [
@@ -201,6 +211,9 @@ var rooms = [
 		new RectZone (83,126, 296-83 ,120 ,false),
 		new PolyZone ([ [275,35], [305,35], [290,90]  ]),
 		new PolyZone ([ [296,130], [296,250], [400,300], [400,0] ]),
+	],
+	foregrounds:[
+		new Foreground("assets/rooms/tree.png",[-70,0],[220,200], {opacity:1,filter:'blur(1px)'}),
 	]}),
 ]
 

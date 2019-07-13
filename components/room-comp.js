@@ -22,13 +22,38 @@ Vue.component ('game-room', {
 				backgroundSize: '100% 100%',
 				backgroundImage: `url(${this.room.url})`,
 			}
-		}
+		},
+		foregrounds : function() {
+			var list=[], rData = this.room.foregrounds;
+			
+			for (var i=0; i< rData.length; i++) {
+				list.push( 
+				{ id:i,	style:Object.assign( rData[i].style, {
+					backgroundSize: '100% 100%',
+					position:'absolute',
+					width:  (rData[i].width  * this.measure.scale) + this.measure.unit,
+					height: (rData[i].height * this.measure.scale) + this.measure.unit,
+					left: (rData[i].x * this.measure.scale) + this.measure.unit,
+					bottom: (rData[i].y * this.measure.scale) + this.measure.unit,
+					zIndex: rData[i].zIndex || 5000,
+					backgroundImage: `url(${rData[i].url})`,
+				})
+				}
+				
+				)
+			};
+			
+			return list;
+		},
 	},
 	template : `
 	<main class="room"
 	v-on:click="clickHandler(event)"
 	v-bind:style="styleObject">
 		<slot></slot>
+		<div  v-for="fg in foregrounds":key="fg.id"
+		v-bind:style="fg.style">
+		</div>
 	</main>
 	
 	`
