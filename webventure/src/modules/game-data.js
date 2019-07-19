@@ -1,43 +1,35 @@
 import { RectZone, PolyZone } from "./zone";
+import { Character, WorldItem, Room, EffectZone, Foreground, Verb, InventoryItem, Sprite, CharacterModel } from "./constructors"
 
 var sprites = [
-  {id:0, url: 'assets/sprites/boy.png', row:4, col:4},
-  {id:2, url: 'assets/sprites/boy2.png', row:4, col:4},
-  {id:'bf', url: 'assets/sprites/boy-flag.png', row:1, col:3, relativeHeight:2},
-  {id:'bfr', url: 'assets/sprites/boy-flag-raise.png', row:1, col:1, relativeWidth:2},
-  
-  {id:'m', url: 'assets/sprites/mario.png', row:2, col:3},
-  {id:'w', url: 'assets/sprites/woman.png', row:4, col:9},
-  {id:'w2', url: 'assets/sprites/woman2b.png', row:4, col:3},
-  {id:'w-wave', url: 'assets/sprites/womanWave.png', row:1, col:3},
-  {id:'door', url: 'assets/sprites/door.png', row:1, col:3},
-  {id:'bucket', url: 'assets/sprites/bucket.png', row:1, col:1},
-  {id:'fire', url: 'assets/sprites/fire.png', row:2, col:4},
+  new Sprite (0,'assets/sprites/boy.png', [4,4]),
+  new Sprite (2,'assets/sprites/boy2.png',[4,4]), 
+  new Sprite ('bf','assets/sprites/boy-flag.png', [3,1], [1,2]),
+  new Sprite ('bfr', 'assets/sprites/boy-flag-raise.png',[1,1],[2,1]),
+  new Sprite ('m', 'assets/sprites/mario.png',[3,2] ),
+  new Sprite ('w', 'assets/sprites/woman.png', [9,4]),
+  new Sprite ('w2', 'assets/sprites/woman2b.png', [3,4]),
+  new Sprite ('w-wave', 'assets/sprites/womanWave.png', [3,1]),
+  new Sprite ('door', 'assets/sprites/door.png', [3,1]),
+  new Sprite ('bucket', 'assets/sprites/bucket.png', [1,1]),
+  new Sprite ('fire', 'assets/sprites/fire.png', [4,2]),
 ]
 
 
 var characterModels = {
-	mario : {
-		baseHeight:75,baseWidth:50,
-		spritesUsed:['m'],
-		validDirections : ['right','left'],
-		cycles : {
-			wait: {
-				right: [ ['m',0,0] ],
-				left : [ ['m',2,1] ],
-			},
-			walk: {
-				right:[ ['m',0,0],['m',1,0],['m',2,0]  ],
-				left: [ ['m',2,1],['m',1,1],['m',0,1]  ]
-			},
-			dance: [ ['m',0,0],['m',1,0],['m',0,0],['m',1,0], ['m',2,1],['m',1,1]  ,['m',0,0],['m',1,0],['m',2,0]  ]
-		}		
-	},
-	billy : {
-		baseHeight:50,baseWidth:50,
-		spritesUsed:[2,0,'bf','bfr'],
-		validDirections : ['down','left','right','up'],
-		cycles : {
+	mario : new CharacterModel (50,75,{
+		wait: {
+			right: [ ['m',0,0] ],
+			left : [ ['m',2,1] ],
+		},
+		walk: {
+			right:[ ['m',0,0],['m',1,0],['m',2,0]  ],
+			left: [ ['m',2,1],['m',1,1],['m',0,1]  ]
+		},
+		dance: [ ['m',0,0],['m',1,0],['m',0,0],['m',1,0], ['m',2,1],['m',1,1]  ,['m',0,0],['m',1,0],['m',2,0]  ]
+	}),
+
+	billy : new CharacterModel (50,50, {
 			wait: [[0,0,0]],
 			waveFlag: [['bf',0,1],['bf',1,1],['bf',2,1]],
 			raiseFlag: [[0,0,0],['bfr',0,0],['bfr',0,0]],
@@ -49,46 +41,33 @@ var characterModels = {
 				left  : [[0,0,2],[0,1,2],[0,2,2],[0,3,2]  ],
 				right : [[0,0,3],[0,1,3],[0,2,3],[0,3,3]  ],
 			}
-		}	
-	},
-	jane : {			
-		baseHeight:75,baseWidth:50,
-		spritesUsed:['w','w2','w-wave'],
-		validDirections : ['down','left','right','up'],
-		cycles : {
-			wait : {
-				up 	  : [ ['w',0,0] ],
-				left  : [ ['w',0,1] ],
-				down  : [ ['w',0,2] ],
-				right : [ ['w',0,3] ],
-			},
-			walk : {
-				up 	  : [ ['w',0,0],['w',1,0],['w',2,0],['w',3,0], ['w',4,0],['w',5,0],['w',6,0],['w',7,0], ['w',8,0] ],
-				left  : [ ['w',0,1],['w',1,1],['w',2,1],['w',3,1], ['w',4,1],['w',5,1],['w',6,1],['w',7,1], ['w',8,1] ],
-				down  : [ ['w',0,2],['w',1,2],['w',2,2],['w',3,2], ['w',4,2],['w',5,2],['w',6,2],['w',7,2], ['w',8,2] ],
-				right : [ ['w',0,3],['w',1,3],['w',2,3],['w',3,3], ['w',4,3],['w',5,3],['w',6,3],['w',7,3], ['w',8,3] ] ,
-				
-			},
-			talk : {
-				up 	  : [ ['w',0,0], ['w2',0,0], ['w2',1,0],['w2',2,0] ],
-				left  : [ ['w',0,1], ['w2',0,1], ['w2',1,1],['w2',2,1] ],
-				down  : [ ['w',0,2], ['w2',0,2], ['w2',1,2],['w2',2,2] ],
-				right : [ ['w',0,3], ['w2',0,3], ['w2',1,3],['w2',2,3] ] ,
-			},
-			wave : 
-				[ ['w-wave',0,0], ['w-wave',1,0],['w-wave',2,0],['w-wave',0,0], ['w-wave',1,0],['w-wave',2,0] ]
-			,
-		}	
-	}
+		}, 'down'),	
+
+	jane : new CharacterModel (50,75,{
+		wait : {
+			up 	  : [ ['w',0,0] ],
+			left  : [ ['w',0,1] ],
+			down  : [ ['w',0,2] ],
+			right : [ ['w',0,3] ],
+		},
+		walk : {
+			up 	  : [ ['w',0,0],['w',1,0],['w',2,0],['w',3,0], ['w',4,0],['w',5,0],['w',6,0],['w',7,0], ['w',8,0] ],
+			left  : [ ['w',0,1],['w',1,1],['w',2,1],['w',3,1], ['w',4,1],['w',5,1],['w',6,1],['w',7,1], ['w',8,1] ],
+			down  : [ ['w',0,2],['w',1,2],['w',2,2],['w',3,2], ['w',4,2],['w',5,2],['w',6,2],['w',7,2], ['w',8,2] ],
+			right : [ ['w',0,3],['w',1,3],['w',2,3],['w',3,3], ['w',4,3],['w',5,3],['w',6,3],['w',7,3], ['w',8,3] ] ,
+			
+		},
+		talk : {
+			up 	  : [ ['w',0,0], ['w2',0,0], ['w2',1,0],['w2',2,0] ],
+			left  : [ ['w',0,1], ['w2',0,1], ['w2',1,1],['w2',2,1] ],
+			down  : [ ['w',0,2], ['w2',0,2], ['w2',1,2],['w2',2,2] ],
+			right : [ ['w',0,3], ['w2',0,3], ['w2',1,3],['w2',2,3] ] ,
+		},
+		wave : 
+			[ ['w-wave',0,0], ['w-wave',1,0],['w-wave',2,0],['w-wave',0,0], ['w-wave',1,0],['w-wave',2,0] ]
+		,
+	},'down')
 	
-}
-function Character(id,name,coords,speechColor,model) {
-	this.id = id.toLowerCase() === 'pc' ? 'pc' : id.toUpperCase()+"_C";
-	this.name = name;
-	this.startX = coords[0];
-	this.startY = coords[1];
-	this.speechColor= speechColor;
-	Object.assign(this,model);
 }
 
 
@@ -117,53 +96,7 @@ var worldItemModels = {
 		}
 	},
 };
-function WorldItem (id, name, coords ,width,height,initialCycle, model) {
-	this.id = id.toUpperCase() + "_W";
-	this.name = name;
-	this.startX = coords[0] || 0;
-	this.startY = coords[1] || 0;
-	this.walkOffsetX =  coords[2] || 0;
-	this.walkOffsetY =  coords[3] || 0;
-		
-	this.baseWidth = width || 20;
-	this.baseHeight = height || 20;
-	this.status = {cycle: initialCycle||'neutral'};
-	this.queue = [];
-	
-	if (model) {
-		Object.assign(this, model);
-	} else {
-		this.spritesUsed = [];
-		this.cycles = {neutral:[]};
-	}
-}
 
-function Room (id, name, backgroundUrl, width,height, contents) {
-	this.id = this.id = id.toUpperCase()+"_R";
-	this.name = name;
-	this.url = backgroundUrl;
-	this.width = width;
-	this.height = height;
-	this.characters = contents.characters || [];
-	this.worldItems = contents.worldItems || [];
-	this.obstacles = contents.obstacles || [];
-	this.effectZones = contents.effectZones || [];
-	this.foregrounds = contents.foregrounds || [];
-}
-
-function EffectZone (zone,effect) {
-	this.zone = zone,
-	this.effect = effect;
-}
-
-function Foreground (url, coords, size, style) {
-	this.url=url;
-	this.x=coords[0];
-	this.y=coords[1];
-	this.width=size[0];
-	this.height=size[1];
-	this.style = style || {};
-}
 
 var rooms = [
 	
@@ -220,12 +153,6 @@ var rooms = [
 ]
 
 
-function Verb (description, id, preposition) {
-	this.description = description;
-	this.id = id;
-	this.preposition = preposition || '[NO PREPOSITION]';
-	this.transitive = !!(preposition);
-}
 var verbList = [
 	new Verb('walk to','WALK'),
 	new Verb('pick up','TAKE'),
@@ -237,13 +164,6 @@ var verbList = [
 	new Verb('close','SHUT')
 ];
 
-
-function InventoryItem (id, name, url, startWith=false) {
-	this.id = id.toUpperCase() + "_I";
-	this.name=name;
-	this.url='assets/items/'+url;
-	this.have=startWith;
-}
 var inventoryItems = [
 	new InventoryItem('bucket', 'bucket', 'bucket.png'),
 	new InventoryItem('stick','lolly stick', 'stick.jpg',true),

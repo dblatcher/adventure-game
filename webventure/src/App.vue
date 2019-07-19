@@ -59,8 +59,6 @@ import Character from "./components/Character";
 import WorldItem from "./components/WorldItem";
 
 
-console.log(astar);
-
 export default {
   name: 'App',
   components :{
