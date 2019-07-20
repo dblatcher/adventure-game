@@ -35,16 +35,17 @@ export default {
 		
 		return {
 		spriteSet : spriteSet,
-		ident: this.item.id,
-		x: this.item.startX ? Number (this.item.startX) : 0, 
-		y: this.item.startY ? Number (this.item.startY) : 0,
-		scale:this.item.initialScale || 1,
-		baseHeight: this.item.baseHeight || 100,
-		baseWidth: this.item.baseWidth || 100,
 		cycleFrame:0
 		}
 	},
 	computed :{
+		ident: function() {return this.item.id},
+		
+		x: function() {return this.item.x},
+		y: function() {return this.item.y},
+		scale: function() {return this.item.scale},
+		baseHeight: function() {return this.item.baseHeight},
+		baseWidth: function() {return this.item.baseWidth},
 		scaledHeight : function() {return this.scale * this.baseHeight;},
 		scaledWidth : function() {return this.scale * this.baseWidth;},
 		frame : function() {

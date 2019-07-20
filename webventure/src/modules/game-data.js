@@ -109,6 +109,7 @@ var rooms = [
 		new WorldItem ('lake','lake',[200,45],400,50),
 		new WorldItem ('house','path back to house',[375,0],50,150),
 		new WorldItem ('bucket','bucket',[250,25],40,40,'neutral',worldItemModels.bucket),
+		new WorldItem ('bucket2','big bucket',[100,25],40,40,'neutral',worldItemModels.bucket,1.5),
 		new WorldItem ('fire','fire',[145,30,20,0],40,40,'burning',worldItemModels.fire),
 	],
 	obstacles:[

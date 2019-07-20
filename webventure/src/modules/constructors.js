@@ -17,11 +17,12 @@ function Character(id,name,coords,speechColor,model) {
 	Object.assign(this,model);
 }
 
-function WorldItem (id, name, coords ,width,height,initialCycle, model) {
+function WorldItem (id, name, coords ,width,height,initialCycle, model,scale) {
 	this.id = id.toUpperCase() + "_W";
 	this.name = name;
-	this.startX = coords[0] || 0;
-	this.startY = coords[1] || 0;
+	this.x = coords[0] || 0;
+	this.y = coords[1] || 0;
+	this.scale = scale || 1;
 	this.walkOffsetX =  coords[2] || 0;
 	this.walkOffsetY =  coords[3] || 0;
 		
@@ -36,6 +37,17 @@ function WorldItem (id, name, coords ,width,height,initialCycle, model) {
 		this.spritesUsed = [];
 		this.cycles = {neutral:[]};
 	}
+	
+	this.initialState = Object.freeze(Object.assign({},this));
+}
+WorldItem.prototype.reset = function() {
+	var keyList = Object.keys(this.initialState);
+	var namedProps = false;
+	if (arguments.length) { namedProps = [...arguments] }
+	keyList.forEach( (propName) => {
+		if (namedProps && !namedProps.includes(propName)) {return}
+		this[propName] = this.initialState[propName];
+	})	
 }
 
 function Room (id, name, backgroundUrl, width,height, contents) {

@@ -432,7 +432,6 @@ export default {
       })
     },	
     resetListeners: function() {
-      console.log('reseting listeners');
       this.$off();
       this.$on('verb-picked',this.pickVerb);	
       this.$on('hover-event',this.handleHoverEvent);	
@@ -446,9 +445,10 @@ export default {
 
 
   beforeMount: function () {
-
+	document.vm = this;
+	console.log('document.vm = this')
     this.resetListeners(); 
-   this.changeRoom(this.roomNumber,function() {
+	this.changeRoom(this.roomNumber,function() {
     });
   }
 
