@@ -1,3 +1,15 @@
+function resetObject() {
+	var keyList = Object.keys(this.initialState);
+	var namedProps = false;
+	if (arguments.length) { namedProps = [...arguments] }
+	keyList.forEach( (propName) => {
+		if (namedProps && !namedProps.includes(propName)) {return}
+		this[propName] = this.initialState[propName];
+	});
+	return this;
+}
+
+
 function Sprite (id, url, dims, frameSize=[1,1] ) {
 	this.id = id;
 	this.url = url;
@@ -8,16 +20,19 @@ function Sprite (id, url, dims, frameSize=[1,1] ) {
 	
 }
 
-function Character(id,name,coords,speechColor,model) {
+function Character(id,name,coords,speechColor,model,scale=1) {
 	this.id = id.toLowerCase() === 'pc' ? 'pc' : id.toUpperCase()+"_C";
 	this.name = name;
-	this.startX = coords[0];
-	this.startY = coords[1];
+	this.x = coords[0];
+	this.y = coords[1];
 	this.speechColor= speechColor;
 	Object.assign(this,model);
+	this.scale = scale;
+	this.initialState = Object.freeze(Object.assign({},this));
 }
+Character.prototype.reset = resetObject;
 
-function WorldItem (id, name, coords ,width,height,initialCycle, model,scale) {
+function WorldItem (id, name, coords ,width,height,initialCycle, model,scale=1) {
 	this.id = id.toUpperCase() + "_W";
 	this.name = name;
 	this.x = coords[0] || 0;
@@ -40,15 +55,8 @@ function WorldItem (id, name, coords ,width,height,initialCycle, model,scale) {
 	
 	this.initialState = Object.freeze(Object.assign({},this));
 }
-WorldItem.prototype.reset = function() {
-	var keyList = Object.keys(this.initialState);
-	var namedProps = false;
-	if (arguments.length) { namedProps = [...arguments] }
-	keyList.forEach( (propName) => {
-		if (namedProps && !namedProps.includes(propName)) {return}
-		this[propName] = this.initialState[propName];
-	})	
-}
+WorldItem.prototype.reset = resetObject;
+
 
 function Room (id, name, backgroundUrl, width,height, contents) {
 	this.id = this.id = id.toUpperCase()+"_R";

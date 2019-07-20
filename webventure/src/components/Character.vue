@@ -47,24 +47,26 @@ export default {
 		
 		return {
 			spriteSet : spriteSet,
-			ident: this.char.id,
-			name: this.char.name,
-			x: this.char.startX ? Number (this.char.startX) : 0, 
-			y: this.char.startY ? Number (this.char.startY) : 0,
-			scale:this.char.initialScale || 1,
-			baseHeight: this.char.baseHeight || 100,
-			baseWidth: this.char.baseWidth || 100,
-			saying:'', sayingQueue :[],
+			
+			sayingQueue :[],
 			actionQueue:[],
+			destinationQueue:[],
+			saying:'', 
 			behaviour: {action:'wait', direction:this.char.validDirections[0], actFrame:0},
-			destinationQueue:[]
 		}
 	},
 
 	computed :{
 		theApp: function() {return this.$parent.$parent},
-		scaledHeight : function() {return this.scale * this.baseHeight * this.zoneEffects.scale();},
-		scaledWidth : function() {return this.scale * this.baseWidth* this.zoneEffects.scale();},
+		
+		name: function() {return this.char.name},
+		x: function() {return this.char.x},
+		y: function() {return this.char.y},
+		ident: function() {return this.char.id},
+		
+		
+		scaledHeight : function() {return this.char.scale * this.char.baseHeight * this.zoneEffects.scale();},
+		scaledWidth : function() {return this.char.scale * this.char.baseWidth* this.zoneEffects.scale();},
 		isTalking : {
 			get: function() {return this.saying !== ''},
 			set: function(v) {if (v===false){this.saying=''; this.sayingQueue=[]}}
@@ -313,15 +315,14 @@ export default {
 					this.destinationQueue.shift();					
 				}
 			}
-			this.x += movement.x;
-			this.y += movement.y;
+			this.char.x += movement.x;
+			this.char.y += movement.y;
 			
 			// test if character got to the moveOrder destination, shift queue, report if finished
 			if (this.x ===  moveOrder.x && this.y === moveOrder.y) { 
 				
 				this.destinationQueue.shift();
 				if (this.destinationQueue.length === 0) {
-					//this.doAction('wait', {loop:true, direction:moveOrder.direction},true);
 					this.behaviour.action = 'wait';
 					this.behaviour.actFrame = 0;
 					this.behaviour.direction = moveOrder.direction;
