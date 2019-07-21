@@ -28,6 +28,16 @@ function Character(id,name,coords,speechColor,model,scale=1) {
 	this.speechColor= speechColor;
 	Object.assign(this,model);
 	this.scale = scale;
+
+	this.saying = '';
+	this.sayingQueue = [];
+	this.actionQueue = [];
+	this.destinationQueue = [];
+
+	this.behaviour_action = 'wait',
+	this.behaviour_actFrame = '0',
+	this.behaviour_direction = this.validDirections[0],
+
 	this.initialState = Object.freeze(Object.assign({},this));
 }
 Character.prototype.reset = resetObject;

@@ -44,15 +44,8 @@ export default {
 		for (var i=0; i< fullSet.length; i++) {		
 			if (this.char.spritesUsed.includes(fullSet[i].id)) {spriteSet.push ( Object.assign({}, fullSet[i], {p:this} ) )	}
 		};
-		
 		return {
 			spriteSet : spriteSet,
-			
-			sayingQueue :[],
-			actionQueue:[],
-			destinationQueue:[],
-			saying:'', 
-			behaviour: {action:'wait', direction:this.char.validDirections[0], actFrame:0},
 		}
 	},
 
@@ -63,24 +56,35 @@ export default {
 		x: function() {return this.char.x},
 		y: function() {return this.char.y},
 		ident: function() {return this.char.id},
-		
-		
+		saying : {
+			get: function() { return this.char.saying },
+			set: function(v) { this.char.saying=v }
+		},
+
+		behaviour : {
+			get: function() {return {
+				action:this.char.behaviour_action,
+				actFrame:this.char.behaviour_actFrame,
+				direction:this.char.behaviour_direction,
+			}}
+		},
+
 		scaledHeight : function() {return this.char.scale * this.char.baseHeight * this.zoneEffects.scale();},
 		scaledWidth : function() {return this.char.scale * this.char.baseWidth* this.zoneEffects.scale();},
 		isTalking : {
 			get: function() {return this.saying !== ''},
-			set: function(v) {if (v===false){this.saying=''; this.sayingQueue=[]}}
+			set: function(v) {if (v===false){this.saying=''; this.char.sayingQueue=[]}}
 		},
 		currentAction : function () {
-			return (this.actionQueue.length) ? 
-				this.actionQueue[0].action : this.behaviour.action;
+			return (this.char.actionQueue.length) ? 
+				this.char.actionQueue[0].action : this.behaviour.action;
 		},
 		currentDirection : function () {
-			return (this.actionQueue.length) ? 
-				this.actionQueue[0].direction : this.behaviour.direction;
+			return (this.char.actionQueue.length) ? 
+				this.char.actionQueue[0].direction : this.behaviour.direction;
 		}, 
 		frame : function() {
-			var currentOrder = this.actionQueue[0] || this.behaviour;
+			var currentOrder = this.char.actionQueue[0] || this.behaviour;
 			var directionNeeded = !Array.isArray(this.char.cycles[currentOrder.action]);
 			var v = directionNeeded ? 
 				this.char.cycles[currentOrder.action][currentOrder.direction][currentOrder.actFrame]:
@@ -151,7 +155,7 @@ export default {
 			var that = this;
 	
 			function execute(order, resolve) {
-				that.actionQueue = [order];	
+				that.char.actionQueue = [order];	
 				var count = 0;
 				var timer = setInterval (function(){
 					// order.actFrame is updated by showNextFrame
@@ -198,14 +202,14 @@ export default {
 				});
 			}
 			
-			this.destinationQueue = orders;
+			this.char.destinationQueue = orders;
 			var queEnd = orders[orders.length-1];
 			var that = this;
 			
 			return new Promise (function (resolve, reject) {
 			
 				function takeStepAndCheckIfFinished (resolve ) {					
-					if ( that.destinationQueue.indexOf(queEnd) == -1  ) {
+					if ( that.char.destinationQueue.indexOf(queEnd) == -1  ) {
 						//not the same destinationQueue - players has given new order
 						clearInterval(timer);
 						resolve ( {finished:false, reason:'destination change',  message:`Not going to [${queEnd.x},${queEnd.y}] any more`} )
@@ -213,7 +217,7 @@ export default {
 					
 					that.move(); // take step, shift destinationQueue if reached its end point
 					
-					if (that.destinationQueue.length === 0) { //finished orders
+					if (that.char.destinationQueue.length === 0) { //finished orders
 						clearInterval(timer);
 						if (queEnd.x === that.x && queEnd.y === that.y) {
 							resolve({finished:true, message:`Reached [${queEnd.x},${queEnd.y}]`});
@@ -236,27 +240,27 @@ export default {
 			
 			function executeOrder (order,resolve) {		
 				that.saying = order.text;
-				if (that.destinationQueue.length === 0) { //not moving
+				if (that.char.destinationQueue.length === 0) { //not moving
 					if (that.char.cycles[order.action]) { //and the character model has a cycle matching the action options 
-						that.behaviour.action = order.action;
-						that.behaviour.actFrame = 0;
+						that.char.behaviour_action = order.action;
+						that.char.behaviour_actFrame = 0;
 					}
 				}
 				setTimeout(function(){
 					if (typeof order.callback == 'function') {order.callback()};
 					
-					if (that.sayingQueue.length > 0) {
-						executeOrder (that.sayingQueue.shift(),resolve);
+					if (that.char.sayingQueue.length > 0) {
+						executeOrder (that.char.sayingQueue.shift(),resolve);
 					} else {
 						that.saying = '';
-						if (that.destinationQueue.length === 0) { //not moving
-							that.behaviour.action = 'wait';
-							that.behaviour.actFrame = 0;
+						if (that.char.destinationQueue.length === 0) { //not moving
+							that.char.behaviour_action = 'wait';
+							that.char.behaviour_actFrame = 0;
 						}
 						resolve({
 							finished:true,
 							message: that.name+' finished saying \"'+order.text + '\".'
-						});						
+						});
 					};	
 				
 				},order.time);
@@ -268,20 +272,20 @@ export default {
 					executeOrder (currentOrder, resolve);
 				});
 			} else {
-				that.sayingQueue.push(currentOrder);
+				that.char.sayingQueue.push(currentOrder);
 			};
 			
 		},		
 		move : function () {
-			if (this.destinationQueue.length === 0) {return false};
-			var moveOrder = this.destinationQueue[0];
+			if (this.char.destinationQueue.length === 0) {return false};
+			var moveOrder = this.char.destinationQueue[0];
 			
 			if (!moveOrder.started) {
 				if (moveOrder.action) {
 					if (moveOrder.action !== this.currentAction || moveOrder.direction !== this.currentDirection) {
-						this.behaviour.action = moveOrder.action;
-						this.behaviour.direction = moveOrder.direction;
-						this.behaviour.actFrame = 0;
+						this.char.behaviour_action = moveOrder.action;
+						this.char.behaviour_direction = moveOrder.direction;
+						this.char.behaviour_actFrame = 0;
 					}
 				};
 			};			
@@ -308,11 +312,10 @@ export default {
 					console.log('hit-obstacle', moveOrder);
 					this.theApp.$emit('mile-stone','hit-obstacle',this,moveOrder);
 					if(moveOrder.ref) {this.theApp.$emit('mile-stone-fail:'+moveOrder.ref)};
-					//this.doAction('wait', {loop:true, direction:moveOrder.direction},true);
-					this.behaviour.action = 'wait';
-					this.behaviour.direction = moveOrder.direction;
-					this.behaviour.actFrame = 0;
-					this.destinationQueue.shift();					
+					this.char.behaviour_action = 'wait';
+					this.char.behaviour_direction = moveOrder.direction;
+					this.char.behaviour_actFrame = 0;
+					this.char.destinationQueue.shift();
 				}
 			}
 			this.char.x += movement.x;
@@ -321,11 +324,11 @@ export default {
 			// test if character got to the moveOrder destination, shift queue, report if finished
 			if (this.x ===  moveOrder.x && this.y === moveOrder.y) { 
 				
-				this.destinationQueue.shift();
-				if (this.destinationQueue.length === 0) {
-					this.behaviour.action = 'wait';
-					this.behaviour.actFrame = 0;
-					this.behaviour.direction = moveOrder.direction;
+				this.char.destinationQueue.shift();
+				if (this.char.destinationQueue.length === 0) {
+					this.char.behaviour_action = 'wait';
+					this.char.behaviour_actFrame = 0;
+					this.char.behaviour_direction = moveOrder.direction;
 					this.theApp.$emit('mile-stone','reached-destination',this,moveOrder);
 					if(moveOrder.ref) {this.theApp.$emit('mile-stone'+':'+moveOrder.ref)};
 				};
@@ -333,26 +336,26 @@ export default {
 			
 		},				
 		showNextFrame : function () {
-			
-			var order = this.actionQueue[0] || this.behaviour;
-			
+			var noActions = ( this.char.actionQueue[0] ) ? false:true; 
+			var order = this.char.actionQueue[0] || this.behaviour;
+			 
 			var directionNeeded = !Array.isArray(this.char.cycles[order.action]);
 			var cycle = directionNeeded ? 
 				this.char.cycles[order.action][order.direction] :
 				this.char.cycles[order.action] ;
 
 			var onLastFrame = !(cycle.length > order.actFrame+1);
-			order.actFrame = onLastFrame ? 0 : order.actFrame + 1;
 			
-			if (onLastFrame && (!order.loop && order !==  this.behaviour)) {
-				this.actionQueue.shift();
-					
-				if (this.actionQueue.length === 0){
+			order.actFrame = onLastFrame ? 0 : order.actFrame + 1;
+			//this.behaviour is just an object with convience copies of the this.char behaviour properties
+			if (noActions) {this.char.behaviour_actFrame = order.actFrame};
+
+			if (onLastFrame && (!order.loop && !noActions )) {
+				this.char.actionQueue.shift();
+				if (this.char.actionQueue.length === 0){
 					this.theApp.$emit('mile-stone','actions-finished',this,order);
 					if (order.ref) {this.theApp.$emit('mile-stone'+':'+order.ref)};
-					
 				}
-				
 			}
 		},
 		clickHandler : function (event) {
