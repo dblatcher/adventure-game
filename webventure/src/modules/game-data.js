@@ -1,18 +1,19 @@
+
 import { RectZone, PolyZone } from "./zone";
 import { Character, WorldItem, Room, EffectZone, Foreground, Verb, InventoryItem, Sprite, CharacterModel } from "./constructors"
 
 var sprites = [
-  new Sprite (0,'assets/sprites/boy.png', [4,4]),
-  new Sprite (2,'assets/sprites/boy2.png',[4,4]), 
-  new Sprite ('bf','assets/sprites/boy-flag.png', [3,1], [1,2]),
-  new Sprite ('bfr', 'assets/sprites/boy-flag-raise.png',[1,1],[2,1]),
-  new Sprite ('m', 'assets/sprites/mario.png',[3,2] ),
-  new Sprite ('w', 'assets/sprites/woman.png', [9,4]),
-  new Sprite ('w2', 'assets/sprites/woman2b.png', [3,4]),
-  new Sprite ('w-wave', 'assets/sprites/womanWave.png', [3,1]),
-  new Sprite ('door', 'assets/sprites/door.png', [3,1]),
-  new Sprite ('bucket', 'assets/sprites/bucket.png', [1,1]),
-  new Sprite ('fire', 'assets/sprites/fire.png', [4,2]),
+  new Sprite (0,'boy.png', [4,4]),
+  new Sprite (2,'boy2.png',[4,4]), 
+  new Sprite ('bf','boy-flag.png', [3,1], [1,2]),
+  new Sprite ('bfr', 'boy-flag-raise.png',[1,1],[2,1]),
+  new Sprite ('m', 'mario.png',[3,2] ),
+  new Sprite ('w', 'woman.png', [9,4]),
+  new Sprite ('w2', 'woman2b.png', [3,4]),
+  new Sprite ('w-wave', 'womanWave.png', [3,1]),
+  new Sprite ('door', 'door.png', [3,1]),
+  new Sprite ('bucket', 'bucket.png', [1,1]),
+  new Sprite ('fire', 'Fire.png', [4,2]),
 ]
 
 
@@ -100,7 +101,7 @@ var worldItemModels = {
 
 var rooms = [
 	
-	new Room ('swamp','swamp',"assets/rooms/bg1.png", 400, 300, {
+	new Room ('swamp','swamp',"bg1.png", 400, 300, {
 	characters : [
 		new Character ('pc','Jane Smith',[375,10],'white',characterModels.jane),
 		new Character ('billy','billy',[200,10],'red',characterModels.billy)
@@ -116,7 +117,7 @@ var rooms = [
 		new RectZone (200,45,400,50,true)
 	]}),
 	 
-	new Room ('LIVING_ROOM', 'Living room', "assets/rooms/bg2.jpg", 400, 250,{
+	new Room ('LIVING_ROOM', 'Living room', "bg2.jpg", 400, 250,{
 	characters : [
 		new Character ('luigi','Luigi',[135,21],'lightgreen',characterModels.mario),
 		new Character ('pc','Jane Smith',[160,20],'white',characterModels.jane)
@@ -130,7 +131,7 @@ var rooms = [
 		new RectZone (135,20,200,200,true),
 	]}),
 	
-	new Room ('TEST_ROOM', 'test room', "assets/rooms/testroom.png", 400, 300, {
+	new Room ('TEST_ROOM', 'test room', "testroom.png", 400, 300, {
 	characters : [
 		new Character ('pc','Jane Smith',[200,20],'white',characterModels.jane)
 		],
@@ -149,7 +150,7 @@ var rooms = [
 		new PolyZone ([ [296,130], [296,250], [400,300], [400,0] ]),
 	],
 	foregrounds:[
-		new Foreground("assets/rooms/tree.png",[-70,0],[220,200], {opacity:1,filter:'blur(1px)'}),
+		new Foreground("tree.png",[-70,0],[220,200], {opacity:1,filter:'blur(1px)'}),
 	]}),
 ]
 

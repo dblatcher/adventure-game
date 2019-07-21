@@ -1,3 +1,7 @@
+import { gameName } from '../gameIndex'
+var gamePath = gameName; 
+// can't use imported value in require statement.
+
 function resetObject() {
 	var keyList = Object.keys(this.initialState);
 	var namedProps = false;
@@ -10,9 +14,9 @@ function resetObject() {
 }
 
 
-function Sprite (id, url, dims, frameSize=[1,1] ) {
+function Sprite (id, fileName, dims, frameSize=[1,1] ) {
 	this.id = id;
-	this.url = url;
+	this.url= require(`../${gamePath}/rooms/${fileName}`);
 	this.col = dims[0];
 	this.row = dims[1];
 	this.relativeWidth  = frameSize[0];
@@ -68,10 +72,10 @@ function WorldItem (id, name, coords ,width,height,initialCycle, model,scale=1) 
 WorldItem.prototype.reset = resetObject;
 
 
-function Room (id, name, backgroundUrl, width,height, contents) {
+function Room (id, name, fileName, width,height, contents) {
 	this.id = this.id = id.toUpperCase()+"_R";
 	this.name = name;
-	this.url = backgroundUrl;
+	this.url= require(`../${gamePath}/rooms/${fileName}`);
 	this.width = width;
 	this.height = height;
 	this.characters = contents.characters || [];
@@ -86,8 +90,8 @@ function EffectZone (zone,effect) {
 	this.effect = effect;
 }
 
-function Foreground (url, coords, size, style) {
-	this.url=url;
+function Foreground (fileName, coords, size, style) {
+	this.url= require(`../${gamePath}/rooms/${fileName}`);
 	this.x=coords[0];
 	this.y=coords[1];
 	this.width=size[0];
@@ -102,10 +106,10 @@ function Verb (description, id, preposition) {
 	this.transitive = !!(preposition);
 }
 
-function InventoryItem (id, name, url, startWith=false) {
+function InventoryItem (id, name, fileName, startWith=false) {
 	this.id = id.toUpperCase() + "_I";
 	this.name=name;
-	this.url='assets/items/'+url;
+	this.url= require(`../${gamePath}/items/${fileName}`);
 	this.have=startWith;
 }
 
