@@ -1,88 +1,6 @@
-
-function DialogChoice (optionText,script,config={}) {
-	this.optionText = optionText;
-	
-	if (!config.firstLineUnsaid) {
-		script.unshift(optionText);
-	}
-	this.script = []; 
-	var groupOfLines; 
-	for (var i=0; i< script.length; i++) {
-		
-		if (Array.isArray(script[i])) {
-			groupOfLines = [];
-			for (var j=0; j< script[i].length; j++) {
-				groupOfLines.push ( parseScriptLine(script[i][j]) );
-			};
-			this.script.push(groupOfLines);
-		} else {
-			this.script.push(parseScriptLine(script[i]))	
-		}
-		
-	}
-	
-	this.consequence = config.consequence || null;
-	this.canOnlySayOnce = config.canOnlySayOnce || false;
-	this.ends = config.ends || false;
-	this.changesBranch = config.changesBranch || false;
-	
-	
-	function parseScriptLine(line) {
-		if (typeof line === 'object') {return line};
-		
-		var parsedLine = {orderType:'say', options:{}};
-		
-		var separatorIndex=false;
-		if (line.indexOf('::') != -1) {
-			parsedLine.orderType = 'say';
-			separatorIndex = line.indexOf('::');
-		} else if (line.indexOf('##') != -1) {
-			parsedLine.orderType = 'doAction';
-			separatorIndex = line.indexOf('##');
-		};
-		
-		if (separatorIndex) {
-			parsedLine.actor = line.substring(0,separatorIndex);
-			parsedLine.text = line.substring(separatorIndex + 2);			
-		} else {
-			parsedLine.actor = 'pc';
-			parsedLine.text = line;
-		};
-		
-		return parsedLine;
-	}
-}
-
-
-function DialogBranch (label, choices) {
-	this.label = label;
-	for (var i=0; i<choices.length; i++){choices[i].dialogBranch=this}
-	
-	this.choices = choices;
-	this.originalChoices = [].concat(choices);
-}
-DialogBranch.prototype.reset = function () {
-	this.choices = [].concat(this.originalChoices);
-}
-
-
-function Conversation (label, firstBranch) {
-	this.label = label;
-	this.branches = {};
-	this.firstBranch = firstBranch;
-	this.currentBranch = firstBranch;
-};
-Conversation.prototype.addBranch = function (dialogBranch) {
-	this.branches[dialogBranch.label] = dialogBranch;
-	dialogBranch.conversation = this;
-}
-Conversation.prototype.getOptions = function () {
-	return this.branches[this.currentBranch].choices;
-}
-
+import {Conversation, DialogBranch, DialogChoice} from './conversation-constructors';
 
 var conversations = {};
-
 conversations.withLuigi = new Conversation ('Talking to Luigi','start');
 
 conversations.withLuigi.addBranch (new DialogBranch(
@@ -103,7 +21,7 @@ conversations.withLuigi.addBranch (new DialogBranch(
 			['npc::Just watch!','npc##dance']),
 		new DialogChoice ('Let\'s play rock paper scissors',[],{changesBranch:'rockPaperScissors'}),
 		new DialogChoice ('Goodbye',
-			['npc::Bye Bye','npc##walk'], 
+			['npc::Bye Bye','pc##wave','npc##walk'], 
 			{ends:true})
 	]
 ));
@@ -114,7 +32,7 @@ conversations.withLuigi.addBranch (new DialogBranch(
 			['pc::What is a ball...','npc::ballcock? its the thing that tells the toilet if it\'s ready to flush.'],
 			{canOnlySayOnce:true,firstLineUnsaid:true}),
 		new DialogChoice ('Never mind about plumbing...',
-			[], 
+			['pc##wave'], 
 			{changesBranch:'start'})
 	]
 ));
