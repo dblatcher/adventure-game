@@ -1,5 +1,5 @@
 <template>
-  <div id='root'>
+  <div ref='root'>
 
 
 		<div class="room-wrapper">
@@ -153,7 +153,7 @@ export default {
 
       this.worldItems.splice(0, this.worldItems.length);
       this.worldItems.push(...this.rooms[rNum].worldItems);
-        
+
       this.roomNumber = rNum;
       this.thingHoveredOn = null;
       this.resetListeners();
@@ -198,8 +198,7 @@ export default {
         interactionDone = true;
         break;
       }
-      
-      
+
       var defaultResponse = {
         "WALK" : function() {this.getThings('pc').goTo(this.getThings(command.subject.id).walkToPoint)},
         "LOOK" : function() {
@@ -211,8 +210,8 @@ export default {
         },
         "misc" : function() {this.getThings('pc').say('I will not do that.');} 
       };
-          
-      
+
+
       if (!interactionDone) {
         if (defaultResponse[command.verb.id]) {
           defaultResponse[command.verb.id].apply(this,[])				
@@ -227,7 +226,7 @@ export default {
     removeThing: function (id, options={} ) {
       if (typeof id === 'object') {id=id.ident};
       var currentList, permList, currentIndex, permIndex;
-      
+
       if (id.endsWith('_W')) {
         currentList = this.worldItems;
         permList = this.rooms[this.roomNumber].worldItems;
@@ -266,13 +265,13 @@ export default {
         x : clickCoordinPx.x * room.room.width  / room.$el.clientWidth,
         y : clickCoordinPx.y * room.room.height / room.$el.clientHeight,
       };
-    
+
       this.$refs.coordinateDisplay.innerText = `[${Math.round(clickCoord.x)} , ${Math.round(clickCoord.y)}]`
       this.getThings('pc').goTo ( {x:clickCoord.x, y:clickCoord.y, ref:false});
     },	
     handleClickOnThing: function(thing) {
       if (this.gameStatus !== 'LIVE') {return false};
-      
+
       if (this.verb.id === 'WALK' && thing.id.endsWith('_I')) {return false};
       if (!this.subject) {
         this.subject = thing;
@@ -290,11 +289,11 @@ export default {
           this.object = thing;
         }
       };
-      
+
       if (this.command.complete) {this.executeCommand();}		
     },	
-    
-    
+
+
     handleDialogChoice: function (choice) {
       var theApp = this, script = choice.script;
       theApp.gameStatus = 'CUTSCENE';
@@ -344,15 +343,11 @@ export default {
           theApp.getThings(actorId)[script[index].orderType](script[index].text)
           .then( nextItemOrEnd );	
         };	
-        
-        
-        
-        
+
       };
       
       executeScriptItem(0)
     },
-    
 
     pickVerb: function(verbID) {
       this.subject = null;

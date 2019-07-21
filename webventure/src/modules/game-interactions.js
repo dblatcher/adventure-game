@@ -1,6 +1,3 @@
-//interamatrix depens on the verbList array - consider this when modularising 
-// or change so it doens't use it - can create the first level based on the Interactions' verbs
-
 import { verbList } from "./game-data";
 
 function Interaction (command,conditions,response) {
