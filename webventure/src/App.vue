@@ -177,7 +177,7 @@ export default {
       //find array of conditions/response object matching the command
       var thirdParam = command.object? command.object.id : 'intransitive';
       var matchingList = [];
-      if (interactionMatrix[command.verb.id][command.subject.id] ) {
+      if (interactionMatrix[command.verb.id] && interactionMatrix[command.verb.id][command.subject.id] ) {
         matchingList = interactionMatrix[command.verb.id][command.subject.id][thirdParam] || [];
       }
 
@@ -276,7 +276,7 @@ export default {
       if (!this.subject) {
         this.subject = thing;
         if (this.verb.transitive) {
-          if (interactionMatrix[this.verb.id][this.subject.id]  && interactionMatrix[this.verb.id][this.subject.id].intransitive ) {  // test for non transitive use of transitive verb, like 'use lever'
+          if (interactionMatrix[this.verb.id] && interactionMatrix[this.verb.id][this.subject.id]  && interactionMatrix[this.verb.id][this.subject.id].intransitive ) {  // test for non transitive use of transitive verb, like 'use lever'
             this.needObject = false;
           } else {
             this.needObject = true;

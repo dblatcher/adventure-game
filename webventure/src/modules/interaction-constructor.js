@@ -1,4 +1,3 @@
-import { verbList } from "./game-data";
 
 function Interaction (command,conditions,response) {
 	this.command = {
@@ -12,9 +11,10 @@ function Interaction (command,conditions,response) {
 
 Interaction.makeMatrix = function (interactions) {
 	var interactionMatrix = {};
-	verbList.forEach( verb => { interactionMatrix[verb.id]= {} }  );
 
 	interactions.forEach (interaction => {
+		
+		if (!interactionMatrix[interaction.command.verb]) {interactionMatrix[interaction.command.verb] = {}};
 		
 		if (!interactionMatrix[interaction.command.verb][interaction.command.subject]) {
 			interactionMatrix[interaction.command.verb][interaction.command.subject] = {}
