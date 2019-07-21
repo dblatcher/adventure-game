@@ -1,15 +1,5 @@
-import { verbList } from "./game-data";
+import { Interaction } from "./interaction-constructor";
 
-function Interaction (command,conditions,response) {
-	this.command = {
-		verb: command[0],
-		subject: command[1],
-		object: command[2] || false
-	}
-	this.conditions = conditions;
-	
-	this.response = response;
-}
 var interactions =[
 	new Interaction(['LOOK','WINDOW_W'],[],function(){
 		this.getThings('pc').say("I like this window")
@@ -118,26 +108,5 @@ var interactions =[
 	}),
 ]
 
-
-var interactionMatrix = {};
-verbList.forEach( verb => { interactionMatrix[verb.id]= {} }  );
-
-interactions.forEach (interaction => {
-	
-	if (!interactionMatrix[interaction.command.verb][interaction.command.subject]) {
-		interactionMatrix[interaction.command.verb][interaction.command.subject] = {}
-	}
-	
-	var thirdParam = interaction.command.object || 'intransitive'; 
-
-	if (!interactionMatrix[interaction.command.verb][interaction.command.subject][thirdParam]) {
-		interactionMatrix[interaction.command.verb][interaction.command.subject][thirdParam] = []
-	}
-	
-	var rightPlace = interactionMatrix[interaction.command.verb][interaction.command.subject][thirdParam];
-	
-	rightPlace.push ( {conditions:interaction.conditions, response: interaction.response} )
-	
-});
-
+var interactionMatrix = Interaction.makeMatrix(interactions);
 export { interactionMatrix }
