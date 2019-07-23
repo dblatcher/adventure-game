@@ -101,8 +101,6 @@ var worldItemModels = {
 
 var characters = [
 	new Character ('pc','Jane Smith',[375,10,0],'white',characterModels.jane),
-	new Character ('pc','Jane Smith',[160,20,1],'white',characterModels.jane),
-	new Character ('pc','Jane Smith',[200,20,2],'white',characterModels.jane),
 	new Character ('billy','billy',[200,10,0],'red',characterModels.billy),
 	new Character ('luigi','Luigi',[135,21,1],'lightgreen',characterModels.mario),
 ]

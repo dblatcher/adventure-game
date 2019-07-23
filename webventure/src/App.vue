@@ -152,22 +152,32 @@ export default {
   },
   
   methods : {
-    changeRoom: function (rNum,data) {		
+    changeRoom: function (rNum,pcX,pcY,data) {		
       this.$emit('mile-stone','changing room to '+this.rooms[rNum].name)
-     
-	 if (this.$refs.characters) {
-	  this.$refs.characters.forEach ( (charComp) =>{
+	  if (this.$refs.characters) {
+		this.$refs.characters.forEach ( (charComp) => {
 		  charComp.$destroy();
-	  })
-	 };
+		})
+	  };
 
+	  var pc;
+	  this.allCharacters.forEach ( (charObject) => {
+		if (charObject.id === 'pc') {pc=charObject}  
+	  } )
+	  
+	  if (pc && !data.noPc) {
+		pc.room = rNum;
+		pc.x = pcX;
+		pc.y = pcY;
+	  }
+	  
       this.worldItems.splice(0, this.worldItems.length);
       this.worldItems.push(...this.rooms[rNum].worldItems);
 
       this.roomNumber = rNum;
       this.thingHoveredOn = null;
       this.resetListeners();
-      this.$emit('room-change-done',data);
+      this.$emit('room-change-done',data.callback);
 
     },
     getThings : function (ident) {		
@@ -453,8 +463,8 @@ export default {
 	window.vm = this;
 	console.log('window.vm = this')
     this.resetListeners(); 
-	this.changeRoom(this.roomNumber,function() {
-		console.log('restart', new Date);
+	this.changeRoom(this.roomNumber,375,10,{
+		callback: function() {console.log('restart', new Date)},
     });
   }
 

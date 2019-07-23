@@ -26,7 +26,7 @@ var interactions =[
 		
 		this.getThings('pc').goTo(this.getThings('DOOR_W').walkToPoint)
 		.then( (feedback) => {
-			if (feedback.finished) {this.changeRoom(0);}
+			if (feedback.finished) {this.changeRoom(0,375,10,{});}
 		} );
 		
 	}),
@@ -65,7 +65,9 @@ var interactions =[
 	
 	new Interaction (['WALK','HOUSE_W'],[],function(){
 		this.getThings('pc').goTo(this.getThings('HOUSE_W').walkToPoint)
-		.then( (feedback)=> { if (feedback.finished) {this.changeRoom(1);} });
+		.then( (feedback)=> { 
+			if (feedback.finished) {this.changeRoom(1,260,15,{});} 
+		});
 	}),
 	
 	new Interaction(['USE','SHOE_I'],[],function(){
