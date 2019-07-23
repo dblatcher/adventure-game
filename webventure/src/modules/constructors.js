@@ -29,6 +29,7 @@ function Character(id,name,coords,speechColor,model,scale=1) {
 	this.name = name;
 	this.x = coords[0];
 	this.y = coords[1];
+	this.room = coords[2];
 	this.speechColor= speechColor;
 	Object.assign(this,model);
 	this.scale = scale;
@@ -78,7 +79,6 @@ function Room (id, name, fileName, width,height, contents) {
 	this.url= require(`../${gamePath}/rooms/${fileName}`);
 	this.width = width;
 	this.height = height;
-	this.characters = contents.characters || [];
 	this.worldItems = contents.worldItems || [];
 	this.obstacles = contents.obstacles || [];
 	this.effectZones = contents.effectZones || [];

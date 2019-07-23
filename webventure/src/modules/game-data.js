@@ -99,12 +99,20 @@ var worldItemModels = {
 };
 
 
+var characters = [
+	new Character ('pc','Jane Smith',[375,10,0],'white',characterModels.jane),
+	new Character ('pc','Jane Smith',[160,20,1],'white',characterModels.jane),
+	new Character ('pc','Jane Smith',[200,20,2],'white',characterModels.jane),
+	new Character ('billy','billy',[200,10,0],'red',characterModels.billy),
+	new Character ('luigi','Luigi',[135,21,1],'lightgreen',characterModels.mario),
+]
+
 var rooms = [
 	
 	new Room ('swamp','swamp',"bg1.png", 400, 300, {
 	characters : [
-		new Character ('pc','Jane Smith',[375,10],'white',characterModels.jane),
-		new Character ('billy','billy',[200,10],'red',characterModels.billy)
+		new Character ('pc','Jane Smith',[375,10,0],'white',characterModels.jane),
+		new Character ('billy','billy',[200,10,0],'red',characterModels.billy)
 	]
 	,worldItems:[
 		new WorldItem ('lake','lake',[200,45],400,50),
@@ -118,10 +126,6 @@ var rooms = [
 	]}),
 	 
 	new Room ('LIVING_ROOM', 'Living room', "bg2.jpg", 400, 250,{
-	characters : [
-		new Character ('luigi','Luigi',[135,21],'lightgreen',characterModels.mario),
-		new Character ('pc','Jane Smith',[160,20],'white',characterModels.jane)
-	],
 	worldItems : [		
 		new WorldItem ('door','wooden door',[265,30,0,-20],50,100,'closed',worldItemModels.door),
 		new WorldItem ('window','nice window',[120,150,0,-140],100,145)
@@ -132,9 +136,6 @@ var rooms = [
 	]}),
 	
 	new Room ('TEST_ROOM', 'test room', "testroom.png", 400, 300, {
-	characters : [
-		new Character ('pc','Jane Smith',[200,20],'white',characterModels.jane)
-		],
 	effectZones:[
 		new EffectZone(
 		new PolyZone ([ [184,90], [219,78],[206,60],[160,60],[150,78] ]),
@@ -173,4 +174,8 @@ var inventoryItems = [
 	new InventoryItem('hammer','hammer', 'hammer.jpg'),
 ];
 
-export {sprites, rooms, verbList, inventoryItems }
+const gameData = {
+	sprites, rooms, verbList, inventoryItems, characters
+}
+
+export { gameData }

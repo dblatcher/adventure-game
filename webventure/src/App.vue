@@ -44,7 +44,7 @@
 
 <script>
 
-import { sprites, rooms, verbList, inventoryItems } from "./modules/game-data";
+import { gameData } from "./modules/game-data";
 import { conversations } from "./modules/game-conversations";
 import { interactionMatrix } from "./modules/game-interactions";
 import { Graph, astar } from "./modules/astar";
@@ -69,18 +69,18 @@ export default {
 
   data () {
     return {
-      verbList : verbList,
-      sprites : sprites, 	
-      characters : [],
+      verbList : gameData.verbList,
+      sprites : gameData.sprites, 	
+      allCharacters : gameData.characters,
       worldItems : [],
-      rooms: rooms,
+      rooms: gameData.rooms,
       interactionMatrix:interactionMatrix,
-      inventoryItems: inventoryItems,
+      inventoryItems: gameData.inventoryItems,
       conversations:conversations,
       message: 'blank message',
       roomNumber: 0,
       roomMeasure: {unit:'em',scale:0.05},
-      verb: verbList[0],
+      verb: gameData.verbList[0],
       thingHoveredOn:null, 
       subject: null, needObject:false, object:null,
       gameStatus: 'LIVE',
@@ -110,7 +110,13 @@ export default {
         undecidedNoun: undecidedNoun,
         complete:completeCommand
       }
-    },	
+    },
+	characters : function() {
+		var that = this;
+		return this.allCharacters.filter( (char)=> {
+			return char.room === that.roomNumber;
+		});
+	},
     inventory : function() {
       return this.inventoryItems.filter(function(i){return i.have});
     },
@@ -148,8 +154,12 @@ export default {
   methods : {
     changeRoom: function (rNum,data) {		
       this.$emit('mile-stone','changing room to '+this.rooms[rNum].name)
-      this.characters.splice(0, this.characters.length);
-      this.characters.push(...this.rooms[rNum].characters);
+     
+	 if (this.$refs.characters) {
+	  this.$refs.characters.forEach ( (charComp) =>{
+		  charComp.$destroy();
+	  })
+	 };
 
       this.worldItems.splice(0, this.worldItems.length);
       this.worldItems.push(...this.rooms[rNum].worldItems);
@@ -440,10 +450,11 @@ export default {
 
 
   beforeMount: function () {
-	document.vm = this;
-	console.log('document.vm = this')
+	window.vm = this;
+	console.log('window.vm = this')
     this.resetListeners(); 
 	this.changeRoom(this.roomNumber,function() {
+		console.log('restart', new Date);
     });
   }
 

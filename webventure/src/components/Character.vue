@@ -46,6 +46,7 @@ export default {
 		};
 		return {
 			spriteSet : spriteSet,
+			timer : -1,
 		}
 	},
 
@@ -371,8 +372,14 @@ export default {
 	
 	mounted : function() {		
 		var that = this;
-		setInterval (function(){that.showNextFrame()},100);
+		this.timer = setInterval (function(){that.showNextFrame()},100);
+		//console.log ('set',this.timer)
 	},
+	
+	beforeDestroy: function() {
+		//console.log('clear',this.timer)
+		clearInterval(this.timer);	
+	}
 
 }
 </script>
