@@ -277,6 +277,9 @@ export default {
 			};
 			
 		},		
+		changeRoom : function (rNum,x,y){
+			this.theApp.$emit('character-room-change',this.char,rNum,x,y);
+		},
 		move : function () {
 			if (this.char.destinationQueue.length === 0) {return false};
 			var moveOrder = this.char.destinationQueue[0];

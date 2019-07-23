@@ -268,7 +268,12 @@ export default {
       };
       
     },
-    handleClickOnRoom: function (event){
+    characterRoomChange: function (movingCharacter, rNum,x,y) {
+		movingCharacter.room = rNum;
+		movingCharacter.x = x;
+		movingCharacter.y = y;
+	},
+	handleClickOnRoom: function (event){
       if (this.gameStatus !== 'LIVE') {return false};
       var pc = this.getThings('pc');
       var room = this.$refs.room;		
@@ -455,6 +460,7 @@ export default {
       this.$on('clicked-thing', this.handleClickOnThing);
       this.$on('dialog-choice', this.handleDialogChoice);
       this.$on('room-change-done', this.callRoomChangeCallback);
+      this.$on('character-room-change', this.characterRoomChange);
     },
   },
 

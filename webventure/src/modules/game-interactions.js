@@ -80,6 +80,7 @@ var interactions =[
 		this.gameStatus = 'CUT'
 		
 		var fire = this.getThings('FIRE_W');
+		var house = this.getThings('HOUSE_W');
 		var billy = this.getThings('BILLY_C');
 		var pc = this.getThings('pc');
 		var theApp = this;
@@ -90,7 +91,9 @@ var interactions =[
 		.then ( (r) => {return fire.setStatus('extinguishing','out' )})
 		.then ( (r) => {return billy.say('hey!')})	
 		.then ( (r) => {return billy.say("That was my fire!")} )			
+		.then ( (r) => {return billy.goTo(house.walkToPoint)} )			
 		.then ( (r) => {		
+			billy.changeRoom(1,20,5);
 			fire.name = 'sticks';
 			theApp.gameStatus = 'LIVE'		
 		});
