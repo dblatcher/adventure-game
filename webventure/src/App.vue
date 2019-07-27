@@ -28,13 +28,9 @@ export default {
 
   data () {
 
-    var loadData = {
-      roomNumber: 2
-    };
-
     return {
       appStatus: 'GAME RUNNING',
-      loadData: loadData,
+      loadData: null,
       gameInstance: null,
     }
   },

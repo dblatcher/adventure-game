@@ -141,8 +141,8 @@ export default {
       return this.inventoryItems.filter(function(i){return i.have});
     },
     dialogChoices : function () {
-      if (!this.conversation) return [];
-      return this.conversation.getOptions();
+      if (!this.conversations[this.conversation]) return [];
+      return this.conversations[this.conversation].getOptions();
     },
     obstacles : function(){
       return this.rooms[this.roomNumber].obstacles;
@@ -353,12 +353,15 @@ export default {
         }
       
         function handleEndOfScript() {
+
+          var currentConversation = theApp.conversations[theApp.conversation];
+
           if (choice.canOnlySayOnce) {			
-            theApp.conversation.getOptions().splice( theApp.conversation.getOptions().indexOf(choice),1 );
+            currentConversation.getOptions().splice( currentConversation.getOptions().indexOf(choice),1 );
           }
           if (choice.changesBranch) {
-            theApp.conversation.currentBranch = choice.changesBranch;
-          } 			
+            currentConversation.currentBranch = choice.changesBranch;
+          } 
           if (typeof choice.consequence === 'function' ) {choice.consequence(theApp,choice)};
           
           theApp.gameStatus = choice.ends ? "LIVE" : "CONVERSATION";
