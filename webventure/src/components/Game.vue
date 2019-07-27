@@ -45,7 +45,7 @@
 <script>
 
 import { gameData } from "../modules/game-data";
-import { conversations } from "../modules/game-conversations";
+import { makeConversations } from "../modules/game-conversations";
 import { interactionMatrix } from "../modules/game-interactions";
 import { Graph, astar } from "../modules/astar";
 import { RectZone, PolyZone} from "../modules/zone";
@@ -58,34 +58,44 @@ import Room from "./Room";
 import Character from "./Character";
 import WorldItem from "./WorldItem";
 
-
 export default {
   name: 'Game',
   components :{
     VerbMenu, InventoryMenu, DialogMenu,CommandLine, Room, Character, WorldItem
   },
-  props:[],
+  props:['loadData'],
 
   data () {
-    return {
+    
+    let state = {
+      roomNumber: 0,
+      allCharacters : gameData.makeCharacters(),
+      rooms: gameData.makeRooms(),
+      inventoryItems: gameData.makeInventoryItems(),
+      conversations:makeConversations(),
+      conversation: null,
+      interlocutor: null,
+      gameStatus: 'LIVE',
+    };
+
+    if (this.loadData) {
+      console.log ('loading...', this.loadData);
+
+      state.roomNumber = this.loadData.roomNumber;
+
+    }
+
+    return Object.assign({
+      interactionMatrix:interactionMatrix,
       verbList : gameData.verbList,
       sprites : gameData.sprites, 	
-      allCharacters : gameData.characters,
       worldItems : [],
-      rooms: gameData.rooms,
-      interactionMatrix:interactionMatrix,
-      inventoryItems: gameData.inventoryItems,
-      conversations:conversations,
       message: 'blank message',
-      roomNumber: 0,
       roomMeasure: {unit:'em',scale:0.05},
       verb: gameData.verbList[0],
       thingHoveredOn:null, 
       subject: null, needObject:false, object:null,
-      gameStatus: 'LIVE',
-      conversation: conversations.withLuigi,
-      interlocutor: null,
-    }
+    }, state);
   },
 
 

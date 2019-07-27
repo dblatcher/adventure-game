@@ -99,20 +99,16 @@ var worldItemModels = {
 };
 
 
-var characters = [
+var makeCharacters = function() {return [
 	new Character ('pc','Jane Smith',[375,10,0],'white',characterModels.jane),
 	new Character ('billy','billy',[200,10,0],'red',characterModels.billy),
 	new Character ('luigi','Luigi',[135,21,1],'lightgreen',characterModels.mario),
-]
+]}
 
-var rooms = [
+var makeRooms = function(){ return [
 	
 	new Room ('swamp','swamp',"bg1.png", 400, 300, {
-	characters : [
-		new Character ('pc','Jane Smith',[375,10,0],'white',characterModels.jane),
-		new Character ('billy','billy',[200,10,0],'red',characterModels.billy)
-	]
-	,worldItems:[
+	worldItems:[
 		new WorldItem ('lake','lake',[200,45],400,50),
 		new WorldItem ('house','path back to house',[375,0],50,150),
 		new WorldItem ('bucket','bucket',[250,25],40,40,'neutral',worldItemModels.bucket),
@@ -151,7 +147,7 @@ var rooms = [
 	foregrounds:[
 		new Foreground("tree.png",[-70,0],[220,200], {opacity:1,filter:'blur(1px)'}),
 	]}),
-]
+]}
 
 
 var verbList = [
@@ -165,15 +161,15 @@ var verbList = [
 	new Verb('close','SHUT')
 ];
 
-var inventoryItems = [
+var makeInventoryItems = function() { return  [
 	new InventoryItem('bucket', 'bucket', 'bucket.png'),
 	new InventoryItem('stick','lolly stick', 'stick.jpg',true),
 	new InventoryItem('shoe','red shoe', 'shoe.jpg',true),
 	new InventoryItem('hammer','hammer', 'hammer.jpg'),
-];
+]};
 
 const gameData = {
-	sprites, rooms, verbList, inventoryItems, characters
+	sprites, makeRooms, verbList, makeInventoryItems, makeCharacters
 }
 
 export { gameData }
