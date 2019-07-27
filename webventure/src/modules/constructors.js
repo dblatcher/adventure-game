@@ -46,6 +46,17 @@ function Character(id,name,coords,speechColor,model,scale=1) {
 	this.initialState = Object.freeze(Object.assign({},this));
 }
 Character.prototype.reset = resetObject;
+Character.prototype.returnState = function () {
+	return {
+		name: this.name,
+		x: this.x,
+		y: this.y,
+		room: this.room,
+		behaviour_action: this.behaviour_action,
+		behaviour_direction:this.behaviour_direction,
+		behaviour_actFrame:this.behaviour_actFrame,
+	}
+}
 
 function WorldItem (id, name, coords ,width,height,initialCycle, model,scale=1) {
 	this.id = id.toUpperCase() + "_W";
@@ -68,10 +79,21 @@ function WorldItem (id, name, coords ,width,height,initialCycle, model,scale=1) 
 		this.cycles = {neutral:[]};
 	}
 	
-	this.initialState = Object.freeze(Object.assign({},this));
+	this.initialState = Object.freeze(Object.assign({model:model},this));
 }
 WorldItem.prototype.reset = resetObject;
-
+WorldItem.prototype.returnState = function() {
+	return new WorldItem (
+		this.id.substring(0, this.id.length-2),
+		this.name,
+		[this.x, this.y, this.walkOffsetX, this.walkOffsetY],
+		this.baseWidth,
+		this.baseHeight,
+		this.status.cycle,
+		this.initialState.model,
+		this.scale
+	)
+};
 
 function Room (id, name, fileName, width,height, contents) {
 	this.id = this.id = id.toUpperCase()+"_R";
@@ -83,6 +105,14 @@ function Room (id, name, fileName, width,height, contents) {
 	this.obstacles = contents.obstacles || [];
 	this.effectZones = contents.effectZones || [];
 	this.foregrounds = contents.foregrounds || [];
+}
+Room.prototype.returnState = function () {
+	let state = {worldItems:[]};
+	this.worldItems.forEach ( (item) => {
+		state.worldItems.push ( item.returnState() );
+	});
+
+	return state;
 }
 
 function EffectZone (zone,effect) {
@@ -111,6 +141,12 @@ function InventoryItem (id, name, fileName, startWith=false) {
 	this.name=name;
 	this.url= require(`../${gamePath}/items/${fileName}`);
 	this.have=startWith;
+}
+InventoryItem.prototype.returnState = function(){
+	return {
+		name : this.name,
+		have: this.have,
+	}
 }
 
 function CharacterModel (baseWidth,baseHeight, cycles,defaultDirection=false) {

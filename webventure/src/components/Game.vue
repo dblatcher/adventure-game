@@ -79,9 +79,20 @@ export default {
     };
 
     if (this.loadData) {
-      console.log ('loading...', this.loadData);
-
       state.roomNumber = this.loadData.roomNumber;
+      state.gameStatus = this.loadData.gameStatus;
+
+      var i;
+      for (i=0; i<state.inventoryItems.length; i++) {
+        state.inventoryItems[i] = Object.assign(state.inventoryItems[i], this.loadData.inventoryItems[i]);
+      }
+      for (i=0; i<state.allCharacters.length; i++) {
+        state.allCharacters[i] = Object.assign(state.allCharacters[i], this.loadData.allCharacters[i]);
+      }
+      for (i=0; i<state.rooms.length; i++) {
+        state.rooms[i] = Object.assign(state.rooms[i], this.loadData.rooms[i]);
+      }
+
 
     }
 
@@ -174,7 +185,7 @@ export default {
         if (charObject.id === 'pc') {pc=charObject}  
       } )
 	  
-      if (pc && !data.noPc) {
+      if (pc && !data.pcNotMoving) {
         pc.room = rNum;
         pc.x = pcX;
         pc.y = pcY;
@@ -469,15 +480,39 @@ export default {
       this.$on('room-change-done', this.callRoomChangeCallback);
       this.$on('character-room-change', this.characterRoomChange);
     },
+    returnCurrentState: function() {
+      
+      let currentState = {
+        roomNumber : this.roomNumber,
+        gameStatus : this.gameStatus,
+        inventoryItems : [],
+        allCharacters : [],
+        rooms: []
+      }
+      this.inventoryItems.forEach ( (item) => {
+        currentState.inventoryItems.push( item.returnState() );
+      })
+      this.allCharacters.forEach ( (item) => {
+        currentState.allCharacters.push( item.returnState() );
+      })
+      this.rooms.forEach ( (item) => {
+        currentState.rooms.push( item.returnState() );
+      })
+
+      return currentState;
+    },
   },
 
 
   beforeMount: function () {
-  window.vm = this;
-  console.log('window.vm = this')
+    window.vm = this;
+
     this.resetListeners(); 
-  this.changeRoom(this.roomNumber,375,10,{
-    callback: function() {console.log('restart', new Date)},
+    this.changeRoom(this.roomNumber,0,0,{
+      pcNotMoving: true,
+      callback: function() {
+        console.log('restart', new Date)
+      },
     });
   }
 
