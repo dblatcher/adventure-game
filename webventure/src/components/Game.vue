@@ -50,6 +50,8 @@ import { interactionMatrix } from "../modules/game-interactions";
 import { Graph, astar } from "../modules/astar";
 import { RectZone, PolyZone} from "../modules/zone";
 
+import {recreateWorldItemFromState} from "../modules/constructors";
+
 import VerbMenu from "./VerbMenu";
 import InventoryMenu from "./InventoryMenu";
 import DialogMenu from "./DialogMenu";
@@ -78,11 +80,19 @@ export default {
       gameStatus: 'LIVE',
     };
 
-    if (this.loadData) {
-      state.roomNumber = this.loadData.roomNumber;
+    if (this.loadData && this.loadData.gameStatus) {
       state.gameStatus = this.loadData.gameStatus;
+      state.roomNumber = this.loadData.roomNumber;
 
-      var i;
+      var i,j, listForRoom;
+      // replace plain objects in each loadData room with array of WorldItems
+      for (i=0; i<state.rooms.length; i++) {
+        listForRoom = this.loadData.rooms[i].worldItems;
+        for (j=0; j<listForRoom.length; j++) {
+          listForRoom.splice  (j,1, recreateWorldItemFromState(listForRoom[j]) );
+        }
+      }
+
       for (i=0; i<state.inventoryItems.length; i++) {
         state.inventoryItems[i] = Object.assign(state.inventoryItems[i], this.loadData.inventoryItems[i]);
       }
@@ -92,7 +102,6 @@ export default {
       for (i=0; i<state.rooms.length; i++) {
         state.rooms[i] = Object.assign(state.rooms[i], this.loadData.rooms[i]);
       }
-
 
     }
 
@@ -509,6 +518,7 @@ export default {
 
   beforeMount: function () {
     window.vm = this;
+
 
     this.resetListeners(); 
     this.changeRoom(this.roomNumber,0,0,{

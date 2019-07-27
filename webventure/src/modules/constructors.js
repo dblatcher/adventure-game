@@ -95,6 +95,19 @@ WorldItem.prototype.returnState = function() {
 	)
 };
 
+var recreateWorldItemFromState = function(plainObject) {
+	return new WorldItem (
+		plainObject.id.substring(0, plainObject.id.length-2),
+		plainObject.name,
+		[plainObject.x, plainObject.y, plainObject.walkOffsetX, plainObject.walkOffsetY],
+		plainObject.baseWidth,
+		plainObject.baseHeight,
+		plainObject.status.cycle,
+		plainObject.initialState.model,
+		plainObject.scale
+	);
+}
+
 function Room (id, name, fileName, width,height, contents) {
 	this.id = this.id = id.toUpperCase()+"_R";
 	this.name = name;
@@ -114,6 +127,7 @@ Room.prototype.returnState = function () {
 
 	return state;
 }
+
 
 function EffectZone (zone,effect) {
 	this.zone = zone,
@@ -184,5 +198,9 @@ function CharacterModel (baseWidth,baseHeight, cycles,defaultDirection=false) {
 	this.spritesUsed = spritesUsed;
 	this.validDirections = validDirections;
 }
-
-export {Sprite, Character, WorldItem, Room, EffectZone, Foreground, Verb, InventoryItem, CharacterModel }
+window.WorldItemC = WorldItem;
+export {Sprite,
+	 Character,
+	  WorldItem,
+	   Room, EffectZone, Foreground, Verb, InventoryItem, CharacterModel,
+	   recreateWorldItemFromState }

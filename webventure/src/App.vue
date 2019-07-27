@@ -27,19 +27,13 @@ export default {
 
 
   data () {
-
     return {
       appStatus: 'GAME RUNNING',
-      loadData: null,
+      loadData: {},
       gameInstance: null,
     }
   },
 
-
-  computed : {
-	
-	},
-  
   methods : {
 
     reloadGame : function (state = null) {
@@ -69,14 +63,15 @@ export default {
       if (!this.gameInstance) { return false };
 
       let state =  this.gameInstance.returnCurrentState();
+      state = JSON.stringify(state);
+      state = JSON.parse(state);
 
-      this.$set(this.loadData, 'roomNumber', state.roomNumber);
-      this.$set(this.loadData, 'gameStatus', state.gameStatus);
+      this.loadData.roomNumber = state.roomNumber;
+      this.loadData.gameStatus = state.gameStatus;
       this.$set(this.loadData, 'inventoryItems', state.inventoryItems);
       this.$set(this.loadData, 'allCharacters', state.allCharacters);
       this.$set(this.loadData, 'rooms', state.rooms);
 
-      console.log('App load Data:', this.loadData);
     },
 
   },
