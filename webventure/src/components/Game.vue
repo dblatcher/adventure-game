@@ -100,7 +100,7 @@ export default {
 
 
   computed : {
-    command : function() {			
+    command : function() {
       var sentence = this.verb.description + ' ';
       if (this.subject) {
         sentence +=  this.subject.name+ ' ';			
@@ -120,12 +120,12 @@ export default {
         complete:completeCommand
       }
     },
-	characters : function() {
-		var that = this;
-		return this.allCharacters.filter( (char)=> {
-			return char.room === that.roomNumber;
-		});
-	},
+    characters : function() {
+      var that = this;
+      return this.allCharacters.filter( (char)=> {
+        return char.room === that.roomNumber;
+      });
+    },
     inventory : function() {
       return this.inventoryItems.filter(function(i){return i.have});
     },
@@ -163,22 +163,22 @@ export default {
   methods : {
     changeRoom: function (rNum,pcX,pcY,data) {		
       this.$emit('mile-stone','changing room to '+this.rooms[rNum].name)
-	  if (this.$refs.characters) {
-		this.$refs.characters.forEach ( (charComp) => {
-		  charComp.$destroy();
-		})
-	  };
+      if (this.$refs.characters) {
+        this.$refs.characters.forEach ( (charComp) => {
+          charComp.$destroy();
+        })
+      };
 
-	  var pc;
-	  this.allCharacters.forEach ( (charObject) => {
-		if (charObject.id === 'pc') {pc=charObject}  
-	  } )
+      var pc;
+      this.allCharacters.forEach ( (charObject) => {
+        if (charObject.id === 'pc') {pc=charObject}  
+      } )
 	  
-	  if (pc && !data.noPc) {
-		pc.room = rNum;
-		pc.x = pcX;
-		pc.y = pcY;
-	  }
+      if (pc && !data.noPc) {
+        pc.room = rNum;
+        pc.x = pcX;
+        pc.y = pcY;
+      }
 	  
       this.worldItems.splice(0, this.worldItems.length);
       this.worldItems.push(...this.rooms[rNum].worldItems);
@@ -278,23 +278,23 @@ export default {
       
     },
     characterRoomChange: function (movingCharacter, rNum,x,y) {
-		movingCharacter.room = rNum;
-		movingCharacter.x = x;
-		movingCharacter.y = y;
-	},
-	handleClickOnRoom: function (event){
+      movingCharacter.room = rNum;
+      movingCharacter.x = x;
+      movingCharacter.y = y;
+    },
+    handleClickOnRoom: function (event){
       if (this.gameStatus !== 'LIVE') {return false};
       var pc = this.getThings('pc');
       var room = this.$refs.room;		
       var clickCoordinPx = {x: (event.offsetX),y: (room.$el.offsetHeight - event.offsetY)};
-      
+
       if (event.target !== room.$el ) {
         clickCoordinPx.x += event.target.getClientRects()[0].x;
         clickCoordinPx.x -= room.$el.getClientRects()[0].x;	
         clickCoordinPx.y -= event.target.getClientRects()[0].y;
         clickCoordinPx.y += room.$el.getClientRects()[0].y;
       }
-      
+
       var clickCoord = {
         x : clickCoordinPx.x * room.room.width  / room.$el.clientWidth,
         y : clickCoordinPx.y * room.room.height / room.$el.clientHeight,
@@ -396,8 +396,7 @@ export default {
       var now = new Date();
       thing = thing || {name:'[game]'};
       order = order || {};
-      this.message = `${now.getHours()}:${now.getMinutes()}.${now.getSeconds()} - ${thing.name}: ${type} ${order.ref ? 'ref: '+order.ref:''}. `			
-      //console.log(thing.name, type, order ? 'ref: '+order.ref:null);
+      this.message = `${now.getHours()}:${now.getMinutes()}.${now.getSeconds()} - ${thing.name}: ${type} ${order.ref ? 'ref: '+order.ref:''}. `
     },
     handleHoverEvent: function(component,event){
       if (event.type=== 'mouseover') {
@@ -406,9 +405,8 @@ export default {
       if (event.type=== 'mouseout' && this.thingHoveredOn === component) {
         this.thingHoveredOn = null;
       };	
-    },	
+    },
     findPath : function (startPoint, endPoint) {
-      
       var i, obstacles = this.rooms[this.roomNumber].obstacles, directPath = true;
       for (i=0; i < obstacles.length; i++) {
         if (obstacles[i].intersectsLineSegment(startPoint, endPoint)){
@@ -417,7 +415,7 @@ export default {
         }
       }
       if (directPath) {return [{x:endPoint.x, y:endPoint.y}]};
-      
+
       var g = new Graph(this.grid,{diagonal:true}); 
       var cellSize = 5;
       var sx = Math.floor (startPoint.x / cellSize); 
@@ -459,7 +457,7 @@ export default {
           callback.apply(this,[]);
         }
       })
-    },	
+    },
     resetListeners: function() {
       this.$off();
       this.$on('verb-picked',this.pickVerb);	
@@ -475,11 +473,11 @@ export default {
 
 
   beforeMount: function () {
-	window.vm = this;
-	console.log('window.vm = this')
+  window.vm = this;
+  console.log('window.vm = this')
     this.resetListeners(); 
-	this.changeRoom(this.roomNumber,375,10,{
-		callback: function() {console.log('restart', new Date)},
+  this.changeRoom(this.roomNumber,375,10,{
+    callback: function() {console.log('restart', new Date)},
     });
   }
 
