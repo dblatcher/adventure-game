@@ -108,7 +108,6 @@ var interactions =[
 	new Interaction(['TALK','LUIGI_C'],[],
 	function() {
 		this.gameStatus = "CONVERSATION";
-		this.interlocutor = 'LUIGI_C';
 		this.conversation = 'withLuigi';
 	}),
 ]

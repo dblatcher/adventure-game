@@ -68,21 +68,20 @@ export default {
   props:['loadData'],
 
   data () {
-    
     let state = {
-      roomNumber: 0,
-      allCharacters : gameData.makeCharacters(),
-      rooms: gameData.makeRooms(),
+      gameStatus : 'LIVE',
+      roomNumber : 0,
+      conversation : null,
+      rooms : gameData.makeRooms(),
       inventoryItems: gameData.makeInventoryItems(),
-      conversations:makeConversations(),
-      conversation: null,
-      interlocutor: null,
-      gameStatus: 'LIVE',
+      allCharacters : gameData.makeCharacters(),
+      conversations : makeConversations(),
     };
 
     if (this.loadData && this.loadData.gameStatus) {
       state.gameStatus = this.loadData.gameStatus;
       state.roomNumber = this.loadData.roomNumber;
+      state.conversation = this.loadData.conversation;
 
       var i,j, listForRoom;
       // replace plain objects in each loadData room with array of WorldItems
@@ -93,15 +92,30 @@ export default {
         }
       }
 
+      for (i=0; i<state.rooms.length; i++) {
+        state.rooms[i] = Object.assign(state.rooms[i], this.loadData.rooms[i]);
+      }
       for (i=0; i<state.inventoryItems.length; i++) {
         state.inventoryItems[i] = Object.assign(state.inventoryItems[i], this.loadData.inventoryItems[i]);
       }
       for (i=0; i<state.allCharacters.length; i++) {
         state.allCharacters[i] = Object.assign(state.allCharacters[i], this.loadData.allCharacters[i]);
       }
-      for (i=0; i<state.rooms.length; i++) {
-        state.rooms[i] = Object.assign(state.rooms[i], this.loadData.rooms[i]);
-      }
+
+      //set each conversations current branch (string)
+      //assign the values saved in the data to the corresponding dialog choice
+      //currently, only the 'disabled' property is saved in loadData 
+      let conversationData = this.loadData.conversations;
+      Object.keys (state.conversations).forEach ( (label) => {
+        state.conversations[label].currentBranch = conversationData[label].currentBranch;
+        Object.keys(state.conversations[label].branches).forEach ( (branchLabel) => {
+          let stateChoiceList = state.conversations[label].branches[branchLabel].choices;
+          let dataChoiceList = conversationData[label].branches[branchLabel].choices;
+          stateChoiceList.forEach ( (choice, index) => {
+            choice = Object.assign (choice, dataChoiceList[index])
+          });
+        })
+      })
 
     }
 
@@ -151,7 +165,7 @@ export default {
     },
     dialogChoices : function () {
       if (!this.conversations[this.conversation]) return [];
-      return this.conversations[this.conversation].getOptions();
+      return this.conversations[this.conversation].getEnabledOptions();
     },
     obstacles : function(){
       return this.rooms[this.roomNumber].obstacles;
@@ -357,7 +371,7 @@ export default {
         
         function findActorId(item){
           var id = item.actor;
-          if (id === 'npc') {id = theApp.interlocutor};
+          if (id === 'npc') {id = theApp.conversations[theApp.conversation].npc};
           return id;
         }
       
@@ -365,8 +379,8 @@ export default {
 
           var currentConversation = theApp.conversations[theApp.conversation];
 
-          if (choice.canOnlySayOnce) {			
-            currentConversation.getOptions().splice( currentConversation.getOptions().indexOf(choice),1 );
+          if (choice.canOnlySayOnce) {
+            choice.disabled = true;
           }
           if (choice.changesBranch) {
             currentConversation.currentBranch = choice.changesBranch;
@@ -497,10 +511,18 @@ export default {
       let currentState = {
         roomNumber : this.roomNumber,
         gameStatus : this.gameStatus,
+        conversation: this.conversation,
         inventoryItems : [],
         allCharacters : [],
-        rooms: []
+        rooms: [],
+        conversations: {},
       }
+
+      const gameConversations = this.conversations;
+      Object.keys (gameConversations).forEach ( (label) => {
+        currentState.conversations[label] = gameConversations[label].returnState();
+      })
+
       this.inventoryItems.forEach ( (item) => {
         currentState.inventoryItems.push( item.returnState() );
       })
@@ -524,7 +546,7 @@ export default {
     this.changeRoom(this.roomNumber,0,0,{
       pcNotMoving: true,
       callback: function() {
-        console.log('restart', new Date)
+        console.log(vm.loadData ? 'reload' : 'restart', new Date)
       },
     });
   }

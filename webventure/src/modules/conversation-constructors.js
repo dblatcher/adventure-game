@@ -25,7 +25,7 @@ function DialogChoice (optionText,script,config={}) {
 	this.canOnlySayOnce = config.canOnlySayOnce || false;
 	this.ends = config.ends || false;
 	this.changesBranch = config.changesBranch || false;
-	
+	this.disabled = config.disabled || false;
 	
 	function parseScriptLine(line) {
 		if (typeof line === 'object') {return line};
@@ -66,8 +66,9 @@ DialogBranch.prototype.reset = function () {
 }
 
 
-function Conversation (label, firstBranch) {
+function Conversation (label,npc, firstBranch) {
 	this.label = label;
+	this.npc = npc;
 	this.branches = {};
 	this.firstBranch = firstBranch;
 	this.currentBranch = firstBranch;
@@ -78,6 +79,29 @@ Conversation.prototype.addBranch = function (dialogBranch) {
 }
 Conversation.prototype.getOptions = function () {
 	return this.branches[this.currentBranch].choices;
+}
+Conversation.prototype.getEnabledOptions = function () {
+	return this.branches[this.currentBranch].choices.filter( (choice) => {return !choice.disabled} );
+}
+Conversation.prototype.returnState =function () {
+	const that = this;
+
+	let state = {
+		currentBranch : this.currentBranch,
+		branches : {}
+	}
+
+	let branchLabels = Object.keys (this.branches);
+
+	branchLabels.forEach ( (label) => {
+		state.branches[label] = {
+			choices : that.branches[label].choices.map( (v) => { return {
+				disabled: v.disabled,
+			} } ) 
+		}; 
+	})
+
+	return state;
 }
 
 export {Conversation, DialogBranch, DialogChoice}

@@ -4,7 +4,7 @@ import {Conversation, DialogBranch, DialogChoice} from './conversation-construct
 function makeConversations() {
 
 	var conversations = {};
-	conversations.withLuigi = new Conversation ('Talking to Luigi','start');
+	conversations.withLuigi = new Conversation ('Talking to Luigi', "LUIGI_C",'start');
 
 	conversations.withLuigi.addBranch (new DialogBranch(
 		'start', [
@@ -13,7 +13,7 @@ function makeConversations() {
 				{canOnlySayOnce:true}),
 			new DialogChoice ('Do you have a hammer?',
 				['npc::Sure.','npc::Take it'],
-				{canOnlySayOnce:true,
+				{canOnlySayOnce:true, disabled:true,
 				consequence:function(theApp,choice){
 					theApp.inventoryItems.filter(function(a){return a.id=='HAMMER_I'})[0].have = true;
 				}}),

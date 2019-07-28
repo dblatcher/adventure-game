@@ -62,15 +62,11 @@ export default {
     saveGame : function () {
       if (!this.gameInstance) { return false };
 
-      let state =  this.gameInstance.returnCurrentState();
-      state = JSON.stringify(state);
-      state = JSON.parse(state);
-
-      this.loadData.roomNumber = state.roomNumber;
-      this.loadData.gameStatus = state.gameStatus;
-      this.$set(this.loadData, 'inventoryItems', state.inventoryItems);
-      this.$set(this.loadData, 'allCharacters', state.allCharacters);
-      this.$set(this.loadData, 'rooms', state.rooms);
+      let state = this.gameInstance.returnCurrentState();
+      let app = this;
+      Object.keys(state).forEach ( (key) => {
+        app.$set(app.loadData, key, state[key]);
+      });
 
     },
 
