@@ -1,4 +1,4 @@
-import { Interaction } from "./interaction-constructor";
+import { Interaction } from "../modules/interaction-constructor";
 
 var interactions =[
 	new Interaction(['LOOK','WINDOW_W'],[],function(){

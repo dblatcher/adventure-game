@@ -1,45 +1,46 @@
 <template>
   <div>
 
-	<h1>status:{{appStatus}}</h1>
+    <button @click="reloadGame()">restart</button>
+    <button @click="reloadGame(loadData)">load</button>
+    <button @click="saveGame()">save</button>
 
-  <div id="gameHolder">
-  </div>
-
-  <button @click="reloadGame()">restart</button>
-  <button @click="reloadGame(loadData)">load</button>
-  <button @click="saveGame()">save</button>
+    <TitleScreen v-if="showTitleScreen"></TitleScreen>
+    
+    <div id="gameHolder"></div>
 
   </div>
 </template>
 
 <script>
 
-
-import Game from "./components/Game";
 import Vue from 'vue';
+import Game from "./components/Game";
+import {TitleScreen} from "./gameIndex"
 
 export default {
   name: 'App',
   components :{
-    Game
+    Game, TitleScreen
   },
 
 
   data () {
     return {
-      appStatus: 'GAME RUNNING',
       loadData: {},
       gameInstance: null,
     }
   },
 
+  computed : {
+    showTitleScreen : function () { return !this.gameInstance}
+  },
+  
   methods : {
 
     reloadGame : function (state = null) {
 
       if (this.gameInstance && this.gameInstance._isVue) {
-        window.oldVm = this.gameInstance;
         this.gameInstance.$destroy();
         this.gameInstance.$el.parentElement.removeChild( this.gameInstance.$el);
         buildGame.apply(this);
@@ -48,7 +49,7 @@ export default {
       }
 
       function buildGame() {
-        var element = document.querySelector('#gameHolder').appendChild(document.createElement('div'))
+        var element = document.querySelector('#gameHolder').appendChild(document.createElement('main'))
         var GameConstructor = Vue.extend(Game);
         this.gameInstance = new GameConstructor({
           propsData: {
@@ -75,7 +76,7 @@ export default {
 
   mounted: function () {
     window.app = this;
-    this.reloadGame();
+    //this.reloadGame();
   }
 
 }

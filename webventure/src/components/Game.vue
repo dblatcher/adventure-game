@@ -35,16 +35,14 @@
       v-bind:class="{hidden:gameStatus === 'CONVERSATION' ? false:true}"
     ></DialogMenu>
 
-    <p style="position:fixed; top:0; background-color:white;">{{message}}</p>
-    <p style="position:fixed; top:0; right:0; background-color:white;"ref="coordinateDisplay"></p>
+    <p style="position:fixed; bottom:0; background-color:white;">{{message}}</p>
+    <p style="position:fixed; bottom:0; right:0; background-color:white;"ref="coordinateDisplay"></p>
   </div>
 </template>
 
 <script>
 
-import { gameData } from "../modules/game-data";
-import { makeConversations } from "../modules/game-conversations";
-import { interactionMatrix } from "../modules/game-interactions";
+import { gameData } from "../gameIndex";
 
 import { Graph, astar } from "../modules/astar";
 import { RectZone, PolyZone} from "../modules/zone";
@@ -75,7 +73,7 @@ export default {
       rooms : gameData.makeRooms(),
       inventoryItems: gameData.makeInventoryItems(),
       allCharacters : gameData.makeCharacters(),
-      conversations : makeConversations(),
+      conversations : gameData.makeConversations(),
     };
 
     if (this.loadData && this.loadData.gameStatus) {
@@ -83,7 +81,7 @@ export default {
     }
 
     return Object.assign({
-      interactionMatrix:interactionMatrix,
+      interactionMatrix: gameData.interactionMatrix,
       verbList : gameData.verbList,
       sprites : gameData.sprites, 	
       worldItems : [],
@@ -203,8 +201,8 @@ export default {
       //find array of conditions/response object matching the command
       var thirdParam = command.object? command.object.id : 'intransitive';
       var matchingList = [];
-      if (interactionMatrix[command.verb.id] && interactionMatrix[command.verb.id][command.subject.id] ) {
-        matchingList = interactionMatrix[command.verb.id][command.subject.id][thirdParam] || [];
+      if (this.interactionMatrix[command.verb.id] && this.interactionMatrix[command.verb.id][command.subject.id] ) {
+        matchingList = this.interactionMatrix[command.verb.id][command.subject.id][thirdParam] || [];
       }
 
       //perform the first reponse on the list for which the condition tests pass
@@ -307,7 +305,7 @@ export default {
       if (!this.subject) {
         this.subject = thing;
         if (this.verb.transitive) {
-          if (interactionMatrix[this.verb.id] && interactionMatrix[this.verb.id][this.subject.id]  && interactionMatrix[this.verb.id][this.subject.id].intransitive ) {  // test for non transitive use of transitive verb, like 'use lever'
+          if (this.interactionMatrix[this.verb.id] && this.interactionMatrix[this.verb.id][this.subject.id]  && this.interactionMatrix[this.verb.id][this.subject.id].intransitive ) {  // test for non transitive use of transitive verb, like 'use lever'
             this.needObject = false;
           } else {
             this.needObject = true;

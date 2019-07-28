@@ -1,6 +1,6 @@
 
-import { RectZone, PolyZone } from "./zone";
-import { Character, WorldItem, Room, EffectZone, Foreground, Verb, InventoryItem, Sprite, CharacterModel } from "./constructors"
+import { RectZone, PolyZone } from "../modules/zone";
+import { Character, WorldItem, Room, EffectZone, Foreground, Verb, InventoryItem, Sprite, CharacterModel } from "../modules/constructors"
 
 var sprites = [
   new Sprite (0,'boy.png', [4,4]),
@@ -172,4 +172,4 @@ const gameData = {
 	sprites, makeRooms, verbList, makeInventoryItems, makeCharacters
 }
 
-export { gameData }
+export { sprites, makeRooms, verbList, makeInventoryItems, makeCharacters }
