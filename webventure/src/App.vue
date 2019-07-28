@@ -1,11 +1,15 @@
 <template>
   <div>
 
+    <button @click="quitGame()">Quit to Title</button>
     <button @click="reloadGame()">restart</button>
     <button @click="reloadGame(loadData)">load</button>
     <button @click="saveGame()">save</button>
 
-    <TitleScreen v-if="showTitleScreen"></TitleScreen>
+    <TitleScreen v-if="showTitleScreen">
+      <button @click="reloadGame()">New Game</button>
+      <button @click="reloadGame(loadData)">load</button>
+    </TitleScreen>
     
     <div id="gameHolder"></div>
 
@@ -37,6 +41,14 @@ export default {
   },
   
   methods : {
+
+    quitGame : function() {
+      if (this.gameInstance && this.gameInstance._isVue) {
+        this.gameInstance.$destroy();
+        this.gameInstance.$el.parentElement.removeChild( this.gameInstance.$el);
+        this.gameInstance = null;
+      }
+    },
 
     reloadGame : function (state = null) {
 
