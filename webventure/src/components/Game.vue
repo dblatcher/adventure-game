@@ -1,29 +1,27 @@
 <template>
   <div ref='root'>
 
-
-		<div class="room-wrapper">
-			<Room ref="room" 
-				v-bind:room="rooms[roomNumber]" 
-				v-bind:measure="roomMeasure">
+    <div class="room-wrapper">
+      <Room ref="room" 
+        v-bind:room="rooms[roomNumber]" 
+        v-bind:measure="roomMeasure">
           <Character ref="characters"
-						v-for="char in characters":key="rooms[roomNumber].id + '-' + char.id"
-						v-bind:measure="roomMeasure"
-						v-bind:char='char'>
-					</Character>
+            v-for="char in characters":key="rooms[roomNumber].id + '-' + char.id"
+            v-bind:measure="roomMeasure"
+            v-bind:char='char'>
+          </Character>
           <WorldItem ref="items"
-						v-for="item in worldItems":key="item.id"
-						v-bind:measure="roomMeasure"
-						v-bind:item='item'>
+            v-for="item in worldItems":key="item.id"
+            v-bind:measure="roomMeasure"
+            v-bind:item='item'>
           </WorldItem>
-			</Room>
-		</div>
+      </Room>
+    </div>
 
-
-		<CommandLine 
-			v-bind:command='command' 
-			v-bind:class="{hidden:gameStatus === 'LIVE' ? false:true}"
-		></CommandLine>
+    <CommandLine 
+      v-bind:command='command' 
+      v-bind:class="{hidden:gameStatus === 'LIVE' ? false:true}"
+    ></CommandLine>
 
     <div class="menu-wrapper"
       v-bind:class="{hidden:gameStatus === 'LIVE' ? false:true}"
@@ -33,12 +31,12 @@
     </div>
 
     <DialogMenu
-			v-bind:choices="dialogChoices"
-			v-bind:class="{hidden:gameStatus === 'CONVERSATION' ? false:true}"
-		></DialogMenu>
+      v-bind:choices="dialogChoices"
+      v-bind:class="{hidden:gameStatus === 'CONVERSATION' ? false:true}"
+    ></DialogMenu>
 
     <p style="position:fixed; top:0; background-color:white;">{{message}}</p>
-		<p style="position:fixed; top:0; right:0; background-color:white;"ref="coordinateDisplay"></p>
+    <p style="position:fixed; top:0; right:0; background-color:white;"ref="coordinateDisplay"></p>
   </div>
 </template>
 
@@ -47,10 +45,12 @@
 import { gameData } from "../modules/game-data";
 import { makeConversations } from "../modules/game-conversations";
 import { interactionMatrix } from "../modules/game-interactions";
+
 import { Graph, astar } from "../modules/astar";
 import { RectZone, PolyZone} from "../modules/zone";
+import { modifyStartingStateWithLoadedGame, getCurrentStateData } from "../modules/savedStates";
 
-import {recreateWorldItemFromState} from "../modules/constructors";
+
 
 import VerbMenu from "./VerbMenu";
 import InventoryMenu from "./InventoryMenu";
@@ -79,44 +79,7 @@ export default {
     };
 
     if (this.loadData && this.loadData.gameStatus) {
-      state.gameStatus = this.loadData.gameStatus;
-      state.roomNumber = this.loadData.roomNumber;
-      state.conversation = this.loadData.conversation;
-
-      var i,j, listForRoom;
-      // replace plain objects in each loadData room with array of WorldItems
-      for (i=0; i<state.rooms.length; i++) {
-        listForRoom = this.loadData.rooms[i].worldItems;
-        for (j=0; j<listForRoom.length; j++) {
-          listForRoom.splice  (j,1, recreateWorldItemFromState(listForRoom[j]) );
-        }
-      }
-
-      for (i=0; i<state.rooms.length; i++) {
-        state.rooms[i] = Object.assign(state.rooms[i], this.loadData.rooms[i]);
-      }
-      for (i=0; i<state.inventoryItems.length; i++) {
-        state.inventoryItems[i] = Object.assign(state.inventoryItems[i], this.loadData.inventoryItems[i]);
-      }
-      for (i=0; i<state.allCharacters.length; i++) {
-        state.allCharacters[i] = Object.assign(state.allCharacters[i], this.loadData.allCharacters[i]);
-      }
-
-      //set each conversations current branch (string)
-      //assign the values saved in the data to the corresponding dialog choice
-      //currently, only the 'disabled' property is saved in loadData 
-      let conversationData = this.loadData.conversations;
-      Object.keys (state.conversations).forEach ( (label) => {
-        state.conversations[label].currentBranch = conversationData[label].currentBranch;
-        Object.keys(state.conversations[label].branches).forEach ( (branchLabel) => {
-          let stateChoiceList = state.conversations[label].branches[branchLabel].choices;
-          let dataChoiceList = conversationData[label].branches[branchLabel].choices;
-          stateChoiceList.forEach ( (choice, index) => {
-            choice = Object.assign (choice, dataChoiceList[index])
-          });
-        })
-      })
-
+      modifyStartingStateWithLoadedGame(state, this.loadData)
     }
 
     return Object.assign({
@@ -507,33 +470,7 @@ export default {
       this.$on('character-room-change', this.characterRoomChange);
     },
     returnCurrentState: function() {
-      
-      let currentState = {
-        roomNumber : this.roomNumber,
-        gameStatus : this.gameStatus,
-        conversation: this.conversation,
-        inventoryItems : [],
-        allCharacters : [],
-        rooms: [],
-        conversations: {},
-      }
-
-      const gameConversations = this.conversations;
-      Object.keys (gameConversations).forEach ( (label) => {
-        currentState.conversations[label] = gameConversations[label].returnState();
-      })
-
-      this.inventoryItems.forEach ( (item) => {
-        currentState.inventoryItems.push( item.returnState() );
-      })
-      this.allCharacters.forEach ( (item) => {
-        currentState.allCharacters.push( item.returnState() );
-      })
-      this.rooms.forEach ( (item) => {
-        currentState.rooms.push( item.returnState() );
-      })
-
-      return currentState;
+      return getCurrentStateData(this);
     },
   },
 
