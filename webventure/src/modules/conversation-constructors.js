@@ -21,11 +21,16 @@ function DialogChoice (optionText,script,config={}) {
 		
 	}
 	
+	if (typeof config.addItems === 'string' ) { config.addItems = [config.addItems] };
+	if (typeof config.removeItems === 'string' ) { config.removeItems = [config.removeItems] };
 	this.consequence = config.consequence || null;
 	this.canOnlySayOnce = config.canOnlySayOnce || false;
 	this.ends = config.ends || false;
 	this.changesBranch = config.changesBranch || false;
 	this.disabled = config.disabled || false;
+	this.addItems = config.addItems || false;
+	this.removeItems = config.removeItems || false;
+	
 	
 	function parseScriptLine(line) {
 		if (typeof line === 'object') {return line};

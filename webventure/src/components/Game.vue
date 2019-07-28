@@ -345,6 +345,16 @@ export default {
           if (choice.canOnlySayOnce) {
             choice.disabled = true;
           }
+		  if (choice.addItems) {
+			  choice.addItems.forEach ( (itemId) => {
+				  theApp.inventoryItems.filter(function(a){return a.id==itemId})[0].have = true;
+			  })
+		  }
+		  if (choice.removeItems) {
+			  choice.removeItems.forEach ( (itemId) => {
+				  theApp.inventoryItems.filter(function(a){return a.id==itemId})[0].have = false;
+			  })
+		  }
           if (choice.changesBranch) {
             currentConversation.currentBranch = choice.changesBranch;
           } 

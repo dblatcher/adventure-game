@@ -12,11 +12,8 @@ function makeConversations() {
 				['npc::Green Mario...','npc::...also called Luigi.'],
 				{canOnlySayOnce:true}),
 			new DialogChoice ('Do you have a hammer?',
-				['npc::Sure.','npc::Take it'],
-				{canOnlySayOnce:true, disabled:true,
-				consequence:function(theApp,choice){
-					theApp.inventoryItems.filter(function(a){return a.id=='HAMMER_I'})[0].have = true;
-				}}),
+				['npc::Sure.','npc::swap it for the shoe.'],
+				{canOnlySayOnce:true, disabled:false, addItems:'HAMMER_I', removeItems:'SHOE_I'}),
 			new DialogChoice ('Do you know anything about plumbing?',
 				['npc::what do you want to know?'],
 				{changesBranch:'plumbing'}),
