@@ -31,7 +31,7 @@ export default {
 
 	data: function() {
 		return {
-			maxVisible: 6,
+			maxVisible: 8,
 			offset: 0
 		};
 	},

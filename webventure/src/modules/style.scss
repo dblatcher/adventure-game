@@ -1,3 +1,13 @@
+.game {
+    display: flex;
+    flex-direction: column;
+    position:fixed;
+    margin-top: 2rem;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+}
 
 .room {
 	position:relative;
@@ -6,18 +16,15 @@
 }
 
 .room-wrapper {
-	margin: .5rem;
-	border: 5px inset gray;
-	display: flex;	
+    display: flex;
+    flex-direction: column;	
 	justify-content:center;
 	align-items: center;
-	background-color: black;
-	padding:.25rem;
 }
 
 .command-line {
-	margin: .5rem;
-	border: 5px inset gray;
+    margin: .25rem;
+    background-color: black;
 	display: flex;
 	flex-wrap: wrap;
 	transition: background-color 0.75s, opacity 0.75s;
@@ -30,23 +37,21 @@
         min-height: 1.2em;
         margin: 0;
         padding: .25rem 1rem;
+        color:white;
     }
 
     &__last-phrase {
-        color: green;
+        color: yellow;
     }
 
 }
 
 
 .menu-wrapper {
-	margin: .5rem;
-	border: 5px inset gray;
 	display: flex;	
 	justify-content:center;
 	flex-wrap: wrap;
 	align-items: center;
-	padding:.5rem;
 }
 
 .verb-menu {
@@ -54,12 +59,11 @@
 	flex-wrap: wrap;
 	justify-content:center;
 	box-sizing:border-box;
-    transition: background-color 0.75s, opacity 0.75s;
     
     &__option {
-        margin: .2rem;
+        margin: .1rem;
         position: relative;
-        flex-basis: 4.5rem;
+        flex-basis: 22%;
         font-size: .8rem;
     }
     
@@ -73,13 +77,13 @@
         padding: .25rem;
         box-sizing:border-box;
         position:relative;
+        transition: background-color .25s;
     }
 
     &__input {
         display:none;
 
         &:checked~.verb-menu__box {
-            font-weight: bold;
             border: 2px inset gray;
             color:black;
             background-color: red;
@@ -87,6 +91,10 @@
 
     }
     
+    @media (min-width: 600px) {
+        flex-basis: 45%;
+    }
+
 }
 	
 
@@ -99,16 +107,18 @@
     &__holder {
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
-        margin: 0 2rem;
+        justify-content: flex-start;
+        max-width: 11rem;
+        height: 6rem;
+        align-items: center;
     }
     
     &__item {
         position:relative;
-        flex-basis:45px;
+        flex-basis:2.5rem;
         box-sizing:border-box;
-        padding:3px;
-        margin:3px;
+        padding:2px;
+        margin:2px;
         border: 1px solid black;
         background-color: white;
     }
@@ -118,24 +128,35 @@
     }
 
     &__button { 
-        font-size: 200%;
-        color:gray;
-        opacity: .25;
+        font-size: 150%;
+        color:darkgray;
+        opacity: .5;
+        background: none;
+        border: none;
+        outline: none;
     
         &--enabled { 
             color: black;
             opacity: 1;
+
+            &:active {
+                color: red;
+            }
         }
     }
+
+    @media (min-width: 600px) {
+        flex-basis: 45%;
+    }
+
 }
 
 .dialog-menu {
-	margin: .5rem;
-	border: 5px inset gray;
     padding:.5rem;
     
     &__choice {
-        color:gray;
+        color:black;
+        transition: color .25s;
         cursor:pointer;
         margin-block-start: .25em;
         margin-block-end: .25em;

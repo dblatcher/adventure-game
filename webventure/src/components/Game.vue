@@ -1,5 +1,5 @@
 <template>
-  <div ref='root'>
+  <div class="game" ref='root'>
 
     <div class="room-wrapper">
       <Room ref="room" 

@@ -168,8 +168,5 @@ var makeInventoryItems = function() { return  [
 	new InventoryItem('hammer','hammer', 'hammer.jpg'),
 ]};
 
-const gameData = {
-	sprites, makeRooms, verbList, makeInventoryItems, makeCharacters
-}
 
 export { sprites, makeRooms, verbList, makeInventoryItems, makeCharacters }
