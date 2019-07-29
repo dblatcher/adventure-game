@@ -1,7 +1,9 @@
 <template>
     <main class="title-page">
         <h1 class="title-page__title">Test Game</h1>
-        <slot></slot>
+        <div class="title-page__button-set">
+            <slot></slot>
+        </div>
         <p class="title-page__text">This should have a picture of something</p>
     </main>
 </template>
@@ -38,6 +40,15 @@ export default {
 
     &__title {
         align-self: center;
+    }
+
+    &__button-set {
+        display: flex;
+        justify-content: space-around;
+
+        button {
+            flex-basis: 6rem;
+        }
     }
 }
 

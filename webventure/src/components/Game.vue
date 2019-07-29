@@ -26,7 +26,7 @@
     <div class="menu-wrapper"
       v-bind:class="{hidden:gameStatus === 'LIVE' ? false:true}"
       >
-      <VerbMenu v-bind:verb-list='verbList' v-bind:picked='verb.id' ></VerbMenu>
+      <VerbMenu ref="VerbMenu" v-bind:verb-list='verbList' v-bind:initalPick='verbList[0].id' ></VerbMenu>
       <InventoryMenu v-bind:items="inventory" ></InventoryMenu>
     </div>
 
@@ -245,7 +245,10 @@ export default {
       }
       
       
-      this.subject = null; this.object = null; this.verb = this.verbList[0];
+      this.subject = null; 
+      this.object = null;
+      this.verb = this.verbList[0];
+      this.$refs.VerbMenu.reset(); 
     },
     removeThing: function (id, options={} ) {
       if (typeof id === 'object') {id=id.ident};
@@ -499,5 +502,5 @@ export default {
 }
 </script>
 
-<style src="../modules/style.css"></style>
+<style lang="scss" src="../modules/style.scss"></style>
 
