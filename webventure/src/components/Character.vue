@@ -17,11 +17,15 @@
 				></Sprite>
 		</div>
 		
-		<SpeechLine v-bind:style="{
-				bottom: ( (y+scaledHeight) * this.measure.scale )+this.measure.unit,
-				left: (x * this.measure.scale)+this.measure.unit}"
+		<SpeechLine 
+			v-bind:style="{
+				bottom: ( (y+scaledHeight) * this.measure.scale )+this.measure.unit
+			}"
 			v-bind:text="saying"
-			v-bind:charCentre="x"
+			v-bind:left="x"
+			v-bind:right="this.$parent.room.width - this.x"
+			v-bind:measure="this.measure"
+			v-bind:side="this.x > this.$parent.room.width/2 ? 'right' : 'left'"
 			v-bind:color="char.speechColor"
 		></SpeechLine>
 		
@@ -61,7 +65,6 @@ export default {
 			get: function() { return this.char.saying },
 			set: function(v) { this.char.saying=v }
 		},
-
 		behaviour : {
 			get: function() {return {
 				action:this.char.behaviour_action,

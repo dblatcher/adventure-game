@@ -21,11 +21,17 @@
     <div class="game__controls">
       <CommandLine 
         v-bind:command='command' 
-        v-bind:class="{hidden:gameStatus === 'LIVE' ? false:true}"
+        v-bind:class="{
+          hidden:gameStatus === 'CONVERSATION' ? true:false,
+          disabled:gameStatus === 'LIVE' ? false:true,
+        }"
       ></CommandLine>
 
       <div class="menu-wrapper"
-        v-bind:class="{hidden:gameStatus === 'LIVE' ? false:true}"
+        v-bind:class="{
+          hidden:gameStatus === 'CONVERSATION' ? true:false,
+          disabled:gameStatus === 'LIVE' ? false:true,
+        }"
         >
         <VerbMenu ref="VerbMenu" v-bind:verb-list='verbList' v-bind:initalPick='verbList[0].id' ></VerbMenu>
         <InventoryMenu v-bind:items="inventory" ></InventoryMenu>
@@ -91,7 +97,7 @@ export default {
       sprites : gameData.sprites, 	
       worldItems : [],
       message: 'blank message',
-      roomMeasure: {unit:'px',scale:1},
+      roomMeasure: {unit:'px',scale:1}, //only supporting px ?
       verb: gameData.verbList[0],
       thingHoveredOn:null, 
       subject: null, needObject:false, object:null,
@@ -330,7 +336,6 @@ export default {
       if (this.command.complete) {this.executeCommand();}		
     },	
 
-
     handleDialogChoice: function (choice) {
       var theApp = this, script = choice.script;
       theApp.gameStatus = 'CUTSCENE';
@@ -494,12 +499,11 @@ export default {
   beforeMount: function () {
     window.vm = this;
 
-
     this.resetListeners(); 
     this.changeRoom(this.roomNumber,0,0,{
       pcNotMoving: true,
       callback: function() {
-        console.log(vm.loadData ? 'reload' : 'restart', new Date)
+        console.log(vm.loadData ? 'reload' : 'restart', new Date);
       },
     });
   }

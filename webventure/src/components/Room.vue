@@ -20,6 +20,11 @@ export default {
 		clickHandler : function (event) {
 			this.$parent.$emit('clicked-room', event);	
 		},
+		resize : function (event) {
+			let widthRatio  = this.$el.parentElement.clientWidth  / this.$el.offsetWidth;
+			let heightRatio = this.$el.parentElement.clientHeight / this.$el.offsetHeight;
+			this.$parent.roomMeasure.scale *= Math.min(widthRatio, heightRatio);
+		}
 	},
 	computed: {
 		ident: function() {
@@ -59,6 +64,21 @@ export default {
 			return list;
 		},
 	},
+
+	created() {
+		console.log('room created');
+		window.addEventListener("resize", this.resize);
+	},
+	destroyed() {
+		console.log('room destoryed')
+		window.removeEventListener("resize", this.resize);
+	},
+	mounted() {
+		this.resize();
+	}
+
+
+
 }
 </script>
 
