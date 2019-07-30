@@ -1,7 +1,7 @@
 <template>
   <div class="game" ref='root'>
 
-    <div class="room-wrapper">
+    <div class="game__room-wrapper">
       <Room ref="room" 
         v-bind:room="rooms[roomNumber]" 
         v-bind:measure="roomMeasure">
@@ -18,25 +18,30 @@
       </Room>
     </div>
 
-    <CommandLine 
-      v-bind:command='command' 
-      v-bind:class="{hidden:gameStatus === 'LIVE' ? false:true}"
-    ></CommandLine>
+    <div class="game__controls">
+      <CommandLine 
+        v-bind:command='command' 
+        v-bind:class="{hidden:gameStatus === 'LIVE' ? false:true}"
+      ></CommandLine>
 
-    <div class="menu-wrapper"
-      v-bind:class="{hidden:gameStatus === 'LIVE' ? false:true}"
-      >
-      <VerbMenu ref="VerbMenu" v-bind:verb-list='verbList' v-bind:initalPick='verbList[0].id' ></VerbMenu>
-      <InventoryMenu v-bind:items="inventory" ></InventoryMenu>
+      <div class="menu-wrapper"
+        v-bind:class="{hidden:gameStatus === 'LIVE' ? false:true}"
+        >
+        <VerbMenu ref="VerbMenu" v-bind:verb-list='verbList' v-bind:initalPick='verbList[0].id' ></VerbMenu>
+        <InventoryMenu v-bind:items="inventory" ></InventoryMenu>
+      </div>
+
+      <DialogMenu
+        v-bind:choices="dialogChoices"
+        v-bind:class="{hidden:gameStatus === 'CONVERSATION' ? false:true}"
+      ></DialogMenu>
+
     </div>
 
-    <DialogMenu
-      v-bind:choices="dialogChoices"
-      v-bind:class="{hidden:gameStatus === 'CONVERSATION' ? false:true}"
-    ></DialogMenu>
-
-    <p style="position:fixed; bottom:0; background-color:white;">{{message}}</p>
-    <p style="position:fixed; bottom:0; right:0; background-color:white;"ref="coordinateDisplay"></p>
+    <p style="position:fixed; top:0; right:0; background-color:white;">
+      <span>{{message}}</span>
+      <span ref="coordinateDisplay"></span>
+    </p>
   </div>
 </template>
 
@@ -86,7 +91,7 @@ export default {
       sprites : gameData.sprites, 	
       worldItems : [],
       message: 'blank message',
-      roomMeasure: {unit:'em',scale:0.05},
+      roomMeasure: {unit:'px',scale:1},
       verb: gameData.verbList[0],
       thingHoveredOn:null, 
       subject: null, needObject:false, object:null,
