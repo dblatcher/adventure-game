@@ -1,10 +1,6 @@
 <template>
   <div>
 
-    <button @click="quitGame()">Quit to Title</button>
-    <button @click="reloadGame()">restart</button>
-    <button @click="reloadGame(loadData)">load</button>
-    <button @click="saveGame()">save</button>
 
     <TitleScreen v-if="showTitleScreen">
       <button @click="reloadGame()">New Game</button>
@@ -13,6 +9,10 @@
     
     <div id="gameHolder"></div>
 
+    <button @click="quitGame()">Quit to Title</button>
+    <button @click="reloadGame()">restart</button>
+    <button @click="reloadGame(loadData)">load</button>
+    <button @click="saveGame()">save</button>
   </div>
 </template>
 

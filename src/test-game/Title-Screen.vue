@@ -18,17 +18,16 @@ export default {
 
 .title-page {
 
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    padding: 1rem;
-    width: 70vw;
-    height: 80vh;
+    position: absolute;
+    padding-top: 2rem;
     box-sizing: border-box;
+    top:0;
+    left:0;
+    z-index: -10;
+    width: 100%;
+    height: 100%;
 
     background-color: black;
-    margin: 1rem;
     border: 5px outset red;
 
     display: flex;

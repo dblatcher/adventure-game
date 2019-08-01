@@ -44,7 +44,7 @@
 
     </div>
 
-    <p style="position:fixed; top:0; right:0; background-color:white;">
+    <p style="display:none; position:absolute; bottom:0; right:0; background-color:white;">
       <span>{{message}}</span>
       <span ref="coordinateDisplay"></span>
     </p>
