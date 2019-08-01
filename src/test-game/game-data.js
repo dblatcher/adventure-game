@@ -163,7 +163,15 @@ var verbList = [
 
 var makeInventoryItems = function() { return  [
 	new InventoryItem('bucket', 'bucket', 'bucket.png'),
-	new InventoryItem('stick','lolly stick', 'stick.jpg',true),
+	new InventoryItem('sock', 'sock', 'sock.png',true),
+	new InventoryItem('nail', 'nail', 'nail.png',true),
+	new InventoryItem('sock', 'sock', 'sock.png',true),
+	new InventoryItem('nail2', 'nail', 'nail.png',true),
+	new InventoryItem('sock2', 'sock', 'sock.png',true),
+	new InventoryItem('nail3', 'nail', 'nail.png',true),
+	new InventoryItem('sock3', 'sock', 'sock.png',true),
+	new InventoryItem('nail4', 'nail', 'nail.png',true),
+	new InventoryItem('stick4','lolly stick', 'stick.jpg',true),
 	new InventoryItem('shoe','red shoe', 'shoe.jpg',true),
 	new InventoryItem('hammer','hammer', 'hammer.jpg'),
 ]};

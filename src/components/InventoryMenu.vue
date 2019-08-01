@@ -1,23 +1,18 @@
 <template>
 	<section class="inventory-menu">
 
-		<button @click="buttonHandler('back')" v-bind:class="{ 'inventory-menu__button--enabled': enableBack }"
-		class="inventory-menu__button inventory-menu__button--back"> &larr; </button> 
-
 		<div class="inventory-menu__holder">
 
 			<div @click="clickHandler(item)" 
 			v-on:mouseover="hoverHandler($event,item)" 
 			v-on:mouseout="hoverHandler($event,item)"
 			class="inventory-menu__item" 
-			v-for="item, index in this.visibleItems":key="index">
+			v-for="item, index in this.items":key="index">
 				<img class="inventory-menu__pic" v-bind:src="item.url" v-bind:name="item.name"/>
 			</div>
 			
 		</div>
 
-		<button @click="buttonHandler('forward')" v-bind:class="{ 'inventory-menu__button--enabled': enableForward }" 
-		class="inventory-menu__button inventory-menu__button--forward"> &rarr; </button> 
 
 	</section>
 </template>
@@ -36,34 +31,8 @@ export default {
 		};
 	},
 
-	computed: {
-		visibleItems: function() {
-			if (this.items.length <= this.maxVisible) {return this.items;}
-			
-			var visibleItems = [];
-			for (var i = 0; (i< this.maxVisible && i+this.offset< this.items.length); i++) {
-				visibleItems.push(this.items[i+this.offset]);
-			}
-			return visibleItems;
-		},
-		enableBack : function(){
-			return (this.offset > 0 &&  this.items.length > this.maxVisible )
-		},
-		enableForward : function(){
-			return (this.offset < this.items.length-this.maxVisible &&  this.items.length > this.maxVisible )
-		},
-	},
 
 	methods: {
-		buttonHandler(direction) {
-			if (this.disabled) {return false;}
-			if (direction === 'back') {
-				if (this.offset > 0) {this.offset--};
-			}
-			if (direction === 'forward') {
-				if (this.offset < this.items.length-this.maxVisible) {this.offset++};
-			}
-		},
 		clickHandler(item) {
 			this.$parent.$emit('clicked-thing', item);
 		},
@@ -76,6 +45,49 @@ export default {
 }
 </script>
 
+<style scoped="true" lang="scss">
 
+.inventory-menu {
+	overflow:hidden;
+	box-sizing:border-box;
+	transition: background-color 0.75s, opacity 1s;
+
+	height: 4rem;
+    overflow-x: scroll;
+	margin-left: .5rem;
+    margin-right: .5rem;
+    background-color: black;
+
+    &__holder {
+		height: 3rem;
+    	width: max-content;
+    }
+    
+    &__item {
+		display: inline-block;
+
+        width: 2.4rem;
+        box-sizing:border-box;
+        padding:2px;
+        margin:2px;
+        border: 1px solid black;
+        background-color: white;
+    }
+
+    &__pic {
+		max-width: 100%;
+    }
+
+
+
+    @media (min-width: 600px) {
+        flex-basis: 45%;
+    }
+
+}
+
+
+
+</style>
 
 
