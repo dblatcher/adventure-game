@@ -11,7 +11,8 @@
 
     <button @click="quitGame()">Quit to Title</button>
     <button @click="reloadGame()">restart</button>
-    <button @click="reloadGame(loadData)">load</button>
+    <button v-if="loadData.gameStatus" @click="reloadGame(loadData)">load</button>
+    <button v-if="loadData.gameStatus" @click="deleteSavedGame()">clear</button>
     <button @click="saveGame()">save</button>
   </div>
 </template>
@@ -30,8 +31,14 @@ export default {
 
 
   data () {
+
+    //console.log (window.localStorage.getItem('saveGameData'));
+    let dataFromStorage = window.localStorage.getItem('saveGameData');
+    dataFromStorage = JSON.parse(dataFromStorage);
+    console.log(dataFromStorage)
+
     return {
-      loadData: {},
+      loadData: dataFromStorage || {},
       gameInstance: null,
     }
   },
@@ -76,11 +83,19 @@ export default {
       if (!this.gameInstance) { return false };
 
       let state = this.gameInstance.returnCurrentState();
+      let dataString = JSON.stringify(state);
+      window.localStorage.setItem('saveGameData', dataString)
+
       let app = this;
       Object.keys(state).forEach ( (key) => {
         app.$set(app.loadData, key, state[key]);
       });
 
+    },
+
+    deleteSavedGame : function () {
+      window.localStorage.removeItem('saveGameData');
+      app.loadData = {};
     },
 
   },
