@@ -1,6 +1,11 @@
 <template>
   <div>
 
+    <FileMenu
+      v-bind:isOpen="fileMenuIsOpen"
+      v-bind:data="loadData"
+      v-on:click:happen="handleFileMenuClick($event)"
+    ></FileMenu>
 
     <TitleScreen v-if="showTitleScreen">
       <button @click="reloadGame()">New Game</button>
@@ -9,11 +14,7 @@
     
     <div id="gameHolder"></div>
 
-    <button @click="quitGame()">Quit to Title</button>
-    <button @click="reloadGame()">restart</button>
-    <button v-if="loadData.gameStatus" @click="reloadGame(loadData)">load</button>
-    <button v-if="loadData.gameStatus" @click="deleteSavedGame()">clear</button>
-    <button @click="saveGame()">save</button>
+    <button @click="function(){fileMenuIsOpen = !fileMenuIsOpen}">file</button>
   </div>
 </template>
 
@@ -21,12 +22,13 @@
 
 import Vue from 'vue';
 import Game from "./components/Game";
+import FileMenu from "./components/fileMenu";
 import {TitleScreen} from "./gameIndex"
 
 export default {
   name: 'App',
   components :{
-    Game, TitleScreen
+    Game, TitleScreen, FileMenu
   },
 
 
@@ -40,6 +42,7 @@ export default {
     return {
       loadData: dataFromStorage || {},
       gameInstance: null,
+      fileMenuIsOpen: false
     }
   },
 
@@ -48,6 +51,33 @@ export default {
   },
   
   methods : {
+
+    handleFileMenuClick: function(event) {
+      switch (event[1]) {
+        case 'close':
+          this.fileMenuIsOpen = false;
+          break;
+        case 'restart':
+          this.reloadGame();
+          this.fileMenuIsOpen = false;
+          break;
+        case 'quit':
+          this.quitGame();
+          this.fileMenuIsOpen = false;
+          break;
+        case 'save':
+          this.saveGame();
+          this.fileMenuIsOpen = false;
+          break;
+        case 'load':
+          this.reloadGame(this.loadData);
+          this.fileMenuIsOpen = false;
+          break;
+        case 'clear':
+          this.deleteSavedGame();
+          break;
+      }
+    },
 
     quitGame : function() {
       if (this.gameInstance && this.gameInstance._isVue) {
@@ -108,6 +138,15 @@ export default {
 
 }
 </script>
+
+<style lang="scss">
+
+body {
+  margin: 0;
+}
+
+
+</style>
 
 
 
