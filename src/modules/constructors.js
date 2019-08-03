@@ -122,7 +122,7 @@ function Room (id, name, fileName, width,height, contents) {
 	this.foregrounds = contents.foregrounds || [];
 }
 Room.prototype.returnState = function () {
-	let state = {worldItems:[]};
+	let state = {name:this.name, worldItems:[]};
 	this.worldItems.forEach ( (item) => {
 		state.worldItems.push ( item.returnState() );
 	});

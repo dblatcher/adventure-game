@@ -1,15 +1,19 @@
 <template>
     <div class="file-menu" v-if="isOpen">
-        <button @click="clickEmit([null,'close'])">X</button>
-        <div class="file-menu__slot">
-            <span class="file-menu__file-name">{{label}}</span>
+        
+        <button class="close-button" @click="clickEmit([null,'close'])">X</button>
+        
+        <div class="row">
+            <span class="file-name">{{label}}</span>
             <button @click="clickEmit([0,'load'])">load</button>
             <button @click="clickEmit([0,'save'])">save</button>
             <button @click="clickEmit([0,'clear'])">clear</button>
         </div>
-        <button v-if="!atTitle" @click="clickEmit([null,'restart'])">restart</button>
-        <button v-if="!atTitle" @click="clickEmit([null,'quit'])">Quit to Title</button>
-
+        <div class="row">
+            <button v-if="!atTitle" @click="clickEmit([null,'restart'])">restart</button>
+            <button v-if="!atTitle" @click="clickEmit([null,'quit'])">Quit to Title</button>
+        </div>
+            
 
     </div>
 </template>
@@ -21,7 +25,7 @@ export default {
 
     computed : {
         label : function() {
-            return this.data.gameStatus ? `room ${this.data.roomNumber}` : 'empty';
+            return this.data.gameStatus ? `${this.data.rooms[this.data.roomNumber].name}` : 'empty';
         }
     },
 
@@ -42,14 +46,27 @@ export default {
     transform: translateX(-50%) translateY(-50%);
     z-index: 30000;
     background-color: bisque;
-    padding: 1rem;
+    padding: 2rem 1rem;
     display: flex;
     flex-flow: column nowrap;
+    min-width: 15rem;
+}
 
-    &__slot {
-        display: flex;
-    }
+.row {
+    display: flex;
+    margin: .25rem;
+    justify-content: space-between;
+}
 
+.file-name {
+   flex-basis: 10rem; 
+}
+
+.close-button {
+    position: absolute;
+    top:0;
+    right:0;
+    margin: .25rem .5rem;
 }
 
 </style>
