@@ -3,18 +3,19 @@
         
         <button class="close-button" @click="clickEmit([null,'close'])">X</button>
         
-        <div class="row">
-            <span class="file-name">{{label}}</span>
-            <button @click="clickEmit([0,'load'])">load</button>
-            <button @click="clickEmit([0,'save'])">save</button>
-            <button @click="clickEmit([0,'clear'])">clear</button>
+        <div class="row"
+         v-for="(savedGame, index) in data" v-bind:key="index" >
+            <span class="file-name">{{label[index]}}</span>
+            <button @click="clickEmit([index,'load'])">load</button>
+            <button @click="clickEmit([index,'save'])">save</button>
+            <button @click="clickEmit([index,'clear'])">clear</button>
         </div>
+
         <div class="row">
             <button v-if="!atTitle" @click="clickEmit([null,'restart'])">restart</button>
             <button v-if="!atTitle" @click="clickEmit([null,'quit'])">Quit to Title</button>
         </div>
             
-
     </div>
 </template>
 
@@ -25,7 +26,15 @@ export default {
 
     computed : {
         label : function() {
-            return this.data.gameStatus ? `${this.data.rooms[this.data.roomNumber].name}` : 'empty';
+            let labels = [];
+            this.data.forEach(savedGame => {
+                labels.push( savedGame.gameStatus ? 
+                    savedGame.rooms[savedGame.roomNumber].name
+                    : 'empty'
+                );
+            });
+
+            return labels;
         }
     },
 
@@ -45,11 +54,13 @@ export default {
     top:50%;
     transform: translateX(-50%) translateY(-50%);
     z-index: 30000;
-    background-color: bisque;
     padding: 2rem 1rem;
     display: flex;
     flex-flow: column nowrap;
     min-width: 15rem;
+    background-color: white;
+    border: 5px ridge  gray;
+    background-image: linear-gradient(0deg, black, transparent);
 }
 
 .row {

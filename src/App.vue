@@ -3,7 +3,7 @@
 
     <FileMenu
       v-bind:isOpen="fileMenuIsOpen"
-      v-bind:data="loadData"
+      v-bind:data="savedGames"
       v-bind:atTitle="!gameInstance"
       v-on:click:happen="handleFileMenuClick($event)"
     ></FileMenu>
@@ -37,21 +37,21 @@ export default {
 
 
   data () {
-
-    //console.log (window.localStorage.getItem('saveGameData'));
-    let dataFromStorage = window.localStorage.getItem('saveGameData');
-    dataFromStorage = JSON.parse(dataFromStorage);
-    console.log(dataFromStorage)
+    let i, jsonString, savedGames = [];
+    for (i=0; i<5; i++) {
+      jsonString = window.localStorage.getItem('savedGame_'+i);
+      savedGames.push( JSON.parse(jsonString) || {} );
+    }
 
     return {
-      loadData: dataFromStorage || {},
+      savedGames: savedGames,
       gameInstance: null,
       fileMenuIsOpen: false
     }
   },
 
   computed : {
-    showTitleScreen : function () { return !this.gameInstance}
+    showTitleScreen : function () { return !this.gameInstance }
   },
   
   methods : {
@@ -70,15 +70,15 @@ export default {
           this.fileMenuIsOpen = false;
           break;
         case 'save':
-          this.saveGame();
+          this.saveGame(event[0]);
           this.fileMenuIsOpen = false;
           break;
         case 'load':
-          this.reloadGame(this.loadData);
+          this.reloadGame(this.savedGames[event[0]]);
           this.fileMenuIsOpen = false;
           break;
         case 'clear':
-          this.deleteSavedGame();
+          this.deleteSavedGame(event[0]);
           break;
       }
     },
@@ -105,39 +105,35 @@ export default {
         var element = document.querySelector('#gameHolder').appendChild(document.createElement('main'))
         var GameConstructor = Vue.extend(Game);
         this.gameInstance = new GameConstructor({
-          propsData: {
-            loadData: state,
-          }
+          propsData: { loadData: state, }
         })
         this.gameInstance.$mount(element);
       }
     },
 
-    saveGame : function () {
+    saveGame : function (slotNumber) {
       if (!this.gameInstance) { return false };
 
       let state = this.gameInstance.returnCurrentState();
       let dataString = JSON.stringify(state);
-      window.localStorage.setItem('saveGameData', dataString)
+      window.localStorage.setItem('savedGame_'+slotNumber, dataString)
 
       let app = this;
       Object.keys(state).forEach ( (key) => {
-        app.$set(app.loadData, key, state[key]);
+        app.$set(app.savedGames[slotNumber], key, state[key]);
       });
 
     },
 
-    deleteSavedGame : function () {
-      window.localStorage.removeItem('saveGameData');
-      app.loadData = {};
+    deleteSavedGame : function (slotNumber) {
+      window.localStorage.removeItem('savedGame_'+slotNumber);
+      app.$set( app.savedGames, slotNumber, {} );
     },
 
   },
 
-
   mounted: function () {
     window.app = this;
-    //this.reloadGame();
   }
 
 }

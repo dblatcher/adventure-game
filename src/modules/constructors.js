@@ -2,8 +2,6 @@ import { gameName } from '../gameName'
 var gamePath = gameName; 
 // can't use imported value in require statement.
 
-console.log('gamePath',gamePath);
-
 function resetObject() {
 	var keyList = Object.keys(this.initialState);
 	var namedProps = false;
