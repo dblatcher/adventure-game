@@ -57,10 +57,11 @@ export default {
     padding: 2rem 1rem;
     display: flex;
     flex-flow: column nowrap;
-    min-width: 15rem;
+    min-width: 16rem;
     background-color: white;
-    border: 5px ridge  gray;
+    border: 5px outset  gray;
     background-image: linear-gradient(0deg, black, transparent);
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 .row {
@@ -70,7 +71,11 @@ export default {
 }
 
 .file-name {
-   flex-basis: 10rem; 
+   flex-basis: 10rem;
+    background-color: white;
+    border: 2px inset;
+    margin-right: .5rem;
+    padding: 0 .25rem; 
 }
 
 .close-button {
