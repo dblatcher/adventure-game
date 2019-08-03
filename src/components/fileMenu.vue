@@ -7,8 +7,8 @@
             <button @click="clickEmit([0,'save'])">save</button>
             <button @click="clickEmit([0,'clear'])">clear</button>
         </div>
-        <button @click="clickEmit([null,'restart'])">restart</button>
-        <button @click="clickEmit([null,'quite'])">Quit to Title</button>
+        <button v-if="!atTitle" @click="clickEmit([null,'restart'])">restart</button>
+        <button v-if="!atTitle" @click="clickEmit([null,'quit'])">Quit to Title</button>
 
 
     </div>
@@ -17,7 +17,7 @@
 <script>
 export default {
     name: "FileMenu",
-    props: ["isOpen","data"],
+    props: ["isOpen","data","atTitle"],
 
     computed : {
         label : function() {

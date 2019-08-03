@@ -1,13 +1,13 @@
 .game {
     display: flex;
     flex-direction: column;
-    position:fixed;
-    padding-top: 2rem;
+    
+    padding-top: 1rem;
     box-sizing: border-box;
     top:0;
     left:0;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     z-index: -10;
     background-image: radial-gradient( black, transparent);
 
@@ -23,7 +23,7 @@
 
     &__controls {
         display: flex;
-        flex-basis: 12rem;
+        flex-basis: 10rem;
         flex-direction: column;
         flex-shrink: 0;
     }

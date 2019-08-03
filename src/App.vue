@@ -4,17 +4,21 @@
     <FileMenu
       v-bind:isOpen="fileMenuIsOpen"
       v-bind:data="loadData"
+      v-bind:atTitle="!gameInstance"
       v-on:click:happen="handleFileMenuClick($event)"
     ></FileMenu>
 
     <TitleScreen v-if="showTitleScreen">
       <button @click="reloadGame()">New Game</button>
-      <button @click="reloadGame(loadData)">load</button>
+      <button @click="function(){fileMenuIsOpen = true}">restore</button>
     </TitleScreen>
     
     <div id="gameHolder"></div>
 
-    <button @click="function(){fileMenuIsOpen = !fileMenuIsOpen}">file</button>
+    <nav v-if="gameInstance" class="control-bar">
+      <button class="control-bar__button" @click="function(){fileMenuIsOpen = !fileMenuIsOpen}">file</button>
+    </nav>
+
   </div>
 </template>
 
@@ -145,6 +149,16 @@ body {
   margin: 0;
 }
 
+.control-bar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: .25rem;
+
+  &__button {
+    font-size: 1.5rem;
+  }
+}
 
 </style>
 

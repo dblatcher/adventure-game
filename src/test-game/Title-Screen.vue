@@ -1,10 +1,12 @@
 <template>
     <main class="title-page">
-        <h1 class="title-page__title">Test Game</h1>
-        <div class="title-page__button-set">
-            <slot></slot>
+        <div class="title-page__frame">
+            <h1 class="title-page__title">Test Game</h1>
+            <div class="title-page__button-set">
+                <slot></slot>
+            </div>
+            <p class="title-page__text">This should have a picture of something</p>
         </div>
-        <p class="title-page__text">This should have a picture of something</p>
     </main>
 </template>
 
@@ -18,24 +20,34 @@ export default {
 
 .title-page {
 
-    position: absolute;
-    padding-top: 2rem;
+    background-image: linear-gradient(45deg, black, transparent);
+    padding: 2rem;
     box-sizing: border-box;
     top:0;
     left:0;
-    z-index: -10;
+    
     width: 100%;
-    height: 100%;
-
-    background-color: black;
-    border: 5px outset red;
+    height: 100vh;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 
     display: flex;
-    flex-flow: column nowrap;
-    justify-content: space-around;
+    justify-content: center;
+    align-items: center;
 
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    color:red;
+    &__frame {
+        padding: 1rem;
+        background-color: black;
+        border: 5px outset red;
+
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: space-around;
+
+        color:red;
+
+    }
+
+
 
     &__title {
         align-self: center;
