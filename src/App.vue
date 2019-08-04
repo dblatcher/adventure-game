@@ -16,7 +16,10 @@
     <div id="gameHolder"></div>
 
     <nav v-if="gameInstance" class="control-bar">
-      <button class="control-bar__button" @click="function(){fileMenuIsOpen = !fileMenuIsOpen}">file</button>
+      <div 
+      class="control-bar__button btn-solid-black" 
+      @click="function(){fileMenuIsOpen = !fileMenuIsOpen}"
+      >File</div>
     </nav>
 
   </div>
@@ -140,21 +143,21 @@ export default {
 </script>
 
 <style lang="scss">
-
-body {
-  margin: 0;
-}
-
-.control-bar {
-  position: fixed;
-  top: 0;
-  right: 0;
-  margin: .25rem;
-
-  &__button {
-    font-size: 1.5rem;
+  @import "./modules/_material.scss";
+  * {
+    @include font;
   }
-}
+
+  body {
+    margin: 0;
+  }
+
+  .control-bar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    margin: .25rem;
+  }
 
 </style>
 

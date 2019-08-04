@@ -1,0 +1,79 @@
+@mixin font {
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+
+@mixin btn {
+    position: relative;
+    cursor: pointer;
+    @include font;
+
+    padding: 3px 10px;
+    vertical-align: middle;
+    text-align: center;
+    box-sizing: border-box;
+    border-width: 0;
+    outline: none;
+    border-radius: 2px;
+    transition: background-color .3s;
+}
+
+@mixin btn-outline($colour) {
+  @include btn;
+  border: 1px solid $colour;
+  color: $colour;
+  
+  &:hover, &:focus {
+    background-color: rgba(0, 0, 0, .025);
+  }
+
+}
+
+@mixin btn-solid($colour) {
+    @include btn;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+    color: #ecf0f1;
+    background-color: lighten($colour, 15%);
+   
+    &:hover, &:focus {
+      background-color: $colour;
+    }
+}
+
+
+.btn-outline-green {
+  @include btn-outline (#4CAF50);
+}
+.btn-outline-red {
+  @include btn-outline (#f44336);
+}
+.btn-outline-black {
+  @include btn-outline (black);
+}
+.btn-outline-blue {
+  @include btn-outline (#2196F3);
+}
+
+.btn-solid-green {
+  @include btn-solid (#4CAF50);
+}
+.btn-solid-red {
+  @include btn-solid (#f44336);
+}
+.btn-solid-black {
+  @include btn-solid (black);
+}
+.btn-solid-blue {
+  @include btn-solid (#2196F3);
+}
+
+
+.btn-inline {
+  margin: 0 4px;
+  display: inline-block;
+  min-width: 64px;
+}
+
+.btn-round {
+  border-radius: 50%;
+}
