@@ -32,5 +32,32 @@ export default {
 }
 </script>
 
+<style lang="scss">
+
+.dialog-menu {
+	padding:.5rem;
+	max-height: 100%;
+    box-sizing: border-box;
+    min-height: 100%;
+	margin: 0 .25rem;
+	border-radius:5px;
+	
+    overflow-y: auto;
+	background-color: black;
+	
+    &__choice {
+        color:white;
+        transition: color .25s;
+        cursor:pointer;
+        margin-block-start: .25em;
+        margin-block-end: .25em;
+        
+        &:hover {
+            color:red;
+        }
+    }
+}
+
+</style>
 
 

@@ -27,3 +27,30 @@ export default {
 }
 </script>
 
+<style lang="scss">
+
+	.command-line {
+		margin: .25rem;
+		background-color: black;
+		display: flex;
+		flex-wrap: wrap;
+		transition: background-color 0.75s, opacity 0.75s;
+
+		&--complete {
+			background-color:yellow;
+		}
+
+		&__sentence {
+			min-height: 1.2em;
+			margin: 0;
+			padding: .25rem 1rem;
+			color:white;
+		}
+
+		&__last-phrase {
+			color: yellow;
+		}
+
+	}
+
+</style>

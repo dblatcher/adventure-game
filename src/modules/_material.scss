@@ -15,7 +15,7 @@
     border-width: 0;
     outline: none;
     border-radius: 2px;
-    transition: background-color .3s;
+    transition: background-color .3s, border .3s;
 }
 
 @mixin btn-outline($colour) {
@@ -24,19 +24,21 @@
   color: $colour;
   
   &:hover, &:focus {
-    background-color: rgba(0, 0, 0, .025);
+    background-color: rgba(0, 0, 0, .03);
   }
 
 }
 
 @mixin btn-solid($colour) {
     @include btn;
+    border: 1px solid lighten($colour, 15%);
     box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
     color: #ecf0f1;
     background-color: lighten($colour, 15%);
-   
+    
     &:hover, &:focus {
       background-color: $colour;
+      border: 1px solid $colour;
     }
 }
 

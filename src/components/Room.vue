@@ -82,6 +82,15 @@ export default {
 }
 </script>
 
+<style lang="scss">
+
+.room {
+	position:relative;
+	overflow: hidden;
+	flex-shrink:0;
+}
+
+</style>
 
 
 

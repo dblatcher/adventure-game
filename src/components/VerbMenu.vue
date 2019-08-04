@@ -35,3 +35,42 @@ export default {
     },
 }
 </script>
+
+<style lang="scss">
+@import '../modules/material';
+
+.verb-menu {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content:center;
+	box-sizing:border-box;
+    
+    &__option {
+        margin: .1rem;
+        position: relative;
+        flex-basis: 22%;
+        font-size: .8rem;
+    }
+    
+    &__box {    
+        @include btn-outline(black); 
+        display: block;
+    }
+
+    &__input {
+        display:none;
+
+        &:checked~.verb-menu__box {
+             @include btn-solid(black); 
+        }
+
+    }
+    
+    @media (min-width: 600px) {
+        flex-basis: 45%;
+    }
+
+}
+	
+
+</style>

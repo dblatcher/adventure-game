@@ -27,7 +27,7 @@
         }"
       ></CommandLine>
 
-      <div class="menu-wrapper"
+      <div class="game__menu-wrapper"
         v-bind:class="{
           hidden:gameStatus === 'CONVERSATION' ? true:false,
           disabled:gameStatus === 'LIVE' ? false:true,
@@ -39,8 +39,11 @@
 
       <DialogMenu
         v-bind:choices="dialogChoices"
-        v-bind:class="{hidden:gameStatus === 'CONVERSATION' ? false:true}"
+        v-bind:class="{
+          hidden:gameStatus === 'CONVERSATION' ? false:true
+        }"
       ></DialogMenu>
+
 
     </div>
 

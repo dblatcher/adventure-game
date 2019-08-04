@@ -13,11 +13,11 @@
             <span class="file-name">{{label[index]}}</span>
 
             <div class="row">   
-                <div class="btn-outline-blue btn-inline"
+                <div class="btn-outline-black btn-inline"
                 v-if="!atTitle" 
                 @click="clickEmit([index,'save'])">save</div>
             
-                <div class="btn-outline-blue btn-inline"
+                <div class="btn-outline-black btn-inline"
                 v-if="!slotIsEmpty[index]" 
                 @click="clickEmit([index,'load'])">load</div>
             
