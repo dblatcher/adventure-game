@@ -88,6 +88,7 @@ export default {
       inventoryItems: gameData.makeInventoryItems(),
       allCharacters : gameData.makeCharacters(),
       conversations : gameData.makeConversations(),
+      gameVars : gameData.setGameVars(),
     };
 
     if (this.loadData && this.loadData.gameStatus) {

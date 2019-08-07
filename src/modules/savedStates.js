@@ -10,10 +10,15 @@ function getCurrentStateData (gameInstance) {
         allCharacters : [],
         rooms: [],
         conversations: {},
+        gameVars: {},
     }
 
     Object.keys (gameInstance.conversations).forEach ( (label) => {
         currentState.conversations[label] = gameInstance.conversations[label].returnState();
+    })
+
+    Object.keys (gameInstance.gameVars).forEach ( (key) => {
+        currentState.gameVars[key] = gameInstance.gameVars[key];
     })
 
     gameInstance.inventoryItems.forEach ( (item) => {
@@ -67,6 +72,11 @@ function modifyStartingStateWithLoadedGame (state, loadData) {
             });
         })
     })
+
+    Object.keys (loadData.gameVars).forEach ( (key) => {
+        state.gameVars[key] = loadData.gameVars[key];
+    })
+
     return state;
 }
 

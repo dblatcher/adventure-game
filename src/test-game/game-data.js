@@ -170,5 +170,9 @@ var makeInventoryItems = function() { return  [
 	new InventoryItem('hammer','hammer', 'hammer.jpg'),
 ]};
 
+var setGameVars = function ()  { return {
+	wantsHammer: false,
+	numberOfNails: 5,
+}};
 
-export { sprites, makeRooms, verbList, makeInventoryItems, makeCharacters }
+export { sprites, makeRooms, verbList, makeInventoryItems, makeCharacters, setGameVars }
