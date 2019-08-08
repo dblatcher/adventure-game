@@ -110,6 +110,19 @@ var interactions =[
 		this.gameStatus = "CONVERSATION";
 		this.conversation = 'withLuigi';
 	}),
+
+	new Interaction(['LOOK',"NAIL_I"],[],
+	function() {
+		this.getThings('pc').say(`I have ${this.gameVars.numberOfNails} nails.`);
+	}),
+	
+	new Interaction(['USE',"NAIL_I","WINDOW_W"],[],
+	function() {
+		this.gameVars.wantsHammer = true;
+		this.getThings('pc').say(`I'll need a hammer!`);
+
+	}),
+
 ]
 
 var interactionMatrix = Interaction.makeMatrix(interactions);

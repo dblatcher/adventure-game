@@ -141,7 +141,16 @@ export default {
     },
     dialogChoices : function () {
       if (!this.conversations[this.conversation]) return [];
-      return this.conversations[this.conversation].getEnabledOptions();
+      let validChoices = this.conversations[this.conversation].getEnabledOptions();
+      let that= this;
+      validChoices = validChoices.filter(function (item) {
+        if (!item.condition) {return true};
+
+        return item.condition.apply(that,[]);
+
+      });
+
+      return validChoices;
     },
     obstacles : function(){
       return this.rooms[this.roomNumber].obstacles;

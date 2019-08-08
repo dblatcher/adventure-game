@@ -13,7 +13,7 @@ function makeConversations() {
 				{canOnlySayOnce:true}),
 			new DialogChoice ('Do you have a hammer?',
 				['npc::Sure.','npc::swap it for the shoe.'],
-				{canOnlySayOnce:true, disabled:false, addItems:'HAMMER_I', removeItems:'SHOE_I'}),
+				{condition: function(){return this.gameVars.wantsHammer}, canOnlySayOnce:true, disabled:false, addItems:'HAMMER_I', removeItems:'SHOE_I'}),
 			new DialogChoice ('Do you know anything about plumbing?',
 				['npc::what do you want to know?'],
 				{changesBranch:'plumbing'}),
