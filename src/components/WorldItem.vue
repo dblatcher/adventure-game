@@ -28,7 +28,7 @@ export default {
 	props:['item','measure'],
 	data: function() {		
 		var spriteSet = [];		
-		var fullSet = this.$parent.$parent.$data.sprites;
+		var fullSet = this.$root.$data.sprites;
 		for (var i=0; i< fullSet.length; i++) {		
 			if (this.item.spritesUsed.includes(fullSet[i].id)) {spriteSet.push ( Object.assign({}, fullSet[i], {p:this} ) )	}
 		};
@@ -66,16 +66,15 @@ export default {
 			width:  (this.scaledWidth  * this.measure.scale) + this.measure.unit,
 			bottom: (this.y  * this.measure.scale) + this.measure.unit,
 			left:   (this.x  * this.measure.scale) + this.measure.unit,
-			zIndex: 1000-this.y,
 			transform: 'translateX(-50%)'
 		}}
 	},
 	methods : {
 		clickHandler : function (event) {
-			this.$parent.$parent.$emit('clicked-thing', this.item);
+			this.$root.$emit('clicked-thing', this.item);
 		},
 		hoverHandler : function (event) {
-			this.$parent.$parent.$emit('hover-event', this, event);
+			this.$root.$emit('hover-event', this, event);
 		},
 		setStatus : function () {
 			function procesArgument (a){
@@ -134,10 +133,10 @@ export default {
 				if (this.item.queue.length) {
 					this.item.status = this.item.queue.shift();
 					if (this.item.status.ref) {
-						this.$parent.$parent.$emit('mile-stone:'+this.item.status.ref)
+						this.$root.$emit('mile-stone:'+this.item.status.ref)
 					}
 					if (this.item.queue.length === 0) {
-						this.$parent.$parent.$emit('mile-stone','reached last animation:'+this.item.status.cycle,this);
+						this.$root.$emit('mile-stone','reached last animation:'+this.item.status.cycle,this);
 					}
 				};
 			}

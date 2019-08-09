@@ -23,9 +23,9 @@
 			}"
 			v-bind:text="saying"
 			v-bind:left="x"
-			v-bind:right="this.$parent.room.width - this.x"
+			v-bind:right="roomWidth - x"
 			v-bind:measure="this.measure"
-			v-bind:side="this.x > this.$parent.room.width/2 ? 'right' : 'left'"
+			v-bind:side="(x > roomWidth/2) ? 'right' : 'left'"
 			v-bind:color="char.speechColor"
 		></SpeechLine>
 		
@@ -40,14 +40,15 @@ export default {
 	name:'Character',
 	components:{Sprite, SpeechLine},
 
-	props:['char','measure'],
+	props:['char','measure','roomWidth'],
 
 	data: function() {		
 		var spriteSet = [];		
-		var fullSet = this.$parent.$parent.$data.sprites;
+		var fullSet = this.$root.$data.sprites;
 		for (var i=0; i< fullSet.length; i++) {		
 			if (this.char.spritesUsed.includes(fullSet[i].id)) {spriteSet.push ( Object.assign({}, fullSet[i], {p:this} ) )	}
 		};
+
 		return {
 			spriteSet : spriteSet,
 			timer : -1,
@@ -55,8 +56,9 @@ export default {
 	},
 
 	computed :{
-		theApp: function() {return this.$parent.$parent},
+		theApp: function() {return this.$root},
 		
+
 		name: function() {return this.char.name},
 		x: function() {return this.char.x},
 		y: function() {return this.char.y},
@@ -104,7 +106,6 @@ export default {
 			width:  (this.scaledWidth  * this.measure.scale) + this.measure.unit,
 			bottom: (this.y  * this.measure.scale) + this.measure.unit,
 			left:   (this.x  * this.measure.scale) + this.measure.unit,
-			zIndex: 1000-this.y,
 			transform: 'translateX(-50%)',
 			filter: this.zoneEffects.filter,
 		}},
@@ -379,11 +380,9 @@ export default {
 	mounted : function() {		
 		var that = this;
 		this.timer = setInterval (function(){that.showNextFrame()},100);
-		//console.log ('set',this.timer)
 	},
 	
 	beforeDestroy: function() {
-		//console.log('clear',this.timer)
 		clearInterval(this.timer);	
 	}
 

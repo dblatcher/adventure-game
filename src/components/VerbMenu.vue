@@ -44,15 +44,15 @@ export default {
 	flex-wrap: wrap;
 	justify-content:center;
 	box-sizing:border-box;
-    
+
     &__option {
         margin: .1rem;
         position: relative;
         flex-basis: 22%;
         font-size: .8rem;
     }
-    
-    &__box {    
+
+    &__box {
         @include btn-outline(black); 
         display: block;
     }
@@ -71,6 +71,6 @@ export default {
     }
 
 }
-	
+
 
 </style>

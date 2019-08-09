@@ -5,16 +5,14 @@
       <Room ref="room" 
         v-bind:room="rooms[roomNumber]" 
         v-bind:measure="roomMeasure">
-          <Character ref="characters"
-            v-for="char in characters":key="rooms[roomNumber].id + '-' + char.id"
+
+        <ThingInRoom ref="things"
+            v-for="thing in thingsInRoom":key="rooms[roomNumber].id + '--' + thing.id"
             v-bind:measure="roomMeasure"
-            v-bind:char='char'>
-          </Character>
-          <WorldItem ref="items"
-            v-for="item in worldItems":key="item.id"
-            v-bind:measure="roomMeasure"
-            v-bind:item='item'>
-          </WorldItem>
+            v-bind:data="thing"
+            v-bind:roomWidth="rooms[roomNumber].width"
+        />
+
       </Room>
     </div>
 
@@ -63,7 +61,6 @@ import { RectZone, PolyZone} from "../modules/zone";
 import { modifyStartingStateWithLoadedGame, getCurrentStateData } from "../modules/savedStates";
 
 
-
 import VerbMenu from "./VerbMenu";
 import InventoryMenu from "./InventoryMenu";
 import DialogMenu from "./DialogMenu";
@@ -71,11 +68,12 @@ import CommandLine from "./CommandLine";
 import Room from "./Room";
 import Character from "./Character";
 import WorldItem from "./WorldItem";
+import ThingInRoom from "./ThingInRoom";
 
 export default {
   name: 'Game',
   components :{
-    VerbMenu, InventoryMenu, DialogMenu,CommandLine, Room, Character, WorldItem
+    VerbMenu, InventoryMenu, DialogMenu,CommandLine, Room, Character, WorldItem, ThingInRoom
   },
   props:['loadData'],
 
@@ -98,8 +96,7 @@ export default {
     return Object.assign({
       interactionMatrix: gameData.interactionMatrix,
       verbList : gameData.verbList,
-      sprites : gameData.sprites, 	
-      worldItems : [],
+      sprites : gameData.sprites, 
       message: 'blank message',
       roomMeasure: {unit:'px',scale:1}, //only supporting px ?
       verb: gameData.verbList[0],
@@ -135,6 +132,16 @@ export default {
       return this.allCharacters.filter( (char)=> {
         return char.room === that.roomNumber;
       });
+    },
+    thingsInRoom : function() {
+      var that = this, set = [];
+      let cSet =  this.allCharacters.filter( (char)=> {
+        return char.room === that.roomNumber;
+      });
+      let wSet = this.rooms[this.roomNumber].worldItems;
+      set.push(...wSet, ...cSet);
+      set.sort( function(a,b) { return b.y - a.y} )
+      return set;
     },
     inventory : function() {
       return this.inventoryItems.filter(function(i){return i.have});
@@ -198,9 +205,6 @@ export default {
         pc.x = pcX;
         pc.y = pcY;
       }
-	  
-      this.worldItems.splice(0, this.worldItems.length);
-      this.worldItems.push(...this.rooms[rNum].worldItems);
 
       this.roomNumber = rNum;
       this.thingHoveredOn = null;
@@ -209,7 +213,10 @@ export default {
 
     },
     getThings : function (ident) {		
-      var list = [].concat(this.$refs.characters, this.$refs.items); // array of components in room
+      var list = [].concat(this.$refs.things); // array of components in room
+      
+      var list = this.$refs.things.map(function (item) {return item.$children[0]} );
+
       var result = {};
       for (var i = 0; i<list.length; i++) {
         if (list[i].ident === ident ){ return list[i]};
@@ -267,8 +274,7 @@ export default {
           defaultResponse["misc"].apply(this,[])				
         }
       }
-      
-      
+
       this.subject = null; 
       this.object = null;
       this.verb = this.verbList[0];
@@ -276,28 +282,21 @@ export default {
     },
     removeThing: function (id, options={} ) {
       if (typeof id === 'object') {id=id.ident};
-      var currentList, permList, currentIndex, permIndex;
+      var currentList, currentIndex;
 
       if (id.endsWith('_W')) {
-        currentList = this.worldItems;
-        permList = this.rooms[this.roomNumber].worldItems;
-      } else {
-        currentList = this.characters;
-        permList = this.rooms[this.roomNumber].characters;
-      };
-      
-      for (var i=0; i<currentList.length; i++) {
-        if (currentList[i].id === id) {currentIndex = i; break;}
-      };
-      currentList.splice(currentIndex,1);
-      
-      if (!options.temporary) {
-        for (var i=0; i<permList.length; i++) {
-          if (permList[i].id === id) {permIndex = i; break;}
+        currentList = this.rooms[this.roomNumber].worldItems;
+        for (var i=0; i<currentList.length; i++) {
+          if (currentList[i].id === id) {currentIndex = i; break;}
         };
-        permList.splice(permIndex,1);			
+        currentList.splice(currentIndex,1);
+      } else {
+        for (var i=0; i<this.allCharacters.length; i++) {
+          if (this.allCharacters[i].id === id) {currentIndex = i; break;}
+        };
+        this.allCharacters[currentIndex].room = null;
       };
-      
+
     },
     characterRoomChange: function (movingCharacter, rNum,x,y) {
       movingCharacter.room = rNum;
@@ -456,10 +455,10 @@ export default {
       var sy = Math.floor (startPoint.y / cellSize); 
       var ex = Math.floor (endPoint.x / cellSize); 
       var ey = Math.floor (endPoint.y / cellSize); 
-      
+
       // TO DO if start or end is not accessible, find closest open point?
       // To DECIDE what is open? what is closest
-      
+
       var gridPath = astar.search (g,g.grid[sy][sx],g.grid[ey][ex]); 
       function getPointFromNode(node) {
         return { // don't know why coord are reversed. It seems to work.
@@ -467,7 +466,7 @@ export default {
         y : (node.x*cellSize) + cellSize/2, 
         }
       }
-      
+
       var path = [],i,l,dx,dy, dxn,dyn;
       for (i=0; i< gridPath.length; i++) { 
         path.push(getPointFromNode(gridPath[i]));		
