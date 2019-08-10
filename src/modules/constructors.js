@@ -201,9 +201,27 @@ function CharacterModel (baseWidth,baseHeight, cycles,defaultDirection=false) {
 	this.spritesUsed = spritesUsed;
 	this.validDirections = validDirections;
 }
-window.WorldItemC = WorldItem;
+
+ function WorldItemModel ( input ) {
+	var cycles = input;
+	this.cycles = cycles;
+	var cycleNames = Object.keys(cycles);
+	var spritesUsed = [];
+	var cycle;
+
+	for (var i=0; i<cycleNames.length; i++) {
+		cycle = cycles[cycleNames[i]];	
+		for (var j=0; j<cycle.length; j++) {
+			if (!spritesUsed.includes(cycle[j][0])) {
+				spritesUsed.push(cycle[j][0])
+			}
+		} 
+	}
+	this.spritesUsed = spritesUsed;
+}
+
 export {Sprite,
 	 Character,
 	  WorldItem,
-	   Room, EffectZone, Foreground, Verb, InventoryItem, CharacterModel,
+	   Room, EffectZone, Foreground, Verb, InventoryItem, CharacterModel, WorldItemModel,
 	   recreateWorldItemFromState }

@@ -1,6 +1,6 @@
 
 import { RectZone, PolyZone } from "../modules/zone";
-import { Character, WorldItem, Room, EffectZone, Foreground, Verb, InventoryItem, Sprite, CharacterModel } from "../modules/constructors"
+import { Character, WorldItem, Room, EffectZone, Foreground, Verb, InventoryItem, Sprite, CharacterModel, WorldItemModel } from "../modules/constructors"
 
 var sprites = [
   new Sprite (0,'boy.png', [4,4]),
@@ -74,35 +74,23 @@ var characterModels = {
 
 
 var worldItemModels = {
-	door: {
-		spritesUsed : ['door'],
-		cycles: {
-			closed: [ ['door',0,0]  ],
-			open:   [ ['door',2,0]  ],
-			opening:   [ ['door',0,0],['door',1,0],['door',2,0]  ],
-			closing:   [ ['door',2,0],['door',1,0],['door',0,0]  ]
-		}
-	},
-	bucket:  {
-		spritesUsed : ['bucket'],
-		cycles: {
-			neutral: [ ['bucket',0,0]  ]
-		}
-	},
-	stairs:  {
-		spritesUsed : ['stairs'],
-		cycles: {
-			neutral: [ ['stairs',0,0]  ]
-		}
-	},
-	fire: {
-		spritesUsed : ['fire'],
-		cycles: {
-			burning: [ ['fire',0,0],['fire',1,0],['fire',2,0],['fire',3,0],  ],
-			extinguishing: [ ['fire',0,1],['fire',1,1],['fire',2,1],['fire',3,1],['fire',2,1],['fire',3,1],['fire',2,1],['fire',3,1],  ],
-			out: [ ['fire',2,1],  ],
-		}
-	},
+	door: new WorldItemModel ({
+		closed: [ ['door',0,0]  ],
+		open:   [ ['door',2,0]  ],
+		opening:   [ ['door',0,0],['door',1,0],['door',2,0]  ],
+		closing:   [ ['door',2,0],['door',1,0],['door',0,0]  ]
+	}),
+	bucket:  new WorldItemModel ({
+		neutral: [ ['bucket',0,0]  ],
+	}),
+	stairs: new WorldItemModel ({   
+		neutral: [ ['stairs',0,0]  ],
+	}),
+	fire: new WorldItemModel ({
+		burning: [ ['fire',0,0],['fire',1,0],['fire',2,0],['fire',3,0],  ],
+		extinguishing: [ ['fire',0,1],['fire',1,1],['fire',2,1],['fire',3,1],['fire',2,1],['fire',3,1],['fire',2,1],['fire',3,1],  ],
+		out: [ ['fire',2,1],  ],
+	}),
 };
 
 
