@@ -13,6 +13,7 @@ var sprites = [
   new Sprite ('w-wave', 'womanWave.png', [3,1]),
   new Sprite ('door', 'door.png', [3,1]),
   new Sprite ('bucket', 'bucket.png', [1,1]),
+  new Sprite ('stairs', 'stairs.png', [1,1]),
   new Sprite ('fire', 'Fire.png', [4,2]),
 ]
 
@@ -88,6 +89,12 @@ var worldItemModels = {
 			neutral: [ ['bucket',0,0]  ]
 		}
 	},
+	stairs:  {
+		spritesUsed : ['stairs'],
+		cycles: {
+			neutral: [ ['stairs',0,0]  ]
+		}
+	},
 	fire: {
 		spritesUsed : ['fire'],
 		cycles: {
@@ -114,7 +121,7 @@ var makeRooms = function(){ return [
 		new WorldItem ('lake','lake',[200,40,20,-20],400,50),
 		new WorldItem ('house','path back to house',[375,0],50,150),
 		new WorldItem ('bucket','bucket',[250,20],40,40,'neutral',worldItemModels.bucket),
-		new WorldItem ('bucket2','big bucket',[80,20],40,40,'neutral',worldItemModels.bucket,1.5),
+		new WorldItem ('bucket2','big bucket',[80,20],40,40,'neutral',worldItemModels.bucket,{scale: 1.5}),
 		new WorldItem ('fire','fire',[145,20,20,0],40,40,'burning',worldItemModels.fire),
 	],
 	obstacles:[
@@ -152,12 +159,12 @@ var makeRooms = function(){ return [
 
 	new Room ('Gallery', 'The Overlook', "testroom3.png", 400,300, {
 		worldItems: [
-			new WorldItem ('path_down','stairs down', [350,0],100,80,'neutral',null),
+			new WorldItem ('path_down','stairs down', [330,87],140,90,'neutral',worldItemModels.stairs,{unclickable:true}),
 			new WorldItem ('path_up','stairs up', [300,170],40,50,'neutral',null),
 		],
 		obstacles: [
 			new RectZone(48,175,310,90),
-			new RectZone(0,80,350,5),
+			new RectZone(0,80,350,15),
 		],
 		effectZones: [
 			new EffectZone( new RectZone(0,0,400,85), {

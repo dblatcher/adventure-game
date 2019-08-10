@@ -1,6 +1,6 @@
 <template>
 	<article 
-	@click.stop="clickHandler($event)" 
+	@click="clickHandler($event)" 
 	v-on:mouseover="hoverHandler($event)" 
 	v-on:mouseout="hoverHandler($event)"
 	v-bind:name="name" 
@@ -74,9 +74,12 @@ export default {
 	},
 	methods : {
 		clickHandler : function (event) {
+			if (this.item.unclickable) {return false};
+			event.stopPropagation();
 			this.$root.$emit('clicked-thing', this.item);
 		},
 		hoverHandler : function (event) {
+			if (this.item.unclickable) {return false};
 			this.$root.$emit('hover-event', this, event);
 		},
 		setStatus : function () {

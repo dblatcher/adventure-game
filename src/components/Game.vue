@@ -81,7 +81,7 @@ export default {
   data () {
     let state = {
       gameStatus : 'LIVE',
-      roomNumber : 0,
+      roomNumber : 3,
       conversation : null,
       rooms : gameData.makeRooms(),
       inventoryItems: gameData.makeInventoryItems(),

@@ -58,12 +58,15 @@ Character.prototype.returnState = function () {
 	}
 }
 
-function WorldItem (id, name, coords ,width,height,initialCycle, model,scale=1) {
+function WorldItem (id, name, coords ,width,height,initialCycle, model,config={}) {
 	this.id = id.toUpperCase() + "_W";
 	this.name = name;
 	this.x = coords[0] || 0;
 	this.y = coords[1] || 0;
-	this.scale = scale || 1;
+	this.scale = config.scale || 1;
+
+	this.unclickable = config.unclickable || false;
+
 	this.walkOffsetX =  coords[2] || 0;
 	this.walkOffsetY =  coords[3] || 0;
 		

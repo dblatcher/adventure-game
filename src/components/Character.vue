@@ -368,14 +368,14 @@ export default {
 					if (order.ref) {this.theApp.$emit('mile-stone'+':'+order.ref)};
 				}
 			}
-		},
+		},    
 		clickHandler : function (event) {
-			if (this.ident === 'pc') {return false};
+			if (this.ident === this.theApp.pcId) {return false};
 			event.stopPropagation();
 			this.theApp.$emit('clicked-thing', this.char);
 		},
 		hoverHandler : function (event) {
-			if (this.ident === 'pc') {return false};
+			if (this.ident === this.theApp.pcId) {return false};
 			this.theApp.$emit('hover-event', this, event);
 		},		
 	},
