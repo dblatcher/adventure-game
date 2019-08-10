@@ -81,13 +81,14 @@ export default {
   data () {
     let state = {
       gameStatus : 'LIVE',
-      roomNumber : 3,
+      roomNumber : 0,
       conversation : null,
       rooms : gameData.makeRooms(),
       inventoryItems: gameData.makeInventoryItems(),
       allCharacters : gameData.makeCharacters(),
       conversations : gameData.makeConversations(),
       gameVars : gameData.setGameVars(),
+      pcId : gameData.pcId,
     };
 
     if (this.loadData && this.loadData.gameStatus) {
@@ -199,7 +200,7 @@ export default {
 
       var pc;
       this.allCharacters.forEach ( (charObject) => {
-        if (charObject.id === 'pc') {pc=charObject}  
+        if (charObject.id === this.pcId) {pc=charObject}  
       } )
 	  
       if (pc && !data.pcNotMoving) {
@@ -215,8 +216,9 @@ export default {
 
     },
     getThings : function (ident) {		
+      if (ident == 'pc') {ident = this.pcId;}
+
       var list = [].concat(this.$refs.things); // array of components in room
-      
       var list = this.$refs.things.map(function (item) {return item.$children[0]} );
 
       var result = {};
@@ -225,6 +227,9 @@ export default {
         result[list[i].ident] = list[i];
       };
       if (ident) {return false};
+      if (this.pcId) {
+        result['pc'] = result[this.pcId];
+      }
       return result;
     },
     executeCommand : function (command) {

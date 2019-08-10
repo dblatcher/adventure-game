@@ -100,10 +100,12 @@ var worldItemModels = {
 
 
 var makeCharacters = function() {return [
-	new Character ('pc','Jane Smith',[375,10,0],'white',characterModels.jane),
+	new Character ('jane','Jane Smith',[375,10,3],'white',characterModels.jane),
 	new Character ('billy','billy',[200,10,0],'red',characterModels.billy),
 	new Character ('luigi','Luigi',[135,21,1],'lightgreen',characterModels.mario),
 ]}
+
+var pcId = 'JANE_C';
 
 var makeRooms = function(){ return [
 	
@@ -195,4 +197,4 @@ var setGameVars = function ()  { return {
 	numberOfNails: 5,
 }};
 
-export { sprites, makeRooms, verbList, makeInventoryItems, makeCharacters, setGameVars }
+export { sprites, makeRooms, verbList, makeInventoryItems, makeCharacters, pcId, setGameVars }
