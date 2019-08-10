@@ -123,7 +123,7 @@ export default {
 					if (effectZones[i].effect.filter) {
 						result.filter += effectZones[i].effect.filter + ' ';
 					}
-					if (effectZones[i].effect.scale) {
+					if (effectZones[i].effect.scale && !this.char.noZoneScaling) {
 						result.scale = effectZones[i].effect.scale.bind(this);
 					}
 				}

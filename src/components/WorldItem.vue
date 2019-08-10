@@ -46,8 +46,8 @@ export default {
 		scale: function() {return this.item.scale},
 		baseHeight: function() {return this.item.baseHeight},
 		baseWidth: function() {return this.item.baseWidth},
-		scaledHeight : function() {return this.scale * this.baseHeight;},
-		scaledWidth : function() {return this.scale * this.baseWidth;},
+		scaledHeight : function() {return this.scale * this.baseHeight*this.zoneEffects.scale();},
+		scaledWidth : function() {return this.scale * this.baseWidth*this.zoneEffects.scale();},
 		frame : function() {
 			var v= this.item.cycles[this.item.status.cycle][this.cycleFrame];
 			return {sprite: v[0], fx:v[1], fy:v[2]}
@@ -70,7 +70,26 @@ export default {
 			transition: 'background-color 1s',
 			borderRadius: '5px',
 			transform: 'translateX(-50%)'
-		}}
+		}},
+		zoneEffects : function() {
+			var result= {
+				filter:"",
+				scale:function(){return 1},
+			};
+			var effectZones = this.$root.rooms[this.$root.roomNumber].effectZones;
+			for (var i=0; i<effectZones.length; i++) {
+				if (effectZones[i].zone.containsPoint(this)) {
+					if (effectZones[i].effect.filter) {
+						result.filter += effectZones[i].effect.filter + ' ';
+					}
+					if (effectZones[i].effect.scale && !this.item.noZoneScaling) {
+						result.scale = effectZones[i].effect.scale.bind(this);
+					}
+				}
+			}
+			return result;
+		},
+
 	},
 	methods : {
 		clickHandler : function (event) {

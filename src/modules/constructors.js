@@ -64,8 +64,8 @@ function WorldItem (id, name, coords ,width,height,initialCycle, model,config={}
 	this.x = coords[0] || 0;
 	this.y = coords[1] || 0;
 	this.scale = config.scale || 1;
-
 	this.unclickable = config.unclickable || false;
+	this.noZoneScaling = config.noZoneScaling || false;
 
 	this.walkOffsetX =  coords[2] || 0;
 	this.walkOffsetY =  coords[3] || 0;
