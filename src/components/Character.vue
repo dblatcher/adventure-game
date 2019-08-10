@@ -305,7 +305,7 @@ export default {
 			// determine movement - the 'step' the character will try to take.
 			var d = {x: moveOrder.x - this.x, y:moveOrder.y - this.y};
 			var absD = {x: Math.abs(d.x), y: Math.abs(d.y) };
-			var speed = 6;
+			var speed = 6 * this.zoneEffects.scale();
 			var movement = {x:0,y:0};
 			
 			var rX = absD.x ? absD.x / ( absD.x + absD.y) : 0;
