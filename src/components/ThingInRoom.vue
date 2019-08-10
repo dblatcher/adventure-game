@@ -1,11 +1,11 @@
 <template>
     <div>
-        <WorldItem v-if="type == 'WorldItem'"
+        <WorldItem v-if="type == 'W'"
         v-bind:measure="measure"
         v-bind:item="data"
         v-bind:highlight="highlight" />
 
-        <character v-if="type == 'Character'"
+        <character v-if="type == 'C'"
         v-bind:measure="measure"
         v-bind:char="data" 
         v-bind:roomWidth="roomWidth"
@@ -25,7 +25,9 @@ export default {
 
     computed : {
         type : function() {
-            return this.data.constructor.name;
+            let id = this.data.id
+            if (id === 'pc') {return 'C'}
+            return id.substr(id.length-1, id.length);
         },
     },
 }
