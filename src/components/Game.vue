@@ -11,6 +11,7 @@
             v-bind:measure="roomMeasure"
             v-bind:data="thing"
             v-bind:roomWidth="rooms[roomNumber].width"
+            v-bind:highlight="highlightingThings"
         />
 
       </Room>
@@ -102,6 +103,7 @@ export default {
       verb: gameData.verbList[0],
       thingHoveredOn:null, 
       subject: null, needObject:false, object:null,
+      highlightingThings : false,
     }, state);
   },
 

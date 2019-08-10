@@ -2,12 +2,14 @@
     <div>
         <WorldItem v-if="type == 'WorldItem'"
         v-bind:measure="measure"
-        v-bind:item="data" />
+        v-bind:item="data"
+        v-bind:highlight="highlight" />
 
         <character v-if="type == 'Character'"
         v-bind:measure="measure"
         v-bind:char="data" 
-        v-bind:roomWidth="roomWidth"/>
+        v-bind:roomWidth="roomWidth"
+        v-bind:highlight="highlight"/>
     </div>
 </template>
 
@@ -19,7 +21,7 @@ import Character from "./Character";
 export default {
 	name:'ThingInRoom',
 	components: { WorldItem, Character },
-    props:['data','measure','roomWidth'],
+    props:['data','measure','roomWidth','highlight'],
 
     computed : {
         type : function() {

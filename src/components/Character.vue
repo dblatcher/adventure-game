@@ -40,7 +40,7 @@ export default {
 	name:'Character',
 	components:{Sprite, SpeechLine},
 
-	props:['char','measure','roomWidth'],
+	props:['char','measure','roomWidth','highlight'],
 
 	data: function() {		
 		var spriteSet = [];		
@@ -107,6 +107,9 @@ export default {
 			bottom: (this.y  * this.measure.scale) + this.measure.unit,
 			left:   (this.x  * this.measure.scale) + this.measure.unit,
 			transform: 'translateX(-50%)',
+			backgroundColor: (this.highlight ? 'rgba(50,80,250,.5)' : 'unset' ),
+			transition: 'background-color 1s',
+			borderRadius: '5px',
 			filter: this.zoneEffects.filter,
 		}},
 		zoneEffects : function() {
