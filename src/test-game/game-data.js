@@ -147,6 +147,26 @@ var makeRooms = function(){ return [
 	foregrounds:[
 		new Foreground("tree.png",[-70,0],[220,200], {opacity:1,filter:'blur(1px)'}),
 	]}),
+
+	new Room ('Gallery', 'The Overlook', "testroom3.png", 400,300, {
+		worldItems: [
+			new WorldItem ('path_down','stairs down', [350,0],100,80,'neutral',null),
+			new WorldItem ('path_up','stairs up', [300,170],40,50,'neutral',null),
+		],
+		obstacles: [
+			new RectZone(48,175,310,90),
+			new RectZone(0,80,350,5),
+		],
+		effectZones: [
+			new EffectZone( new RectZone(0,0,400,85), {
+				scale: function() {return 3},
+			} ),
+			new EffectZone( new RectZone(0,85,400,90), {
+				scale: function() {return .75 - (this.y - 85)/300},
+			} ),
+		],
+
+	}),
 ]}
 
 

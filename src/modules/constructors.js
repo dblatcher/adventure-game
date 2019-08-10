@@ -16,7 +16,7 @@ function resetObject() {
 
 function Sprite (id, fileName, dims, frameSize=[1,1] ) {
 	this.id = id;
-	this.url= require(`../${gamePath}/rooms/${fileName}`);
+	this.url= require(`../${gamePath}/sprites/${fileName}`);
 	this.col = dims[0];
 	this.row = dims[1];
 	this.relativeWidth  = frameSize[0];

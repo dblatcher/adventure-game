@@ -81,7 +81,7 @@ export default {
   data () {
     let state = {
       gameStatus : 'LIVE',
-      roomNumber : 0,
+      roomNumber : 3,
       conversation : null,
       rooms : gameData.makeRooms(),
       inventoryItems: gameData.makeInventoryItems(),
@@ -514,8 +514,8 @@ export default {
     window.vm = this;
 
     this.resetListeners(); 
-    this.changeRoom(this.roomNumber,0,0,{
-      pcNotMoving: true,
+    this.changeRoom(this.roomNumber,200,10,{
+      pcNotMoving: false,
       callback: function() {
         console.log(vm.loadData ? 'reload' : 'restart', new Date);
       },
