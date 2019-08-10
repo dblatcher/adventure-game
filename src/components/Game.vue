@@ -190,7 +190,17 @@ export default {
   },
   
   methods : {
-    changeRoom: function (rNum,pcX,pcY,data) {		
+    changeRoom: function (rNum,pcX,pcY,data) {
+      
+      if (typeof rNum === 'string') {
+        for (let i = 0; i < this.rooms.length; i++) {
+          if (this.rooms[i].id === rNum ) {
+            rNum = i;
+            break;
+          };
+        }
+      }
+
       this.$emit('mile-stone','changing room to '+this.rooms[rNum].name)
       if (this.$refs.characters) {
         this.$refs.characters.forEach ( (charComp) => {

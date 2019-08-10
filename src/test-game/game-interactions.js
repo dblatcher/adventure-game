@@ -1,11 +1,20 @@
 import { Interaction } from "../modules/interaction-constructor";
 
-var interactions =[
-	new Interaction(['LOOK','WINDOW_W'],[],function(){
-		this.getThings('pc').say("I like this window")
-	}),
-	
+function doorFunction (doorId, destination) {	
+	return function () {
+		this.getThings('pc').goTo(this.getThings(doorId).walkToPoint)
+		.then( (feedback) => {
+			if (feedback.finished) {this.changeRoom(destination[0],destination[1],destination[2],{});}
+		} );
+	}
+}
+function pcSays(text) {
+	return function() { this.getThings('pc').say(text);}	
+}
 
+var interactions =[
+	new Interaction(['LOOK','WINDOW_W'],[],pcSays('It\'s a nice window')),
+	
 	new Interaction(['OPEN','DOOR_W'],[
 		function(){return this.getThings('DOOR_W').item.status.cycle == 'closed'},
 	],function(){
@@ -16,20 +25,12 @@ var interactions =[
 		} });
 	}),
 	
-	new Interaction(['OPEN','DOOR_W'],[],function(){
-		this.getThings('pc').say("It's not closed!");
-	}),
+	new Interaction(['OPEN','DOOR_W'],[],pcSays("It's not closed!")),
 
 	new Interaction(['WALK','DOOR_W'],
 	[function(){return this.getThings('DOOR_W').item.status.cycle == 'open'}],
-	function(){
-		
-		this.getThings('pc').goTo(this.getThings('DOOR_W').walkToPoint)
-		.then( (feedback) => {
-			if (feedback.finished) {this.changeRoom(0,375,10,{});}
-		} );
-		
-	}),
+	doorFunction('DOOR_W',['SWAMP_R',375,10])
+	),
 
 	new Interaction(['SHUT','DOOR_W'],
 	[function(){return this.getThings('DOOR_W').item.status.cycle == 'open'}],
@@ -43,9 +44,7 @@ var interactions =[
 	
 	}),
 	
-	new Interaction(['SHUT','DOOR_W'],[],function(){
-		this.getThings('pc').say("It's already closed.");
-	}),
+	new Interaction(['SHUT','DOOR_W'],[],pcSays('It\'s already closesd.')),
 	
 	new Interaction(['TAKE','BUCKET_W'],[],function(){
 		
@@ -63,16 +62,11 @@ var interactions =[
 		} else {this.gameStatus = 'LIVE';}
 	}),
 	
-	new Interaction (['WALK','HOUSE_W'],[],function(){
-		this.getThings('pc').goTo(this.getThings('HOUSE_W').walkToPoint)
-		.then( (feedback)=> { 
-			if (feedback.finished) {this.changeRoom(1,260,15,{});} 
-		});
-	}),
+	new Interaction (['WALK','HOUSE_W'],[],
+		doorFunction('HOUSE_W',['LIVING_ROOM_R',260,15])
+	),
 	
-	new Interaction(['USE','SHOE_I'],[],function(){
-		this.getThings('pc').say("It doesn't fit me");
-	}),
+	new Interaction(['USE','SHOE_I'],[],pcSays("It doesn't fit me")),
 	
 	new Interaction(['USE','BUCKET_I','FIRE_W'],
 	[function(){return this.getThings('FIRE_W').item.status.cycle == 'burning'}],
@@ -100,10 +94,7 @@ var interactions =[
 		
 	}),
 	
-	new Interaction(['USE','BUCKET_I','FIRE_W'],[],
-	function() {
-		this.getThings('pc').say("It's out already.");
-	}),
+	new Interaction(['USE','BUCKET_I','FIRE_W'],[],pcSays("It's out already.")),
 	
 	new Interaction(['TALK','LUIGI_C'],[],
 	function() {
@@ -123,6 +114,9 @@ var interactions =[
 
 	}),
 
+	new Interaction(['WALK','GATE_W'],[],
+	doorFunction('GATE_W',['SWAMP_R',100,10])
+	),
 ]
 
 var interactionMatrix = Interaction.makeMatrix(interactions);
