@@ -6,12 +6,13 @@
 </template>
 
 <script>
+import {RectZone} from '../modules/zone'
 export default {
     name: 'CanvasOverLay',
     props: ['room'],
     methods : {
 
-	plotZone : function (zone, color,fill) {
+	plotZone : function (zone, stroke="white",fill="rgba(250,0,250,1)") {
         let ctx = this.$el.getContext('2d');
         let h = this.room.height;
 		ctx.beginPath();
@@ -31,18 +32,49 @@ export default {
 			ctx.lineTo(zone.left,h-zone.bottom);
 		};
 
-		ctx.strokeStyle = fill ? 'white' : color || 'red';
+		ctx.strokeStyle = stroke;
 		ctx.stroke();
 		
-		ctx.fillStyle = fill ?  color || 'red' :'rgba(100,100,100,0.1)';
+		ctx.fillStyle = fill;
 		ctx.fill();
 	},
 	
+    showObstacles: function () {
+        this.room.obstacles.forEach(zone => {
+            this.plotZone(zone)
+        });
+
+    },
+
+    plotBlocked (oIndex) {
+        this.testGrid(3, this.room.obstacles[oIndex]);
+    },
+
+    testGrid: function(size, zone) {
+		var rows = Math.ceil(this.room.height/size);
+		var cols = Math.ceil(this.room.width/size);
+		var cell;
+	
+		for (var i=0; i<cols; i++) {
+			for (var j=0; j<rows; j++) {
+			
+				cell = new RectZone(i*size, j*size,size,size);
+                if (zone.overlapsRectangle(cell)) {
+                    this.plotZone(cell, 'white','red')
+                }
+
+            
+			}
+		}
+	
+	}
 
     },
     mounted: function() {
         window.overlay = this;
         window.ctx = this.$el.getContext('2d');
+        //this.showObstacles();
+        //this.room.obstacles.forEach(zone => {this.testGrid(3,zone)})
     },
 }
 </script>

@@ -14,7 +14,8 @@ var sprites = [
   new Sprite ('door', 'door.png', [3,1]),
   new Sprite ('bucket', 'bucket.png', [1,1]),
   new Sprite ('stairs', 'stairs.png', [1,1]),
-  new Sprite ('tube', 'tube.png', [1,1]),
+  new Sprite ('platform', 'testroom3platform.png', [1,1]),
+  new Sprite ('tube', 'tube.png'),
   new Sprite ('fire', 'Fire.png', [4,2]),
 ]
 
@@ -95,6 +96,9 @@ var worldItemModels = {
 		extinguishing: [ ['fire',0,1],['fire',1,1],['fire',2,1],['fire',3,1],['fire',2,1],['fire',3,1],['fire',2,1],['fire',3,1],  ],
 		out: [ ['fire',2,1],  ],
 	}),
+	platform: new WorldItemModel ({
+		neutral: [ ['platform',0,0]  ],
+	}),
 };
 
 
@@ -151,20 +155,23 @@ var makeRooms = function(){ return [
 
 	new Room ('Gallery', 'The Overlook', "testroom3.png", 400,300, {
 		worldItems: [
-			new WorldItem ('path_down','stairs down', [350,87],180,90,'neutral',worldItemModels.stairs,{unclickable:true}),
+		//	new WorldItem ('path_down','', [350,80],180,90,'neutral',worldItemModels.stairs,{noZoneScaling:true, unclickable:true}),
+			new WorldItem ('platform','', [200,0],400,130,'neutral',worldItemModels.platform,{noZoneScaling:true, unclickable:true, zAdjust:80}),
 			new WorldItem ('gate','dark gate', [300,170],50,50,'neutral',null,{noZoneScaling:true}),
-			new WorldItem ('tube1','tube', [280,20],20,35,'neutral',worldItemModels.tube),
-			new WorldItem ('tube2','tube', [110,100],20,35,'neutral',worldItemModels.tube),
+			new WorldItem ('tube1','tube', [80,20],20,35,'neutral',worldItemModels.tube),
+			new WorldItem ('tube2','tube', [110,120],20,35,'neutral',worldItemModels.tube),
 		],
 		obstacles: [
-			new RectZone(48,175,310,90),
-			new RectZone(0,80,350,15),
+			new RectZone(48,175,290,90),
+			new RectZone(0,65,360,20),
+			new RectZone(380,65,40,20),
+			
 		],
 		effectZones: [
-			new EffectZone( new RectZone(0,0,400,85), {
+			new EffectZone( new RectZone(0,0,400,80), {
 				scale: function() {return 3},
 			} ),
-			new EffectZone( new RectZone(0,85,400,90), {
+			new EffectZone( new RectZone(0,80,400,90), {
 				scale: function() {return .75 - (this.y - 85)/300},
 			} ),
 		],

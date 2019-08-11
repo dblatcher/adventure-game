@@ -143,7 +143,7 @@ export default {
       });
       let wSet = this.rooms[this.roomNumber].worldItems;
       set.push(...wSet, ...cSet);
-      set.sort( function(a,b) { return b.y - a.y} )
+      set.sort( function(a,b) { return (b.y + b.zAdjust) - (a.y + a.zAdjust)} )
       return set;
     },
     inventory : function() {
@@ -167,7 +167,7 @@ export default {
     },
     grid : function() {
       var obstacles = this.rooms[this.roomNumber].obstacles;
-      var cellSize = 5;	
+      var cellSize = 3;	
       var columns = Math.ceil(this.rooms[this.roomNumber].width/cellSize), 
       rows = Math.ceil(this.rooms[this.roomNumber].height/cellSize),x,y, grid = [];
       function cellValue(x,y){
@@ -467,7 +467,7 @@ export default {
       if (directPath) {return [{x:endPoint.x, y:endPoint.y}]};
 
       var g = new Graph(this.grid,{diagonal:true}); 
-      var cellSize = 5;
+      var cellSize = 3;
       var sx = Math.floor (startPoint.x / cellSize); 
       var sy = Math.floor (startPoint.y / cellSize); 
       var ex = Math.floor (endPoint.x / cellSize); 

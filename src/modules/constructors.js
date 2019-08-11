@@ -14,7 +14,10 @@ function resetObject() {
 }
 
 
-function Sprite (id, fileName, dims, frameSize=[1,1] ) {
+function Sprite (id, fileName, dims, frameSize ) {
+	if (!dims) {dims = [1,1]}
+	if (!frameSize) {frameSize = [1,1]}
+
 	this.id = id;
 	this.url= require(`../${gamePath}/sprites/${fileName}`);
 	this.col = dims[0];
@@ -24,7 +27,7 @@ function Sprite (id, fileName, dims, frameSize=[1,1] ) {
 	
 }
 
-function Character(id,name,coords,speechColor,model,scale=1) {
+function Character(id,name,coords,speechColor,model,config={}) {
 	this.id = id.toLowerCase() === 'pc' ? 'pc' : id.toUpperCase()+"_C";
 	this.name = name;
 	this.x = coords[0];
@@ -32,7 +35,9 @@ function Character(id,name,coords,speechColor,model,scale=1) {
 	this.room = coords[2];
 	this.speechColor= speechColor;
 	Object.assign(this,model);
-	this.scale = scale;
+
+	this.scale = config.scale || 1;
+	this.zAdjust = config.zAdjust || 0;
 
 	this.saying = '';
 	this.sayingQueue = [];
@@ -66,6 +71,7 @@ function WorldItem (id, name, coords ,width,height,initialCycle, model,config={}
 	this.scale = config.scale || 1;
 	this.unclickable = config.unclickable || false;
 	this.noZoneScaling = config.noZoneScaling || false;
+	this.zAdjust = config.zAdjust || 0;
 
 	this.walkOffsetX =  coords[2] || 0;
 	this.walkOffsetY =  coords[3] || 0;
