@@ -66,7 +66,7 @@ export default {
 			width:  (this.scaledWidth  * this.measure.scale) + this.measure.unit,
 			bottom: (this.y  * this.measure.scale) + this.measure.unit,
 			left:   (this.x  * this.measure.scale) + this.measure.unit,
-			backgroundColor: this.highlight ? 'rgba(50,250,80,.5)' : 'unset',
+			backgroundColor: this.highlight && !this.item.unclickable ? 'rgba(50,250,80,.5)' : 'unset',
 			transition: 'background-color 1s',
 			borderRadius: '5px',
 			transform: 'translateX(-50%)'

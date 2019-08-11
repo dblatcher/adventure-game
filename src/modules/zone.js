@@ -5,6 +5,7 @@ function RectZone (x,y,width,height, definedByMidPoint) {
 	// this.y = y1 < x2 ? y1 : y2;
 	// this.width = Math.abs(x1-x2);
 	// this.height = Math.abs(y1-y2);
+	this.type="RectZone";
 	this.height=height;
 	this.width =width;	
 	this.y = y;
@@ -131,6 +132,7 @@ Point.doLineSegmentsIntersect = function  (p1, q1, p2, q2) {
 
 
 function PolyZone (corners) {
+	this.type="PolyZone";
 	var vertices = [];
 	for (var i=0; i<corners.length; i++) {
 		vertices.push (new Point (corners[i][0], corners[i][1]))

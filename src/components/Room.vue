@@ -6,16 +6,18 @@
 		<div  v-for="fg in foregrounds":key="fg.id"
 		v-bind:style="fg.style">
 		</div>
+		<CanvasOverlay v-bind:room="room" ref="canvas"/>
 	</main>
 </template>
 
 <script>
+import CanvasOverlay from "./CanvasOverlay";
+
 export default {
 	name:'Room',
-		props: ['room','measure'],
-	data: function() { return {
-		
-	}},
+	props: ['room','measure'],
+	components: {CanvasOverlay},
+
 	methods : {
 		clickHandler : function (event) {
 			this.$parent.$emit('clicked-room', event);	
