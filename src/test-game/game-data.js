@@ -157,12 +157,15 @@ var makeRooms = function(){ return [
 		worldItems: [
 		//	new WorldItem ('path_down','', [350,80],180,90,'neutral',worldItemModels.stairs,{noZoneScaling:true, unclickable:true}),
 			new WorldItem ('platform','', [200,0],400,130,'neutral',worldItemModels.platform,{noZoneScaling:true, unclickable:true, zAdjust:80}),
-			new WorldItem ('gate','dark gate', [300,170],50,50,'neutral',null,{noZoneScaling:true}),
+			new WorldItem ('gate','dark gate', [300,170,0,-15],50,50,'neutral',null,{noZoneScaling:true}),
 			new WorldItem ('tube1','tube', [80,20],20,35,'neutral',worldItemModels.tube),
 			new WorldItem ('tube2','tube', [110,120],20,35,'neutral',worldItemModels.tube),
 		],
 		obstacles: [
-			new RectZone(48,175,290,90),
+			new RectZone(45,165,315,100),
+			new PolyZone([ [360,165], [400,140],[400, 165] ]),
+			new PolyZone([ [50,165], [20,145],[0,145],[0, 165] ]),
+			new RectZone(0,0,40,300),
 			new RectZone(0,65,360,20),
 			new RectZone(380,65,40,20),
 			
