@@ -55,7 +55,7 @@
 
 <script>
 
-import { gameData } from "../gameIndex";
+import { /* webpackPreload: true */ gameData } from "../gameIndex";
 
 import { Graph, astar } from "../modules/astar";
 import { RectZone, PolyZone} from "../modules/zone";

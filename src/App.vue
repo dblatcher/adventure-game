@@ -15,6 +15,15 @@
     
     <div id="gameHolder"></div>
 
+    <img v-for="room in roomData"  
+      v-bind:src="room.url"
+      style="display:none"
+    />
+    <img v-for="item in spriteData"  
+      v-bind:src="item.url"
+      style="display:none"
+    />
+
     <nav v-if="gameInstance" class="control-bar">
       <div 
       class="control-bar__button btn-solid-black" 
@@ -28,9 +37,9 @@
 <script>
 
 import Vue from 'vue';
-import Game from "./components/Game";
+import /* webpackPreload: true */ Game from "./components/Game";
 import FileMenu from "./components/fileMenu";
-import {TitleScreen} from "./gameIndex"
+import /* webpackPreload: true */{TitleScreen, gameData} from "./gameIndex"
 
 export default {
   name: 'App',
@@ -45,11 +54,13 @@ export default {
       jsonString = window.localStorage.getItem('savedGame_'+i);
       savedGames.push( JSON.parse(jsonString) || {} );
     }
-
+console.log(gameData);
     return {
       savedGames: savedGames,
       gameInstance: null,
-      fileMenuIsOpen: false
+      fileMenuIsOpen: false,
+      roomData:gameData.makeRooms(),
+      spriteData:gameData.sprites,
     }
   },
 
