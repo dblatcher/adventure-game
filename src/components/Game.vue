@@ -1,6 +1,12 @@
 <template>
-  <div class="game" ref='root'>
-
+  <div class="game" 
+  ref='root' 
+  v-on:click="clickHandler($event)"
+  >
+    <input ref="keyCatcher" style="opacity:0; height:0; position:absolute;"
+      v-on:keyup.q="highlightingThings = !highlightingThings"
+      v-on:keyup.w="instantMode = !instantMode"
+    />
     <div class="game__room-wrapper">
       <Room ref="room" 
         v-bind:room="rooms[roomNumber]" 
@@ -522,6 +528,10 @@ export default {
     returnCurrentState: function() {
       return getCurrentStateData(this);
     },
+    clickHandler(event) {
+      console.log('game klik',event);
+      this.$refs.keyCatcher.focus();
+    },
   },
 
 
@@ -535,7 +545,8 @@ export default {
         console.log(vm.loadData ? 'reload' : 'restart', new Date);
       },
     });
-  }
+  },
+
 
 }
 </script>
