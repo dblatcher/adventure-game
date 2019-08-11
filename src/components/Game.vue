@@ -67,14 +67,13 @@ import InventoryMenu from "./InventoryMenu";
 import DialogMenu from "./DialogMenu";
 import CommandLine from "./CommandLine";
 import Room from "./Room";
-import Character from "./Character";
 import WorldItem from "./WorldItem";
 import ThingInRoom from "./ThingInRoom";
 
 export default {
   name: 'Game',
   components :{
-    VerbMenu, InventoryMenu, DialogMenu,CommandLine, Room, Character, WorldItem, ThingInRoom
+    VerbMenu, InventoryMenu, DialogMenu,CommandLine, Room, WorldItem, ThingInRoom
   },
   props:['loadData'],
 

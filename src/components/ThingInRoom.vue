@@ -16,7 +16,7 @@
 <script>
 
 import WorldItem from "./WorldItem";
-import Character from "./Character";
+import Character from "./character/Character";
 
 export default {
 	name:'ThingInRoom',

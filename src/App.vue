@@ -54,7 +54,7 @@ export default {
       jsonString = window.localStorage.getItem('savedGame_'+i);
       savedGames.push( JSON.parse(jsonString) || {} );
     }
-console.log(gameData);
+
     return {
       savedGames: savedGames,
       gameInstance: null,
