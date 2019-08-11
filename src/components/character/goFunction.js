@@ -1,3 +1,18 @@
+function skip (path) {
+	let horizontal = path[0].x > this.x ? 'right' : 'left';
+	let vertical   = path[0].y > this.y ? 'up' : 'down';	
+	let direction = Math.abs(path[0].x - this.x) > Math.abs(path[0].y - this.y) ? 
+		horizontal :
+		this.char.validDirections.includes(vertical) ? vertical : horizontal;
+
+	return [{
+		x: path[path.length-1].x,
+		y: path[path.length-1].y,
+		direction:direction,
+		action:'walk'
+	}];
+}
+
 export default function (destination, options = {}) {
 	
 	if (typeof options.action === 'undefined') {options.action = 'walk'};
@@ -8,24 +23,29 @@ export default function (destination, options = {}) {
 	};
 	
 	// create list of orders
-	var orders = [], currentPoint, prevPoint, direction, horizontal,vertical; 
-	for (var i=0; i<path.length; i++) {
-		currentPoint = path[i]
-		prevPoint = i > 0 ? path[i-1] : this; 
-		horizontal = currentPoint.x > prevPoint.x ? 'right' : 'left';
-		vertical   = currentPoint.y > prevPoint.y ? 'up' : 'down';	
-		direction = Math.abs(currentPoint.x - prevPoint.x) > Math.abs(currentPoint.y - prevPoint.y) ? 
-			horizontal :
-			this.char.validDirections.includes(vertical) ? vertical : horizontal;
-			
-		orders.push({
-			x: path[i].x,
-			y: path[i].y,
-			direction:direction,
-			action:options.action
-		});
-	}
 	
+	if (this.theApp.instantMode) {
+		var orders = skip.apply(this,[path]);
+	} else {
+		var orders = [], currentPoint, prevPoint, direction, horizontal,vertical; 
+		for (var i=0; i<path.length; i++) {
+			currentPoint = path[i]
+			prevPoint = i > 0 ? path[i-1] : this; 
+			horizontal = currentPoint.x > prevPoint.x ? 'right' : 'left';
+			vertical   = currentPoint.y > prevPoint.y ? 'up' : 'down';	
+			direction = Math.abs(currentPoint.x - prevPoint.x) > Math.abs(currentPoint.y - prevPoint.y) ? 
+				horizontal :
+				this.char.validDirections.includes(vertical) ? vertical : horizontal;
+				
+			orders.push({
+				x: path[i].x,
+				y: path[i].y,
+				direction:direction,
+				action:options.action
+			});
+		}
+	}
+
 	this.char.destinationQueue = orders;
 	var queEnd = orders[orders.length-1];
 	var that = this;

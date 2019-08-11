@@ -25,6 +25,15 @@ export default function (action, options = {} ) {
     }
     
     var currentOrder = Object.assign({action:action, actFrame:0},options);
+    
+    if (this.theApp.instantMode) {
+        console.log(`skipped - ${this.name} doing ${currentOrder.action}`);
+        return Promise.resolve({
+            finished: true,
+            message:this.ident + ' finished action:' + currentOrder.action
+        });
+    }
+
     var that = this;
 
     function execute(order, resolve) {

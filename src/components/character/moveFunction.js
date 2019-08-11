@@ -1,4 +1,23 @@
+function skip() {
+    console.log(`skipped ${this.name} moving`);
+    let moveOrder = this.char.destinationQueue[this.char.destinationQueue.length-1];
+    this.char.x =  moveOrder.x; 
+    this.char.y = moveOrder.y;
+    this.$set(this.char, 'destinationQueue', []);
+    this.char.behaviour_action = 'wait';
+    this.char.behaviour_actFrame = 0;
+    this.char.behaviour_direction = moveOrder.direction;
+    this.theApp.$emit('mile-stone','reached-destination',this,moveOrder);
+    if(moveOrder.ref) {this.theApp.$emit('mile-stone'+':'+moveOrder.ref)};
+}
+
 export default function () {
+    
+    if (this.theApp.instantMode) {
+        skip.apply(this,[])
+        return false;
+    }
+
     if (this.char.destinationQueue.length === 0) {return false};
     var moveOrder = this.char.destinationQueue[0];
     

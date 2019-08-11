@@ -104,6 +104,7 @@ export default {
       thingHoveredOn:null, 
       subject: null, needObject:false, object:null,
       highlightingThings : false,
+      instantMode: true,
     }, state);
   },
 

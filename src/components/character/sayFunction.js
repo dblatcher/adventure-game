@@ -3,8 +3,15 @@ export default function (text, options = {} ){
     if (typeof options.action !== 'string') {options.action = 'talk'}
     var currentOrder = Object.assign({text:text}, options);
     
-    var that = this;
-    
+    if (this.theApp.instantMode) {
+        console.log(`skipped - ${this.name}: ${currentOrder.text}`)
+        return Promise.resolve({
+            finished:true,
+            message: this.name+' finished saying \"'+currentOrder.text + '\".'
+        })
+    };
+
+    var that = this;  
     function executeOrder (order,resolve) {		
         that.saying = order.text;
         if (that.char.destinationQueue.length === 0) { //not moving
