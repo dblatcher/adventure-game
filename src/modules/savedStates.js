@@ -1,7 +1,8 @@
 
 import {recreateWorldItemFromState} from "./constructors";
+import { gameData } from "../gameIndex";
 
-function getCurrentStateData (gameInstance) {
+function getCurrentGameData (gameInstance) {
     let currentState = {
         roomNumber : gameInstance.roomNumber,
         gameStatus : gameInstance.gameStatus,
@@ -30,12 +31,46 @@ function getCurrentStateData (gameInstance) {
     gameInstance.rooms.forEach ( (item) => {
         currentState.rooms.push( item.returnState() );
     })
-
+console.log(currentState.rooms);
     return currentState;
 }
 
+function createGameData(savedGame) {
 
-function modifyStartingStateWithLoadedGame (state, loadData) {
+    let state = {
+        gameStatus : 'LIVE',
+        roomNumber : 3,
+        conversation : null,
+        rooms : gameData.makeRooms(),
+        inventoryItems: gameData.makeInventoryItems(),
+        allCharacters : gameData.makeCharacters(),
+        conversations : gameData.makeConversations(),
+        gameVars : gameData.setGameVars(),
+        pcId : gameData.pcId,
+    };
+
+    if (savedGame && savedGame.gameStatus) {
+        modifyGameData(state, savedGame)
+    }
+
+    return Object.assign({
+        interactionMatrix: gameData.interactionMatrix,
+        verbList : gameData.verbList,
+        sprites : gameData.sprites, 
+        message: 'blank message',
+        roomMeasure: {unit:'px',scale:1}, //only supporting px ?
+        verb: gameData.verbList[0],
+        thingHoveredOn:null, 
+        subject: null, needObject:false, object:null,
+        highlightingThings : false,
+        instantMode: false,
+    }, state);
+
+}
+
+function modifyGameData (state, loadData) {
+    if (!loadData) {return state};
+
     state.gameStatus = loadData.gameStatus;
     state.roomNumber = loadData.roomNumber;
     state.conversation = loadData.conversation;
@@ -80,4 +115,8 @@ function modifyStartingStateWithLoadedGame (state, loadData) {
     return state;
 }
 
-export {getCurrentStateData, modifyStartingStateWithLoadedGame }
+export default {
+    get: getCurrentGameData, 
+    modify: modifyGameData, 
+    create: createGameData
+ }

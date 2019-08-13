@@ -48,7 +48,7 @@ export default {
 
 	data: function() {		
 		var spriteSet = [];		
-		var fullSet = this.$root.$data.sprites;
+		var fullSet = this.$parent.$parent.$parent.sprites;
 		for (var i=0; i< fullSet.length; i++) {		
 			if (this.char.spritesUsed.includes(fullSet[i].id)) {spriteSet.push ( Object.assign({}, fullSet[i], {p:this} ) )	}
 		};
@@ -60,7 +60,7 @@ export default {
 	},
 
 	computed :{
-		theApp: function() {return this.$root},
+		theApp: function() {return this.$parent.$parent.$parent},
 		
 
 		name: function() {return this.char.name},

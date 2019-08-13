@@ -5,7 +5,7 @@
             <h2 class='heading'>{{atTitle ? 'Restore saved game' : 'Saved games'}}</h2>
 
             <div class="btn-solid-black btn-round" 
-            @click="clickEmit([null,'close'])">X</div>          
+            @click="clickEmit([null,'close'])">X</div>
         </div>
         
         <div v-for="(savedGame, index) in data" v-bind:key="index"
@@ -14,18 +14,15 @@
 
             <div class="row">   
                 <div class="btn-outline-black btn-inline"
-                v-if="!atTitle" 
-                @click="clickEmit([index,'save'])">save</div>
-            
+                    v-if="!atTitle" 
+                    @click="clickEmit([index,'save'])">save</div>
                 <div class="btn-outline-black btn-inline"
-                v-if="!slotIsEmpty[index]" 
-                @click="clickEmit([index,'load'])">load</div>
-            
+                    v-if="!slotIsEmpty[index]" 
+                    @click="clickEmit([index,'load'])">load</div>
                 <div class="btn-solid-red btn-inline"
-                v-if="!slotIsEmpty[index]"
-                @click="clickEmit([index,'clear'])">clear
+                    v-if="!slotIsEmpty[index]"
+                    @click="clickEmit([index,'clear'])">clear
                 </div>
-
             </div>
         </div>
 

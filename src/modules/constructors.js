@@ -68,6 +68,7 @@ function WorldItem (id, name, coords ,width,height,initialCycle, model,config={}
 	this.name = name;
 	this.x = coords[0] || 0;
 	this.y = coords[1] || 0;
+	
 	this.scale = config.scale || 1;
 	this.unclickable = config.unclickable || false;
 	this.noZoneScaling = config.noZoneScaling || false;
@@ -100,7 +101,12 @@ WorldItem.prototype.returnState = function() {
 		this.baseHeight,
 		this.status.cycle,
 		this.initialState.model,
-		this.scale
+		{
+			scale: this.scale,
+			unclickable: this.unclickable,
+			noZoneScaling: this.noZoneScaling,
+			zAdjust: this.zAdjust
+		},
 	)
 };
 
@@ -113,7 +119,7 @@ var recreateWorldItemFromState = function(plainObject) {
 		plainObject.baseHeight,
 		plainObject.status.cycle,
 		plainObject.initialState.model,
-		plainObject.scale
+		{scale: plainObject.scale, unclickable: plainObject.unclickable, noZoneScaling:plainObject.noZoneScaling, zAdjust:plainObject.zAdjust}
 	);
 }
 

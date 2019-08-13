@@ -4,27 +4,32 @@
     <FileMenu
       v-bind:isOpen="fileMenuIsOpen"
       v-bind:data="savedGames"
-      v-bind:atTitle="!gameInstance"
+      v-bind:atTitle="showTitleScreen"
       v-on:click:happen="handleFileMenuClick($event)"
     ></FileMenu>
 
     <TitleScreen v-if="showTitleScreen">
-      <button @click="reloadGame()">New Game</button>
+      <button @click="loadGameOrRestart()">New Game</button>
       <button @click="function(){fileMenuIsOpen = true}">restore</button>
     </TitleScreen>
-    
-    <div id="gameHolder"></div>
 
-    <img v-for="room in roomData"  
+    <div v-bind:style="{
+      maxHeight: showTitleScreen ? '0': 'unset',
+      position: showTitleScreen ? 'fixed': 'unset',
+      }">
+      <Game ref="game" />
+    </div>
+
+    <img v-for="room in roomData" v-bind:key="room.id"
       v-bind:src="room.url"
       style="display:none"
     />
-    <img v-for="item in spriteData"  
+    <img v-for="item in spriteData"  v-bind:key="item.id"
       v-bind:src="item.url"
       style="display:none"
     />
 
-    <nav v-if="gameInstance" class="control-bar">
+    <nav v-if="!showTitleScreen" class="control-bar">
       <div 
       class="control-bar__button btn-solid-black" 
       @click="function(){fileMenuIsOpen = !fileMenuIsOpen}"
@@ -36,7 +41,6 @@
 
 <script>
 
-import Vue from 'vue';
 import /* webpackPreload: true */ Game from "./components/Game";
 import FileMenu from "./components/fileMenu";
 import /* webpackPreload: true */{TitleScreen, gameData} from "./gameIndex"
@@ -57,17 +61,14 @@ export default {
 
     return {
       savedGames: savedGames,
-      gameInstance: null,
+      showTitleScreen: true,
       fileMenuIsOpen: false,
       roomData:gameData.makeRooms(),
       spriteData:gameData.sprites,
     }
   },
 
-  computed : {
-    showTitleScreen : function () { return !this.gameInstance }
-  },
-  
+
   methods : {
 
     handleFileMenuClick: function(event) {
@@ -76,7 +77,7 @@ export default {
           this.fileMenuIsOpen = false;
           break;
         case 'restart':
-          this.reloadGame();
+          this.loadGameOrRestart();
           this.fileMenuIsOpen = false;
           break;
         case 'quit':
@@ -88,7 +89,7 @@ export default {
           this.fileMenuIsOpen = false;
           break;
         case 'load':
-          this.reloadGame(this.savedGames[event[0]]);
+          this.loadGameOrRestart(this.savedGames[event[0]]);
           this.fileMenuIsOpen = false;
           break;
         case 'clear':
@@ -98,37 +99,20 @@ export default {
     },
 
     quitGame : function() {
-      if (this.gameInstance && this.gameInstance._isVue) {
-        this.gameInstance.$destroy();
-        this.gameInstance.$el.parentElement.removeChild( this.gameInstance.$el);
-        this.gameInstance = null;
-      }
+      this.showTitleScreen = true;
     },
 
-    reloadGame : function (state = null) {
-
-      if (this.gameInstance && this.gameInstance._isVue) {
-        this.gameInstance.$destroy();
-        this.gameInstance.$el.parentElement.removeChild( this.gameInstance.$el);
-        buildGame.apply(this);
+    loadGameOrRestart : function (saveFile = null) {
+      this.showTitleScreen = false;
+      if (saveFile) { 
+          this.$refs.game.loadSaveGame(saveFile);
       } else {
-        buildGame.apply(this);
-      }
-
-      function buildGame() {
-        var element = document.querySelector('#gameHolder').appendChild(document.createElement('main'))
-        var GameConstructor = Vue.extend(Game);
-        this.gameInstance = new GameConstructor({
-          propsData: { loadData: state, }
-        })
-        this.gameInstance.$mount(element);
+          this.$refs.game.restart();
       }
     },
 
     saveGame : function (slotNumber) {
-      if (!this.gameInstance) { return false };
-
-      let state = this.gameInstance.returnCurrentState();
+      let state = this.$refs.game.returnCurrentState();
       let dataString = JSON.stringify(state);
       window.localStorage.setItem('savedGame_'+slotNumber, dataString)
 
@@ -141,7 +125,7 @@ export default {
 
     deleteSavedGame : function (slotNumber) {
       window.localStorage.removeItem('savedGame_'+slotNumber);
-      app.$set( app.savedGames, slotNumber, {} );
+      this.$set( this.savedGames, slotNumber, {} );
     },
 
   },

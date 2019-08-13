@@ -28,7 +28,7 @@ export default {
 	props:['item','measure','highlight'],
 	data: function() {		
 		var spriteSet = [];		
-		var fullSet = this.$root.$data.sprites;
+		var fullSet = this.$parent.$parent.$parent.sprites;
 		for (var i=0; i< fullSet.length; i++) {		
 			if (this.item.spritesUsed.includes(fullSet[i].id)) {spriteSet.push ( Object.assign({}, fullSet[i], {p:this} ) )	}
 		};
@@ -40,7 +40,7 @@ export default {
 	},
 	computed :{
 		ident: function() {return this.item.id},
-		
+		gameInstance: function() {return this.$parent.$parent.$parent},
 		x: function() {return this.item.x},
 		y: function() {return this.item.y},
 		scale: function() {return this.item.scale},
@@ -76,7 +76,7 @@ export default {
 				filter:"",
 				scale:function(){return 1},
 			};
-			var effectZones = this.$root.rooms[this.$root.roomNumber].effectZones;
+			var effectZones = this.gameInstance.rooms[this.gameInstance.roomNumber].effectZones;
 			for (var i=0; i<effectZones.length; i++) {
 				if (effectZones[i].zone.containsPoint(this)) {
 					if (effectZones[i].effect.filter) {
@@ -95,11 +95,11 @@ export default {
 		clickHandler : function (event) {
 			if (this.item.unclickable) {return false};
 			event.stopPropagation();
-			this.$root.$emit('clicked-thing', this.item);
+			this.gameInstance.$emit('clicked-thing', this.item);
 		},
 		hoverHandler : function (event) {
 			if (this.item.unclickable) {return false};
-			this.$root.$emit('hover-event', this, event);
+			this.gameInstance.$emit('hover-event', this, event);
 		},
 		setStatus : function () {
 			function procesArgument (a){
@@ -158,10 +158,10 @@ export default {
 				if (this.item.queue.length) {
 					this.item.status = this.item.queue.shift();
 					if (this.item.status.ref) {
-						this.$root.$emit('mile-stone:'+this.item.status.ref)
+						this.gameInstance.$emit('mile-stone:'+this.item.status.ref)
 					}
 					if (this.item.queue.length === 0) {
-						this.$root.$emit('mile-stone','reached last animation:'+this.item.status.cycle,this);
+						this.gameInstance.$emit('mile-stone','reached last animation:'+this.item.status.cycle,this);
 					}
 				};
 			}

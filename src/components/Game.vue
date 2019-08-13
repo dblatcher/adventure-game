@@ -1,6 +1,5 @@
 <template>
-  <div class="game" 
-  ref='root' 
+  <div class="game"
   >
 
     <div class="game__room-wrapper">
@@ -61,7 +60,7 @@ import { /* webpackPreload: true */ gameData } from "../gameIndex";
 
 import { Graph, astar } from "../modules/astar";
 import { RectZone, PolyZone} from "../modules/zone";
-import { modifyStartingStateWithLoadedGame, getCurrentStateData } from "../modules/savedStates";
+import state from "../modules/savedStates";
 
 
 import VerbMenu from "./VerbMenu";
@@ -77,39 +76,10 @@ export default {
   components :{
     VerbMenu, InventoryMenu, DialogMenu,CommandLine, Room, WorldItem, ThingInRoom
   },
-  props:['loadData'],
 
   data () {
-    let state = {
-      gameStatus : 'LIVE',
-      roomNumber : 3,
-      conversation : null,
-      rooms : gameData.makeRooms(),
-      inventoryItems: gameData.makeInventoryItems(),
-      allCharacters : gameData.makeCharacters(),
-      conversations : gameData.makeConversations(),
-      gameVars : gameData.setGameVars(),
-      pcId : gameData.pcId,
-    };
-
-    if (this.loadData && this.loadData.gameStatus) {
-      modifyStartingStateWithLoadedGame(state, this.loadData)
-    }
-
-    return Object.assign({
-      interactionMatrix: gameData.interactionMatrix,
-      verbList : gameData.verbList,
-      sprites : gameData.sprites, 
-      message: 'blank message',
-      roomMeasure: {unit:'px',scale:1}, //only supporting px ?
-      verb: gameData.verbList[0],
-      thingHoveredOn:null, 
-      subject: null, needObject:false, object:null,
-      highlightingThings : false,
-      instantMode: true,
-    }, state);
+    return state.create(this.loadData);
   },
-
 
   computed : {
     command : function() {
@@ -522,8 +492,14 @@ export default {
       this.$on('character-room-change', this.characterRoomChange);
     },
     returnCurrentState: function() {
-      return getCurrentStateData(this);
+      return state.get(this);
     },
+    loadSaveGame (savedGame) {
+      state.modify(this.$data, savedGame);
+    },
+    restart () {
+      state.modify(this.$data, state.create());
+    }
   },
 
 
@@ -532,7 +508,7 @@ export default {
 
     this.resetListeners(); 
     this.changeRoom(this.roomNumber,200,10,{
-      pcNotMoving: false,
+      pcNotMoving: true,
       callback: function() {
         console.log(vm.loadData ? 'reload' : 'restart', new Date);
       },
