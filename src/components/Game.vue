@@ -1,6 +1,15 @@
 <template>
-  <div class="game"
-  >
+  <div class="game">
+
+    <nav class="game__settings">
+      <div class="game__settings-button game__settings-button--skip"
+      >skip</div>
+      <div class="game__settings-button game__settings-button--highlight"
+      >Highlight</div>
+      <div class="game__settings-button game__settings-button--file"
+      @click="clickEmit([null,'toggle'])"
+      >file</div>
+    </nav>
 
     <div class="game__room-wrapper">
       <Room ref="room" 
@@ -162,6 +171,11 @@ export default {
   },
   
   methods : {
+
+    clickEmit(event) {
+      this.$emit('file-menu-click',event);
+    },
+
     changeRoom: function (rNum,pcX,pcY,data) {
       
       if (typeof rNum === 'string') {
@@ -481,7 +495,7 @@ export default {
       })
     },
     resetListeners: function() {
-      this.$off();
+      //this.$off();
       this.$on('verb-picked',this.pickVerb);	
       this.$on('hover-event',this.handleHoverEvent);	
       this.$on('mile-stone',this.reportEvent);

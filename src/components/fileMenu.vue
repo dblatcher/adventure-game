@@ -67,7 +67,7 @@ export default {
 
     methods : {
         clickEmit(event) {
-            this.$emit('click:happen',event);
+            this.$emit('file-menu-click',event);
         }
     },
 }

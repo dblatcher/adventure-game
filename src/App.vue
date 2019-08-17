@@ -5,7 +5,7 @@
       v-bind:isOpen="fileMenuIsOpen"
       v-bind:data="savedGames"
       v-bind:atTitle="showTitleScreen"
-      v-on:click:happen="handleFileMenuClick($event)"
+      v-on:file-menu-click="handleFileMenuClick($event)"
     ></FileMenu>
 
     <TitleScreen v-if="showTitleScreen">
@@ -16,25 +16,22 @@
     <div v-bind:style="{
       maxHeight: showTitleScreen ? '0': 'unset',
       position: showTitleScreen ? 'fixed': 'unset',
-      }">
-      <Game ref="game" />
+    }">
+
+      <Game
+      v-on:file-menu-click="handleFileMenuClick($event)"
+      ref="game"></Game> 
     </div>
 
-    <img v-for="room in roomData" v-bind:key="room.id"
+    <!-- <img v-for="room in roomData" v-bind:key="room.id"
       v-bind:src="room.url"
       style="display:none"
     />
     <img v-for="item in spriteData"  v-bind:key="item.id"
       v-bind:src="item.url"
       style="display:none"
-    />
+    /> -->
 
-    <nav v-if="!showTitleScreen" class="control-bar">
-      <div 
-      class="control-bar__button btn-solid-black" 
-      @click="function(){fileMenuIsOpen = !fileMenuIsOpen}"
-      >File</div>
-    </nav>
 
   </div>
 </template>
@@ -75,6 +72,9 @@ export default {
       switch (event[1]) {
         case 'close':
           this.fileMenuIsOpen = false;
+          break;
+        case 'toggle':
+          this.fileMenuIsOpen = !this.fileMenuIsOpen;
           break;
         case 'restart':
           this.loadGameOrRestart();
@@ -148,7 +148,7 @@ export default {
   }
 
   .control-bar {
-    position: fixed;
+
     top: 0;
     right: 0;
     margin: .25rem;
