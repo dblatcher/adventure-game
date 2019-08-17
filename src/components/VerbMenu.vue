@@ -23,7 +23,7 @@ export default {
 
     methods: {
         update : function () {
-            this.$parent.$emit('verb-picked',this.picked);
+            this.$emit('verb-picked',this.picked);
         },
         reset : function () {
             this.picked = this.initalPick;

@@ -26,7 +26,7 @@ export default {
 			}
 		},
 		clickHandler(choice) {
-			this.$parent.$emit('dialog-choice', choice);
+			this.$emit('dialog-choice', choice);
 		},
 	},
 }

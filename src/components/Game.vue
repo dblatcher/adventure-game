@@ -42,11 +42,15 @@
           disabled:gameStatus === 'LIVE' ? false:true,
         }"
         >
-        <VerbMenu ref="VerbMenu" v-bind:verb-list='verbList' v-bind:initalPick='verbList[0].id' ></VerbMenu>
+        <VerbMenu ref="VerbMenu" 
+        v-on:verb-picked="pickVerb($event)"
+        v-bind:verb-list='verbList' 
+        v-bind:initalPick='verbList[0].id' ></VerbMenu>
         <InventoryMenu v-bind:items="inventory" ></InventoryMenu>
       </div>
 
       <DialogMenu
+        v-on:dialog-choice="handleDialogChoice($event)"
         v-bind:choices="dialogChoices"
         v-bind:class="{
           hidden:gameStatus === 'CONVERSATION' ? false:true
@@ -496,12 +500,10 @@ export default {
     },
     resetListeners: function() {
       //this.$off();
-      this.$on('verb-picked',this.pickVerb);	
       this.$on('hover-event',this.handleHoverEvent);	
       this.$on('mile-stone',this.reportEvent);
       this.$on('clicked-room', this.handleClickOnRoom);
       this.$on('clicked-thing', this.handleClickOnThing);
-      this.$on('dialog-choice', this.handleDialogChoice);
       this.$on('room-change-done', this.callRoomChangeCallback);
       this.$on('character-room-change', this.characterRoomChange);
     },
