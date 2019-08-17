@@ -1,10 +1,13 @@
 <template>
-  <div class="game">
+  <div class="game"  @mouseup="highlightingThings=false; instantMode=false">
 
     <nav class="game__settings">
       <div class="game__settings-button game__settings-button--skip"
+      @mousedown="instantMode=true"
       >skip</div>
       <div class="game__settings-button game__settings-button--highlight"
+      @mousedown="highlightingThings=true"
+     
       >Highlight</div>
       <div class="game__settings-button game__settings-button--file"
       @click="openFileMenu()"
