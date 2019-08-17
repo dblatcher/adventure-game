@@ -21,13 +21,11 @@
         align-items: center;
         flex-basis: 100%;
         overflow: hidden;
-        margin: .25rem;
     }
 
     &__controls {
         display: flex;
         justify-content: center;
-        flex-basis: 8rem;
         flex-direction: column;
         flex-shrink: 0;
     }
@@ -42,6 +40,7 @@
     &__settings {
         display: flex;
         justify-content: flex-start;
+        margin-bottom: .25rem;
     }
 
     &__settings-button {

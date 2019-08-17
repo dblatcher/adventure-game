@@ -126,7 +126,7 @@ var makeRooms = function(){ return [
 	 
 	new Room ('LIVING_ROOM', 'Living room', "bg2.jpg", 400, 250,{
 	worldItems : [		
-		new WorldItem ('door','wooden door',[265,25,0,-20],50,100,'closed',worldItemModels.door),
+		new WorldItem ('door','wooden door',[265,25,0,-20],50,100,'closed',worldItemModels.door,{zAdjust:80}),
 		new WorldItem ('window','nice window',[120,150,0,-140],100,145)
 	],
 	obstacles:[

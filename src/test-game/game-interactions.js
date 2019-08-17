@@ -18,10 +18,12 @@ var interactions =[
 	new Interaction(['OPEN','DOOR_W'],[
 		function(){return this.getThings('DOOR_W').item.status.cycle == 'closed'},
 	],function(){
-		this.getThings('pc').say("ok");
-		this.getThings('pc').goTo(this.getThings('DOOR_W').walkToPoint)
+		this.getThings('pc').say("ok")
+		.then ( (r)=> {
+			return this.getThings('pc').goTo(this.getThings('DOOR_W').walkToPoint)
+		} )
 		.then( (r)=> { if (r.finished) {
-			this.getThings('DOOR_W').setStatus('opening','open')
+			return this.getThings('DOOR_W').setStatus('opening','open')
 		} });
 	}),
 	

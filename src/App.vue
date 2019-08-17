@@ -17,10 +17,7 @@
       maxHeight: showTitleScreen ? '0': 'unset',
       position: showTitleScreen ? 'fixed': 'unset',
     }">
-
-      <Game
-      v-on:file-menu-click="handleFileMenuClick($event)"
-      ref="game"></Game> 
+      <Game ref="game"/> 
     </div>
 
     <!-- <img v-for="room in roomData" v-bind:key="room.id"
@@ -145,13 +142,6 @@ export default {
 
   body {
     margin: 0;
-  }
-
-  .control-bar {
-
-    top: 0;
-    right: 0;
-    margin: .25rem;
   }
 
 </style>

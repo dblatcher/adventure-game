@@ -7,7 +7,7 @@
       <div class="game__settings-button game__settings-button--highlight"
       >Highlight</div>
       <div class="game__settings-button game__settings-button--file"
-      @click="clickEmit([null,'toggle'])"
+      @click="openFileMenu()"
       >file</div>
     </nav>
 
@@ -17,13 +17,12 @@
         v-bind:measure="roomMeasure">
 
         <ThingInRoom ref="things"
-            v-for="thing in thingsInRoom":key="rooms[roomNumber].id + '--' + thing.id"
-            v-bind:measure="roomMeasure"
-            v-bind:data="thing"
-            v-bind:roomWidth="rooms[roomNumber].width"
-            v-bind:highlight="highlightingThings"
-        />
-
+          v-for="thing in thingsInRoom":key="rooms[roomNumber].id + '--' + thing.id"
+          v-bind:measure="roomMeasure"
+          v-bind:data="thing"
+          v-bind:roomWidth="rooms[roomNumber].width"
+          v-bind:highlight="highlightingThings"/>
+ 
       </Room>
     </div>
 
@@ -31,14 +30,12 @@
       <CommandLine 
         v-bind:command='command' 
         v-bind:class="{
-          hidden:gameStatus === 'CONVERSATION' ? true:false,
           disabled:gameStatus === 'LIVE' ? false:true,
         }"
       ></CommandLine>
 
       <div class="game__menu-wrapper"
         v-bind:class="{
-          hidden:gameStatus === 'CONVERSATION' ? true:false,
           disabled:gameStatus === 'LIVE' ? false:true,
         }"
         >
@@ -56,7 +53,6 @@
           hidden:gameStatus === 'CONVERSATION' ? false:true
         }"
       ></DialogMenu>
-
 
     </div>
 
@@ -176,8 +172,8 @@ export default {
   
   methods : {
 
-    clickEmit(event) {
-      this.$emit('file-menu-click',event);
+    openFileMenu(event) {
+      this.$parent.handleFileMenuClick([null, 'toggle']);
     },
 
     changeRoom: function (rNum,pcX,pcY,data) {
@@ -499,7 +495,7 @@ export default {
       })
     },
     resetListeners: function() {
-      //this.$off();
+      this.$off();
       this.$on('hover-event',this.handleHoverEvent);	
       this.$on('mile-stone',this.reportEvent);
       this.$on('clicked-room', this.handleClickOnRoom);

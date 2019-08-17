@@ -35,12 +35,16 @@ export default {
 <style lang="scss">
 
 .dialog-menu {
+	//max-height: 100%;
+    //min-height: 100%;
+	position: fixed;
+	bottom: 0;
+	height: 8rem;
+	width: 100%;
+
 	padding:.5rem;
-	max-height: 100%;
     box-sizing: border-box;
-    min-height: 100%;
-	margin: 0 .25rem;
-	border-radius:5px;
+
 	
     overflow-y: auto;
 	background-color: black;
