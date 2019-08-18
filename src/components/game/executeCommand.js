@@ -27,24 +27,15 @@ export default function (command) {
       break;
     }
 
-    var defaultResponse = {
-      "WALK" : function() {this.getThings('pc').goTo(this.getThings(command.subject.id).walkToPoint)},
-      "LOOK" : function() {
-        if (command.subject.id.endsWith('W')) {
-          this.getThings('pc').say(`It looks like a normal ${command.subject.name} to me.`);
-        } else {
-          this.getThings('pc').say(`I don't see anything special about ${command.subject.name}.`);
-        }
-      },
-      "misc" : function() {this.getThings('pc').say('I will not do that.');} 
-    };
-
-
+    // use defaultResponse if there is no scripted interaction with satisfied conditions
+    // pc saying 'no' is a failsafe to prevent a crash if a game has no misc default response
     if (!interactionDone) {
-      if (defaultResponse[command.verb.id]) {
-        defaultResponse[command.verb.id].apply(this,[])				
+      if (this.defaultResponses[command.verb.id]) {
+        this.defaultResponses[command.verb.id].apply(this,[command])				
       } else {
-        defaultResponse["misc"].apply(this,[])				
+        if (this.defaultResponses["misc"]) {
+          this.defaultResponses["misc"].apply(this,[command])				
+        } else {this.getThings('pc').say('no.')}
       }
     }
 

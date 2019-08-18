@@ -64,6 +64,7 @@ function createGameData(savedGame) {
         subject: null, needObject:false, object:null,
         highlightingThings : false,
         instantMode: false,
+        defaultResponses:gameData.defaultResponses,
     }, state);
 
 }
