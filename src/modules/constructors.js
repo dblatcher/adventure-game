@@ -165,16 +165,33 @@ function Verb (description, id, preposition) {
 	this.transitive = !!(preposition);
 }
 
-function InventoryItem (id, name, fileName, startWith=false) {
+function InventoryItem (id, name, fileName, startWith=false, config={}) {
 	this.id = id.toUpperCase() + "_I";
 	this.name=name;
-	this.url= require(`../${gamePath}/items/${fileName}`);
+
+	if (typeof fileName === 'object') {
+		this.picture = {};
+		Object.keys(fileName).forEach( (key) => {
+			this.picture[key] =  require(`../${gamePath}/items/${fileName[key]}`)
+		});
+	} else {
+		this.picture = {
+			1: require(`../${gamePath}/items/${fileName}`)
+		}
+	}
+	
 	this.have=startWith;
+	this.quantified = typeof config.quantity === 'number' ? true  : false;
+	if (this.quantified) {
+		this.quantity = config.quantity;
+		this.pluralName = config.pluralName || name;
+	}
 }
 InventoryItem.prototype.returnState = function(){
 	return {
 		name : this.name,
 		have: this.have,
+		quantity:this.quantity,
 	}
 }
 

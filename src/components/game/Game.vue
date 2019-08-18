@@ -101,18 +101,25 @@ export default {
 
   computed : {
     command : function() {
+
+      function describe(thing) {
+       return thing.quantified && thing.quantity !== 1 ? 
+        thing.quantity + ' ' +thing.pluralName : 
+        thing.name;
+      }
+
       var sentence = this.verb.description + ' ';
       if (this.subject) {
-        sentence +=  this.subject.name+ ' ';			
+        sentence += describe(this.subject) + ' ';			
         if (this.needObject) {sentence += this.verb.preposition + ' ';}
       }
       if (this.object) {
-        sentence +=  this.object.name;			
+        sentence +=  describe(this.object);			
       }
       
       var completeCommand = (this.subject && ! this.needObject) || (this.subject && this.object)
       var undecidedNoun='';	
-      if (!completeCommand && this.thingHoveredOn) {undecidedNoun = this.thingHoveredOn.name;} 
+      if (!completeCommand && this.thingHoveredOn) {undecidedNoun = describe(this.thingHoveredOn);} 
       
       return {
         sentence: sentence,
@@ -138,6 +145,15 @@ export default {
     },
     inventory : function() {
       return this.inventoryItems.filter(function(i){return i.have});
+    },
+    inventoryAsObject: function() {
+      var result ={};
+
+      this.inventoryItems.filter(function(i){return i.have}).forEach(item => {
+        result[item.id] = item;
+      });
+
+      return result;
     },
     dialogChoices : function () {
       if (!this.conversations[this.conversation]) return [];
