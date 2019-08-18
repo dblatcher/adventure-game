@@ -434,7 +434,7 @@ export default {
       var now = new Date();
       thing = thing || {name:'[game]'};
       order = order || {};
-      this.message = `${now.getHours()}:${now.getMinutes()}.${now.getSeconds()} - ${thing.name}: ${type} ${order.ref ? 'ref: '+order.ref:''}. `
+      this.message = `${now.getHours()}:${now.getMinutes()}.${now.getSeconds()} - ${thing.name}: ${type}. `
     },
     handleHoverEvent: function(component,event){
       if (event.type=== 'mouseover') {
