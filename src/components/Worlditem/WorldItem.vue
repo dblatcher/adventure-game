@@ -20,7 +20,8 @@
 </template>
 
 <script>
-import Sprite from "./Sprite";
+import Sprite from "../Sprite";
+import setStatus from "./setStatus";
 
 export default {
 	name:'WorldItem',
@@ -101,54 +102,7 @@ export default {
 			if (this.item.unclickable) {return false};
 			this.gameInstance.$emit('hover-event', this, event);
 		},
-		setStatus : function () {
-			function procesArgument (a){
-				if (typeof a === 'string') {return {cycle:a}}
-				return a;
-			}
-			
-			var orders = [], nextOrder;
-			for (var i = 0; i < arguments.length; i++) {
-				nextOrder = procesArgument (arguments[i]) 
-				if (this.item.cycles[nextOrder.cycle]) { 
-					orders.push(nextOrder);
-				} else {console.warn ( `${this.ident} does not cycle ${nextOrder.cycle}.` ) }
-			}
-			
-			if (orders.length === 0 ) { return Promise.resolve('no valid orders')};
-			
-			this.item.queue = orders;
-			var lastOrder = this.item.queue[this.item.queue.length-1];
-			this.cycleFrame = 0;
-			var that = this;
-			
-			function watchQueue(resolve) {
-				var timer = setInterval (function(){
-					if (that.item.queue[0] === lastOrder) {
-						clearInterval(timer);
-						resolve({
-							finished:true,
-							message: that.ident + ' finished sequence ending in ' + lastOrder.cycle
-						});
-					}
-					
-					if (that.item.queue.indexOf(lastOrder) === -1) {
-						clearInterval(timer);
-						resolve({
-							finished: false,
-							message: that.ident + ' no longer doing sequence ending with ' + lastOrder.cycle
-						});
-					}
-					
-				},100);
-			};
-			
-			return new Promise( function(resolve, reject) {
-				watchQueue(resolve);
-			});
-			
-			
-		},
+		setStatus : setStatus,
 		showNextFrame : function () {
 			var cycle = this.item.cycles[this.item.status.cycle] ;
 			var onLastFrame = !(cycle.length > this.cycleFrame+1);

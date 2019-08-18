@@ -15,7 +15,7 @@
 
 <script>
 
-import WorldItem from "./WorldItem";
+import WorldItem from "./Worlditem/WorldItem";
 import Character from "./character/Character";
 
 export default {
