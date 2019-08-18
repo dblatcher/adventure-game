@@ -1,6 +1,7 @@
 export default function (action, options = {} ) {
     //validate inputs
     if (typeof action  !== 'string') {
+        // eslint-disable-next-line
         console.warn ('Action order skipped: non-string value for ' + this.name+'.')
         return Promise.resolve({
             finished:true,
@@ -8,6 +9,7 @@ export default function (action, options = {} ) {
         });
     }
     if (!this.char.cycles[action]) {
+        // eslint-disable-next-line
         console.warn ('Action order skipped: ' + action +' is not a cycle of' + this.name+'.')
         return Promise.resolve({
             finished:true,
@@ -16,7 +18,7 @@ export default function (action, options = {} ) {
     }
     
     // default options.direction to current direction
-    if (!options.direction) {options.direction = this.currentDirection};			
+    if (!options.direction) {options.direction = this.currentDirection}			
     
     //ensure options.direction is a direction supported by the character model's cycle;
     var availableDirections = Object.keys(this.char.cycles[action]);
@@ -27,6 +29,7 @@ export default function (action, options = {} ) {
     var currentOrder = Object.assign({action:action, actFrame:0},options);
     
     if (this.theApp.instantMode) {
+         // eslint-disable-next-line
         console.log(`skipped - ${this.name} doing ${currentOrder.action}`);
         return Promise.resolve({
             finished: true,

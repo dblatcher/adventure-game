@@ -69,7 +69,7 @@ function createGameData(savedGame) {
 }
 
 function modifyGameData (state, loadData) {
-    if (!loadData) {return state};
+    if (!loadData) {return state}
 
     state.gameStatus = loadData.gameStatus;
     state.roomNumber = loadData.roomNumber;

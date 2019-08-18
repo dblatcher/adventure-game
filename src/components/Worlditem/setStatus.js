@@ -5,7 +5,10 @@ export default function setStatus () {
         nextOrder = typeof arguments[i] === 'string' ? {cycle:arguments[i]} : arguments[i];
         if (this.item.cycles[nextOrder.cycle]) { 
             orders.push(nextOrder);
-        } else {console.warn ( `${this.ident} does not cycle ${nextOrder.cycle}.` ) }
+        } else {
+            // eslint-disable-next-line
+            console.warn ( `${this.ident} does not cycle ${nextOrder.cycle}.` ) 
+        }
     }
 
     if (orders.length === 0 ) { return Promise.resolve('no valid orders')}

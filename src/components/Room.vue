@@ -3,7 +3,7 @@
     v-on:click="clickHandler($event)"
     v-bind:style="styleObject">
         <slot></slot>
-        <div v-for="fg in foregrounds":key="fg.id"
+        <div v-for="fg in foregrounds" :key="fg.id"
         v-bind:style="fg.style">
         </div>
         <CanvasOverlay v-bind:room="room" ref="canvas"/>

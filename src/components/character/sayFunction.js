@@ -9,7 +9,7 @@ export default function (text, options = {} ){
             finished:true,
             message: this.name+' finished saying \"'+currentOrder.text + '\".'
         })
-    };
+    }
 
     var that = this;  
     function executeOrder (order,resolve) {		
@@ -21,7 +21,7 @@ export default function (text, options = {} ){
             }
         }
         setTimeout(function(){
-            if (typeof order.callback == 'function') {order.callback()};
+            if (typeof order.callback == 'function') {order.callback()}
             
             if (that.char.sayingQueue.length > 0) {
                 executeOrder (that.char.sayingQueue.shift(),resolve);
@@ -35,11 +35,11 @@ export default function (text, options = {} ){
                     finished:true,
                     message: that.name+' finished saying \"'+order.text + '\".'
                 });
-            };	
+            }	
         
         },order.time);
         
-    };
+    }
     
     if (that.isTalking === false) {
         return new Promise ( function (resolve, reject) {
@@ -47,6 +47,6 @@ export default function (text, options = {} ){
         });
     } else {
         that.char.sayingQueue.push(currentOrder);
-    };
+    }
     
-};
+}

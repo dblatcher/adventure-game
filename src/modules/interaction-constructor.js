@@ -14,7 +14,7 @@ Interaction.makeMatrix = function (interactions) {
 
 	interactions.forEach (interaction => {
 		
-		if (!interactionMatrix[interaction.command.verb]) {interactionMatrix[interaction.command.verb] = {}};
+		if (!interactionMatrix[interaction.command.verb]) {interactionMatrix[interaction.command.verb] = {}}
 		
 		if (!interactionMatrix[interaction.command.verb][interaction.command.subject]) {
 			interactionMatrix[interaction.command.verb][interaction.command.subject] = {}

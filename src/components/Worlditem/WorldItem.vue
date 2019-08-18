@@ -21,7 +21,7 @@
 
 <script>
 import Sprite from "../Sprite";
-import setStatus from "./setStatus";
+import setStatus from "./setStatus.js";
 
 export default {
     name:'WorldItem',

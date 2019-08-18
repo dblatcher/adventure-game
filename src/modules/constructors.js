@@ -185,7 +185,7 @@ function CharacterModel (baseWidth,baseHeight, cycles,defaultDirection=false) {
 	
 	var cycleNames = Object.keys(cycles);
 	var cycle, cycleDirections, validDirections = [], spritesUsed=[];
-	if (defaultDirection) {validDirections.push(defaultDirection)};
+	if (defaultDirection) {validDirections.push(defaultDirection)}
 	
 	for (var i=0; i<cycleNames.length; i++) {
 		cycle = cycles[cycleNames[i]];	
@@ -200,7 +200,7 @@ function CharacterModel (baseWidth,baseHeight, cycles,defaultDirection=false) {
 			cycleDirections.forEach( (direction) => {
 				if (!validDirections.includes(direction)) {
 					validDirections.push(direction);
-				};
+				}
 				for (var j=0; j<cycle[direction].length; j++) {
 					if (!spritesUsed.includes(cycle[direction][j][0])) {
 						spritesUsed.push(cycle[direction][j][0]);

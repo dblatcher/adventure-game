@@ -135,7 +135,7 @@ export default {
       let validChoices = this.conversations[this.conversation].getEnabledOptions();
       let that= this;
       validChoices = validChoices.filter(function (item) {
-        if (!item.condition) {return true};
+        if (!item.condition) {return true}
 
         return item.condition.apply(that,[]);
 
@@ -183,7 +183,7 @@ export default {
           if (this.rooms[i].id === rNum ) {
             rNum = i;
             break;
-          };
+          }
         }
       }
 
@@ -192,7 +192,7 @@ export default {
         this.$refs.characters.forEach ( (charComp) => {
           charComp.$destroy();
         })
-      };
+      }
 
       var pc;
       this.allCharacters.forEach ( (charObject) => {
@@ -224,10 +224,10 @@ export default {
 
       var result = {};
       for (var i = 0; i<list.length; i++) {
-        if (list[i].ident === ident ){ return list[i]};
+        if (list[i].ident === ident ){ return list[i]}
         result[list[i].ident] = list[i];
-      };
-      if (ident) {return false};
+      }
+      if (ident) {return false}
       if (this.pcId) {
         result['pc'] = result[this.pcId];
       }
@@ -255,7 +255,7 @@ export default {
             break;
           }
         }
-        if (failedCondition) {continue};
+        if (failedCondition) {continue}
             
         matchingList[i].response.apply(this,[]);
         interactionDone = true;
@@ -289,21 +289,21 @@ export default {
       this.$refs.VerbMenu.reset(); 
     },
     removeThing: function (id, options={} ) {
-      if (typeof id === 'object') {id=id.ident};
+      if (typeof id === 'object') {id=id.ident}
       var currentList, currentIndex;
 
       if (id.endsWith('_W')) {
         currentList = this.rooms[this.roomNumber].worldItems;
         for (var i=0; i<currentList.length; i++) {
           if (currentList[i].id === id) {currentIndex = i; break;}
-        };
+        }
         currentList.splice(currentIndex,1);
       } else {
         for (var i=0; i<this.allCharacters.length; i++) {
           if (this.allCharacters[i].id === id) {currentIndex = i; break;}
-        };
+        }
         this.allCharacters[currentIndex].room = null;
-      };
+      }
 
     },
     characterRoomChange: function (movingCharacter, rNum,x,y) {
@@ -312,7 +312,7 @@ export default {
       movingCharacter.y = y;
     },
     handleClickOnRoom: function (event){
-      if (this.gameStatus !== 'LIVE') {return false};
+      if (this.gameStatus !== 'LIVE') {return false}
       var pc = this.getThings('pc');
       var room = this.$refs.room;		
       var clickCoordinPx = {x: (event.offsetX),y: (room.$el.offsetHeight - event.offsetY)};
@@ -333,9 +333,9 @@ export default {
       this.getThings('pc').goTo ( {x:clickCoord.x, y:clickCoord.y, ref:false});
     },
     handleClickOnThing: function(thing) {
-      if (this.gameStatus !== 'LIVE') {return false};
+      if (this.gameStatus !== 'LIVE') {return false}
 
-      if (this.verb.id === 'WALK' && thing.id.endsWith('_I')) {return false};
+      if (this.verb.id === 'WALK' && thing.id.endsWith('_I')) {return false}
       if (!this.subject) {
         this.subject = thing;
         if (this.verb.transitive) {
@@ -351,7 +351,7 @@ export default {
         if (!this.command.complete && thing !== this.subject) {
           this.object = thing;
         }
-      };
+      }
 
       if (this.command.complete) {this.executeCommand();}		
     },
@@ -365,7 +365,7 @@ export default {
         
         function findActorId(item){
           var id = item.actor;
-          if (id === 'npc') {id = theApp.conversations[theApp.conversation].npc};
+          if (id === 'npc') {id = theApp.conversations[theApp.conversation].npc}
           return id;
         }
       
@@ -389,10 +389,10 @@ export default {
           if (choice.changesBranch) {
             currentConversation.currentBranch = choice.changesBranch;
           } 
-          if (typeof choice.consequence === 'function' ) {choice.consequence(theApp,choice)};
+          if (typeof choice.consequence === 'function' ) {choice.consequence(theApp,choice)}
           
           theApp.gameStatus = choice.ends ? "LIVE" : "CONVERSATION";
-        };
+        }
 
         function nextItemOrEnd () {
           if (index === script.length-1) {
@@ -400,7 +400,7 @@ export default {
           } else {
             executeScriptItem(index+1);
           }
-        };
+        }
         
         if (Array.isArray(script[index])) {
           var promiseSet = [];
@@ -409,7 +409,7 @@ export default {
             promiseSet.push(
               theApp.getThings(actorId)[script[index][j].orderType](script[index][j].text)
             );
-          };
+          }
           Promise.all(promiseSet)
           .then( nextItemOrEnd  )
           
@@ -417,9 +417,9 @@ export default {
           actorId = findActorId(script[index]);
           theApp.getThings(actorId)[script[index].orderType](script[index].text)
           .then( nextItemOrEnd );	
-        };	
+        }	
 
-      };
+      }
       
       executeScriptItem(0)
     },
@@ -431,7 +431,7 @@ export default {
           this.verb = this.verbList[i];
           return;
         }
-      };
+      }
     },
     reportEvent: function(message){
       var now = new Date();
@@ -440,10 +440,10 @@ export default {
     handleHoverEvent: function(component,event){
       if (event.type=== 'mouseover') {
         this.thingHoveredOn = component;
-      };
+      }
       if (event.type=== 'mouseout' && this.thingHoveredOn === component) {
         this.thingHoveredOn = null;
-      };
+      }
     },
     findPath : function (startPoint, endPoint) {
       var i, obstacles = this.rooms[this.roomNumber].obstacles, directPath = true;
@@ -453,7 +453,7 @@ export default {
           break;
         }
       }
-      if (directPath) {return [{x:endPoint.x, y:endPoint.y}]};
+      if (directPath) {return [{x:endPoint.x, y:endPoint.y}]}
 
       var g = new Graph(this.grid,{diagonal:true}); 
       var cellSize = 3;
@@ -473,7 +473,8 @@ export default {
         }
       }
 
-      var path = [],i,l,dx,dy, dxn,dyn;
+//i defined above
+      var path = [],l,dx,dy, dxn,dyn;
       for (i=0; i< gridPath.length; i++) { 
         path.push(getPointFromNode(gridPath[i]));		
         l = path.length-1;
@@ -515,7 +516,7 @@ export default {
     this.changeRoom(this.roomNumber,0,0,{
       pcNotMoving: true,
       callback: function() {
-        console.log(vm.loadData ? 'reload' : 'restart', new Date);
+        console.log(this.loadData ? 'reload' : 'restart', new Date);
       },
     });
   },

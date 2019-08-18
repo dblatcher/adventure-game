@@ -23,14 +23,14 @@ export default {
 				ctx.lineTo(zone.corners[i].x, h- zone.corners[i].y);
 			}
 			ctx.closePath();			
-		};
+		}
 	
 		if (zone.type === 'RectZone') {
 			ctx.moveTo(zone.left,h-zone.top);
 			ctx.lineTo(zone.right,h-zone.top);
 			ctx.lineTo(zone.right,h-zone.bottom);
 			ctx.lineTo(zone.left,h-zone.bottom);
-		};
+		}
 
 		ctx.strokeStyle = stroke;
 		ctx.stroke();

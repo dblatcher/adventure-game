@@ -13,7 +13,7 @@ function DialogChoice (optionText,script,config={}) {
 			groupOfLines = [];
 			for (var j=0; j< script[i].length; j++) {
 				groupOfLines.push ( parseScriptLine(script[i][j]) );
-			};
+			}
 			this.script.push(groupOfLines);
 		} else {
 			this.script.push(parseScriptLine(script[i]))	
@@ -21,10 +21,10 @@ function DialogChoice (optionText,script,config={}) {
 		
 	}
 	
-	if (typeof config.addItems === 'string' ) { config.addItems = [config.addItems] };
-	if (typeof config.removeItems === 'string' ) { config.removeItems = [config.removeItems] };
+	if (typeof config.addItems === 'string' ) { config.addItems = [config.addItems] }
+	if (typeof config.removeItems === 'string' ) { config.removeItems = [config.removeItems] }
 	
-	if (typeof config.condition === 'function') {this.condition = config.condition};
+	if (typeof config.condition === 'function') {this.condition = config.condition}
 
 	this.consequence = config.consequence || null;
 	this.canOnlySayOnce = config.canOnlySayOnce || false;
@@ -36,7 +36,7 @@ function DialogChoice (optionText,script,config={}) {
 	
 	
 	function parseScriptLine(line) {
-		if (typeof line === 'object') {return line};
+		if (typeof line === 'object') {return line}
 		
 		var parsedLine = {orderType:'say', options:{}};
 		
@@ -47,7 +47,7 @@ function DialogChoice (optionText,script,config={}) {
 		} else if (line.indexOf('##') != -1) {
 			parsedLine.orderType = 'doAction';
 			separatorIndex = line.indexOf('##');
-		};
+		}
 		
 		if (separatorIndex) {
 			parsedLine.actor = line.substring(0,separatorIndex);
@@ -55,7 +55,7 @@ function DialogChoice (optionText,script,config={}) {
 		} else {
 			parsedLine.actor = 'pc';
 			parsedLine.text = line;
-		};
+		}
 		
 		return parsedLine;
 	}
@@ -80,7 +80,7 @@ function Conversation (label,npc, firstBranch) {
 	this.branches = {};
 	this.firstBranch = firstBranch;
 	this.currentBranch = firstBranch;
-};
+}
 Conversation.prototype.addBranch = function (dialogBranch) {
 	this.branches[dialogBranch.label] = dialogBranch;
 	dialogBranch.conversationLabel = this.label;

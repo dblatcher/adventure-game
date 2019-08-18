@@ -1,4 +1,5 @@
 function skip() {
+     // eslint-disable-next-line
     console.log(`skipped ${this.name} moving`);
     let moveOrder = this.char.destinationQueue[this.char.destinationQueue.length-1];
     this.char.x =  moveOrder.x; 
@@ -48,6 +49,7 @@ export default function () {
     for (var i=0; i<obstacles.length; i++) {
         if (obstacles[i].containsPoint( this.x+movement.x, this.y+movement.y) ) {
             movement = {x:0, y:0};
+             // eslint-disable-next-line
             console.log('hit-obstacle', moveOrder);
             this.char.behaviour_action = 'wait';
             this.char.behaviour_direction = moveOrder.direction;

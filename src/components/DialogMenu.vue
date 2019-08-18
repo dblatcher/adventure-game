@@ -19,10 +19,10 @@ export default {
 		buttonHandler(direction) {
 			if (this.disabled) {return false;}
 			if (direction === 'back') {
-				if (this.offset > 0) {this.offset--};
+				if (this.offset > 0) {this.offset--}
 			}
 			if (direction === 'forward') {
-				if (this.offset < this.items.length-this.maxVisible) {this.offset++};
+				if (this.offset < this.items.length-this.maxVisible) {this.offset++}
 			}
 		},
 		clickHandler(choice) {

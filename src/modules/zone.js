@@ -32,7 +32,7 @@ RectZone.prototype.containsPoint = function () {
 			x = arguments[0];
 			y = arguments[1];
 		}
-	};
+	}
 	if ( typeof arguments[0] === 'object' ) {
 		x = arguments[0].x;
 		y = arguments[0].y;
@@ -48,18 +48,18 @@ RectZone.prototype.overlapsRectangle = function (rectangle) {
 };
 
 RectZone.prototype.intersectsLineSegment = function (point1, point2) {
-	if (this.containsPoint(point1)) {return true};
-	if (this.containsPoint(point2)) {return true};
+	if (this.containsPoint(point1)) {return true}
+	if (this.containsPoint(point2)) {return true}
 	
 	var topLeft = 	{x:this.x , y:this.y},
 	topRight = 		{x:this.x+this.width , y:this.y },
 	bottomLeft = 	{x:this.x , y:this.y+this.height },
 	bottomRight =	{x:this.x+this.width , y:this.y+this.height };
 	
-	if (Point.doLineSegmentsIntersect (point1, point2, topLeft, topRight)) {return true};
-	if (Point.doLineSegmentsIntersect (point1, point2, topRight, bottomRight)) {return true};
-	if (Point.doLineSegmentsIntersect (point1, point2, bottomRight, bottomLeft)) {return true};
-	if (Point.doLineSegmentsIntersect (point1, point2, bottomLeft, topLeft)) {return true};
+	if (Point.doLineSegmentsIntersect (point1, point2, topLeft, topRight)) {return true}
+	if (Point.doLineSegmentsIntersect (point1, point2, topRight, bottomRight)) {return true}
+	if (Point.doLineSegmentsIntersect (point1, point2, bottomRight, bottomLeft)) {return true}
+	if (Point.doLineSegmentsIntersect (point1, point2, bottomLeft, topLeft)) {return true}
 	return false;
 }
 
@@ -70,11 +70,11 @@ function Point () {
 			x = arguments[0];
 			y = arguments[1];
 		}
-	};
+	}
 	if ( typeof arguments[0] === 'object' ) {
 		x = arguments[0].x;
 		y = arguments[0].y;
-	};
+	}
 	
 	
 	this.x = x;
@@ -110,20 +110,20 @@ Point.doLineSegmentsIntersect = function  (p1, q1, p2, q2) {
     var o4 = orientation(p2, q2, q1); 
 
     // General case 
-    if (o1 != o2 && o3 != o4) {return true};
+    if (o1 != o2 && o3 != o4) {return true}
 
     // Special Cases 
     // p1, q1 and p2 are colinear and p2 lies on segment p1q1 
-    if (o1 == 0 && onSegment(p1, p2, q1)) {return true}; 
+    if (o1 == 0 && onSegment(p1, p2, q1)) {return true} 
 
     // p1, q1 and q2 are colinear and q2 lies on segment p1q1 
-    if (o2 == 0 && onSegment(p1, q2, q1)) {return true}; 
+    if (o2 == 0 && onSegment(p1, q2, q1)) {return true} 
 
     // p2, q2 and p1 are colinear and p1 lies on segment p2q2 
-    if (o3 == 0 && onSegment(p2, p1, q2)) {return true}; 
+    if (o3 == 0 && onSegment(p2, p1, q2)) {return true} 
 
         // p2, q2 and q1 are colinear and q1 lies on segment p2q2 
-    if (o4 == 0 && onSegment(p2, q1, q2)) {return true}; 
+    if (o4 == 0 && onSegment(p2, q1, q2)) {return true} 
 
     return false; // Doesn't fall in any of the above cases 
 } 
@@ -138,20 +138,20 @@ function PolyZone (corners) {
 		vertices.push (new Point (corners[i][0], corners[i][1]))
 	}
 	this.corners = vertices;
-};
+}
 
 PolyZone.prototype.containsPoint = function () {
 
 	var point = new Point (...arguments);
 
     var n = this.corners.length;
-    if (n<3) {return false}; 
+    if (n<3) {return false} 
     var extreme = {y:point.y, x:1000000};
     var intersections = 0;
 
     for (var c=0; c < n; c++ ) {
         if (Point.doLineSegmentsIntersect(point, extreme, this.corners[c], this.corners[c + 1 < n ? c+1 : 0] ) ) {intersections++}
-    };
+    }
 
     //if a line from the point to the extreme crosses lines of the polygon an odd number of time, the point is inside
     if (intersections%2) {return true;}
@@ -170,7 +170,7 @@ Object.defineProperty(PolyZone.prototype, 'boundingRect',{
 			right = c[i].x > right ? c[i].x : right;
 			bottom= c[i].y < bottom? c[i].y : bottom;	
 			top   = c[i].y > top   ? c[i].y : top;
-		};
+		}
 		return {
 			left:left, right:right, top:top, bottom:bottom
 		};
@@ -183,11 +183,11 @@ PolyZone.prototype.overlapsRectangle = function (rectangle) {
 	this.boundingRect.top < rectangle.bottom ||
 	this.boundingRect.bottom > rectangle.top) {
 		return false;
-	}; 
+	} 
 		
 	for (var i= 0; i< this.corners.length; i++) {
 		if ( rectangle.containsPoint(this.corners[i]) ) {return true;}
-	};
+	}
 	
 	var rCorners = [ new Point (rectangle.left, rectangle.top), new Point (rectangle.right,rectangle.top), new Point (rectangle.right, rectangle.bottom), new Point (rectangle.left, rectangle.bottom)
 	];
@@ -204,19 +204,19 @@ PolyZone.prototype.overlapsRectangle = function (rectangle) {
 			rCorners[j], rCorners[j + 1 < 4 ? j+1 : 0]
 			) ) {return true}
 		}
-    };
+    }
 	
 	
 	for (var i= 0; i< rCorners.length; i++) {
 		if ( this.containsPoint(rCorners[i]) ) {return true;}
-	};
+	}
 	
 	return false;
 }
 
 PolyZone.prototype.intersectsLineSegment = function (point1, point2) {
-	if (this.containsPoint(point1)) {return true};
-	if (this.containsPoint(point2)) {return true};
+	if (this.containsPoint(point1)) {return true}
+	if (this.containsPoint(point2)) {return true}
 	
 
 	var n = this.corners.length;
@@ -228,7 +228,7 @@ PolyZone.prototype.intersectsLineSegment = function (point1, point2) {
 		this.corners[i], 
 		this.corners[i + 1 < n ? i+1 : 0])) {
 			return true
-		};
+		}
 	
 	}
 	

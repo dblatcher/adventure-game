@@ -15,12 +15,12 @@ function skip (path) {
 
 export default function (destination, options = {}) {
 	
-	if (typeof options.action === 'undefined') {options.action = 'walk'};
+	if (typeof options.action === 'undefined') {options.action = 'walk'}
 
 	var path = this.theApp.findPath(this,destination); 
 	if (path.length === 0 ) {
 		return Promise.resolve( {finished: false, reason:'no route',  message:`No route found to [${destination.x},${destination.y}]`})
-	};
+	}
 	
 	// create list of orders
 	
@@ -69,7 +69,7 @@ export default function (destination, options = {}) {
 					resolve({finished:false, message:`Did not reach [${queEnd.x},${queEnd.y}]`});		
 				}
 			} 	
-		};
+		}
 		
 		var timer = setInterval ( function(){takeStepAndCheckIfFinished (resolve) }, 50);
 	});
