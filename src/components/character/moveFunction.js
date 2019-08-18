@@ -7,7 +7,6 @@ function skip() {
     this.char.behaviour_action = 'wait';
     this.char.behaviour_actFrame = 0;
     this.char.behaviour_direction = moveOrder.direction;
-    this.theApp.$emit('mile-stone','reached-destination',this,moveOrder);
 }
 
 export default function () {
@@ -50,7 +49,6 @@ export default function () {
         if (obstacles[i].containsPoint( this.x+movement.x, this.y+movement.y) ) {
             movement = {x:0, y:0};
             console.log('hit-obstacle', moveOrder);
-            this.theApp.$emit('mile-stone','hit-obstacle',this,moveOrder);
             this.char.behaviour_action = 'wait';
             this.char.behaviour_direction = moveOrder.direction;
             this.char.behaviour_actFrame = 0;
@@ -68,7 +66,6 @@ export default function () {
             this.char.behaviour_action = 'wait';
             this.char.behaviour_actFrame = 0;
             this.char.behaviour_direction = moveOrder.direction;
-            this.theApp.$emit('mile-stone','reached-destination',this,moveOrder);
         };
     }
     

@@ -3,7 +3,7 @@
         <WorldItem v-if="type == 'W'"
         v-bind:measure="measure"
         v-bind:item="data"
-        v-bind:highlight="highlight" />
+        v-bind:highlight="highlight"/>
 
         <character v-if="type == 'C'"
         v-bind:measure="measure"
@@ -19,8 +19,8 @@ import WorldItem from "./Worlditem/WorldItem";
 import Character from "./character/Character";
 
 export default {
-	name:'ThingInRoom',
-	components: { WorldItem, Character },
+    name:'ThingInRoom',
+    components: { WorldItem, Character },
     props:['data','measure','roomWidth','highlight'],
 
     computed : {

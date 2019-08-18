@@ -161,9 +161,6 @@ export default {
 
 			if (onLastFrame && (!order.loop && !noActions )) {
 				this.char.actionQueue.shift();
-				if (this.char.actionQueue.length === 0){
-					this.theApp.$emit('mile-stone','actions-finished',this,order);
-				}
 			}
 		},    
 		clickHandler : function (event) {

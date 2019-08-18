@@ -111,9 +111,6 @@ export default {
 			if (onLastFrame) {				
 				if (this.item.queue.length) {
 					this.item.status = this.item.queue.shift();
-					if (this.item.queue.length === 0) {
-						this.gameInstance.$emit('mile-stone','reached last animation:'+this.item.status.cycle,this);
-					}
 				};
 			}
 			

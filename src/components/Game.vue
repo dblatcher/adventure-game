@@ -17,7 +17,8 @@
     <div class="game__room-wrapper">
       <Room ref="room" 
         v-bind:room="rooms[roomNumber]" 
-        v-bind:measure="roomMeasure">
+        v-bind:measure="roomMeasure"
+        v-on:clicked-room="handleClickOnRoom($event)">
 
         <ThingInRoom ref="things"
           v-for="thing in thingsInRoom":key="rooms[roomNumber].id + '--' + thing.id"
@@ -59,7 +60,7 @@
 
     </div>
 
-    <p style="display:none; position:absolute; bottom:0; right:0; background-color:white;">
+    <p style="display:block; position:absolute; bottom:0; right:0; background-color:white;">
       <span>{{message}}</span>
       <span ref="coordinateDisplay"></span>
     </p>
@@ -178,7 +179,7 @@ export default {
       this.$parent.handleFileMenuClick([null, 'toggle']);
     },
 
-    changeRoom: function (rNum,pcX,pcY,data) {
+    changeRoom: function (rNum,pcX,pcY,data={}) {
       
       if (typeof rNum === 'string') {
         for (let i = 0; i < this.rooms.length; i++) {
@@ -189,7 +190,7 @@ export default {
         }
       }
 
-      this.$emit('mile-stone','changing room to '+this.rooms[rNum].name)
+      this.reportEvent('room change to '+this.rooms[rNum].name);
       if (this.$refs.characters) {
         this.$refs.characters.forEach ( (charComp) => {
           charComp.$destroy();
@@ -210,7 +211,12 @@ export default {
       this.roomNumber = rNum;
       this.thingHoveredOn = null;
       this.resetListeners();
-      this.$emit('room-change-done',data.callback);
+
+      if (typeof data.callback === 'function' ) {
+        this.$nextTick( function() {
+            data.callback.apply(this,[]);
+        })
+      }
 
     },
     getThings : function (ident) {		
@@ -430,11 +436,9 @@ export default {
         }
       };
     },
-    reportEvent: function(type,thing,order){
+    reportEvent: function(message){
       var now = new Date();
-      thing = thing || {name:'[game]'};
-      order = order || {};
-      this.message = `${now.getHours()}:${now.getMinutes()}.${now.getSeconds()} - ${thing.name}: ${type}. `
+      this.message = `${now.getHours()}:${now.getMinutes()}.${now.getSeconds()} - ${message}. `
     },
     handleHoverEvent: function(component,event){
       if (event.type=== 'mouseover') {
@@ -489,20 +493,10 @@ export default {
       }
       return path;
     },
-    callRoomChangeCallback: function (callback){
-      this.$nextTick( function(){
-        if (typeof callback === "function") {
-          callback.apply(this,[]);
-        }
-      })
-    },
     resetListeners: function() {
       this.$off();
       this.$on('hover-event',this.handleHoverEvent);	
-      this.$on('mile-stone',this.reportEvent);
-      this.$on('clicked-room', this.handleClickOnRoom);
       this.$on('clicked-thing', this.handleClickOnThing);
-      this.$on('room-change-done', this.callRoomChangeCallback);
       this.$on('character-room-change', this.characterRoomChange);
     },
     returnCurrentState: function() {
@@ -521,7 +515,7 @@ export default {
     window.vm = this;
 
     this.resetListeners(); 
-    this.changeRoom(this.roomNumber,200,10,{
+    this.changeRoom(this.roomNumber,0,0,{
       pcNotMoving: true,
       callback: function() {
         console.log(vm.loadData ? 'reload' : 'restart', new Date);
