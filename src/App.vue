@@ -35,7 +35,7 @@
 
 <script>
 
-import /* webpackPreload: true */ Game from "./components/Game";
+import /* webpackPreload: true */ Game from "./components/game/Game";
 import FileMenu from "./components/fileMenu";
 import /* webpackPreload: true */{TitleScreen, gameData} from "./gameIndex"
 
