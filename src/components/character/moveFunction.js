@@ -16,7 +16,7 @@ export default function () {
         return false;
     }
 
-    if (this.char.destinationQueue.length === 0) {return false};
+    if (this.char.destinationQueue.length === 0) {return false}
     var moveOrder = this.char.destinationQueue[0];
     
     if (!moveOrder.started) {
@@ -26,8 +26,8 @@ export default function () {
                 this.char.behaviour_direction = moveOrder.direction;
                 this.char.behaviour_actFrame = 0;
             }
-        };
-    };			
+        }
+    }
     moveOrder.started = true;
     
     // determine movement - the 'step' the character will try to take.
@@ -66,7 +66,7 @@ export default function () {
             this.char.behaviour_action = 'wait';
             this.char.behaviour_actFrame = 0;
             this.char.behaviour_direction = moveOrder.direction;
-        };
+        }
     }
     
 }

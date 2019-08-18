@@ -8,14 +8,14 @@ export default function setStatus () {
         } else {console.warn ( `${this.ident} does not cycle ${nextOrder.cycle}.` ) }
     }
 
-    if (orders.length === 0 ) { return Promise.resolve('no valid orders')};
+    if (orders.length === 0 ) { return Promise.resolve('no valid orders')}
 
     this.item.queue = orders;
     var lastOrder = this.item.queue[this.item.queue.length-1];
     this.cycleFrame = 0;
     var that = this;
 
-    return new Promise( function(resolve, reject) {
+    return new Promise( function(resolve) {
         watchQueue(resolve);
     });
 
@@ -38,6 +38,6 @@ export default function setStatus () {
             }
             
         },100);
-    };
+    }
 
 }

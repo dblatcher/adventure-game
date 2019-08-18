@@ -6,7 +6,7 @@
     v-bind:name="name" 
     v-bind:status="status">
         <div v-bind:style="styleObject">
-            <Sprite v-for="sprite in this.spriteSet":key="sprite.id"
+            <Sprite v-for="sprite in this.spriteSet" :key="sprite.id"
                 v-bind:sprite="sprite"
                 v-bind:fx="sprite.p.frame.fx" 
                 v-bind:fy="sprite.p.frame.fy"
@@ -32,7 +32,7 @@ export default {
         var fullSet = this.$parent.$parent.$parent.sprites;
         for (var i=0; i< fullSet.length; i++) {
             if (this.item.spritesUsed.includes(fullSet[i].id)) {spriteSet.push ( Object.assign({}, fullSet[i], {p:this} ) )    }
-        };
+        }
 
         return {
         spriteSet : spriteSet,
@@ -94,12 +94,12 @@ export default {
     },
     methods : {
         clickHandler : function (event) {
-            if (this.item.unclickable) {return false};
+            if (this.item.unclickable) {return false}
             event.stopPropagation();
             this.gameInstance.$emit('clicked-thing', this.item);
         },
         hoverHandler : function (event) {
-            if (this.item.unclickable) {return false};
+            if (this.item.unclickable) {return false}
             this.gameInstance.$emit('hover-event', this, event);
         },
         setStatus : setStatus,
@@ -111,7 +111,7 @@ export default {
             if (onLastFrame) {
                 if (this.item.queue.length) {
                     this.item.status = this.item.queue.shift();
-                };
+                }
             }
             
         },
