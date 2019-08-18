@@ -39,10 +39,7 @@
       ></CommandLine>
 
       <div class="game__menu-wrapper"
-        v-bind:class="{
-          disabled:gameStatus === 'LIVE' ? false:true,
-        }"
-        >
+        v-bind:class="{disabled:gameStatus === 'LIVE' ? false:true,}">
         <VerbMenu ref="VerbMenu" 
         v-on:verb-picked="pickVerb($event)"
         v-bind:verb-list='verbList' 
@@ -334,7 +331,7 @@ export default {
 
       this.$refs.coordinateDisplay.innerText = `[${Math.round(clickCoord.x)} , ${Math.round(clickCoord.y)}]`
       this.getThings('pc').goTo ( {x:clickCoord.x, y:clickCoord.y, ref:false});
-    },	
+    },
     handleClickOnThing: function(thing) {
       if (this.gameStatus !== 'LIVE') {return false};
 
@@ -357,7 +354,7 @@ export default {
       };
 
       if (this.command.complete) {this.executeCommand();}		
-    },	
+    },
 
     handleDialogChoice: function (choice) {
       var theApp = this, script = choice.script;
@@ -446,7 +443,7 @@ export default {
       };
       if (event.type=== 'mouseout' && this.thingHoveredOn === component) {
         this.thingHoveredOn = null;
-      };	
+      };
     },
     findPath : function (startPoint, endPoint) {
       var i, obstacles = this.rooms[this.roomNumber].obstacles, directPath = true;
