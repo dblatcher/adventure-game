@@ -138,7 +138,10 @@ export default {
       let cSet =  this.allCharacters.filter( (char)=> {
         return char.room === that.roomNumber;
       });
-      let wSet = this.rooms[this.roomNumber].worldItems;
+      let wSet = this.rooms[this.roomNumber].worldItems.filter ( (item)=> {
+        return !item.removed;
+      });
+      
       set.push(...wSet, ...cSet);
       set.sort( function(a,b) { return (b.y + b.zAdjust) - (a.y + a.zAdjust)} )
       return set;

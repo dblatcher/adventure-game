@@ -117,7 +117,7 @@ var makeRooms = function(){ return [
 		new WorldItem ('lake','lake',[200,40,20,-20],400,50),
 		new WorldItem ('house','path back to house',[375,0],50,150),
 		new WorldItem ('bucket','bucket',[250,20],40,40,'neutral',worldItemModels.bucket),
-		new WorldItem ('bucket2','big bucket',[80,20],40,40,'neutral',worldItemModels.bucket,{scale: 1.5}),
+		new WorldItem ('bucket2','big bucket',[80,20],40,40,'neutral',worldItemModels.bucket,{removed: true, scale: 1.5}),
 		new WorldItem ('fire','fire',[145,20,20,0],40,40,'burning',worldItemModels.fire),
 	],
 	obstacles:[

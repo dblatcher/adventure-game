@@ -68,15 +68,15 @@ function WorldItem (id, name, coords ,width,height,initialCycle, model,config={}
 	this.name = name;
 	this.x = coords[0] || 0;
 	this.y = coords[1] || 0;
-	
 	this.scale = config.scale || 1;
 	this.unclickable = config.unclickable || false;
 	this.noZoneScaling = config.noZoneScaling || false;
 	this.zAdjust = config.zAdjust || 0;
-
+	this.removed = config.removed || false;
+	
 	this.walkOffsetX =  coords[2] || 0;
 	this.walkOffsetY =  coords[3] || 0;
-		
+	
 	this.baseWidth = width || 20;
 	this.baseHeight = height || 20;
 	this.status = {cycle: initialCycle||'neutral'};
@@ -105,7 +105,8 @@ WorldItem.prototype.returnState = function() {
 			scale: this.scale,
 			unclickable: this.unclickable,
 			noZoneScaling: this.noZoneScaling,
-			zAdjust: this.zAdjust
+			zAdjust: this.zAdjust,
+			disabled: this.disabled,
 		},
 	)
 };
@@ -119,7 +120,7 @@ var recreateWorldItemFromState = function(plainObject) {
 		plainObject.baseHeight,
 		plainObject.status.cycle,
 		plainObject.initialState.model,
-		{scale: plainObject.scale, unclickable: plainObject.unclickable, noZoneScaling:plainObject.noZoneScaling, zAdjust:plainObject.zAdjust}
+		{removed:plainObject.removed, scale: plainObject.scale, unclickable: plainObject.unclickable, noZoneScaling:plainObject.noZoneScaling, zAdjust:plainObject.zAdjust}
 	);
 }
 
