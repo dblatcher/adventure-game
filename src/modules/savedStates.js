@@ -1,5 +1,5 @@
 
-import {recreateWorldItemFromState} from "./constructors";
+
 import { gameData } from "../gameIndex";
 
 function getCurrentGameData (gameInstance) {
@@ -76,15 +76,17 @@ function modifyGameData (state, loadData) {
     state.roomNumber = loadData.roomNumber;
     state.conversation = loadData.conversation;
 
-    var i,j, listForRoom;
-    // replace plain objects in each loadData room with array of WorldItems
-    for (i=0; i<state.rooms.length; i++) {
-        listForRoom = loadData.rooms[i].worldItems;
-        for (j=0; j<listForRoom.length; j++) {
-            listForRoom.splice  (j,1, recreateWorldItemFromState(listForRoom[j]) );
+    // replace each item in the worldItems array of each room in the loadData
+    // with the corresponding WorldItem taken from state and modified with that item's properties
+    for (let index = 0; index < loadData.rooms.length; index++) {
+        const room = loadData.rooms[index];
+        for (let index2 = 0; index2 < room.worldItems.length; index2++) {
+            const item = room.worldItems[index2];
+            room.worldItems.splice (index2, 1, Object.assign(state.rooms[index].worldItems[index2], item) );
         }
     }
 
+    var i
     for (i=0; i<state.rooms.length; i++) {
         state.rooms[i] = Object.assign(state.rooms[i], loadData.rooms[i]);
     }

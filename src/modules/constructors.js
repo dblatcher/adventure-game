@@ -93,36 +93,16 @@ function WorldItem (id, name, coords ,width,height,initialCycle, model,config={}
 }
 WorldItem.prototype.reset = resetObject;
 WorldItem.prototype.returnState = function() {
-	return new WorldItem (
-		this.id.substring(0, this.id.length-2),
-		this.name,
-		[this.x, this.y, this.walkOffsetX, this.walkOffsetY],
-		this.baseWidth,
-		this.baseHeight,
-		this.status.cycle,
-		this.initialState.model,
-		{
-			scale: this.scale,
-			unclickable: this.unclickable,
-			noZoneScaling: this.noZoneScaling,
-			zAdjust: this.zAdjust,
-			disabled: this.disabled,
-		},
-	)
+	return {
+		name: this.name,
+		x:this.x,
+		y:this.y,
+		scale: this.scale,
+		removed: this.removed,
+		status: {cycle: this.status.cycle},
+	}
 };
 
-var recreateWorldItemFromState = function(plainObject) {
-	return new WorldItem (
-		plainObject.id.substring(0, plainObject.id.length-2),
-		plainObject.name,
-		[plainObject.x, plainObject.y, plainObject.walkOffsetX, plainObject.walkOffsetY],
-		plainObject.baseWidth,
-		plainObject.baseHeight,
-		plainObject.status.cycle,
-		plainObject.initialState.model,
-		{removed:plainObject.removed, scale: plainObject.scale, unclickable: plainObject.unclickable, noZoneScaling:plainObject.noZoneScaling, zAdjust:plainObject.zAdjust}
-	);
-}
 
 function Room (id, name, fileName, width,height, contents) {
 	this.id = this.id = id.toUpperCase()+"_R";
@@ -254,4 +234,4 @@ export {Sprite,
 	 Character,
 	  WorldItem,
 	   Room, EffectZone, Foreground, Verb, InventoryItem, CharacterModel, WorldItemModel,
-	   recreateWorldItemFromState }
+	    }
