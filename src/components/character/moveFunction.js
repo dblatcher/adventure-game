@@ -30,16 +30,16 @@ export default function () {
         }
     }
     moveOrder.started = true;
-    
+
     // determine movement - the 'step' the character will try to take.
     var d = {x: moveOrder.x - this.x, y:moveOrder.y - this.y};
     var absD = {x: Math.abs(d.x), y: Math.abs(d.y) };
     var speed = 6 * this.zoneEffects.scale();
     var movement = {x:0,y:0};
-    
+
     var rX = absD.x ? absD.x / ( absD.x + absD.y) : 0;
     var rY = absD.y ? absD.y / ( absD.x + absD.y) : 0;
-                    
+
     movement.x = Math.min ( absD.x, speed*rX );
     movement.y = Math.min ( absD.y, speed*rY );
     if (d.x < 0 ) {movement.x *= -1}

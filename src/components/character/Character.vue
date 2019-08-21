@@ -94,11 +94,22 @@ export default {
                 this.char.actionQueue[0].direction : this.behaviour.direction;
         }, 
         frame : function() {
+            var v, directionToUse;
             var currentOrder = this.char.actionQueue[0] || this.behaviour;
             var directionNeeded = !Array.isArray(this.char.cycles[currentOrder.action]);
-            var v = directionNeeded ? 
-                this.char.cycles[currentOrder.action][currentOrder.direction][currentOrder.actFrame]:
-                this.char.cycles[currentOrder.action][currentOrder.actFrame];            
+
+            if (directionNeeded) {
+                if (this.char.cycles[currentOrder.action][currentOrder.direction]) {
+                    directionToUse = currentOrder.direction
+                } else {
+                    directionToUse = Object.keys( this.char.cycles[currentOrder.action] )[0] ;
+                    console.warn(`falling back to ${directionToUse}`)
+                }
+                v =  this.char.cycles[currentOrder.action][directionToUse][currentOrder.actFrame]
+            } else {
+                v = this.char.cycles[currentOrder.action][currentOrder.actFrame]
+            }
+
             return {sprite: v[0], fx:v[1], fy:v[2]}
         },
         walkToPoint: function() {
@@ -149,12 +160,17 @@ export default {
             var order = this.char.actionQueue[0] || this.behaviour;
 
             var directionNeeded = !Array.isArray(this.char.cycles[order.action]);
-            var cycle = directionNeeded ? 
-                this.char.cycles[order.action][order.direction] :
-                this.char.cycles[order.action] ;
+            if (directionNeeded && !this.char.cycles[order.action][order.direction] ) {
+                console.warn (`Character model for  ${this.char.name} has no cycle for : ${order.action} ${order.direction}!`);
+                let firstKey = Object.keys( this.char.cycles[order.action] )[0] ;
+                order.direction = firstKey;
+            }
 
+            let cycle = directionNeeded ? 
+            this.char.cycles[order.action][order.direction] :
+            this.char.cycles[order.action] ;
             var onLastFrame = !(cycle.length > order.actFrame+1);
-            
+
             order.actFrame = onLastFrame ? 0 : order.actFrame + 1;
             //this.behaviour is just an object with convience copies of the this.char behaviour properties
             if (noActions) {this.char.behaviour_actFrame = order.actFrame}
