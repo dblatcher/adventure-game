@@ -17,8 +17,8 @@ var sprites = [
   new Sprite ('platform', 'testroom3platform.png', [1,1]),
   new Sprite ('tube', 'tube.png'),
   new Sprite ('fire', 'Fire.png', [4,2]),
-  new Sprite ('sk1', 'skinner-0-0.png', [12,1]),
-  new Sprite ('sk2', 'skinner-0-1.png', [12,1]),
+  new Sprite ('sk1', 'skinner-1-r.png', [12,1]),
+  new Sprite ('sk2', 'skinner-1-l.png', [12,1]),
 ]
 
 
@@ -83,8 +83,16 @@ var characterModels = {
 			left : [ ['sk2',8,0],['sk2',7,0],['sk2',6,0],['sk2',5,0],  ] ,
 		},
 		talk : {
-			right : [ ['sk1',0,0], ['sk1',0,0] ,['sk1',2,0] ,['sk1',2,0] ],
-			left : [ ['sk2',11,0], ['sk2',11,0] ,['sk2',9,0] ,['sk2',9,0] ],
+			right : [ ['sk1',0,0],['sk1',0,0],['sk1',2,0] ],
+			left : [ ['sk2',11,0],['sk2',11,0],['sk2',9,0] ],
+		},
+		yell : {
+			right : [ ['sk1',11,0],['sk1',11,0],['sk1',10,0] ],
+			left : [ ['sk2',0,0],['sk2',0,0],['sk2',1,0] ],
+		},
+		think : {
+			right : [ ['sk1',9,0],['sk1',8,0],['sk1',9,0] ],
+			left : [ ['sk2',2,0],['sk2',3,0],['sk2',2,0] ],
 		},
 	},'left'),
 	
