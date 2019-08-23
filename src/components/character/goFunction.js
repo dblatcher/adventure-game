@@ -15,7 +15,7 @@ function skip (path) {
 
 export default function (destination, options = {}) {
 	
-	if (typeof options.action === 'undefined') {options.action = 'walk'}
+	if (typeof options.action === 'undefined' || !this.char.cycles[options.action]) {options.action = 'walk'}
 
 	var path = this.theApp.findPath(this,destination); 
 	if (path.length === 0 ) {
