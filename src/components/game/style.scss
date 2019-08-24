@@ -47,7 +47,11 @@
 
 
 .file-button {
-    @include btn-outline (#000);
+    @include btn-outline ($colour-blue);
+
+    &--active {
+        @include btn-solid ($colour-blue);
+    }
 }
 
 

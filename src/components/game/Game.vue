@@ -5,16 +5,17 @@
       <div class="skip-button" 
       v-bind:class="{'skip-button--disabled': gameStatus !== 'CUTSCENE'}"
       @click="handleSkipButton">
-      <img class="button-icon" src="../../assets/forward.svg"/></div>
+      <img class="button-icon" src="./forward.svg"/></div>
 
       <input class="highlight-control" type="checkbox" id="highlight-checkbox" v-model="highlightingThings">
       <label class="highlight-button" for="highlight-checkbox">
-        <img class="button-icon" src="../../assets/eye.svg"/>
+        <img class="button-icon" src="./eye.svg"/>
       </label>
 
       <div class="file-button"
       @click="openFileMenu()"
-      >&#128427;</div>
+      v-bind:class="{'file-button--active': fileMenuIsOpen}"
+      ><img class="button-icon" src="./save.svg"/></div>
 
     </nav>
 
@@ -155,11 +156,9 @@ export default {
     },
     inventoryAsObject: function() {
       var result ={};
-
       this.inventoryItems.filter(function(i){return i.have}).forEach(item => {
         result[item.id] = item;
       });
-
       return result;
     },
     dialogChoices : function () {
@@ -177,6 +176,9 @@ export default {
       return this.rooms[this.roomNumber].obstacles;
     },
     grid : pathFinding.makeGrid,
+    fileMenuIsOpen () {
+      return this.$parent.fileMenuIsOpen;
+    }
   },
   
   methods : {
