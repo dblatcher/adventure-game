@@ -1,5 +1,7 @@
 <template>
-    <div class="file-menu" v-if="isOpen">
+    
+    <aside class="fullscreen-modal" v-if="isOpen">
+    <div class="file-menu">
 
         <div class="top-row">
             <h2 class='heading'>{{atTitle ? 'Restore saved game' : 'Saved games'}}</h2>
@@ -35,6 +37,8 @@
         </div>
             
     </div>
+    </aside>
+
 </template>
 
 <script>
@@ -77,13 +81,23 @@ export default {
 <style lang="scss" scoped>
 @import "../modules/_material.scss";
 
+.fullscreen-modal {
+    position: fixed;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 300;
+    box-sizing: border-box;
+    background-color: rgba(0,0,0,0.25);
+}
+
 .file-menu {
     @include font;
     position: fixed;
     left:50%;
     top:50%;
     transform: translateX(-50%) translateY(-50%);
-    z-index: 30000;
+    
     min-width: 16rem;
 
     padding: 2rem 1rem 1rem 1rem;

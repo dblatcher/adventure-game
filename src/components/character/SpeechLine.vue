@@ -36,7 +36,7 @@ export default {
 		font-family: monospace;
 		font-weight: 600;
 		background-color: rgba(0,0,0,.5);
-		z-index: 2000;
+		z-index: 200;
 		margin: 0;
 		border-radius: .5rem;
 	}

@@ -55,7 +55,7 @@ export default {
                     height: (rData[i].height * this.measure.scale) + this.measure.unit,
                     left: (rData[i].x * this.measure.scale) + this.measure.unit,
                     bottom: (rData[i].y * this.measure.scale) + this.measure.unit,
-                    zIndex: rData[i].zIndex || 5000,
+                    zIndex: rData[i].zIndex || 100,
                     backgroundImage: `url(${rData[i].url})`,
                 })
                 }

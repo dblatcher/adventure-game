@@ -47,6 +47,7 @@
 
 
 .file-button {
+    z-index: 500;
     @include btn-outline ($colour-blue);
 
     &--active {
