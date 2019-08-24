@@ -129,7 +129,7 @@ var worldItemModels = {
 var makeCharacters = function() {return [
 	new Character ('jane','Jane Smith',[375,10,3],'white',characterModels.jane),
 	new Character ('billy','billy',[200,10,0],'red',characterModels.billy),
-	new Character ('luigi','Luigi',[125,10,1],'lightgreen',characterModels.skinner),
+	new Character ('luigi','Luigi',[125,10,1],'lightgreen',characterModels.mario),
 ]}
 
 var pcId = 'JANE_C';
