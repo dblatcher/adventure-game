@@ -22,6 +22,7 @@
 <script>
 import Sprite from "../Sprite";
 import setStatus from "./setStatus.js";
+import { innerBorder } from "../../modules/styleGen";
 
 export default {
     name:'WorldItem',
@@ -61,13 +62,14 @@ export default {
         walkToPoint: function() {
             return {x:this.x + this.item.walkOffsetX, y:this.y + this.item.walkOffsetY}
         },
-        styleObject : function () {return {
+        styleObject : function () { return {
             position: 'absolute',
             height: (this.scaledHeight * this.measure.scale) + this.measure.unit,
             width:  (this.scaledWidth  * this.measure.scale) + this.measure.unit,
             bottom: (this.y  * this.measure.scale) + this.measure.unit,
             left:   (this.x  * this.measure.scale) + this.measure.unit,
             backgroundColor: this.highlight && !this.item.unclickable ? 'rgba(50,250,80,.5)' : 'unset',
+            backgroundImage: (this.highlight && !this.item.unclickable ? innerBorder() : 'unset'),
             transition: 'background-color 1s',
             borderRadius: '5px',
             transform: 'translateX(-50%)'

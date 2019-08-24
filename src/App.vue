@@ -20,15 +20,8 @@
       <Game ref="game"/> 
     </div>
 
-    <!-- <img v-for="room in roomData" v-bind:key="room.id"
-      v-bind:src="room.url"
-      style="display:none"
-    />
-    <img v-for="item in spriteData"  v-bind:key="item.id"
-      v-bind:src="item.url"
-      style="display:none"
-    /> -->
-
+    <img v-for="room in roomData" v-bind:key="room.id" v-bind:src="room.url" style="display:none" />
+    <img v-for="item in spriteData"  v-bind:key="item.id" v-bind:src="item.url" style="display:none" />
 
   </div>
 </template>

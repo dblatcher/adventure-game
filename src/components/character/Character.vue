@@ -40,6 +40,8 @@ import goFunction from "./goFunction";
 import doFunction from "./doFunction";
 import moveFunction from "./moveFunction";
 
+import { innerBorder } from "../../modules/styleGen";
+
 export default {
     name:'Character',
     components:{Sprite, SpeechLine},
@@ -123,6 +125,8 @@ export default {
             left:   (this.x  * this.measure.scale) + this.measure.unit,
             transform: 'translateX(-50%)',
             backgroundColor: (this.highlight ? 'rgba(50,80,250,.5)' : 'unset' ),
+            backgroundImage: (this.highlight ?  innerBorder() : 'unset'),
+
             transition: 'background-color 1s',
             borderRadius: '5px',
             filter: this.zoneEffects.filter,
