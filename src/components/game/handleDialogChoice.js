@@ -1,6 +1,6 @@
 export default function (choice) {
     var theApp = this, script = choice.script;
-    theApp.gameStatus = 'CUTSCENE';
+    theApp.setGameStatus('CUTSCENE');
     
     executeScriptItem(0)
 
@@ -35,7 +35,7 @@ export default function (choice) {
         } 
         if (typeof choice.consequence === 'function' ) {choice.consequence(theApp,choice)}
         
-        theApp.gameStatus = choice.ends ? "LIVE" : "CONVERSATION";
+        theApp.setGameStatus(choice.ends ? "LIVE" : "CONVERSATION");
       }
 
       function nextItemOrEnd () {

@@ -39,33 +39,46 @@
 
     &__settings {
         display: flex;
-        justify-content: flex-start;
-        margin-bottom: .25rem;
+        justify-content: flex-end;
+        margin: .25rem;
     }
 
-    &__settings-button {
+}
 
-        &--skip {
-            margin-right: .5rem;
-            @include btn-solid (#2196F3);
-            
-        }
-        
-        &--highlight {
-            margin-right: .5rem;
-            @include btn-solid (#2196F3);
 
-        }
+.file-button {
+    @include btn-outline (#000);
+}
 
-        &--file {
-            margin-left: auto;
-            @include btn-solid (#000);
 
-        }
+.skip-button {
+    @include btn-solid ($colour-blue);
+    margin-left: .5rem;
+    margin-right: auto;
 
+    &--disabled {
+        display: none;
     }
 }
 
+
+.highlight-button {
+    margin-right: .5rem;
+    @include btn-outline ($colour-blue);
+}
+
+.button-icon {
+    width: 1rem;
+    vertical-align: middle;
+}
+
+.highlight-control {
+    display: none;
+
+    &:checked~.highlight-button {
+        @include btn-solid ($colour-blue);
+    }
+}
 
 
 .hidden {

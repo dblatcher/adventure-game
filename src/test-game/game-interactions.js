@@ -50,7 +50,7 @@ var interactions =[
 	
 	new Interaction(['TAKE','BUCKET_W'],[],function(){
 		
-		this.gameStatus = 'CUT'
+		this.setGameStatus('CUTSCENE');
 		this.inventoryItems.filter(function(a){return a.id=='BUCKET_I'})[0].have = true;
 		this.removeThing('BUCKET_W');
 		
@@ -60,8 +60,8 @@ var interactions =[
 			billy.say('Hey, that\'s my bucket!')
 			.then((r) => { return billy.say('I am not happy.'); })
 			.then((r) => { return billy.goTo({x:100,y:10}); })
-			.then((r) => { this.gameStatus = 'LIVE'; });	
-		} else {this.gameStatus = 'LIVE';}
+			.then((r) => { this.setGameStatus('LIVE') });	
+		} else {this.setGameStatus('LIVE')}
 	}),
 	
 	new Interaction (['WALK','HOUSE_W'],[],
@@ -73,7 +73,7 @@ var interactions =[
 	new Interaction(['USE','BUCKET_I','FIRE_W'],
 	[function(){return this.getThings('FIRE_W').item.status.cycle == 'burning'}],
 	function() {
-		this.gameStatus = 'CUT'
+		this.setGameStatus('CUTSCENE');
 		
 		var fire = this.getThings('FIRE_W');
 		var house = this.getThings('HOUSE_W');
@@ -91,7 +91,7 @@ var interactions =[
 		.then ( (r) => {		
 			billy.changeRoom(1,20,5);
 			fire.name = 'sticks';
-			theApp.gameStatus = 'LIVE'		
+			this.setGameStatus('LIVE');
 		});
 		
 	}),
@@ -100,7 +100,7 @@ var interactions =[
 	
 	new Interaction(['TALK','LUIGI_C'],[],
 	function() {
-		this.gameStatus = "CONVERSATION";
+		this.setGameStatus('CONVERSATION');
 		this.conversation = 'withLuigi';
 	}),
 

@@ -2,16 +2,20 @@
   <div class="game">
 
     <nav class="game__settings">
-      <div class="game__settings-button game__settings-button--skip"
-      @click="instantMode=!instantMode"
-      >skip</div>
-      <div class="game__settings-button game__settings-button--highlight"
-      @click="highlightingThings=!highlightingThings"
-     
-      >Highlight</div>
-      <div class="game__settings-button game__settings-button--file"
+      <div class="skip-button" 
+      v-bind:class="{'skip-button--disabled': gameStatus !== 'CUTSCENE'}"
+      @click="handleSkipButton">
+      <img class="button-icon" src="../../assets/forward.svg"/></div>
+
+      <input class="highlight-control" type="checkbox" id="highlight-checkbox" v-model="highlightingThings">
+      <label class="highlight-button" for="highlight-checkbox">
+        <img class="button-icon" src="../../assets/eye.svg"/>
+      </label>
+
+      <div class="file-button"
       @click="openFileMenu()"
-      >file</div>
+      >&#128427;</div>
+
     </nav>
 
     <div class="game__room-wrapper">
@@ -110,13 +114,13 @@ export default {
 
       var sentence = this.verb.description + ' ';
       if (this.subject) {
-        sentence += describe(this.subject) + ' ';			
+        sentence += describe(this.subject) + ' ';
         if (this.needObject) {sentence += this.verb.preposition + ' ';}
       }
       if (this.object) {
-        sentence +=  describe(this.object);			
+        sentence +=  describe(this.object);
       }
-      
+
       var completeCommand = (this.subject && ! this.needObject) || (this.subject && this.object)
       var undecidedNoun='';	
       if (!completeCommand && this.thingHoveredOn) {undecidedNoun = describe(this.thingHoveredOn);} 
@@ -192,6 +196,33 @@ export default {
     handleClickOnThing,
     handleHoverEvent,
 
+    handleSkipButton() {
+      console.log('skip button');
+      if (this.gameStatus === 'LIVE') {return}
+      else {this.instantMode = true};
+    },
+
+    setGameStatus(statusName) {
+
+      if (statusName === 'LIVE' ) {
+        this.gameStatus = statusName;
+        this.instantMode = false;
+        return;
+      };
+
+      if (statusName === 'CONVERSATION' ) {
+        this.gameStatus = statusName;
+        this.instantMode = false;
+        return;
+      }
+
+      if (statusName === 'CUTSCENE' ) {
+        this.gameStatus = statusName;
+        return;
+      }
+
+      console.warn(`${statusName} is not a valid gameStatus`);
+    },
 
     characterRoomChange: function (movingCharacter, rNum,x,y) {
       movingCharacter.room = rNum;
