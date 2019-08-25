@@ -155,6 +155,16 @@ export default {
       });
       return result;
     },
+    allRoomItemData: function() {
+      var result = {};
+      this.rooms.forEach ( room => {
+        result[room.id] = {};
+        room.worldItems.forEach (item => {
+          result[room.id][item.id] = item;
+        })
+      })
+      return result;
+    },
     dialogChoices : function () {
       if (!this.conversations[this.conversation]) return [];
       let validChoices = this.conversations[this.conversation].getEnabledOptions();
