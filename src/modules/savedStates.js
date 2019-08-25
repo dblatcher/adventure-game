@@ -39,7 +39,7 @@ function createGameData(savedGame) {
 
     let state = {
         gameStatus : 'LIVE',
-        roomNumber : 3,
+        roomNumber : 0,
         conversation : null,
         rooms : gameData.makeRooms(),
         inventoryItems: gameData.makeInventoryItems(),

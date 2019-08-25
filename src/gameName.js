@@ -1,2 +1,2 @@
-const gameName = 'test-game';
+const gameName = 'steamed-hams';
 export { gameName }
