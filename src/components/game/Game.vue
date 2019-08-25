@@ -86,6 +86,7 @@ import removeThing from "./removeThing";
 import handleClickOnRoom from "./handleClickOnRoom";
 import handleClickOnThing from "./handleClickOnThing";
 import handleHoverEvent from "./handleHoverEvent";
+import {getInventoryItem, looseInventoryItem} from "./inventoryMethods";
 
 import VerbMenu from "../VerbMenu";
 import InventoryMenu from "../InventoryMenu";
@@ -201,6 +202,8 @@ export default {
     handleClickOnRoom,
     handleClickOnThing,
     handleHoverEvent,
+    getInventoryItem,
+    looseInventoryItem,
 
     handleSkipButton() {
       console.log('skip button');

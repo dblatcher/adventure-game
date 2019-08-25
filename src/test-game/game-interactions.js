@@ -1,16 +1,5 @@
-import { Interaction } from "../modules/interaction-constructor";
+import { Interaction, doorFunction,pcSays } from "../modules/interaction-constructor";
 
-function doorFunction (doorId, destination) {	
-	return function () {
-		this.getThings('pc').goTo(this.getThings(doorId).walkToPoint)
-		.then( (feedback) => {
-			if (feedback.finished) {this.changeRoom(destination[0],destination[1],destination[2],{});}
-		} );
-	}
-}
-function pcSays(text) {
-	return function() { this.getThings('pc').say(text);}	
-}
 
 var interactions =[
 	new Interaction(['LOOK','WINDOW_W'],[],pcSays('It\'s a nice window')),
@@ -51,7 +40,7 @@ var interactions =[
 	new Interaction(['TAKE','BUCKET_W'],[],function(){
 		
 		this.setGameStatus('CUTSCENE');
-		this.inventoryItems.filter(function(a){return a.id=='BUCKET_I'})[0].have = true;
+		this.getInventoryItem('BUCKET_I');
 		this.removeThing('BUCKET_W');
 		
 		var billy = this.getThings('BILLY_C');
@@ -79,7 +68,6 @@ var interactions =[
 		var house = this.getThings('HOUSE_W');
 		var billy = this.getThings('BILLY_C');
 		var pc = this.getThings('pc');
-		var theApp = this;
 		
 		pc.say ("put out fire?")
 		.then ( (r) => {return pc.say("okay")})

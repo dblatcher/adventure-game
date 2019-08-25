@@ -40,7 +40,6 @@ export default {
 
 			if (!keyList.includes(numberToUse)) {
 				for (let index = keyList.length; index > 0; index--) {
-					console.log(index, keyList[index])
 					if (numberToUse > keyList[index] ) {
 						numberToUse = keyList[index];
 						break;

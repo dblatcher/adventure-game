@@ -33,5 +33,17 @@ Interaction.makeMatrix = function (interactions) {
 	return interactionMatrix;
 }
 
+function doorFunction (doorId, destination) {	
+	return function () {
+		this.getThings('pc').goTo(this.getThings(doorId).walkToPoint)
+		.then( (feedback) => {
+			if (feedback.finished) {this.changeRoom(destination[0],destination[1],destination[2],{});}
+		} );
+	}
+}
 
-export { Interaction }
+function pcSays(text) {
+	return function() { this.getThings('pc').say(text);}	
+}
+
+export { Interaction, doorFunction, pcSays }
