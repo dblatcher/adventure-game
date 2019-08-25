@@ -64,6 +64,7 @@ Character.prototype.returnState = function () {
 }
 
 function WorldItem (id, name, coords ,width,height,initialCycle, model,config={}) {
+	
 	this.id = id.toUpperCase() + "_W";
 	this.name = name;
 	this.x = coords[0] || 0;
@@ -74,6 +75,12 @@ function WorldItem (id, name, coords ,width,height,initialCycle, model,config={}
 	this.zAdjust = config.zAdjust || 0;
 	this.removed = config.removed || false;
 	
+	this.roomId = 'undefined';
+
+	Object.defineProperty(this,'fullId',{
+		get() {return this.roomId ? this.roomId+'_'+this.id : undefined}
+	})
+
 	this.walkOffsetX =  coords[2] || 0;
 	this.walkOffsetY =  coords[3] || 0;
 	
@@ -114,6 +121,8 @@ function Room (id, name, fileName, width,height, contents) {
 	this.obstacles = contents.obstacles || [];
 	this.effectZones = contents.effectZones || [];
 	this.foregrounds = contents.foregrounds || [];
+
+	this.worldItems.forEach(item => {item.roomId = this.id});
 }
 Room.prototype.returnState = function () {
 	let state = {name:this.name, worldItems:[]};

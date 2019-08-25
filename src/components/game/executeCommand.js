@@ -12,7 +12,7 @@ export default function (command) {
     //perform the first reponse on the list for which the condition tests pass
     for (var i=0; i< matchingList.length; i++) {
       failedCondition = false;
-      
+
       // test for matchingList[i].conditions being satisfied, if not skip to next 
       for (var j=0; j<matchingList[i].conditions.length; j++) {
         if (matchingList[i].conditions[j].apply(this,[]) == false) {

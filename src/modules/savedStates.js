@@ -49,6 +49,19 @@ function createGameData(savedGame) {
         pcId : gameData.pcId,
     };
 
+    //check for duplicate worldItem.id
+    let wiids = [], duplicateFound=false;;
+    state.rooms.forEach (room =>{
+        room.worldItems.forEach (item => {
+            if ( wiids.includes(item.id) ) {
+                console.warn (`duplicate WorldItem.id detected: ${item.id} in ${room.id}`);
+                duplicateFound = true;
+            }
+            wiids.push(item.id);
+        })
+    })
+    if (duplicateFound) {console.warn('WorldItem.ids must be unique or interactions may fail.')}
+
     if (savedGame && savedGame.gameStatus) {
         modifyGameData(state, savedGame)
     }
