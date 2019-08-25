@@ -12,7 +12,7 @@ export default {
     props: ['room'],
     methods : {
 
-	plotZone : function (zone, stroke="white",fill="rgba(250,0,250,1)") {
+	plotZone : function (zone, stroke="white",fill="rgba(250,0,250,.2)") {
         let ctx = this.$el.getContext('2d');
         let h = this.room.height;
 		ctx.beginPath();

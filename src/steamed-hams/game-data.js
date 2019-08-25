@@ -5,6 +5,8 @@ import { Character, WorldItem, Room, EffectZone, Foreground, Verb, InventoryItem
 var sprites = [
 
   new Sprite ('door', 'door.png', [3,1]),
+  new Sprite ('front_fence', 'fence_front.png', [1,1]),
+  new Sprite ('table', 'table.png', [1,1]),
 
   new Sprite ('fire', 'Fire.png', [4,2]),
   new Sprite ('sk1', 'skinner-1-r.png', [12,1]),
@@ -52,6 +54,12 @@ var worldItemModels = {
 		extinguishing: [ ['fire',0,1],['fire',1,1],['fire',2,1],['fire',3,1],['fire',2,1],['fire',3,1],['fire',2,1],['fire',3,1],  ],
 		out: [ ['fire',2,1],  ],
 	}),
+	front_fence: new WorldItemModel({
+		neutral:[['front_fence',0,0]],
+	}),
+	table: new WorldItemModel({
+		neutral:[['table',0,0]],
+	}),
 
 };
 
@@ -64,6 +72,36 @@ var pcId = 'SKINNER_C';
 
 var makeRooms = function(){ return [
 	
+	new Room('FRONT', 'front of house', 'Skinner_House.png',280,160,{
+		effectZones: [
+			new EffectZone(
+				new RectZone(0,0,280,160),
+				{scale: function(){return 0.28}}
+			),
+		],
+		worldItems: [
+			new WorldItem('garage','car hole',[65,16,0,-10],200,170),
+			new WorldItem('front_door','door',[142,28,5,-10],80,120,'closed',worldItemModels.door),
+			new WorldItem('front_fence','f',[155,8],470,129,'neutral',worldItemModels.front_fence,{unclickable:true,zAdjust:10}),
+		],
+		obstacles: [
+			new PolyZone([ [0,40],[30,16],[100,20], [100,40] ]),
+			new RectZone(0,40,230,20),
+			new PolyZone([ [230,50],[243,50],[280,40], [280,60] ]),
+			new PolyZone([ [100,40],[104,14],[141,17], [132,30],[132,40] ]),
+			new PolyZone([ [154,40], [154,29],[168,17],[209,17], [215,26],[215,40] ]),
+		],
+		foregrounds: [
+			new Foreground("tree_front.png",[200,0],[80,160]),
+		],
+	}),
+
+	new Room ('DINING','dining room', 'dining_room.png',300,200,{
+		worldItems: [
+			new WorldItem('table','table',[142,30],120,50,'neutral',worldItemModels.table),
+		],
+	}),
+
 	new Room ('TEST_ROOM', 'test room', "testroom.png", 400, 300, {
 	effectZones:[
 		new EffectZone(
@@ -80,7 +118,7 @@ var makeRooms = function(){ return [
 		new PolyZone ([ [296,130], [296,250], [400,300], [400,0] ]),
 	],
 	foregrounds:[
-		new Foreground("tree.png",[-70,0],[220,200], {opacity:1,filter:'blur(1px)'}),
+
 	]}),
 
 

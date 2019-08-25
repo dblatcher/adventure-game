@@ -2,7 +2,41 @@ import { Interaction, doorFunction,pcSays } from "../modules/interaction-constru
 
 
 var interactions =[
+	new Interaction(['LOOK','GARAGE_W'],[],pcSays('I admire car owners. I aspire to be one after I\'ve reimbursed mother for the food I ate as a child.',2500)),
+
+	new Interaction(['OPEN','FRONT_DOOR_W'],[
+		function(){return this.getThings('FRONT_DOOR_W').item.status.cycle == 'closed'},
+	],function(){
+		this.getThings('pc').say("ok")
+		.then ( (r)=> {
+			return this.getThings('pc').goTo(this.getThings('FRONT_DOOR_W').walkToPoint)
+		} )
+		.then( (r)=> { if (r.finished) {
+			return this.getThings('FRONT_DOOR_W').setStatus('opening','open')
+		} });
+	}),
 	
+	new Interaction(['OPEN','FRONT_DOOR_W'],[],pcSays("It's not closed!")),
+
+	new Interaction(['WALK','FRONT_DOOR_W'],
+	[function(){return this.getThings('FRONT_DOOR_W').item.status.cycle == 'open'}],
+	doorFunction('FRONT_DOOR_W',['DINING_R',50,50])
+	),
+
+	new Interaction(['SHUT','FRONT_DOOR_W'],
+	[function(){return this.getThings('FRONT_DOOR_W').item.status.cycle == 'open'}],
+	function(){
+
+		this.getThings('pc').say("ok");
+		this.getThings('pc').goTo(this.getThings('FRONT_DOOR_W').walkToPoint)
+		.then( (r)=> { if (r.finished) {
+			this.getThings('FRONT_DOOR_W').setStatus('closing','closed')
+		} });
+	
+	}),
+	
+	new Interaction(['SHUT','FRONT_DOOR_W'],[],pcSays('It\'s already closesd.')),
+
 ]
 
 var defaultResponses = {

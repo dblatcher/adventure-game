@@ -42,8 +42,8 @@ function doorFunction (doorId, destination) {
 	}
 }
 
-function pcSays(text) {
-	return function() { this.getThings('pc').say(text);}	
+function pcSays(text,time) {
+	return function() { this.getThings('pc').say(text,{time:time});}	
 }
 
 export { Interaction, doorFunction, pcSays }
