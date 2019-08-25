@@ -68,8 +68,8 @@ export default {
             width:  (this.scaledWidth  * this.measure.scale) + this.measure.unit,
             bottom: (this.y  * this.measure.scale) + this.measure.unit,
             left:   (this.x  * this.measure.scale) + this.measure.unit,
-            backgroundColor: this.highlight && !this.item.unclickable ? 'rgba(50,250,80,.5)' : 'unset',
-            backgroundImage: (this.highlight && !this.item.unclickable ? innerBorder() : 'unset'),
+            backgroundColor: this.highlight && !this.item.unclickable ? 'rgba(255,255,255,.5)' : 'unset',
+            backgroundImage: (this.highlight && !this.item.unclickable ? innerBorder('green') : 'unset'),
             transition: 'background-color 1s',
             borderRadius: '5px',
             transform: 'translateX(-50%)'

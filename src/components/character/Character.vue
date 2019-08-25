@@ -124,8 +124,8 @@ export default {
             bottom: (this.y  * this.measure.scale) + this.measure.unit,
             left:   (this.x  * this.measure.scale) + this.measure.unit,
             transform: 'translateX(-50%)',
-            backgroundColor: (this.highlight ? 'rgba(50,80,250,.5)' : 'unset' ),
-            backgroundImage: (this.highlight ?  innerBorder() : 'unset'),
+            backgroundColor: (this.highlight ? 'rgba(255,255,255,.5)' : 'unset' ),
+            backgroundImage: (this.highlight ?  innerBorder('blue') : 'unset'),
 
             transition: 'background-color 1s',
             borderRadius: '5px',

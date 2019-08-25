@@ -1,7 +1,6 @@
-function innerBorder (gColor='white', gWidth=5) {
-    let gOffset= 0;
-    let gPattern = `transparent,${gColor} ${gOffset}%,transparent ${gOffset+gWidth}%,transparent ${100-gOffset-gWidth}%, ${gColor} ${100-gOffset}%,transparent`;
-    return `linear-gradient(to right, ${gPattern}), linear-gradient(${gPattern})`;
+function innerBorder (gColor='white', gWidth=10, gOffset=0) {
+    let gPattern = `transparent,${gColor} ${gOffset}px,transparent ${gOffset+gWidth}px`;
+    return `linear-gradient(to right, ${gPattern}),linear-gradient(to top, ${gPattern}),linear-gradient(to left, ${gPattern}), linear-gradient(${gPattern})`;
 }
 
 function ringGradient (gColor='white', gInner=60, gWidth=10 ) {
