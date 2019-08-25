@@ -10,11 +10,6 @@ export default function (rNum,pcX,pcY,data={}) {
     }
 
     this.reportEvent('room change to '+this.rooms[rNum].name);
-    if (this.$refs.characters) {
-      this.$refs.characters.forEach ( (charComp) => {
-        charComp.$destroy();
-      })
-    }
 
     var pc;
     this.allCharacters.forEach ( (charObject) => {

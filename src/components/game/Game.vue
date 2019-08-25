@@ -132,12 +132,6 @@ export default {
         complete:completeCommand
       }
     },
-    characters : function() {
-      var that = this;
-      return this.allCharacters.filter( (char)=> {
-        return char.room === that.roomNumber;
-      });
-    },
     thingsInRoom : function() {
       var that = this, set = [];
       let cSet =  this.allCharacters.filter( (char)=> {
