@@ -11,6 +11,7 @@ var sprites = [
   new Sprite ('fire', 'Fire.png', [4,2]),
   new Sprite ('sk1', 'skinner-1-r.png', [12,1]),
   new Sprite ('sk2', 'skinner-1-l.png', [12,1]),
+  new Sprite ('skw', 'skinner-w-1.png', [3,1]),
 ]
 
 
@@ -37,6 +38,9 @@ var characterModels = {
 			right : [ ['sk1',9,0],['sk1',8,0],['sk1',9,0] ],
 			left : [ ['sk2',2,0],['sk2',3,0],['sk2',2,0] ],
 		},
+		window_talk : [ ['skw',0,0],['skw',1,0],['skw',2,0] ],
+			
+		
 	},'left'),
 	
 }
@@ -96,9 +100,9 @@ var makeRooms = function(){ return [
 		],
 	}),
 
-	new Room ('DINING','dining room', 'dining_room.png',300,200,{
+	new Room ('DINING','dining room', 'dining_room.png',350,220,{
 		worldItems: [
-			new WorldItem('table','table',[142,30],120,50,'neutral',worldItemModels.table),
+			new WorldItem('table','table',[170,35],120,50,'neutral',worldItemModels.table),
 		],
 	}),
 
