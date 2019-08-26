@@ -31,7 +31,6 @@ function getCurrentGameData (gameInstance) {
     gameInstance.rooms.forEach ( (item) => {
         currentState.rooms.push( item.returnState() );
     })
-console.log(currentState.rooms);
     return currentState;
 }
 

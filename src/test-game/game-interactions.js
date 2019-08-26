@@ -88,8 +88,7 @@ var interactions =[
 	
 	new Interaction(['TALK','LUIGI_C'],[],
 	function() {
-		this.setGameStatus('CONVERSATION');
-		this.conversation = 'withLuigi';
+		this.setGameStatus('CONVERSATION','withLuigi');
 	}),
 
 	new Interaction(['LOOK',"NAIL_I"],[],

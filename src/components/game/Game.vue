@@ -211,7 +211,7 @@ export default {
       else {this.instantMode = true};
     },
 
-    setGameStatus(statusName) {
+    setGameStatus(statusName,parameter) {
 
       if (statusName === 'LIVE' ) {
         this.gameStatus = statusName;
@@ -221,6 +221,7 @@ export default {
 
       if (statusName === 'CONVERSATION' ) {
         this.gameStatus = statusName;
+        this.conversation = parameter;
         this.instantMode = false;
         return;
       }
@@ -229,6 +230,13 @@ export default {
         this.gameStatus = statusName;
         return;
       }
+
+      if (statusName === 'PAUSED' ) {
+        this.gameStatus = statusName;
+        return;
+      }
+
+
 
       console.warn(`${statusName} is not a valid gameStatus`);
     },
