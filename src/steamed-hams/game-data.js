@@ -12,6 +12,10 @@ var sprites = [
   new Sprite ('sk1', 'skinner-1-r.png', [12,1]),
   new Sprite ('sk2', 'skinner-1-l.png', [12,1]),
   new Sprite ('skw', 'skinner-w-1.png', [3,1]),
+  new Sprite ('ch1l', 'Chalmers-w-l.png',[7,1]),
+  new Sprite ('ch1r', 'Chalmers-w-r.png',[7,1]),
+  new Sprite ('chTl', 'Chalmers-t-l.png',[7,1]),
+  new Sprite ('chTr', 'Chalmers-t-r.png',[7,1]),
 ]
 
 
@@ -43,6 +47,23 @@ var characterModels = {
 		
 	},'left'),
 	
+	chalmers : new CharacterModel (65,100,{
+		wait : {
+			right : [ ['ch1r',0,0] ],
+			left : [ ['ch1l',6,0] ],
+		},
+		walk : {
+			right : [ ['ch1r',1,0],['ch1r',2,0],['ch1r',3,0],['ch1r',4,0], ['ch1r',5,0]  ] ,
+			left : [ ['ch1l',1,0],['ch1l',2,0],['ch1l',3,0],['ch1l',4,0], ['ch1l',5,0]  ] ,
+		},
+		talk : {
+			right : [ ['chTr',0,0],['chTr',1,0],['chTr',2,0],['chTr',3,0],['chTr',4,0] ],
+			left :  [ ['chTl',2,0],['chTl',3,0],['chTl',4,0],['chTl',5,0],['chTl',6,0], ],
+		},
+			
+		
+	},'right'),
+
 }
 
 
@@ -70,6 +91,7 @@ var worldItemModels = {
 
 var makeCharacters = function() {return [
 	new Character ('skinner','Skinner',[200,10,0],'white',characterModels.skinner),
+	new Character ('chalmers','Superintendent Chalmers',[100,10,0],'red',characterModels.chalmers),
 ]}
 
 var pcId = 'SKINNER_C';

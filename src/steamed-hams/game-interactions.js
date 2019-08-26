@@ -37,6 +37,12 @@ var interactions =[
 	
 	new Interaction(['SHUT','FRONT_DOOR_W'],[],pcSays('It\'s already closesd.')),
 
+	new Interaction(['TALK','CHALMERS_C'],[],
+	function() {
+		this.setGameStatus('CONVERSATION');
+		this.conversation = 'hamburgers';
+	}),
+
 ]
 
 var defaultResponses = {
