@@ -265,6 +265,9 @@ export default {
     },
     restart () {
       state.modify(this.$data, state.create());
+      if (typeof this.sequences.starting === 'function') {
+        this.sequences.starting.apply(this,[]);
+      }
     }
   },
 
@@ -273,12 +276,8 @@ export default {
     window.vm = this;
 
     this.resetListeners(); 
-    this.changeRoom(this.roomNumber,0,0,{
-      pcNotMoving: true,
-      callback: function() {
-        console.log(this.loadData ? 'reload' : 'restart', new Date);
-      },
-    });
+    console.log('GAME RESTARTED!', new Date);
+
   },
 
 

@@ -39,7 +39,7 @@ function createGameData(savedGame) {
 
     let state = {
         gameStatus : 'LIVE',
-        roomNumber : 3,
+        roomNumber : null,
         conversation : null,
         rooms : gameData.makeRooms(),
         inventoryItems: gameData.makeInventoryItems(),
@@ -48,6 +48,11 @@ function createGameData(savedGame) {
         gameVars : gameData.setGameVars(),
         pcId : gameData.pcId,
     };
+
+    // set starting room to be the room the pc starts in
+    state.allCharacters.forEach (char => {
+        if (char.id === state.pcId) {state.roomNumber = char.room}
+    })
 
     //check for duplicate worldItem.id
     let wiids = [], duplicateFound=false;;
@@ -78,6 +83,7 @@ function createGameData(savedGame) {
         highlightingThings : false,
         instantMode: false,
         defaultResponses:gameData.defaultResponses,
+        sequences: gameData.sequences,
     }, state);
 
 }

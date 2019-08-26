@@ -3,7 +3,12 @@ import { interactionMatrix, defaultResponses } from './test-game/game-interactio
 import { makeConversations } from "./test-game/game-conversations";
 import { sprites, makeRooms, verbList, makeInventoryItems, makeCharacters, pcId, setGameVars } from "./test-game/game-data";
 
-const gameData = {sprites, makeRooms, verbList, makeInventoryItems, makeCharacters, pcId, interactionMatrix, makeConversations, setGameVars, defaultResponses}
+import sequences from "./test-game/sequences";
+
+const gameData = {
+    sprites, makeRooms, verbList, makeInventoryItems, makeCharacters, pcId, 
+    interactionMatrix, makeConversations, setGameVars, defaultResponses,
+    sequences}
 
 export {
     TitleScreen, 
