@@ -3,7 +3,12 @@ import { interactionMatrix, defaultResponses } from './steamed-hams/game-interac
 import { makeConversations } from "./steamed-hams/game-conversations";
 import { sprites, makeRooms, verbList, makeInventoryItems, makeCharacters, pcId, setGameVars } from "./steamed-hams/game-data";
 
-const gameData = {sprites, makeRooms, verbList, makeInventoryItems, makeCharacters, pcId, interactionMatrix, makeConversations, setGameVars, defaultResponses}
+import sequences from "./steamed-hams/sequences";
+
+const gameData = {
+    sprites, makeRooms, verbList, makeInventoryItems, makeCharacters, pcId, 
+    interactionMatrix, makeConversations, setGameVars, defaultResponses,
+    sequences}
 
 export {
     TitleScreen, 

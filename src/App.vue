@@ -90,6 +90,7 @@ export default {
 
     quitGame : function() {
       this.showTitleScreen = true;
+      this.$refs.game.setGameStatus('PAUSED');
     },
 
     loadGameOrRestart : function (saveFile = null) {

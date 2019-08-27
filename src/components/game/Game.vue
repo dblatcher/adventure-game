@@ -211,7 +211,7 @@ export default {
       else {this.instantMode = true};
     },
 
-    setGameStatus(statusName) {
+    setGameStatus(statusName,parameter) {
 
       if (statusName === 'LIVE' ) {
         this.gameStatus = statusName;
@@ -221,6 +221,7 @@ export default {
 
       if (statusName === 'CONVERSATION' ) {
         this.gameStatus = statusName;
+        this.conversation = parameter;
         this.instantMode = false;
         return;
       }
@@ -229,6 +230,13 @@ export default {
         this.gameStatus = statusName;
         return;
       }
+
+      if (statusName === 'PAUSED' ) {
+        this.gameStatus = statusName;
+        return;
+      }
+
+
 
       console.warn(`${statusName} is not a valid gameStatus`);
     },
@@ -265,6 +273,9 @@ export default {
     },
     restart () {
       state.modify(this.$data, state.create());
+      if (typeof this.sequences.starting === 'function') {
+        this.sequences.starting.apply(this,[]);
+      }
     }
   },
 
@@ -273,12 +284,8 @@ export default {
     window.vm = this;
 
     this.resetListeners(); 
-    this.changeRoom(this.roomNumber,0,0,{
-      pcNotMoving: true,
-      callback: function() {
-        console.log(this.loadData ? 'reload' : 'restart', new Date);
-      },
-    });
+    console.log('GAME RESTARTED!', new Date);
+
   },
 
 
