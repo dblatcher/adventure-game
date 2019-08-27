@@ -7,7 +7,7 @@ function starting () {
         game.setGameStatus('CUTSCENE');
         game.getThings('pc').say('This is the starting sequence for steemed hams')
        .then (r => {
-           return game.getThings('pc').doAction('yell');
+           return game.getThings('pc').doAction('walk');
        })
        .then (r => {
         game.setGameStatus('LIVE');
