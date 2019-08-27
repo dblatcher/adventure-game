@@ -221,7 +221,7 @@ export default {
 
       if (statusName === 'CONVERSATION' ) {
         this.gameStatus = statusName;
-        this.conversation = parameter;
+        if (parameter) {this.conversation = parameter};
         this.instantMode = false;
         return;
       }
