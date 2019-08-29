@@ -65,9 +65,12 @@ var characterModels = {
 var worldItemModels = {
 	door: new WorldItemModel ({
 		closed: [ ['door',0,0]  ],
+		closed_glowing: [ ['door',0,0]  ],
 		open:   [ ['door',2,0]  ],
 		opening:   [ ['door',0,0],['door',1,0],['door',2,0]  ],
-		closing:   [ ['door',2,0],['door',1,0],['door',0,0]  ]
+		opening_fire:   [ ['door',0,0],['door',1,0],['door',2,0]  ],
+		closing:   [ ['door',2,0],['door',1,0],['door',0,0]  ],
+		closing_fire:   [ ['door',2,0],['door',1,0],['door',0,0]  ]
 	}),
 	fire: new WorldItemModel ({
 		burning: [ ['fire',0,0],['fire',1,0],['fire',2,0],['fire',3,0],  ],
@@ -85,8 +88,8 @@ var worldItemModels = {
 
 
 var makeCharacters = function() {return [
-	new Character ('skinner','Skinner',[200,10,0],'white',characterModels.skinner),
-	new Character ('chalmers','Superintendent Chalmers',[100,10,0],'red',characterModels.chalmers),
+	new Character ('skinner','Skinner',[200,10,1],'white',characterModels.skinner),
+	new Character ('chalmers','Superintendent Chalmers',[100,10,1],'red',characterModels.chalmers),
 ]}
 
 var pcId = 'SKINNER_C';
@@ -119,7 +122,8 @@ var makeRooms = function(){ return [
 
 	new Room ('DINING','dining room', 'dining_room.png',350,220,{
 		worldItems: [
-			new WorldItem('table','table',[170,35],120,50,'neutral',worldItemModels.table),
+			new WorldItem('TABLE','table',[170,35],120,50,'neutral',worldItemModels.table),
+			new WorldItem('DINING_KITCHENDOOR','door',[294,55,-10,0],60,100,'closed',worldItemModels.door),
 		],
 	}),
 
