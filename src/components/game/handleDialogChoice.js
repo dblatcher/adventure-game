@@ -33,9 +33,9 @@ export default function (choice) {
         if (choice.changesBranch) {
           currentConversation.currentBranch = choice.changesBranch;
         } 
-        if (typeof choice.consequence === 'function' ) {choice.consequence(theApp,choice)}
         
         theApp.setGameStatus(choice.ends ? "LIVE" : "CONVERSATION");
+        if (typeof choice.consequence === 'function' ) {choice.consequence(theApp,choice)}
       }
 
       function nextItemOrEnd () {
