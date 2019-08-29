@@ -6,10 +6,7 @@ function starting () {
     
    return new Promise (function (resolve, reject) {
         game.setGameStatus('CUTSCENE');
-        game.getThings('pc').say('This is the starting sequence for steamed hams')
-       .then (r => {
-           return game.getThings('pc').doAction('walk');
-       })
+        game.getThings('pc').doAction('walk')
        .then (r => {
         game.setGameStatus('LIVE');
            resolve({success:true});
@@ -30,7 +27,7 @@ function fire () {
 
 
         game.setGameStatus('CUTSCENE');
-        skinner.goTo(door.walkToPoint)
+        skinner.goTo({x:250,y:45})
         .then (r => {
             return door.setStatus('opening_fire','closing_fire','closed_glowing')
         })

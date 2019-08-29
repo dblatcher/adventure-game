@@ -5,6 +5,7 @@ import { Character, WorldItem, Room, EffectZone, Foreground, Verb, InventoryItem
 var sprites = [
 
   new Sprite ('door', 'door.png', [3,1]),
+  new Sprite ('door-burn', 'door-burn.png', [6,1],[1, 1.5]),
   new Sprite ('front_fence', 'fence_front.png', [1,1]),
   new Sprite ('table', 'table.png', [1,1]),
 
@@ -65,12 +66,12 @@ var characterModels = {
 var worldItemModels = {
 	door: new WorldItemModel ({
 		closed: [ ['door',0,0]  ],
-		closed_glowing: [ ['door',0,0]  ],
+		closed_glowing: [ ['door-burn',0,0], ['door-burn',3,0]  ],
 		open:   [ ['door',2,0]  ],
 		opening:   [ ['door',0,0],['door',1,0],['door',2,0]  ],
-		opening_fire:   [ ['door',0,0],['door',1,0],['door',2,0]  ],
+		opening_fire:   [ ['door',0,0],['door-burn',1,0], ['door-burn',4,0] ,['door-burn',2,0], ['door-burn',5,0]   ],
 		closing:   [ ['door',2,0],['door',1,0],['door',0,0]  ],
-		closing_fire:   [ ['door',2,0],['door',1,0],['door',0,0]  ]
+		closing_fire:   [ ['door-burn',5,0], ['door-burn',2,0] ,['door-burn',4,0], ['door-burn',1,0]   ]
 	}),
 	fire: new WorldItemModel ({
 		burning: [ ['fire',0,0],['fire',1,0],['fire',2,0],['fire',3,0],  ],
@@ -123,7 +124,7 @@ var makeRooms = function(){ return [
 	new Room ('DINING','dining room', 'dining_room.png',350,220,{
 		worldItems: [
 			new WorldItem('TABLE','table',[170,35],120,50,'neutral',worldItemModels.table),
-			new WorldItem('DINING_KITCHENDOOR','door',[294,55,-10,0],60,100,'closed',worldItemModels.door),
+			new WorldItem('DINING_KITCHENDOOR','door',[294,55,-30,0],60,100,'closed',worldItemModels.door),
 		],
 	}),
 
