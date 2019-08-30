@@ -3,6 +3,8 @@ import { Interaction, doorFunction,pcSays } from "../modules/interaction-constru
 
 var interactions =[
 	new Interaction(['LOOK','GARAGE_W'],[],pcSays('I admire car owners. I aspire to be one after I\'ve reimbursed mother for the food I ate as a child.',2500)),
+	new Interaction(['LOOK','ROAST_I'],[],pcSays('Yes, this should be a reasonable quantity of meat to serve Superintendent Chalmers.',2000)),
+
 
 	new Interaction(['OPEN','FRONT_DOOR_W'],[
 		function(){return this.getThings('FRONT_DOOR_W').item.status.cycle == 'closed'},
