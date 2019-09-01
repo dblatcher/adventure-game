@@ -15,6 +15,31 @@ function starting () {
 
 }
 
+function pourSandInBush (bushId = 'BUSH_W') {
+    const game = this;
+
+    return new Promise (function (resolve, reject) {
+        
+        let pc = game.getThings('pc');
+		game.getInventoryItem('BUCKET_EMPTY_I');
+		game.looseInventoryItem('BUCKET_SAND_I');
+		game.setGameStatus('CUTSCENE');
+		
+
+		pc.goTo(game.getThings(bushId).walkToPoint)
+		.then( (r) => {return pc.doAction('pour_sand')})
+		.then( (r) => {return pc.say('There!') } )
+		.then( (r) => {return pc.say('I suppose its wrong to use fire-fighting equipment improperly...') } )
+		.then( (r) => {return pc.say('But what are the chances of a fire in the next half hour?',{action:'ponder'}) } )
+		.then( (r) => { 
+            game.setGameStatus('LIVE') 
+            resolve ({success:true});
+        })
+
+    })
+
+}
+
 function fire () {
 
     const game = this;
@@ -46,4 +71,4 @@ function fire () {
 
 }
 
-export default { starting,fire };
+export default { starting,fire, pourSandInBush };

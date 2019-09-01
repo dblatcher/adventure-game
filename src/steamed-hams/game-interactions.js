@@ -13,19 +13,15 @@ var interactions =[
 	new Interaction(['USE','FOIL_I','BUCKET_FOIL_I'],[],pcSays('It\s already wrapped.',1500)),
 	
 	new Interaction(['USE','BUCKET_SAND_I','BUSH_W'],[],function(){
-		let pc = this.getThings('pc');
-		this.getInventoryItem('BUCKET_EMPTY_I');
-		this.looseInventoryItem('BUCKET_SAND_I');
-		this.setGameStatus('CUTSCENE');
-		let game=this;
+		this.sequences.pourSandInBush.apply(this,['BUSH_W']);
+	}),
 
-		pc.goTo(this.getThings('BUSH_W').walkToPoint)
-		.then( (r) => {return pc.doAction('pour_sand')})
-		.then( (r) => {return pc.say('There!') } )
-		.then( (r) => {return pc.say('I suppose its wrong to use fire-fighting equipment improperly...') } )
-		.then( (r) => {return pc.say('But what are the chances of a fire in the next half hour?',{action:'ponder'}) } )
-		.then( (r) => { game.setGameStatus('LIVE') })
+	new Interaction(['USE','BUCKET_SAND_I','BUSH_2_W'],[],function(){
+		this.sequences.pourSandInBush.apply(this,['BUSH_2_W']);
+	}),
 
+	new Interaction(['USE','BUCKET_SAND_I','BUSH_3_W'],[],function(){
+		this.sequences.pourSandInBush.apply(this,['BUSH_3_W']);
 	}),
 
 	new Interaction(['USE','FOIL_I','BUCKET_EMPTY_I'],[],function(){
@@ -33,7 +29,7 @@ var interactions =[
 		this.getInventoryItem('BUCKET_FOIL_I');
 		this.looseInventoryItem('BUCKET_EMPTY_I');
 
-		pc.doAction('pour_sand')
+		pc.doAction('wrap_bucket')
 		.then( (r) => {return pc.say('There!') } )
 		.then( (r) => {return pc.say('It looks like a real ice bucket.') } )
 

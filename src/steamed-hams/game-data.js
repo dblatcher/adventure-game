@@ -107,6 +107,8 @@ var makeRooms = function(){ return [
 		worldItems: [
 			new WorldItem('garage','car hole',[65,16,0,-10],200,170),
 			new WorldItem('bush','bush',[185,14,20,-2],130,65),
+			new WorldItem('bush_2','bush',[125,14,20,-2],120,65),
+			new WorldItem('bush_3','bush',[225,23,10,-2],80,75),
 			new WorldItem('front_door','door',[142,28,5,-10],80,120,'closed',worldItemModels.door),
 			new WorldItem('front_fence','f',[155,8],470,129,'neutral',worldItemModels.front_fence,{unclickable:true,zAdjust:10}),
 		],
@@ -166,7 +168,7 @@ var verbList = [
 var makeInventoryItems = function() { return  [
 	new InventoryItem('roast', 'raw roast', 'roast.png',true),
 	new InventoryItem('bucket_foil', 'ice bucket', 'bucket_foil.png'),
-	new InventoryItem('bucket_sand', 'fire bucket', 'bucket_sand.png'),
+	new InventoryItem('bucket_sand', 'fire bucket', 'bucket_sand.png',true),
 	new InventoryItem('bucket_empty', 'fire bucket', 'bucket.png'),
 	new InventoryItem('foil', 'aluminium foil', 'sock.png'),
 	new InventoryItem('nail', 'nail', {1:'nail.png',2:'twonails.png',3:'threenails.png',4:'manynails.jpg'},false, {quantity: 2, pluralName: 'nails'}),
