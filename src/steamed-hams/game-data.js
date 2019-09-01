@@ -8,6 +8,7 @@ var sprites = [
   new Sprite ('door-burn', 'door-burn.png', [6,1],[1, 1.5]),
   new Sprite ('front_fence', 'fence_front.png', [1,1]),
   new Sprite ('table', 'table.png', [1,1]),
+  new Sprite ('iceBucket', 'ice-bucket.png', [1,1]),
 
   new Sprite ('fire', 'Fire.png', [4,2]),
   new Sprite ('sk1', 'skinner-talk.png', [6,1]),
@@ -84,12 +85,15 @@ var worldItemModels = {
 	table: new WorldItemModel({
 		neutral:[['table',0,0]],
 	}),
+	iceBucket: new WorldItemModel({
+		neutral:[['iceBucket',0,0]],
+	}),
 
 };
 
 
 var makeCharacters = function() {return [
-	new Character ('skinner','Skinner',[200,10,0],'white',characterModels.skinner),
+	new Character ('skinner','Skinner',[200,10,1],'white',characterModels.skinner),
 	new Character ('chalmers','Superintendent Chalmers',[100,10,1],'red',characterModels.chalmers),
 ]}
 
@@ -126,8 +130,12 @@ var makeRooms = function(){ return [
 
 	new Room ('DINING','dining room', 'dining_room.png',350,220,{
 		worldItems: [
-			new WorldItem('TABLE','table',[170,35],120,50,'neutral',worldItemModels.table),
+			new WorldItem('TABLE','table',[170,35,35,20],120,50,'neutral',worldItemModels.table),
 			new WorldItem('DINING_KITCHENDOOR','door',[294,55,-30,0],60,100,'closed',worldItemModels.door),
+			new WorldItem('ICE_BUCKET', 'ice bucket', [170,70],30,30,'neutral',worldItemModels.iceBucket,{
+				zAdjust:-35,
+				removed:true,
+			}),
 		],
 	}),
 
@@ -167,12 +175,15 @@ var verbList = [
 
 var makeInventoryItems = function() { return  [
 	new InventoryItem('roast', 'raw roast', 'roast.png',true),
-	new InventoryItem('bucket_foil', 'ice bucket', 'bucket_foil.png'),
+	new InventoryItem('roast_glazed', 'glazed roast', 'roast.png'),
+	new InventoryItem('bucket_foil', 'ice bucket', 'bucket_foil.png',true),
 	new InventoryItem('bucket_sand', 'fire bucket', 'bucket_sand.png',true),
 	new InventoryItem('bucket_empty', 'fire bucket', 'bucket.png'),
 	new InventoryItem('foil', 'aluminium foil', 'sock.png'),
 	new InventoryItem('nail', 'nail', {1:'nail.png',2:'twonails.png',3:'threenails.png',4:'manynails.jpg'},false, {quantity: 2, pluralName: 'nails'}),
 	new InventoryItem('hammer','hammer', 'hammer.jpg'),
+	new InventoryItem('bourbon','bourbon', 'bourbon.png',true),
+
 ]};
 
 var setGameVars = function ()  { return {
