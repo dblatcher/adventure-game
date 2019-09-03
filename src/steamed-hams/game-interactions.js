@@ -55,7 +55,7 @@ var interactions =[
 
 	new Interaction(['USE','BOURBON_I','ROAST_I'],[],function(){
 		let pc = this.getThings('pc');
-		this.getInventoryItem('ROAST_GLAZEDL_I');
+		this.getInventoryItem('ROAST_GLAZED_I');
 		this.looseInventoryItem('ROAST_I');
 
 		pc.doAction('glaze_roast')
@@ -95,6 +95,50 @@ var interactions =[
 	}),
 	
 	new Interaction(['SHUT','FRONT_DOOR_W'],[],pcSays('It\'s already closesd.')),
+
+
+	new Interaction(['WALK','KITCHEN_DININGDOOR_W'],
+	[],
+	doorFunction('KITCHEN_DININGDOOR_W',['DINING_R',300,50])
+	),
+
+
+	new Interaction(['OPEN','OVEN_W'],
+	[function(){return this.getThings('OVEN_W').item.status.cycle == 'closed'}],
+	function(){
+		this.getThings('pc').goTo(this.getThings('OVEN_W').walkToPoint)
+		.then( (r)=> {
+			this.getThings('OVEN_W').setStatus('open');
+		} )
+	}),
+	new Interaction(['SHUT','OVEN_W'],
+	[function(){return this.getThings('OVEN_W').item.status.cycle == 'open'}],
+	function(){
+		this.getThings('pc').goTo(this.getThings('OVEN_W').walkToPoint)
+		.then( (r)=> {
+			this.getThings('OVEN_W').setStatus('closed');
+		} )
+	}),
+	new Interaction(['USE','ROAST_GLAZED_I','OVEN_W'],
+	[function(){return this.getThings('OVEN_W').item.status.cycle == 'open'}],
+	function(){
+		this.getThings('pc').goTo(this.getThings('OVEN_W').walkToPoint)
+		.then( (r)=> {
+			this.getThings('OVEN_W').setStatus('open_ham_inside');
+			this.looseInventoryItem('ROAST_GLAZED_I');
+		} )
+	}),
+	new Interaction(['SHUT','OVEN_W'],
+	[function(){return this.getThings('OVEN_W').item.status.cycle == 'open_ham_inside'}],
+	function(){
+		this.getThings('pc').goTo(this.getThings('OVEN_W').walkToPoint)
+		.then( (r)=> {
+			this.getThings('OVEN_W').setStatus('closed_ham_inside');
+		} )
+		.then( (r)=> {
+			this.getThings('pc').say('I\'ll just turn this on...');
+		} )
+	}),
 
 	new Interaction(['TALK','CHALMERS_C'],[],
 	function() {

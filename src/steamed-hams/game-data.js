@@ -9,6 +9,7 @@ var sprites = [
   new Sprite ('front_fence', 'fence_front.png', [1,1]),
   new Sprite ('table', 'table.png', [1,1]),
   new Sprite ('iceBucket', 'ice-bucket.png', [1,1]),
+  new Sprite ('oven', 'oven.png', [6,1]),
 
   new Sprite ('fire', 'Fire.png', [4,2]),
   new Sprite ('sk1', 'skinner-talk.png', [6,1]),
@@ -88,12 +89,19 @@ var worldItemModels = {
 	iceBucket: new WorldItemModel({
 		neutral:[['iceBucket',0,0]],
 	}),
+	oven: new WorldItemModel({
+		closed:[['oven',0,0]],
+		open:[['oven',1,0]],
+		closed_ham_inside:[['oven',0,0]],
+		open_ham_inside:[['oven',2,0]],
+		smoking:[['oven',3,0],['oven',4,0],['oven',5,0],['oven',4,0]],
+	}),
 
 };
 
 
 var makeCharacters = function() {return [
-	new Character ('skinner','Skinner',[200,10,1],'white',characterModels.skinner),
+	new Character ('skinner','Skinner',[200,10,2],'white',characterModels.skinner),
 	new Character ('chalmers','Superintendent Chalmers',[100,10,1],'red',characterModels.chalmers),
 ]}
 
@@ -128,36 +136,34 @@ var makeRooms = function(){ return [
 		],
 	}),
 
-	new Room ('DINING','dining room', 'dining_room.png',350,220,{
+	new Room ('DINING','dining room', 'dining_room2.png',350,220,{
 		worldItems: [
-			new WorldItem('TABLE','table',[170,35,35,20],120,50,'neutral',worldItemModels.table),
-			new WorldItem('DINING_KITCHENDOOR','door',[294,55,-30,0],60,100,'closed',worldItemModels.door),
-			new WorldItem('ICE_BUCKET', 'ice bucket', [170,70],30,30,'neutral',worldItemModels.iceBucket,{
-				zAdjust:-35,
+			new WorldItem('TABLE','table',[170,20,35,20],120,60,'neutral',worldItemModels.table),
+			new WorldItem('DINING_KITCHENDOOR','door',[310,55,-30,0],60,100,'closed',worldItemModels.door),
+			new WorldItem('DINING_FRONTROOM','front room',[45,26,20,10],50,150,'neutral'),
+			new WorldItem('ICE_BUCKET', 'ice bucket', [170,70],30,25,'neutral',worldItemModels.iceBucket,{
+				zAdjust:-50,
 				removed:true,
 			}),
 		],
+		obstacles: [
+			new PolyZone ([ [0,0], [86,81],[86,220],[0,220] ]),
+			new PolyZone ([ [86,81],[86,220],[270,220],[270,81] ]),
+			new PolyZone ([ [270,220],[270,81],[350,0],[350,220] ]),
+			new PolyZone ([ [110,20],[230,20],[230,30],[110,30] ]),
+		]
 	}),
 
-	new Room ('TEST_ROOM', 'test room', "testroom.png", 400, 300, {
-	effectZones:[
-		new EffectZone(
-		new PolyZone ([ [184,90], [219,78],[206,60],[160,60],[150,78] ]),
-		{ filter:'sepia(100%) brightness(60%)'}),
-		new EffectZone(
-		new RectZone (0,0,400,200),
-		{ scale:function(){return 1.5- this.y/200} }),
-	],
-	obstacles:[
-		new PolyZone ([ [0,0],[83,126],[83,251],[0,300]  ]),
-		new RectZone (83,126, 296-83 ,120 ,false),
-		new PolyZone ([ [275,35], [305,35], [290,90]  ]),
-		new PolyZone ([ [296,130], [296,250], [400,300], [400,0] ]),
-	],
-	foregrounds:[
 
-	]}),
+	new Room ('KITCHEN', 'kitchen', 'kitchen.png',290,180,{
+		worldItems : [	
+			new WorldItem('OVEN','oven', [145,35,30,-10],70,100,'closed',worldItemModels.oven),
+			new WorldItem('KRUSTYBURGER','Krusty Burger',[210,70,10,-40],50,40),
+			new WorldItem('KITCHEN_DININGDOOR','way back to dining room',[145,0],290,12),
+			new WorldItem('cupboard','cupboard',[90,39,0,-5],50,130),
 
+		],
+	})
 
 ]}
 
@@ -175,7 +181,7 @@ var verbList = [
 
 var makeInventoryItems = function() { return  [
 	new InventoryItem('roast', 'raw roast', 'roast.png',true),
-	new InventoryItem('roast_glazed', 'glazed roast', 'roast.png'),
+	new InventoryItem('roast_glazed', 'glazed roast', 'glazed-roast.png'),
 	new InventoryItem('bucket_foil', 'ice bucket', 'bucket_foil.png',true),
 	new InventoryItem('bucket_sand', 'fire bucket', 'bucket_sand.png',true),
 	new InventoryItem('bucket_empty', 'fire bucket', 'bucket.png'),
