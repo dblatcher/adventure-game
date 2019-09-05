@@ -35,7 +35,6 @@ var interactions =[
 		pc.doAction('wrap_bucket')
 		.then( (r) => {return pc.say('There!') } )
 		.then( (r) => {return pc.say('It looks like a real ice bucket.') } )
-
 	}),
 
 	new Interaction(['USE','BUCKET_FOIL_I','TABLE_W'],[],function(){
@@ -94,7 +93,41 @@ var interactions =[
 	
 	}),
 	
-	new Interaction(['SHUT','FRONT_DOOR_W'],[],pcSays('It\'s already closesd.')),
+	new Interaction(['SHUT','FRONT_DOOR_W'],[],pcSays('It\'s already closed.')),
+
+
+	new Interaction(['WALK','DINING_WAYOUT_W'],[],
+	doorFunction('DINING_WAYOUT_W',['FRONT_R',146,27])),
+	
+	new Interaction(['OPEN','DINING_KITCHENDOOR_W'],[
+		function(){return this.getThings('DINING_KITCHENDOOR_W').item.status.cycle == 'closed'},
+	],function(){
+		this.getThings('pc').goTo(this.getThings('DINING_KITCHENDOOR_W').walkToPoint)
+		.then( (r)=> { if (r.finished) {
+			return this.getThings('DINING_KITCHENDOOR_W').setStatus('opening','open')
+		} });
+	}),
+	
+	new Interaction(['OPEN','DINING_KITCHENDOOR_W'],
+	[function(){return this.getThings('DINING_KITCHENDOOR_W').item.status.cycle == 'open'}],
+	pcSays("It's not closed!")),
+
+	new Interaction(['WALK','DINING_KITCHENDOOR_W'],
+	[function(){return this.getThings('DINING_KITCHENDOOR_W').item.status.cycle == 'open'}],
+	doorFunction('DINING_KITCHENDOOR_W',['KITCHEN_R',120,10])
+	),
+
+	new Interaction(['SHUT','DINING_KITCHENDOOR_W'],
+	[function(){return this.getThings('DINING_KITCHENDOOR_W').item.status.cycle == 'open'}],
+	function(){
+		this.getThings('pc').goTo(this.getThings('DINING_KITCHENDOOR_W').walkToPoint)
+		.then( (r)=> { if (r.finished) {
+			this.getThings('DINING_KITCHENDOOR_W').setStatus('closing','closed')
+		} });
+	
+	}),
+	
+	new Interaction(['SHUT','DINING_KITCHENDOOR_W'],[],pcSays('It\'s already closed.')),
 
 
 	new Interaction(['WALK','KITCHEN_DININGDOOR_W'],
@@ -111,6 +144,7 @@ var interactions =[
 			this.getThings('OVEN_W').setStatus('open');
 		} )
 	}),
+	
 	new Interaction(['SHUT','OVEN_W'],
 	[function(){return this.getThings('OVEN_W').item.status.cycle == 'open'}],
 	function(){
@@ -119,6 +153,9 @@ var interactions =[
 			this.getThings('OVEN_W').setStatus('closed');
 		} )
 	}),
+	new Interaction(['USE','ROAST_I','OVEN_W'],[],
+	pcSays('I need to glaze it first.')
+	),
 	new Interaction(['USE','ROAST_GLAZED_I','OVEN_W'],
 	[function(){return this.getThings('OVEN_W').item.status.cycle == 'open'}],
 	function(){
@@ -139,6 +176,45 @@ var interactions =[
 			this.getThings('pc').say('I\'ll just turn this on...');
 		} )
 	}),
+
+
+	new Interaction(['SHUT','OVEN_W'],
+	[function(){return this.getThings('OVEN_W').item.status.cycle.substring(0,6) == 'closed'}],
+	pcSays('It\'s already closed.')),
+
+	new Interaction(['OPEN','OVEN_W'],
+	[function(){return this.getThings('OVEN_W').item.status.cycle.substring(0,4) == 'open'}],
+	pcSays('It\'s already open.')),
+
+	new Interaction(['OPEN','OVEN_W'],
+	[function(){return this.getThings('OVEN_W').item.status.cycle == 'closed_ham_inside'}],
+	pcSays('No, I\'d better leave it to get as cooked as possible.')),
+
+
+	new Interaction(['OPEN','CUPBOARD_W'],
+	[function(){return !this.gameVars.cupboardEmpty}],
+	function(){
+		let pc = this.getThings('pc');
+		this.setGameStatus('CUTSCENE');
+
+		pc.goTo(this.getThings('CUPBOARD_W').walkToPoint)
+		.then( (r) => {return pc.say('Let\'s see...') } )
+		.then( (r) => {
+			this.getInventoryItem('FOIL_I');
+			return pc.say('... a roll of aluminum foil...') 
+		} )
+		.then( (r) => {
+			this.getInventoryItem('BOURBON_I');
+			return pc.say('...and a bottle of bourbon?! What\'s that doing here?') 
+		} )
+		.then( (r) => {
+			this.gameVars.cupboardEmpty = true;
+			this.setGameStatus('LIVE');
+		 } )
+	}),
+
+	new Interaction(['OPEN','CUPBOARD_W'],[],
+	pcSays('There was nothing else in there.')),
 
 	new Interaction(['TALK','CHALMERS_C'],[],
 	function() {

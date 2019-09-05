@@ -140,7 +140,7 @@ var makeRooms = function(){ return [
 		worldItems: [
 			new WorldItem('TABLE','table',[170,20,35,20],120,60,'neutral',worldItemModels.table),
 			new WorldItem('DINING_KITCHENDOOR','door',[310,55,-30,0],60,100,'closed',worldItemModels.door),
-			new WorldItem('DINING_FRONTROOM','front room',[45,26,20,10],50,150,'neutral'),
+			new WorldItem('DINING_WAYOUT','way out',[45,45,20,10],50,125,'neutral'),
 			new WorldItem('ICE_BUCKET', 'ice bucket', [170,70],30,25,'neutral',worldItemModels.iceBucket,{
 				zAdjust:-50,
 				removed:true,
@@ -182,18 +182,18 @@ var verbList = [
 var makeInventoryItems = function() { return  [
 	new InventoryItem('roast', 'raw roast', 'roast.png',true),
 	new InventoryItem('roast_glazed', 'glazed roast', 'glazed-roast.png'),
-	new InventoryItem('bucket_foil', 'ice bucket', 'bucket_foil.png',true),
-	new InventoryItem('bucket_sand', 'fire bucket', 'bucket_sand.png',true),
+	new InventoryItem('bucket_foil', 'ice bucket', 'bucket_foil.png'),
+	new InventoryItem('bucket_sand', 'fire bucket', 'bucket_sand.png'),
 	new InventoryItem('bucket_empty', 'fire bucket', 'bucket.png'),
-	new InventoryItem('foil', 'aluminium foil', 'sock.png'),
+	new InventoryItem('foil', 'aluminium foil', 'foil.jpg'),
 	new InventoryItem('nail', 'nail', {1:'nail.png',2:'twonails.png',3:'threenails.png',4:'manynails.jpg'},false, {quantity: 2, pluralName: 'nails'}),
 	new InventoryItem('hammer','hammer', 'hammer.jpg'),
-	new InventoryItem('bourbon','bourbon', 'bourbon.png',true),
+	new InventoryItem('bourbon','bourbon', 'bourbon.png'),
 
 ]};
 
 var setGameVars = function ()  { return {
-	wantsHammer: false,
+	cupboardEmpty: false,
 	numberOfSomething: 5,
 }};
 
