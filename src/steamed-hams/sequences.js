@@ -40,6 +40,32 @@ function pourSandInBush (bushId = 'BUSH_W') {
 
 }
 
+function goToKrustyBurger() {
+    const game = this;
+    let skinner = game.getThings('pc');
+    let server = game.getThings('SERVER_C');
+    game.getInventoryItem('HAMBURGER_BAG_I');
+
+    return new Promise (function(resolve,reject) {
+        game.setGameStatus('CUTSCENE');
+        skinner.char.x=200;
+        skinner.char.y=75;
+        skinner.goTo({x:220,y:90})
+        .then( (r) => {return skinner.say('Four hamburgers, quickly!') } )
+        .then( (r) => {return server.say('uhhhh...') } )
+        .then( (r) => {return server.say('would you like fries with that?') } )
+        .then( (r) => {return skinner.say('Fries... yes, two large fries. Hurry!') } )
+        .then( (r) => {return server.say('that\'ll be $12.97, please.') } )
+        .then( (r) => {return skinner.goTo({x:200,y:73}) } )
+        .then( (r) => {
+            skinner.char.x=220;
+            skinner.char.y=30;
+            game.setGameStatus('LIVE'); 
+            resolve ({success:true});
+        } )
+    })
+}
+
 function fire () {
 
     const game = this;
@@ -71,4 +97,4 @@ function fire () {
 
 }
 
-export default { starting,fire, pourSandInBush };
+export default { starting,fire, pourSandInBush, goToKrustyBurger };

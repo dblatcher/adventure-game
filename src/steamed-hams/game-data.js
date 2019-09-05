@@ -62,6 +62,20 @@ var characterModels = {
 		
 	},'right'),
 
+	invisible : new CharacterModel (1,1,{
+		wait : {
+			right : [ ['ch1r',0,0] ],
+			left : [ ['ch1l',6,0] ],
+		},
+		walk : {
+			right : [ ['ch1r',1,0],['ch1r',2,0],['ch1r',3,0],['ch1r',4,0], ['ch1r',5,0]  ] ,
+			left : [ ['ch1l',1,0],['ch1l',2,0],['ch1l',3,0],['ch1l',4,0], ['ch1l',5,0]  ] ,
+		},
+		talk : {
+			right : [ ['chTr',0,0],['chTr',1,0],['chTr',2,0],['chTr',3,0],['chTr',4,0] ],
+			left :  [ ['chTl',2,0],['chTl',3,0],['chTl',4,0],['chTl',5,0],['chTl',6,0], ],
+		},
+	},'right')
 }
 
 
@@ -103,6 +117,7 @@ var worldItemModels = {
 var makeCharacters = function() {return [
 	new Character ('skinner','Skinner',[200,10,2],'white',characterModels.skinner),
 	new Character ('chalmers','Superintendent Chalmers',[100,10,1],'red',characterModels.chalmers),
+	new Character ('server','sever',[230,100,2],'green',characterModels.invisible),
 ]}
 
 var pcId = 'SKINNER_C';
@@ -158,11 +173,20 @@ var makeRooms = function(){ return [
 	new Room ('KITCHEN', 'kitchen', 'kitchen.png',290,180,{
 		worldItems : [	
 			new WorldItem('OVEN','oven', [145,35,30,-10],70,100,'closed',worldItemModels.oven),
-			new WorldItem('KRUSTYBURGER','Krusty Burger',[210,70,10,-40],50,40),
+			new WorldItem('KRUSTYBURGER','Krusty Burger',[210,70,10,-40],50,40,'neutral',null,{noZoneScaling:true}),
 			new WorldItem('KITCHEN_DININGDOOR','way back to dining room',[145,0],290,12),
 			new WorldItem('cupboard','cupboard',[90,39,0,-5],50,130),
-
 		],
+		obstacles : [
+			new RectZone(0,44,290,20),
+			new RectZone(50,35,140,20),
+			new PolyZone ([[5,0],[66,39],[66,60],[0,60],[0,0]])
+		],
+		effectZones: [
+			new EffectZone(new RectZone(185,70,50,40),{
+				scale: function(){return .175 - (this.y-70)/150}
+			})
+		]
 	})
 
 ]}
@@ -189,6 +213,8 @@ var makeInventoryItems = function() { return  [
 	new InventoryItem('nail', 'nail', {1:'nail.png',2:'twonails.png',3:'threenails.png',4:'manynails.jpg'},false, {quantity: 2, pluralName: 'nails'}),
 	new InventoryItem('hammer','hammer', 'hammer.jpg'),
 	new InventoryItem('bourbon','bourbon', 'bourbon.png'),
+	new InventoryItem('hamburger_bag','hamburgers', 'hamburgers_on_platter.png'),
+	new InventoryItem('hamburger_platter','elegantly arranged hamburgers', 'hamburgers_on_platter.png'),
 
 ]};
 
