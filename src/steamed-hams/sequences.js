@@ -45,6 +45,7 @@ function goToKrustyBurger() {
     let skinner = game.getThings('pc');
     let server = game.getThings('SERVER_C');
     game.getInventoryItem('HAMBURGER_BAG_I');
+    game.gameVars.beenToKrustyBurger = true;
 
     return new Promise (function(resolve,reject) {
         game.setGameStatus('CUTSCENE');

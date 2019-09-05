@@ -220,6 +220,7 @@ var makeInventoryItems = function() { return  [
 
 var setGameVars = function ()  { return {
 	cupboardEmpty: false,
+	beenToKrustyBurger:false,
 	numberOfSomething: 5,
 }};
 

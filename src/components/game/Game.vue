@@ -273,7 +273,11 @@ export default {
     },
     restart () {
       state.modify(this.$data, state.create());
-      this.$refs.room.resize();
+
+      this.$nextTick(function(){
+        this.$refs.room.resize();
+      });
+
       if (typeof this.sequences.starting === 'function') {
         this.sequences.starting.apply(this,[]);
       }
