@@ -63,7 +63,7 @@ export default {
 	box-sizing:border-box;
 	transition: background-color 0.75s, opacity 1s;
 
-	height: 4rem;
+	height: 5rem;
     overflow-x: scroll;
 	margin-left: .5rem;
     margin-right: .5rem;
@@ -77,7 +77,7 @@ export default {
     &__item {
 		display: inline-block;
 
-        width: 2.4rem;
+        width: 3.5rem;
         box-sizing:border-box;
         padding:2px;
         margin:2px;

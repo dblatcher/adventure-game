@@ -51,7 +51,10 @@ export default {
         scaledHeight : function() {return this.scale * this.baseHeight*this.zoneEffects.scale();},
         scaledWidth : function() {return this.scale * this.baseWidth*this.zoneEffects.scale();},
         frame : function() {
-            var v= this.item.cycles[this.item.status.cycle][this.cycleFrame];
+            let cycle = this.item.status.cycle;
+            //fix for issue where this.cycleFrame exceeds length? cause unknown, causes error
+            let frameNumber = this.cycleFrame >= this.item.cycles[cycle].length ? 0 : this.cycleFrame
+            var v= this.item.cycles[cycle][frameNumber];
             return {sprite: v[0], fx:v[1], fy:v[2]}
         },
         status : function() {return this.item.status.cycle},

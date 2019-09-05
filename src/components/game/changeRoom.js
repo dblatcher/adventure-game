@@ -26,10 +26,9 @@ export default function (rNum,pcX,pcY,data={}) {
     this.thingHoveredOn = null;
     this.resetListeners();
 
-    if (typeof data.callback === 'function' ) {
-      this.$nextTick( function() {
-          data.callback.apply(this,[]);
-      })
-    }
+    this.$nextTick( function() {
+      this.$refs.room.resize();
+      if (typeof data.callback === 'function' ) { data.callback.apply(this,[]); }
+    })
 
   }
