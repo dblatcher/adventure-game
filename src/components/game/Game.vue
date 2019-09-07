@@ -221,7 +221,7 @@ export default {
 
       if (statusName === 'CONVERSATION' ) {
         this.gameStatus = statusName;
-        this.conversation = parameter;
+        if (parameter) {this.conversation = parameter};
         this.instantMode = false;
         return;
       }
@@ -273,6 +273,7 @@ export default {
     },
     restart () {
       state.modify(this.$data, state.create());
+      this.$refs.room.resize();
       if (typeof this.sequences.starting === 'function') {
         this.sequences.starting.apply(this,[]);
       }
