@@ -38,38 +38,48 @@
     }
 
     &__settings {
-        display: flex;
-        justify-content: flex-end;
-        margin: .25rem;
+        margin: 0;
     }
 
 }
 
 
 .file-button {
+    @include btn-toggle ($colour-blue);
+    position: fixed;
+    top:.2rem;
+    right: .2rem;
     z-index: 500;
-    @include btn-outline ($colour-blue);
-
+    
     &--active {
         @include btn-solid ($colour-blue);
+        position: fixed;
     }
 }
 
 
 .skip-button {
+    z-index: 300;
     @include btn-solid ($colour-blue);
+    position: fixed;
+    top:.2rem;
+    left: .2rem;
     margin-left: .5rem;
     margin-right: auto;
-
+    
     &--disabled {
+        position: fixed;
         display: none;
     }
 }
 
 
 .highlight-button {
-    margin-right: .5rem;
-    @include btn-outline ($colour-blue);
+    @include btn-toggle ($colour-blue);
+    z-index: 300;
+    position: fixed;
+    top:.2rem;
+    right: 3.2rem;
 }
 
 .button-icon {
@@ -82,6 +92,7 @@
 
     &:checked~.highlight-button {
         @include btn-solid ($colour-blue);
+        position: fixed;
     }
 }
 
