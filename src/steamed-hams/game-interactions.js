@@ -1,4 +1,4 @@
-import { Interaction, doorFunction,pcSays } from "../modules/interaction-constructor";
+import { Interaction, doorFunction,takeFunction,pcSays } from "../modules/interaction-constructor";
 
 
 var interactions =[
@@ -190,6 +190,8 @@ var interactions =[
 	[function(){return this.getThings('OVEN_W').item.status.cycle == 'closed_ham_inside'}],
 	pcSays('No, I\'d better leave it to get as cooked as possible.')),
 
+	new Interaction(['TAKE','FOIL_W'],[],
+	takeFunction('FOIL_W','FOIL_I')), 
 
 	new Interaction(['OPEN','CUPBOARD_W'],
 	[function(){return !this.gameVars.cupboardEmpty}],
@@ -200,12 +202,8 @@ var interactions =[
 		pc.goTo(this.getThings('CUPBOARD_W').walkToPoint)
 		.then( (r) => {return pc.say('Let\'s see...') } )
 		.then( (r) => {
-			this.getInventoryItem('FOIL_I');
-			return pc.say('... a roll of aluminum foil...') 
-		} )
-		.then( (r) => {
 			this.getInventoryItem('BOURBON_I');
-			return pc.say('...and a bottle of bourbon?! What\'s that doing here?') 
+			return pc.say('... a bottle of bourbon?! What\'s that doing here?') 
 		} )
 		.then( (r) => {
 			this.gameVars.cupboardEmpty = true;

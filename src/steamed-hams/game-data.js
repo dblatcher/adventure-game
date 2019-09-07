@@ -180,7 +180,7 @@ var makeRooms = function(){ return [
 			new WorldItem('KRUSTYBURGER','Krusty Burger',[210,70,10,-40],50,40,'neutral',null,{noZoneScaling:true}),
 			new WorldItem('KITCHEN_DININGDOOR','way back to dining room',[145,0],290,12),
 			new WorldItem('cupboard','cupboard',[90,39,0,-5],50,130),
-			new WorldItem('foil','foil',[270,70,0,-5],50,15,'neutral',worldItemModels.foil),
+			new WorldItem('foil','foil',[270,70,-30,-35],50,15,'neutral',worldItemModels.foil),
 		],
 		obstacles : [
 			new RectZone(0,44,290,20),
