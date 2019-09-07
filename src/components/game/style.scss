@@ -33,8 +33,13 @@
     &__menu-wrapper {
         display: flex;	
         justify-content:center;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         align-items: center;
+
+        @media (orientation: portrait) {
+            flex-wrap: wrap;
+        }
+
     }
 
     &__settings {

@@ -43,7 +43,9 @@ export default {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content:center;
-	box-sizing:border-box;
+    box-sizing:border-box;
+    flex-basis: 100%;
+    flex-shrink:.7;
 
     &__option {
         margin: .1rem;
@@ -66,10 +68,6 @@ export default {
 
     }
     
-    @media (min-width: 600px) {
-        flex-basis: 45%;
-    }
-
 }
 
 
