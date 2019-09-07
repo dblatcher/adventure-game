@@ -41,9 +41,21 @@ function doorFunction (doorId, destination) {
 		} );
 	}
 }
+	
+function takeFunction (worldItemId, inventoryItemId, worldItemStays=false) {	
+	return function () {
+		this.getThings('pc').goTo(this.getThings(worldItemId).walkToPoint)
+		.then( (feedback) => {
+			if (feedback.finished) {
+				this.getInventoryItem(inventoryItemId);
+				if (!worldItemStays) {this.getThings(worldItemId).item.removed = true}
+			}
+		} );
+	}
+}
 
 function pcSays(text,time) {
 	return function() { this.getThings('pc').say(text,{time:time});}	
 }
 
-export { Interaction, doorFunction, pcSays }
+export { Interaction, doorFunction, pcSays, takeFunction }
