@@ -40,6 +40,31 @@ function pourSandInBush (bushId = 'BUSH_W') {
 
 }
 
+function chalmersComesIn () {
+    const game = this;
+    return new Promise (function(resolve, reject) {      
+        game.setGameStatus('CUTSCENE');
+        let skinner = game.getThings('pc');
+        let chalmers = game.getThings('CHALMERS_C');
+        let door = game.getThings('FRONT_DOOR_W');
+
+        chalmers.goTo(door.walkToPoint)
+        .then( ()=> {
+            chalmers.changeRoom(1,100,10);
+            return skinner.say('phew...');
+        } )
+        .then ( ()=> {
+            return skinner.goTo(door.walkToPoint)
+        } )
+        .then ( ()=> {
+            game.changeRoom(1,120,40);
+            game.setGameStatus('LIVE');
+            resolve('test');
+        })
+
+    })
+}
+
 function goToKrustyBurger() {
     const game = this;
     let skinner = game.getThings('pc');
@@ -98,4 +123,4 @@ function fire () {
 
 }
 
-export default { starting,fire, pourSandInBush, goToKrustyBurger };
+export default { starting,fire, pourSandInBush, goToKrustyBurger, chalmersComesIn };

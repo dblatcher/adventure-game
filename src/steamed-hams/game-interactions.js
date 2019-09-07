@@ -218,8 +218,19 @@ var interactions =[
 
 	new Interaction(['TALK','CHALMERS_C'],[],
 	function() {
-		this.setGameStatus('CONVERSATION');
-		this.conversation = 'hamburgers';
+		this.setGameStatus('CUTSCENE');
+		let chalmers = this.getThings('CHALMERS_C');
+		let skinner = this.getThings('pc');
+		chalmers.say('Well Seymour, I made it.')
+		.then( ()=> {return chalmers.say('dispite your directions.')} )
+		.then( ()=> {return skinner.say('Superintendent Chalmers!')} )
+		.then( ()=> {return skinner.say('Welcome!')} )
+		.then( ()=> {
+			this.setGameStatus('CONVERSATION','arrival');
+		})
+		
+
+	
 	}),
 
 ]

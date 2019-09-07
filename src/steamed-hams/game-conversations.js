@@ -73,6 +73,27 @@ function makeConversations() {
 		),
 	]));
 
+
+	conversations.arrival = new Conversation('arival', 'CHALMERS_C','start');
+
+	conversations.arrival.addBranch(new DialogBranch('start', [
+		new DialogChoice('I hope you\'re prepared for an unforgettable luncheon.',
+			['npc::hmmm'],
+			{canOnlySayOnce:true,}
+		),
+		new DialogChoice('Damn you, Chalmers -  there was nothing wrong with my directions',
+		['pc::...'],
+		{canOnlySayOnce:true, firstLineUnsaid:true}),
+
+		new DialogChoice('Come in.',
+		[],
+		{consequence: function(theApp,choice){
+			theApp.sequences.chalmersComesIn.apply(theApp,[choice]);
+		}}),
+
+	]));
+
+
 	return conversations
 }
 

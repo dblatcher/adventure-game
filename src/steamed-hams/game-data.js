@@ -9,6 +9,7 @@ var sprites = [
   new Sprite ('front_fence', 'fence_front.png', [1,1]),
   new Sprite ('table', 'table.png', [1,1]),
   new Sprite ('iceBucket', 'ice-bucket.png', [1,1]),
+  new Sprite ('foil', 'foil.png', [1,1]),
   new Sprite ('oven', 'oven.png', [6,1]),
 
   new Sprite ('fire', 'Fire.png', [4,2]),
@@ -103,6 +104,9 @@ var worldItemModels = {
 	iceBucket: new WorldItemModel({
 		neutral:[['iceBucket',0,0]],
 	}),
+	foil: new WorldItemModel({
+		neutral:[['foil',0,0]],
+	}),
 	oven: new WorldItemModel({
 		closed:[['oven',0,0]],
 		open:[['oven',1,0]],
@@ -116,7 +120,7 @@ var worldItemModels = {
 
 var makeCharacters = function() {return [
 	new Character ('skinner','Skinner',[200,10,2],'white',characterModels.skinner),
-	new Character ('chalmers','Superintendent Chalmers',[100,10,1],'red',characterModels.chalmers),
+	new Character ('chalmers','Superintendent Chalmers',[100,10,0],'red',characterModels.chalmers),
 	new Character ('server','sever',[230,100,2],'green',characterModels.invisible),
 ]}
 
@@ -176,6 +180,7 @@ var makeRooms = function(){ return [
 			new WorldItem('KRUSTYBURGER','Krusty Burger',[210,70,10,-40],50,40,'neutral',null,{noZoneScaling:true}),
 			new WorldItem('KITCHEN_DININGDOOR','way back to dining room',[145,0],290,12),
 			new WorldItem('cupboard','cupboard',[90,39,0,-5],50,130),
+			new WorldItem('foil','foil',[270,70,0,-5],50,15,'neutral',worldItemModels.foil),
 		],
 		obstacles : [
 			new RectZone(0,44,290,20),
