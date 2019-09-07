@@ -21,17 +21,16 @@ function pourSandInBush (bushId = 'BUSH_W') {
     return new Promise (function (resolve, reject) {
         
         let pc = game.getThings('pc');
-		game.getInventoryItem('BUCKET_EMPTY_I');
-		game.looseInventoryItem('BUCKET_SAND_I');
-		game.setGameStatus('CUTSCENE');
-		
+        game.getInventoryItem('BUCKET_EMPTY_I');
+        game.looseInventoryItem('BUCKET_SAND_I');
+        game.setGameStatus('CUTSCENE');
 
-		pc.goTo(game.getThings(bushId).walkToPoint)
-		.then( (r) => {return pc.doAction('pour_sand')})
-		.then( (r) => {return pc.say('There!') } )
-		.then( (r) => {return pc.say('I suppose its wrong to use fire-fighting equipment improperly...') } )
-		.then( (r) => {return pc.say('But what are the chances of a fire in the next half hour?',{action:'ponder'}) } )
-		.then( (r) => { 
+        pc.goTo(game.getThings(bushId).walkToPoint)
+        .then( (r) => {return pc.doAction('pour_sand')})
+        .then( (r) => {return pc.say('There!') } )
+        .then( (r) => {return pc.say('I suppose its wrong to use fire-fighting equipment improperly...') } )
+        .then( (r) => {return pc.say('But what are the chances of a fire in the next half hour?',{action:'ponder'}) } )
+        .then( (r) => { 
             game.setGameStatus('LIVE') 
             resolve ({success:true});
         })
@@ -40,9 +39,27 @@ function pourSandInBush (bushId = 'BUSH_W') {
 
 }
 
+
+function chalmersAtDoor () {
+    const game = this;
+    return new Promise (function(resolve,reject) {
+        game.setGameStatus('CUTSCENE');
+        let skinner = game.getThings('pc');
+
+        skinner.say('The doorbell!')
+        .then( ()=> {
+            game.setGameStatus('LIVE');
+            game.allCharacters.forEach(char => {
+                if (char.id === 'CHALMERS_C') { game.characterRoomChange(char, 0,100,10)}
+            });
+        })
+
+    })
+}
+
 function chalmersComesIn () {
     const game = this;
-    return new Promise (function(resolve, reject) {      
+    return new Promise (function(resolve, reject) {
         game.setGameStatus('CUTSCENE');
         let skinner = game.getThings('pc');
         let chalmers = game.getThings('CHALMERS_C');
@@ -58,10 +75,21 @@ function chalmersComesIn () {
         } )
         .then ( ()=> {
             game.changeRoom(1,120,40);
+            game.allRoomItemData.KITCHEN_R.OVEN_W.status.cycle="smoking";
             game.setGameStatus('LIVE');
             resolve('test');
         })
 
+    })
+}
+
+function seeBurningRoast () {
+    const game = this;
+    let skinner = game.getThings('pc');
+
+    return new Promise (function(resolve,reject) {
+        console.log('EGADS');
+        resolve(true);
     })
 }
 
@@ -123,4 +151,4 @@ function fire () {
 
 }
 
-export default { starting,fire, pourSandInBush, goToKrustyBurger, chalmersComesIn };
+export default { starting,fire, pourSandInBush, goToKrustyBurger, chalmersComesIn, chalmersAtDoor, seeBurningRoast };
