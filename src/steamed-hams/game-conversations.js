@@ -94,6 +94,14 @@ function makeConversations() {
 	]));
 
 
+	conversations.iWasJust = new Conversation('iWasJust','CHALMERS_C','start');
+
+	conversations.iWasJust.addBranch(new DialogBranch('start',[
+		new DialogChoice('just stretching my calves on the windowsill.',
+		['pc::Isometric exercise. Care to join me?'],
+		{}),
+	]))
+
 	return conversations
 }
 
