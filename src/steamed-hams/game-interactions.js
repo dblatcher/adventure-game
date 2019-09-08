@@ -2,18 +2,58 @@ import { Interaction, doorFunction,takeFunction,pcSays } from "../modules/intera
 
 
 var interactions =[
-    new Interaction(['LOOK','GARAGE_W'],[],pcSays('I admire car owners. I aspire to be one after I\'ve reimbursed mother for the food I ate as a child.',2500)),
+    
+    //CHARACTER
+
+    new Interaction(['TALK','CHALMERS_C'],
+	[function(){return this.rooms[this.roomNumber].id === 'FRONT_R'}],
+    function() {
+        this.setGameStatus('CUTSCENE');
+        let chalmers = this.getThings('CHALMERS_C');
+        let skinner = this.getThings('pc');
+        chalmers.say('Well Seymour, I made it.')
+        .then( ()=> {return chalmers.say('dispite your directions.')} )
+        .then( ()=> {return skinner.say('Superintendent Chalmers!')} )
+        .then( ()=> {return skinner.say('Welcome!')} )
+        .then( ()=> {
+            this.setGameStatus('CONVERSATION','arrival');
+        })
+    }),
+
+    //ITEM BASED
     new Interaction(['LOOK','ROAST_I'],[],pcSays('Yes, this should be a reasonable quantity of meat to serve Superintendent Chalmers.',2000)),
     new Interaction(['LOOK','ROAST_GLAZED_I'],[],pcSays('Glazed and ready for the oven!.',2000)),
     new Interaction(['LOOK','BUCKET_FOIL_I'],[],pcSays('This should suffice. I can hardly see the foil',2000)),
     new Interaction(['LOOK','BUCKET_SAND_I'],[],pcSays('Hmmm, this could serve as an ice bucket if it were empty and silver colored.',2000)),
-    new Interaction(['LOOK','BUCKET_EMPTY_I'],[],pcSays('If only I could change it\'s color somehow.',2000)),
+    new Interaction(['LOOK','BUCKET_EMPTY_I'],[],pcSays('If only I could make it silver colored somehow.',2000)),
     new Interaction(['LOOK','FOIL_I'],[],pcSays('Shiny, metallic and used for wrapping things.',2000)),
 
-
-
-    new Interaction(['USE','FOIL_I','BUCKET_SAND_I'],[],pcSays('I need to get rid of this sand first.',2000)),
+    new Interaction(['USE','FOIL_I','BUCKET_SAND_I'],[],pcSays('I need to get rid of this sand first. I should dump it somewhere outside.',2000)),
     new Interaction(['USE','FOIL_I','BUCKET_FOIL_I'],[],pcSays('It\'s already wrapped.',1500)),
+
+    new Interaction(['USE','FOIL_I','BUCKET_EMPTY_I'],[],function(){
+        let pc = this.getThings('pc');
+        this.getInventoryItem('BUCKET_FOIL_I');
+        this.looseInventoryItem('BUCKET_EMPTY_I');
+
+        pc.doAction('wrap_bucket')
+        .then( (r) => {return pc.say('There!') } )
+        .then( (r) => {return pc.say('It looks like a real ice bucket.') } )
+    }),
+
+    new Interaction(['USE','BOURBON_I','ROAST_I'],[],function(){
+        let pc = this.getThings('pc');
+        this.getInventoryItem('ROAST_GLAZED_I');
+        this.looseInventoryItem('ROAST_I');
+
+        pc.doAction('glaze_roast')
+        .then( (r) => {return pc.say('Well glazed, Seymour, well glazed') } )
+
+    }),
+
+
+    //FRONT OF HOUSE
+    new Interaction(['LOOK','GARAGE_W'],[],pcSays('I admire car owners. I aspire to be one after I\'ve reimbursed mother for the food I ate as a child.',2500)),
     
     new Interaction(['USE','BUCKET_SAND_I','BUSH_W'],[],function(){
         this.sequences.pourSandInBush.apply(this,['BUSH_W']);
@@ -27,50 +67,9 @@ var interactions =[
         this.sequences.pourSandInBush.apply(this,['BUSH_3_W']);
     }),
 
-    new Interaction(['USE','FOIL_I','BUCKET_EMPTY_I'],[],function(){
-        let pc = this.getThings('pc');
-        this.getInventoryItem('BUCKET_FOIL_I');
-        this.looseInventoryItem('BUCKET_EMPTY_I');
-
-        pc.doAction('wrap_bucket')
-        .then( (r) => {return pc.say('There!') } )
-        .then( (r) => {return pc.say('It looks like a real ice bucket.') } )
-    }),
-
-    new Interaction(['USE','BUCKET_FOIL_I','TABLE_W'],[],function(){
-        let pc = this.getThings('pc');
-        this.looseInventoryItem('BUCKET_FOIL_I');
-        this.setGameStatus('CUTSCENE');
-
-        pc.goTo(this.getThings('TABLE_W').walkToPoint)
-        .then( (r) => {return pc.say('Here we are') } )
-        .then( (r) => {
-            this.allRoomItemData.DINING_R.ICE_BUCKET_W.removed = false;
-            this.setGameStatus('LIVE');
-		 } )
-		 .then ( ()=> {
-			this.gameVars.iceBucketIsOnTable = true;
-			if (this.gameVars.roastIsInOven && this.gameVars.iceBucketIsOnTable) {
-				this.sequences.chalmersAtDoor.apply(this,[]);
-			}
-        })
-
-    }),
-
-
-    new Interaction(['USE','BOURBON_I','ROAST_I'],[],function(){
-        let pc = this.getThings('pc');
-        this.getInventoryItem('ROAST_GLAZED_I');
-        this.looseInventoryItem('ROAST_I');
-
-        pc.doAction('glaze_roast')
-        .then( (r) => {return pc.say('Well glazed, Seymour, well glazed') } )
-
-    }),
-
-    new Interaction(['OPEN','FRONT_DOOR_W'],[
-        function(){return this.getThings('FRONT_DOOR_W').item.status.cycle == 'closed'},
-    ],function(){
+    new Interaction(['OPEN','FRONT_DOOR_W'],
+    [function(){return this.getThings('FRONT_DOOR_W').item.status.cycle == 'closed'},],
+    function(){
         this.getThings('pc').say("ok")
         .then ( (r)=> {
             return this.getThings('pc').goTo(this.getThings('FRONT_DOOR_W').walkToPoint)
@@ -100,6 +99,31 @@ var interactions =[
     new Interaction(['SHUT','FRONT_DOOR_W'],[],pcSays('It\'s already closed.')),
 
 
+
+
+    //DINING ROOM
+
+    new Interaction(['USE','BUCKET_FOIL_I','TABLE_W'],[],function(){
+        let pc = this.getThings('pc');
+        this.looseInventoryItem('BUCKET_FOIL_I');
+        this.setGameStatus('CUTSCENE');
+
+        pc.goTo(this.getThings('TABLE_W').walkToPoint)
+        .then( (r) => {return pc.say('Here we are') } )
+        .then( (r) => {
+            this.allRoomItemData.DINING_R.ICE_BUCKET_W.removed = false;
+            this.setGameStatus('LIVE');
+		 } )
+		 .then ( ()=> {
+			this.gameVars.iceBucketIsOnTable = true;
+			if (this.gameVars.roastIsInOven && this.gameVars.iceBucketIsOnTable) {
+				this.sequences.chalmersAtDoor.apply(this,[]);
+			}
+        })
+
+    }),
+
+
     new Interaction(['WALK','DINING_WAYOUT_W'],[],
     doorFunction('DINING_WAYOUT_W',['FRONT_R',146,27])),
 
@@ -123,9 +147,7 @@ var interactions =[
 		function(){return !this.gameVars.haveSeenBurningRoast},
 		function(){return this.getThings('DINING_KITCHENDOOR_W').item.status.cycle == 'open'}
 	],
-   	function() {
-		this.sequences.seeBurningRoast.apply(this,[]);
-   	}
+   	function() { this.sequences.seeBurningRoast.apply(this,[]); }
     ),
 
 
@@ -146,11 +168,44 @@ var interactions =[
 
     new Interaction(['SHUT','DINING_KITCHENDOOR_W'],[],pcSays('It\'s already closed.')),
 
+
+    //KITCHEN
+
+    new Interaction(['WALK','KITCHEN_DININGDOOR_W'],[
+        function() {return this.getThings('OVEN_W').item.status.cycle==='smoking'}, 
+        function() {return this.allInventoryItemsAsObject.HAMBURGER_PLATTER_I.have === true}, 
+       ],
+        function() {
+            this.getThings('pc').goTo(this.getThings('KITCHEN_DININGDOOR_W').walkToPoint)
+            .then( (feedback) => {
+                if (feedback.finished) {
+                    this.setGameStatus('CUTSCENE');
+                    this.changeRoom('DINING_R',300,50)
+                        .then( ()=> { return this.getThings('pc').goTo({x:220, y:45})  } )
+                        .then( ()=> {
+                            this.allRoomItemData.DINING_R.HAMBURGERS_W.removed=false;
+                            return this.getThings('pc').goTo({x:214, y:12})
+                            
+                        })
+                        .then(()=>{this.setGameStatus('CONVERSATION','hamburgers')})
+                    
+
+                }
+            } )
+        }
+       ),
+   
+
+    new Interaction(['WALK','KITCHEN_DININGDOOR_W'],[
+     function() {return this.getThings('OVEN_W').item.status.cycle==='smoking'}, 
+     function() {return this.allInventoryItemsAsObject.HAMBURGER_PLATTER_I.have === false}, 
+    ],pcSays('I can\'t go back there! I don\'t have any food for the Superintendent!')
+    ),
+
     new Interaction(['WALK','KITCHEN_DININGDOOR_W'],
     [],
     doorFunction('KITCHEN_DININGDOOR_W',['DINING_R',300,50])
     ),
-
 
     new Interaction(['OPEN','OVEN_W'],
     [function(){return this.getThings('OVEN_W').item.status.cycle == 'closed'}],
@@ -160,7 +215,7 @@ var interactions =[
             this.getThings('OVEN_W').setStatus('open');
         } )
     }),
-    
+
     new Interaction(['SHUT','OVEN_W'],
     [function(){return this.getThings('OVEN_W').item.status.cycle == 'open'}],
     function(){
@@ -236,23 +291,7 @@ var interactions =[
     new Interaction(['OPEN','CUPBOARD_W'],[],
     pcSays('There was nothing else in there.')),
 
-	new Interaction(['TALK','CHALMERS_C'],
-	[function(){return this.rooms[this.roomNumber].id === 'FRONT_R'}],
-    function() {
-        this.setGameStatus('CUTSCENE');
-        let chalmers = this.getThings('CHALMERS_C');
-        let skinner = this.getThings('pc');
-        chalmers.say('Well Seymour, I made it.')
-        .then( ()=> {return chalmers.say('dispite your directions.')} )
-        .then( ()=> {return skinner.say('Superintendent Chalmers!')} )
-        .then( ()=> {return skinner.say('Welcome!')} )
-        .then( ()=> {
-            this.setGameStatus('CONVERSATION','arrival');
-        })
-        
 
-    
-    }),
 
 ]
 

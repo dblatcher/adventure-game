@@ -86,10 +86,12 @@ function chalmersComesIn () {
 function seeBurningRoast () {
     const game = this;
     let skinner = game.getThings('pc');
+    game.gameVars.haveSeenBurningRoast = true;
 
-    return new Promise (function(resolve,reject) {
-        console.log('EGADS');
-        resolve(true);
+    return new Promise (function(resolve) {
+        game.changeRoom('KITCHEN_R',100,10)
+        .then( ()=> { skinner.say('Egads! My roast is ruined!')} )
+        .then( ()=> { resolve ({sucess: true})} )
     })
 }
 

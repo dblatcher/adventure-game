@@ -9,6 +9,7 @@ var sprites = [
   new Sprite ('front_fence', 'fence_front.png', [1,1]),
   new Sprite ('table', 'table.png', [1,1]),
   new Sprite ('iceBucket', 'ice-bucket.png', [1,1]),
+  new Sprite ('hamburgerPlatter', 'hamburgers_on_platter.png', [1,3]),
   new Sprite ('foil', 'foil.png', [1,1]),
   new Sprite ('oven', 'oven.png', [6,1]),
 
@@ -104,6 +105,11 @@ var worldItemModels = {
     iceBucket: new WorldItemModel({
         neutral:[['iceBucket',0,0]],
     }),
+    hamburgers: new WorldItemModel({
+        four:[['hamburgerPlatter',0,0]],
+        three:[['hamburgerPlatter',0,1]],
+        two:[['hamburgerPlatter',0,2]],
+    }),
     foil: new WorldItemModel({
         neutral:[['foil',0,0]],
     }),
@@ -162,6 +168,10 @@ var makeRooms = function(){ return [
             new WorldItem('DINING_WAYOUT','way out',[45,45,20,10],50,125,'neutral'),
             new WorldItem('ICE_BUCKET', 'ice bucket', [170,70],30,25,'neutral',worldItemModels.iceBucket,{
                 zAdjust:-50,
+                removed:true,
+            }),
+            new WorldItem('HAMBURGERS', '\'steamed hams\'', [170,60],80,30,'four',worldItemModels.hamburgers,{
+                zAdjust:-40,
                 removed:true,
             }),
         ],
