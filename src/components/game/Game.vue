@@ -156,6 +156,13 @@ export default {
       });
       return result;
     },
+    allInventoryItemsAsObject: function() {
+      var result ={};
+      this.inventoryItems.forEach(item => {
+        result[item.id] = item;
+      });
+      return result;
+    },
     allRoomItemData: function() {
       var result = {};
       this.rooms.forEach ( room => {
