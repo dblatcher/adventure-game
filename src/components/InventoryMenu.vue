@@ -63,6 +63,8 @@ export default {
 	box-sizing:border-box;
 	transition: background-color 0.75s, opacity 1s;
 
+	flex-basis: 100%;
+
 	height: 5rem;
     overflow-x: scroll;
 	margin-left: .5rem;
@@ -91,9 +93,6 @@ export default {
 
 
 
-    @media (min-width: 600px) {
-        flex-basis: 45%;
-    }
 
 }
 
