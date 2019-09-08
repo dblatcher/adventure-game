@@ -242,9 +242,29 @@ export default {
     },
 
     characterRoomChange: function (movingCharacter, rNum,x,y) {
-      movingCharacter.room = rNum;
-      movingCharacter.x = x;
-      movingCharacter.y = y;
+      let game = this;
+
+      if (typeof movingCharacter === 'string') {
+        let charId = movingCharacter;
+        game.allCharacters.forEach(char => {
+          if (char.id === charId) { movingCharacter = char}
+        });
+      }
+
+      if (typeof movingCharacter === 'string') {
+        return Promise.resolve( {success:false, reason:`no character with id ${movingCharacter}`} )
+      }
+
+      return new Promise ( function(resolve,reject) {
+        movingCharacter.room = rNum;
+        movingCharacter.x = x;
+        movingCharacter.y = y;
+        game.$nextTick( function() {
+          resolve({success:true, char:movingCharacter})
+        });
+
+      });
+
     },
     pickVerb: function(verbID) {
       this.subject = null;
