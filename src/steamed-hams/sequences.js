@@ -99,23 +99,30 @@ function goToKrustyBurger() {
     const game = this;
     let skinner = game.getThings('pc');
     let server = game.getThings('SERVER_C');
+    let chalmers = game.getThings('CHALMERS_C');
     game.getInventoryItem('HAMBURGER_BAG_I');
     game.gameVars.beenToKrustyBurger = true;
 
     return new Promise (function(resolve,reject) {
         game.setGameStatus('CUTSCENE');
-        skinner.char.x=200;
-        skinner.char.y=75;
-        skinner.goTo({x:220,y:90})
-        .then( (r) => {return skinner.say('Four hamburgers, quickly!') } )
-        .then( (r) => {return server.say('uhhhh...') } )
-        .then( (r) => {return server.say('would you like fries with that?') } )
-        .then( (r) => {return skinner.say('Fries... yes, two large fries. Hurry!') } )
-        .then( (r) => {return server.say('that\'ll be $12.97, please.') } )
-        .then( (r) => {return skinner.goTo({x:200,y:73}) } )
-        .then( (r) => {
+
+        chalmers.goTo({ x:100, y:-20})
+        .then( () =>{
+            chalmers.changeRoom(1,100,10)
+            skinner.char.x=200;
+            skinner.char.y=75;
+            return skinner.goTo({x:220,y:90});
+        })
+        .then( () => {return skinner.say('Four hamburgers, quickly!') } )
+        .then( () => {return server.say('uhhhh...') } )
+        .then( () => {return server.say('would you like fries with that?') } )
+        .then( () => {return skinner.say('Fries... yes, two large fries. Hurry!') } )
+        .then( () => {return server.say('that\'ll be $12.97, please.') } )
+        .then( () => {return skinner.goTo({x:200,y:73}) } )
+        .then( () => {
             skinner.char.x=220;
             skinner.char.y=30;
+            server.say('I don\'t think he\'s coming back...')
             game.setGameStatus('LIVE'); 
             resolve ({success:true});
         } )

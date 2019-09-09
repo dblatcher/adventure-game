@@ -133,7 +133,7 @@ var worldItemModels = {
 var makeCharacters = function() {return [
     new Character ('skinner','Skinner',[200,10,2],'white',characterModels.skinner),
     new Character ('chalmers','Superintendent Chalmers',[100,10,null],'red',characterModels.chalmers),
-    new Character ('server','sever',[230,100,2],'green',characterModels.invisible),
+    new Character ('server','sever',[230,100,2],'lime',characterModels.invisible),
 ]}
 
 var pcId = 'SKINNER_C';
@@ -232,7 +232,7 @@ var makeInventoryItems = function() { return  [
     new InventoryItem('bucket_empty', 'fire bucket', 'bucket.png'),
     new InventoryItem('foil', 'aluminium foil', 'foil.jpg'),
     new InventoryItem('bourbon','bourbon', 'bourbon.png'),
-    new InventoryItem('hamburger_bag','hamburgers', 'hamburgers_on_platter.png'),
+    new InventoryItem('hamburger_bag','hamburgers', 'bag.png'),
     new InventoryItem('hamburger_platter','elegantly arranged hamburgers', 'hamburgers_on_platter.png'),
 
 ]};

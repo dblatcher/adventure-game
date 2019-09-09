@@ -196,6 +196,12 @@ var interactions =[
        ),
    
 
+       new Interaction(['WALK','KITCHEN_DININGDOOR_W'],[
+        function() {return this.getThings('OVEN_W').item.status.cycle==='smoking'}, 
+        function() {return this.allInventoryItemsAsObject.HAMBURGER_BAG_I.have === true}, 
+       ],pcSays('I can\'t serve the hamburgers like this! I need to disguise them as my own cooking somehow...')
+       ),
+
     new Interaction(['WALK','KITCHEN_DININGDOOR_W'],[
      function() {return this.getThings('OVEN_W').item.status.cycle==='smoking'}, 
      function() {return this.allInventoryItemsAsObject.HAMBURGER_PLATTER_I.have === false}, 

@@ -111,10 +111,37 @@ function makeConversations() {
 
 	conversations.iWasJust = new Conversation('iWasJust','CHALMERS_C','start');
 
+	function iWasJust_1(firstLines){
+		if (typeof firstLines === 'string') {firstLines = [firstLines]}
+		for (var i=0; i< firstLines.length; i++) {
+			firstLines[i] = {orderType: "say", options: {action:'window_talk'}, actor: "pc", text: firstLines[i]}
+		}
+		let base= [
+		'npc::Why is there smoke coming out of your oven, Seymour?',
+		'pc::Oh, not! That isn\'t smoke.',
+		'pc::It\'s steam.',
+		'pc::Steam from the steamed clams we\'re having.',
+		'pc::Mmm, steamed clams.'
+		];
+		return firstLines.concat(base);
+	}
+
 	conversations.iWasJust.addBranch(new DialogBranch('start',[
 		new DialogChoice('just stretching my calves on the windowsill.',
-		['pc::Isometric exercise. Care to join me?'],
-		{}),
+		iWasJust_1('Isometric exercise. Care to join me?'),
+		{consequence: function(theApp,choice){
+			theApp.sequences.goToKrustyBurger.apply(theApp,[choice]);
+		}}),
+		new DialogChoice('just examining these new italian loafers for signs of wear.',
+		iWasJust_1('A principal must always be wary of his shoes!'),
+		{consequence: function(theApp,choice){
+			theApp.sequences.goToKrustyBurger.apply(theApp,[choice]);
+		}}),
+		new DialogChoice('stomping on an troublesome termite.',
+		iWasJust_1('take that!'),
+		{consequence: function(theApp,choice){
+			theApp.sequences.goToKrustyBurger.apply(theApp,[choice]);
+		}}),
 	]))
 
 	return conversations
