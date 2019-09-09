@@ -56,7 +56,6 @@ function DialogChoice (optionText,script,config={}) {
 			parsedLine.actor = 'pc';
 			parsedLine.text = line;
 		}
-		
 		return parsedLine;
 	}
 }
