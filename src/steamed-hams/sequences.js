@@ -1,16 +1,17 @@
-import { pcId } from "./game-data";
 
 function starting () {
-
    const game = this;
-    
-   return new Promise (function (resolve, reject) {
+   let skinner = game.getThings('pc');
+
+   return new Promise (function (resolve) {
         game.setGameStatus('CUTSCENE');
-        game.getThings('pc').doAction('walk')
-       .then (r => {
-        game.setGameStatus('LIVE');
-           resolve({success:true});
-       });
+        skinner.say('I thought I\'d never get out of that superMarket!')
+        .then( ()=> { return skinner.say('I\'d better glaze this ham and get it in the oven before Superintendent Chalmers arrives')})
+        .then( ()=> { return skinner.say('also, I need an ice bucket...')})
+        .then( ()=> {
+            game.setGameStatus('LIVE');
+            resolve({success:true});
+        });
    })
 
 }
@@ -18,7 +19,7 @@ function starting () {
 function pourSandInBush (bushId = 'BUSH_W') {
     const game = this;
 
-    return new Promise (function (resolve, reject) {
+    return new Promise (function (resolve) {
         
         let pc = game.getThings('pc');
         game.getInventoryItem('BUCKET_EMPTY_I');
@@ -50,7 +51,8 @@ function chalmersAtDoor () {
         .then( ()=> {
             game.setGameStatus('LIVE');
             game.allCharacters.forEach(char => {
-                if (char.id === 'CHALMERS_C') { game.characterRoomChange(char, 0,100,10)}
+                if (char.id === 'CHALMERS_C') { game.characterRoomChange(char, 0,100,10)};
+                resolve ({success:true});
             });
         })
 
@@ -77,7 +79,7 @@ function chalmersComesIn () {
             game.changeRoom(1,120,40);
             game.allRoomItemData.KITCHEN_R.OVEN_W.status.cycle="smoking";
             game.setGameStatus('LIVE');
-            resolve('test');
+            resolve ({success:true});
         })
 
     })
@@ -130,15 +132,11 @@ function goToKrustyBurger() {
 }
 
 function fire () {
-
     const game = this;
-
     return new Promise (function (resolve, reject) {
-        
         let skinner = game.getThings('pc');
         let chalmers = game.getThings('CHALMERS_C');
         let door = game.getThings().DINING_KITCHENDOOR_W;
-
 
         game.setGameStatus('CUTSCENE');
         skinner.goTo({x:250,y:45})

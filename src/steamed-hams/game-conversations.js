@@ -52,7 +52,10 @@ function makeConversations() {
 			'pc::Oh, not in Utica, no. It\'s an Albany expression.',
 			{orderType: "say", options: {action:'talk_with_ham'}, actor: "npc", text: "You know, these hamburgers are quite similar to the ones they have at Krusty Burger."},
 			],
-			{changesBranch:'similar', consequence:function(game){game.getThings().CHALMERS_C.char.behaviour_action = 'wait_with_ham'}}
+			{changesBranch:'similar', consequence:function(game){
+				game.getThings().CHALMERS_C.char.behaviour_action = 'wait_with_ham';
+				game.getThings('HAMBURGERS_W').setStatus('two');
+			}}
 		),
 		new DialogChoice('Louisiana.',
 			[
@@ -61,7 +64,10 @@ function makeConversations() {
 			'npc::I see. I fact which your personnel file somehow fails to mention',
 			{orderType: "say", options: {action:'talk_with_ham'}, actor: "npc", text: "You know, these hamburgers are quite similar to the ones they have at Krusty Burger."},
 			],
-			{changesBranch:'similar', consequence:function(game){game.getThings().CHALMERS_C.char.behaviour_action = 'wait_with_ham'}}
+			{changesBranch:'similar', consequence:function(game){
+				game.getThings().CHALMERS_C.char.behaviour_action = 'wait_with_ham';
+				game.getThings('HAMBURGERS_W').setStatus('two');
+			}}
 		),
 		new DialogChoice('Mekon Delta, Vietnamm.',
 			['pc::Not that I ever ate any steamed hams there, myself...',
@@ -70,7 +76,10 @@ function makeConversations() {
 			'npc::uh - huh...',
 			{orderType: "say", options: {action:'talk_with_ham'}, actor: "npc", text: "You know, these hamburgers are quite similar to the ones they have at Krusty Burger."},
 			],
-			{changesBranch:'similar', consequence:function(game){game.getThings().CHALMERS_C.char.behaviour_action = 'wait_with_ham'}}
+			{changesBranch:'similar', consequence:function(game){
+				game.getThings().CHALMERS_C.char.behaviour_action = 'wait_with_ham';
+				game.getThings('HAMBURGERS_W').setStatus('two');
+			}}
 		),
 	]));
 

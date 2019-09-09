@@ -31,14 +31,34 @@ var interactions =[
     new Interaction(['USE','FOIL_I','BUCKET_SAND_I'],[],pcSays('I need to get rid of this sand first. I should dump it somewhere outside.',2000)),
     new Interaction(['USE','FOIL_I','BUCKET_FOIL_I'],[],pcSays('It\'s already wrapped.',1500)),
 
+    new Interaction(['USE','HAMBURGER_BAG_I','PLATTER_I'],[],
+    function(){
+        let pc = this.getThings('pc');
+        this.getInventoryItem('HAMBURGER_PLATTER_I');
+        this.looseInventoryItem('HAMBURGER_BAG_I');
+        this.looseInventoryItem('PLATTER_I');
+        pc.doAction('arrange_burgers')
+    }
+    ),
+
+    new Interaction(['USE','PLATTER_I','HAMBURGER_BAG_I'],[],
+    function(){
+        let pc = this.getThings('pc');
+        this.getInventoryItem('HAMBURGER_PLATTER_I');
+        this.looseInventoryItem('HAMBURGER_BAG_I');
+        this.looseInventoryItem('PLATTER_I');
+        pc.doAction('arrange_burgers')
+    }
+    ),
+
     new Interaction(['USE','FOIL_I','BUCKET_EMPTY_I'],[],function(){
         let pc = this.getThings('pc');
         this.getInventoryItem('BUCKET_FOIL_I');
         this.looseInventoryItem('BUCKET_EMPTY_I');
 
         pc.doAction('wrap_bucket')
-        .then( (r) => {return pc.say('There!') } )
-        .then( (r) => {return pc.say('It looks like a real ice bucket.') } )
+        .then( () => {return pc.say('There!') } )
+        .then( () => {return pc.say('It looks like a real ice bucket.') } )
     }),
 
     new Interaction(['USE','BOURBON_I','ROAST_I'],[],function(){
@@ -184,12 +204,10 @@ var interactions =[
                         .then( ()=> { return this.getThings('pc').goTo({x:220, y:45})  } )
                         .then( ()=> {
                             this.allRoomItemData.DINING_R.HAMBURGERS_W.removed=false;
+                            this.getThings('CHALMERS_C').char.behaviour_direction='right';
                             return this.getThings('pc').goTo({x:214, y:12})
-                            
                         })
                         .then(()=>{this.setGameStatus('CONVERSATION','hamburgers')})
-                    
-
                 }
             } )
         }
@@ -285,8 +303,16 @@ var interactions =[
         pc.goTo(this.getThings('CUPBOARD_W').walkToPoint)
         .then( (r) => {return pc.say('Let\'s see...') } )
         .then( (r) => {
+            this.getInventoryItem('BUCKET_SAND_I');
+            return pc.say('...the old fire bucket...') 
+        } )
+        .then( (r) => {
+            this.getInventoryItem('PLATTER_I');
+            return pc.say('...the serving platter...') 
+        } )
+        .then( (r) => {
             this.getInventoryItem('BOURBON_I');
-            return pc.say('... a bottle of bourbon?! What\'s that doing here?') 
+            return pc.say('... and a bottle of bourbon?! What\'s that doing here?') 
         } )
         .then( (r) => {
             this.gameVars.cupboardEmpty = true;

@@ -131,7 +131,7 @@ var worldItemModels = {
 
 
 var makeCharacters = function() {return [
-    new Character ('skinner','Skinner',[200,10,2],'white',characterModels.skinner),
+    new Character ('skinner','Skinner',[200,10,0],'white',characterModels.skinner),
     new Character ('chalmers','Superintendent Chalmers',[100,10,null],'red',characterModels.chalmers),
     new Character ('server','sever',[230,100,2],'lime',characterModels.invisible),
 ]}
@@ -228,12 +228,13 @@ var makeInventoryItems = function() { return  [
     new InventoryItem('roast', 'raw roast', 'roast.png',true),
     new InventoryItem('roast_glazed', 'glazed roast', 'glazed-roast.png'),
     new InventoryItem('bucket_foil', 'ice bucket', 'bucket_foil.png'),
-    new InventoryItem('bucket_sand', 'fire bucket', 'bucket_sand.png',true),
+    new InventoryItem('bucket_sand', 'fire bucket', 'bucket_sand.png'),
     new InventoryItem('bucket_empty', 'fire bucket', 'bucket.png'),
     new InventoryItem('foil', 'aluminium foil', 'foil.jpg'),
     new InventoryItem('bourbon','bourbon', 'bourbon.png'),
     new InventoryItem('hamburger_bag','hamburgers', 'bag.png'),
     new InventoryItem('hamburger_platter','elegantly arranged hamburgers', 'hamburgers_on_platter.png'),
+    new InventoryItem('platter','platter', 'platter.png'),
 
 ]};
 
