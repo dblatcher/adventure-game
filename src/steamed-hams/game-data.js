@@ -24,6 +24,8 @@ var sprites = [
   new Sprite ('ch1r', 'Chalmers-w-r.png',[7,1]),
   new Sprite ('chTl', 'Chalmers-t-l.png',[7,1]),
   new Sprite ('chTr', 'Chalmers-t-r.png',[7,1]),
+  new Sprite ('chTh-r', 'Chalmers-t-ham.png',[7,1],[1,1.1]),
+
 ]
 
 
@@ -60,7 +62,10 @@ var characterModels = {
             right : [ ['chTr',0,0],['chTr',1,0],['chTr',2,0],['chTr',3,0],['chTr',4,0] ],
             left :  [ ['chTl',2,0],['chTl',3,0],['chTl',4,0],['chTl',5,0],['chTl',6,0], ],
         },
-            
+        talk_with_ham : 
+        [ ['chTh-r',0,0],['chTh-r',1,0],['chTh-r',2,0],['chTh-r',3,0],['chTh-r',4,0] ],
+        wait_with_ham : 
+        [ ['chTh-r',0,0] ],
         
     },'right'),
 
