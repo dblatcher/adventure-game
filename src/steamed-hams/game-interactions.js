@@ -291,7 +291,31 @@ var interactions =[
     new Interaction(['OPEN','CUPBOARD_W'],[],
     pcSays('There was nothing else in there.')),
 
+    new Interaction(['WALK', 'KRUSTYBURGER_W'],
+    [function() {return this.getThings('OVEN_W').item.status.cycle==='smoking'}, 
+    function() {return this.allInventoryItemsAsObject.HAMBURGER_PLATTER_I.have === false},],
+    function () {
+        let skinner = this.getThings('pc');
+        let window = this.getThings('KRUSTYBURGER_W').walkToPoint;
 
+
+        this.setGameStatus('CUTSCENE');
+
+        skinner.say('But what if I were to  purchase fast food and disguise it as my own cooking?',{time:2500})
+        .then(()=>{ return skinner.say('Delightfully devilish, Seymour!') })
+        .then(()=>{ return skinner.goTo(window) })
+        .then(()=>{ 
+            skinner.char.behaviour_action='window_wait';
+            skinner.char.behaviour_actframe=0;
+            return this.characterRoomChange('CHALMERS_C', 2, 100, -20)
+        })
+        .then(()=>{ return this.getThings('CHALMERS_C').goTo({x:95, y:20}) })
+        .then(()=>{ return this.getThings('CHALMERS_C').goTo({x:105, y:20}) })
+        .then(()=>{ return this.getThings('CHALMERS_C').say('Seymour!') })
+        .then(()=>{ return this.getThings('pc').say('Superintendent, I was just- uh...',{time:2000,action:'window_talk'} ) })
+        .then(()=>{ this.setGameStatus('CONVERSATION', 'iWasJust') })
+    }
+    )
 
 ]
 

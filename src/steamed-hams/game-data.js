@@ -45,6 +45,7 @@ var characterModels = {
             left : [ ['sk2',4,0],['sk2',3,0],['sk2',3,0],['sk2',1,0]],
         },
         window_talk : [ ['skw',0,0],['skw',1,0],['skw',2,0] ],
+        window_wait : [ ['skw',1,0] ],
             
         
     },'left'),
