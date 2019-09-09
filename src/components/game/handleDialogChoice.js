@@ -5,8 +5,7 @@ export default function (choice) {
     executeScriptItem(0)
 
     function executeScriptItem (index) {
-      var actorId;
-      
+
       function findActorId(item){
         var id = item.actor;
         if (id === 'npc') {id = theApp.conversations[theApp.conversation].npc}
@@ -46,22 +45,22 @@ export default function (choice) {
         }
       }
       
-      if (Array.isArray(script[index])) {
+      if (Array.isArray(script[index])) { // array of lines to be exectuted simultaneously
         var promiseSet = [];
         for (var j=0; j< script[index].length; j++){
-          actorId = findActorId(script[index][j]);
+          let actor = theApp.getThings ( findActorId(script[index][j]));
           promiseSet.push(
-            theApp.getThings(actorId)[script[index][j].orderType](script[index][j].text)
+            actor[script[index][j].orderType](script[index][j].text, script[index][j].options)
           );
         }
         Promise.all(promiseSet)
         .then( nextItemOrEnd  )
         
-      } else {
-        actorId = findActorId(script[index]);
-        theApp.getThings(actorId)[script[index].orderType](script[index].text)
+      } else { // single line
+        let actor = theApp.getThings ( findActorId(script[index]));
+        actor[script[index].orderType](script[index].text,script[index].options)
         .then( nextItemOrEnd );	
-      }	
+      }
 
     }
     
