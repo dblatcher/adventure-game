@@ -329,7 +329,7 @@ var interactions =[
     function () {
         let skinner = this.getThings('pc');
         let window = this.getThings('KRUSTYBURGER_W').walkToPoint;
-
+        
 
         this.setGameStatus('CUTSCENE');
 

@@ -136,7 +136,9 @@ function fire () {
     return new Promise (function (resolve, reject) {
         let skinner = game.getThings('pc');
         let chalmers = game.getThings('CHALMERS_C');
+        let agnes;
         let door = game.getThings().DINING_KITCHENDOOR_W;
+        let wayOut = game.getThings().DINING_WAYOUT_W.walkToPoint;
 
         game.setGameStatus('CUTSCENE');
         skinner.goTo({x:250,y:45})
@@ -147,10 +149,38 @@ function fire () {
             skinner.goTo({x:240,y:23});
             return skinner.say('Well, that was wonderful. A good time was had by all, I\'m pooped.');
         })
-        .then (r => {
-            return chalmers.say('Yes, I suppose I should be... good lord, what is happening in there?!')
+        .then( ()=> { return chalmers.say('Yes, I suppose I should be... good lord, what is happening in there?!')})
+        .then( ()=> { return skinner.say('Aurora borealis.') })
+        .then( ()=> { return chalmers.say('Aurora borealis?') })
+        .then( ()=> { return chalmers.goTo({x:140,y:16})} )
+        .then( ()=> { return chalmers.say('at this time of year,') })
+        .then( ()=> { return chalmers.say('at this time of day,') })
+        .then( ()=> { return chalmers.goTo({x:150,y:16})} )
+        .then( ()=> { return chalmers.say('in this part of the country') })
+        .then( ()=> { return chalmers.say('localized entirely within your kitchen?') })
+        .then( ()=> { return chalmers.goTo({x:160,y:16})} )
+        .then( ()=> { return skinner.say('Yes.') })
+        .then( ()=> { return chalmers.say('May I see it?') })
+        .then( ()=> { return skinner.say('No.') })
+        .then( ()=> { 
+            //skinner.goTo(wayOut)
+            return chalmers.goTo(wayOut)
+        } )
+        .then( ()=> { return chalmers.changeRoom(0,129,10) })
+        .then( ()=> { return game.changeRoom(0,144,25) })
+        .then( ()=> { 
+            game.getThings('CHALMERS_C').char.behaviour_direction = 'right';
+            return game.getThings('CHALMERS_C').say('Well Seymour, you are an odd fellow')
         })
-        .then (r => {
+        .then( ()=> { return game.getThings('CHALMERS_C').say('But I must admit - you steam a good ham.') })
+        .then( ()=> { return game.getThings('CHALMERS_C').goTo({x:90,y:10}) })
+        
+        .then( ()=> {
+            agnes = game.getThings('AGNES_C');
+            return agnes.say('Seymour! the house is on fire!')
+        })
+        .then( ()=> { return game.getThings('CHALMERS_C').goTo({x:100,y:10}) })
+        .then( ()=> {
          game.setGameStatus('LIVE');
             resolve({success:true});
         });

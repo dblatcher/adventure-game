@@ -134,6 +134,7 @@ var makeCharacters = function() {return [
     new Character ('skinner','Skinner',[200,10,0],'white',characterModels.skinner),
     new Character ('chalmers','Superintendent Chalmers',[100,10,null],'red',characterModels.chalmers),
     new Character ('server','sever',[230,100,2],'lime',characterModels.invisible),
+    new Character ('agnes','agnes',[165,90,0],'violet',characterModels.invisible),
 ]}
 
 var pcId = 'SKINNER_C';

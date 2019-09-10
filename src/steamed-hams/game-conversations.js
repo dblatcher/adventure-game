@@ -69,7 +69,7 @@ function makeConversations() {
 				game.getThings('HAMBURGERS_W').setStatus('two');
 			}}
 		),
-		new DialogChoice('Mekon Delta, Vietnamm.',
+		new DialogChoice('Mekon Delta, Vietnam.',
 			['pc::Not that I ever ate any steamed hams there, myself...',
 			'pc::I spent three years in a POW camp, forced to subsist on a thin stew made of fish, vegetables, prawns, coconut milk, and four kinds of rice.',
 			'pc::I came close to madness trying to find it here in the States, but they just can\'t get the spices right!',
