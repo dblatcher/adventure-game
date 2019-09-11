@@ -187,6 +187,7 @@ function ending () {
     return new Promise (function (resolve) {
         game.setGameStatus('CUTSCENE');
         chalmers.goTo({x:95,y:1})
+        //show fires here? 
         .then(()=> {    agnes.say('help!',{time:20})        } )
         .then(()=> {    agnes.say('heelp!',{time:20})       } )
         .then(()=> {    agnes.say('heeelp!',{time:20})      } )
