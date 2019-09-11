@@ -1,7 +1,9 @@
 import TitleScreen from './test-game/Title-Screen'
+import EndingScreen from './test-game/Ending-Screen'
 import { interactionMatrix, defaultResponses } from './test-game/game-interactions'
 import { makeConversations } from "./test-game/game-conversations";
 import { sprites, makeRooms, verbList, makeInventoryItems, makeCharacters, pcId, setGameVars } from "./test-game/game-data";
+
 
 import sequences from "./test-game/sequences";
 
@@ -11,6 +13,7 @@ const gameData = {
     sequences}
 
 export {
-    TitleScreen, 
+    TitleScreen,
+    EndingScreen, 
     gameData
 }
