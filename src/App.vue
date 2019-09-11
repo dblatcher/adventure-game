@@ -8,14 +8,20 @@
       v-on:file-menu-click="handleFileMenuClick($event)"
     ></FileMenu>
 
-    <TitleScreen v-if="showTitleScreen">
+    <TitleScreen v-show="showTitleScreen">
       <button @click="loadGameOrRestart()">New Game</button>
       <button @click="function(){fileMenuIsOpen = true}">restore</button>
     </TitleScreen>
 
+    <EndingScreen v-show="showEndingScreen">
+      <button @click="loadGameOrRestart()">New Game</button>
+      <button @click="function(){fileMenuIsOpen = true}">restore</button>
+    </EndingScreen>
+
     <div v-bind:style="{
-      maxHeight: showTitleScreen ? '0': 'unset',
-      position: showTitleScreen ? 'fixed': 'unset',
+      maxHeight: showGame ? 'unset': '0',
+      position: showGame ? 'unset': 'fixed',
+      overflow: showGame ? 'unset': 'hidden',
     }">
       <Game ref="game"/> 
     </div>
@@ -30,12 +36,12 @@
 
 import /* webpackPreload: true */ Game from "./components/game/Game";
 import FileMenu from "./components/fileMenu";
-import /* webpackPreload: true */{TitleScreen, gameData} from "./gameIndex"
+import /* webpackPreload: true */{TitleScreen, EndingScreen, gameData} from "./gameIndex"
 
 export default {
   name: 'App',
   components :{
-    Game, TitleScreen, FileMenu
+    Game, TitleScreen, EndingScreen, FileMenu
   },
 
 
@@ -49,12 +55,20 @@ export default {
     return {
       savedGames: savedGames,
       showTitleScreen: true,
+      showEndingScreen: false,
       fileMenuIsOpen: false,
       roomData:gameData.makeRooms(),
       spriteData:gameData.sprites,
     }
   },
 
+  computed : {
+
+    showGame() {
+      return (!this.showTitleScreen && !this.showEndingScreen)
+    }
+
+  },
 
   methods : {
 
@@ -90,11 +104,18 @@ export default {
 
     quitGame : function() {
       this.showTitleScreen = true;
+      this.showEndingScreen = false;
       this.$refs.game.setGameStatus('PAUSED');
+    },
+
+    endGame : function() {
+      this.showTitleScreen = false;
+      this.showEndingScreen = true;
     },
 
     loadGameOrRestart : function (saveFile = null) {
       this.showTitleScreen = false;
+      this.showEndingScreen = false;
       if (saveFile) { 
           this.$refs.game.loadSaveGame(saveFile);
       } else {

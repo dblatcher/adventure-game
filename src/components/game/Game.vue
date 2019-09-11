@@ -243,7 +243,11 @@ export default {
         return;
       }
 
-
+      if (statusName === 'COMPLETE' ) {
+        this.gameStatus = statusName;
+        this.$parent.endGame(parameter);
+        return;
+      }
 
       console.warn(`${statusName} is not a valid gameStatus`);
     },
