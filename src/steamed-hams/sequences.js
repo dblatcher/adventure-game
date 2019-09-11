@@ -133,10 +133,9 @@ function goToKrustyBurger() {
 
 function fire () {
     const game = this;
-    return new Promise (function (resolve, reject) {
+    return new Promise (function (resolve) {
         let skinner = game.getThings('pc');
         let chalmers = game.getThings('CHALMERS_C');
-        let agnes;
         let door = game.getThings().DINING_KITCHENDOOR_W;
         let wayOut = game.getThings().DINING_WAYOUT_W.walkToPoint;
 
@@ -163,29 +162,45 @@ function fire () {
         .then( ()=> { return chalmers.say('May I see it?') })
         .then( ()=> { return skinner.say('No.') })
         .then( ()=> { 
-            //skinner.goTo(wayOut)
             return chalmers.goTo(wayOut)
         } )
-        .then( ()=> { return chalmers.changeRoom(0,129,10) })
-        .then( ()=> { return game.changeRoom(0,144,25) })
         .then( ()=> { 
-            game.getThings('CHALMERS_C').char.behaviour_direction = 'right';
-            return game.getThings('CHALMERS_C').say('Well Seymour, you are an odd fellow')
-        })
-        .then( ()=> { return game.getThings('CHALMERS_C').say('But I must admit - you steam a good ham.') })
-        .then( ()=> { return game.getThings('CHALMERS_C').goTo({x:90,y:10}) })
-        
+            chalmers.char.behaviour_direction='right';
+            return chalmers.changeRoom(0,150,15) })
+        .then( ()=> { return game.changeRoom(0,160,25) })
+        .then( ()=> { return game.getThings('AGNES_C').say('Seymour! the house is on fire!') })
         .then( ()=> {
-            agnes = game.getThings('AGNES_C');
-            return agnes.say('Seymour! the house is on fire!')
-        })
-        .then( ()=> { return game.getThings('CHALMERS_C').goTo({x:100,y:10}) })
-        .then( ()=> {
-         game.setGameStatus('LIVE');
+            game.setGameStatus('CONVERSATION', 'houseIsOnFire')
             resolve({success:true});
         });
     })
 
 }
 
-export default { starting,fire, pourSandInBush, goToKrustyBurger, chalmersComesIn, chalmersAtDoor, seeBurningRoast };
+function ending () {
+    const game = this;
+
+    let skinner = game.getThings('pc');
+    let chalmers = game.getThings('CHALMERS_C');
+    let agnes = game.getThings('AGNES_C');
+
+    return new Promise (function (resolve) {
+        game.setGameStatus('CUTSCENE');
+        chalmers.goTo({x:95,y:1})
+        .then(()=> {    agnes.say('help!',{time:20})        } )
+        .then(()=> {    agnes.say('heelp!',{time:20})       } )
+        .then(()=> {    agnes.say('heeelp!',{time:20})      } )
+        .then(()=> {    agnes.say('heeeelp!',{time:20})     } )
+        .then(()=> {    agnes.say('heeeeelp!',{time:2000})  } )
+        .then(()=> {    chalmers.goTo({x:94,y:1})           } )
+        .then(()=> {    skinner.doAction('thumbs_up')           } )
+        .then(()=> {
+            game.setGameStatus('COMPLETE')
+            resolve();
+        } )
+
+    })
+}
+
+
+export default { starting, fire, pourSandInBush, goToKrustyBurger, chalmersComesIn, chalmersAtDoor, seeBurningRoast,ending };

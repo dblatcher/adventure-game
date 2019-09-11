@@ -11,7 +11,7 @@ function makeConversations() {
 		new DialogChoice('-SKIP-',
 		[],
 		{consequence: function(theApp,choice){
-			theApp.sequences.fire.apply(theApp,[choice]);
+			theApp.sequences.fire.apply(theApp,[choice])
 		}}),
 		new DialogChoice('Sorry, to keep you waiting...',
 		['npc::hmm.'],
@@ -152,6 +152,24 @@ function makeConversations() {
 			theApp.sequences.goToKrustyBurger.apply(theApp,[choice]);
 		}}),
 	]))
+
+
+	 conversations.houseIsOnFire = new Conversation ('houseIsOnFire','CHALMERS_C','start');
+
+	 conversations.houseIsOnFire.addBranch(new DialogBranch('start',[
+
+		new DialogChoice('No, mother, it\'s just the Northern Lights.',
+		[
+			{orderType: "say", options: {}, actor: "CHALMERS_C", text: 'Well Seymour, you are an odd fellow, but I must admit...'},
+			{orderType: "say", options: {}, actor: "CHALMERS_C", text: 'You steam a good ham'},
+		],
+		{consequence: function(theApp,choice){
+			theApp.sequences.ending.apply(theApp,[choice]);
+		}}
+		),
+
+	 ]))
+
 
 	return conversations
 }

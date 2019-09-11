@@ -167,8 +167,13 @@ var interactions =[
 		function(){return !this.gameVars.haveSeenBurningRoast},
 		function(){return this.getThings('DINING_KITCHENDOOR_W').item.status.cycle == 'open'}
 	],
-   	function() { this.sequences.seeBurningRoast.apply(this,[]); }
-    ),
+   	function() { 
+        this.getThings('pc').goTo(this.getThings('DINING_KITCHENDOOR_W').walkToPoint)
+        .then( (r)=> { if (r.finished) {
+            return this.changeRoom('FRONT_R',146,27)
+            .then( ()=> { this.sequences.seeBurningRoast.apply(this,[]) } )
+        } });
+    }),
 
 
     new Interaction(['WALK','DINING_KITCHENDOOR_W'],
