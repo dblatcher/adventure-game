@@ -3,22 +3,22 @@ import { RectZone, PolyZone } from "../modules/zone";
 import { Character, WorldItem, Room, EffectZone, Foreground, Verb, InventoryItem, Sprite, CharacterModel, WorldItemModel } from "../modules/constructors"
 
 var sprites = [
-  new Sprite (0,'boy.png', [4,4]),
-  new Sprite (2,'boy2.png',[4,4]), 
-  new Sprite ('bf','boy-flag.png', [3,1], [1,2]),
-  new Sprite ('bfr', 'boy-flag-raise.png',[1,1],[2,1]),
-  new Sprite ('m', 'mario.png',[3,2] ),
-  new Sprite ('w', 'woman.png', [9,4]),
-  new Sprite ('w2', 'woman2b.png', [3,4]),
-  new Sprite ('w-wave', 'womanWave.png', [3,1]),
-  new Sprite ('door', 'door.png', [3,1]),
-  new Sprite ('bucket', 'bucket.png', [1,1]),
-  new Sprite ('stairs', 'stairs.png', [1,1]),
-  new Sprite ('platform', 'testroom3platform.png', [1,1]),
-  new Sprite ('tube', 'tube.png'),
-  new Sprite ('fire', 'Fire.png', [4,2]),
-  new Sprite ('sk1', 'skinner-1-r.png', [12,1]),
-  new Sprite ('sk2', 'skinner-1-l.png', [12,1]),
+  new Sprite (0, require('./sprites/boy.png'), [4,4]),
+  new Sprite (2, require('./sprites/boy2.png'),[4,4]), 
+  new Sprite ('bf', require('./sprites/boy-flag.png'), [3,1], [1,2]),
+  new Sprite ('bfr',  require('./sprites/boy-flag-raise.png'),[1,1],[2,1]),
+  new Sprite ('m',  require('./sprites/mario.png'),[3,2] ),
+  new Sprite ('w',  require('./sprites/woman.png'), [9,4]),
+  new Sprite ('w2',  require('./sprites/woman2b.png'), [3,4]),
+  new Sprite ('w-wave',  require('./sprites/womanWave.png'), [3,1]),
+  new Sprite ('door',  require('./sprites/door.png'), [3,1]),
+  new Sprite ('bucket',  require('./sprites/bucket.png'), [1,1]),
+  new Sprite ('stairs',  require('./sprites/stairs.png'), [1,1]),
+  new Sprite ('platform',  require('./sprites/testroom3platform.png'), [1,1]),
+  new Sprite ('tube',  require('./sprites/tube.png')),
+  new Sprite ('fire',  require('./sprites/Fire.png'), [4,2]),
+  new Sprite ('sk1',  require('./sprites/skinner-1-r.png'), [12,1]),
+  new Sprite ('sk2',  require('./sprites/skinner-1-l.png'), [12,1]),
 ]
 
 
@@ -136,7 +136,7 @@ var pcId = 'JANE_C';
 
 var makeRooms = function(){ return [
 	
-	new Room ('swamp','swamp',"bg1.png", 400, 250, {
+	new Room ('swamp','swamp',require("./rooms/bg1.png"), 400, 250, {
 	worldItems:[
 		new WorldItem ('lake','lake',[200,40,20,-20],400,50),
 		new WorldItem ('house','path back to house',[375,0],50,150),
@@ -148,7 +148,7 @@ var makeRooms = function(){ return [
 		new RectZone (200,40,400,50,true)
 	]}),
 	 
-	new Room ('LIVING_ROOM', 'Living room', "bg2.jpg", 400, 250,{
+	new Room ('LIVING_ROOM', 'Living room', require("./rooms/bg2.jpg"), 400, 250,{
 	worldItems : [		
 		new WorldItem ('door','wooden door',[265,25,0,-20],50,100,'closed',worldItemModels.door,{zAdjust:80}),
 		new WorldItem ('window','nice window',[120,150,0,-140],100,145)
@@ -158,7 +158,7 @@ var makeRooms = function(){ return [
 		new RectZone (135,20,200,200,true),
 	]}),
 	
-	new Room ('TEST_ROOM', 'test room', "testroom.png", 400, 300, {
+	new Room ('TEST_ROOM', 'test room', require("./rooms/testroom.png"), 400, 300, {
 	effectZones:[
 		new EffectZone(
 		new PolyZone ([ [184,90], [219,78],[206,60],[160,60],[150,78] ]),
@@ -174,10 +174,10 @@ var makeRooms = function(){ return [
 		new PolyZone ([ [296,130], [296,250], [400,300], [400,0] ]),
 	],
 	foregrounds:[
-		new Foreground("tree.png",[-70,0],[220,200], {opacity:1,filter:'blur(1px)'}),
+		new Foreground(require("./rooms/tree.png"),[-70,0],[220,200], {opacity:1,filter:'blur(1px)'}),
 	]}),
 
-	new Room ('Gallery', 'The Overlook', "testroom3.png", 400,300, {
+	new Room ('Gallery', 'The Overlook', require("./rooms/testroom3.png"), 400,300, {
 		worldItems: [
 		//	new WorldItem ('path_down','', [350,80],180,90,'neutral',worldItemModels.stairs,{noZoneScaling:true, unclickable:true}),
 			new WorldItem ('platform','', [200,0],400,130,'neutral',worldItemModels.platform,{noZoneScaling:true, unclickable:true, zAdjust:80}),
@@ -219,12 +219,17 @@ var verbList = [
 ];
 
 var makeInventoryItems = function() { return  [
-	new InventoryItem('bucket', 'bucket', 'bucket.png'),
-	new InventoryItem('sock', 'sock', 'sock.png',true),
-	new InventoryItem('nail', 'nail', {1:'nail.png',2:'twonails.png',3:'threenails.png',4:'manynails.jpg'},true, {quantity: 2, pluralName: 'nails'}),
-	new InventoryItem('stick','lolly stick', 'stick.jpg',true),
-	new InventoryItem('shoe','red shoe', 'shoe.jpg',true),
-	new InventoryItem('hammer','hammer', 'hammer.jpg'),
+	new InventoryItem('bucket', 'bucket', require('./items/bucket.png')),
+	new InventoryItem('sock', 'sock', require('./items/sock.png'),true),
+	new InventoryItem('nail', 'nail', {
+		1: require('./items/nail.png'),
+		2: require('./items/twonails.png'),
+		3: require('./items/threenails.png'),
+		4: require('./items/manynails.jpg')
+	},true, {quantity: 2, pluralName: 'nails'}),
+	new InventoryItem('stick','lolly stick', require('./items/stick.jpg'),true),
+	new InventoryItem('shoe','red shoe', require('./items/shoe.jpg'),true),
+	new InventoryItem('hammer','hammer', require('./items/hammer.jpg')),
 ]};
 
 var setGameVars = function ()  { return {
