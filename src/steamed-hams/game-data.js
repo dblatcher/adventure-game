@@ -4,27 +4,27 @@ import { Character, WorldItem, Room, EffectZone, Foreground, Verb, InventoryItem
 
 var sprites = [
 
-  new Sprite ('door', 'door.png', [3,1]),
-  new Sprite ('door-burn', 'door-burn.png', [6,1],[1, 1.5]),
-  new Sprite ('front_fence', 'fence_front.png', [1,1]),
-  new Sprite ('table', 'table.png', [1,1]),
-  new Sprite ('iceBucket', 'ice-bucket.png', [1,1]),
-  new Sprite ('hamburgerPlatter', 'hamburgers_on_platter.png', [1,3]),
-  new Sprite ('foil', 'foil.png', [1,1]),
-  new Sprite ('oven', 'oven.png', [6,1]),
+  new Sprite ('door',  require('./sprites/door.png'), [3,1]),
+  new Sprite ('door-burn',  require('./sprites/door-burn.png'), [6,1],[1, 1.5]),
+  new Sprite ('front_fence',  require('./sprites/fence_front.png'), [1,1]),
+  new Sprite ('table',  require('./sprites/table.png'), [1,1]),
+  new Sprite ('iceBucket',  require('./sprites/ice-bucket.png'), [1,1]),
+  new Sprite ('hamburgerPlatter',  require('./sprites/hamburgers_on_platter.png'), [1,3]),
+  new Sprite ('foil',  require('./sprites/foil.png'), [1,1]),
+  new Sprite ('oven', require('./sprites/oven.png'), [6,1]),
 
-  new Sprite ('fire', 'Fire.png', [4,2]),
-  new Sprite ('sk1', 'skinner-talk.png', [6,1]),
-  new Sprite ('sk2', 'skinner-talk-l.png', [6,1]),
-  new Sprite ('skw1', 'skinner-walk-r.png', [3,1]),
-  new Sprite ('skw2', 'skinner-walk-l.png', [3,1]),
+  new Sprite ('fire',  require('./sprites/Fire.png'), [4,2]),
+  new Sprite ('sk1',  require('./sprites/skinner-talk.png'), [6,1]),
+  new Sprite ('sk2',  require('./sprites/skinner-talk-l.png'), [6,1]),
+  new Sprite ('skw1',  require('./sprites/skinner-walk-r.png'), [3,1]),
+  new Sprite ('skw2',  require('./sprites/skinner-walk-l.png'), [3,1]),
 
-  new Sprite ('skw', 'skinner-w-1.png', [3,1]),
-  new Sprite ('ch1l', 'Chalmers-w-l.png',[7,1]),
-  new Sprite ('ch1r', 'Chalmers-w-r.png',[7,1]),
-  new Sprite ('chTl', 'Chalmers-t-l.png',[7,1]),
-  new Sprite ('chTr', 'Chalmers-t-r.png',[7,1]),
-  new Sprite ('chTh-r', 'Chalmers-t-ham.png',[7,1],[1,1.1]),
+  new Sprite ('skw',  require('./sprites/skinner-w-1.png'), [3,1]),
+  new Sprite ('ch1l',  require('./sprites/Chalmers-w-l.png'),[7,1]),
+  new Sprite ('ch1r',  require('./sprites/Chalmers-w-r.png'),[7,1]),
+  new Sprite ('chTl',  require('./sprites/Chalmers-t-l.png'),[7,1]),
+  new Sprite ('chTr',  require('./sprites/Chalmers-t-r.png'),[7,1]),
+  new Sprite ('chTh-r',  require('./sprites/Chalmers-t-ham.png'),[7,1],[1,1.1]),
 
 ]
 
@@ -141,7 +141,7 @@ var pcId = 'SKINNER_C';
 
 var makeRooms = function(){ return [
     
-    new Room('FRONT', 'front of house', 'Skinner_House.png',280,160,{
+    new Room('FRONT', 'front of house', require('./rooms/Skinner_House.png'),280,160,{
         effectZones: [
             new EffectZone(
                 new RectZone(0,0,280,160),
@@ -164,11 +164,11 @@ var makeRooms = function(){ return [
             new PolyZone([ [154,40], [154,29],[168,17],[209,17], [215,26],[215,40] ]),
         ],
         foregrounds: [
-            new Foreground("tree_front.png",[200,0],[80,160]),
+            new Foreground(require("./rooms/tree_front.png"),[200,0],[80,160]),
         ],
     }),
 
-    new Room ('DINING','dining room', 'dining_room2.png',350,220,{
+    new Room ('DINING','dining room', require('./rooms/dining_room2.png'),350,220,{
         worldItems: [
             new WorldItem('TABLE','table',[170,20,35,20],120,60,'neutral',worldItemModels.table),
             new WorldItem('DINING_KITCHENDOOR','door',[310,55,-30,0],60,100,'closed',worldItemModels.door),
@@ -191,7 +191,7 @@ var makeRooms = function(){ return [
     }),
 
 
-    new Room ('KITCHEN', 'kitchen', 'kitchen.png',290,180,{
+    new Room ('KITCHEN', 'kitchen', require('./rooms/kitchen.png'),290,180,{
         worldItems : [    
             new WorldItem('OVEN','oven', [145,35,30,-10],70,100,'closed',worldItemModels.oven),
             new WorldItem('KRUSTYBURGER','Krusty Burger',[210,70,10,-40],50,40,'neutral',null,{noZoneScaling:true}),
@@ -226,23 +226,22 @@ var verbList = [
 ];
 
 var makeInventoryItems = function() { return  [
-    new InventoryItem('roast', 'raw roast', 'roast.png',true),
-    new InventoryItem('roast_glazed', 'glazed roast', 'glazed-roast.png'),
-    new InventoryItem('bucket_foil', 'ice bucket', 'bucket_foil.png'),
-    new InventoryItem('bucket_sand', 'fire bucket', 'bucket_sand.png'),
-    new InventoryItem('bucket_empty', 'fire bucket', 'bucket.png'),
-    new InventoryItem('foil', 'aluminium foil', 'foil.jpg'),
-    new InventoryItem('bourbon','bourbon', 'bourbon.png'),
-    new InventoryItem('hamburger_bag','hamburgers', 'bag.png'),
-    new InventoryItem('hamburger_platter','elegantly arranged hamburgers', 'hamburgers_on_platter.png'),
-    new InventoryItem('platter','platter', 'platter.png'),
+    new InventoryItem('roast', 'raw roast', require('./items/roast.png'),true),
+    new InventoryItem('roast_glazed', 'glazed roast', require('./items/glazed-roast.png')),
+    new InventoryItem('bucket_foil', 'ice bucket', require('./items/bucket_foil.png')),
+    new InventoryItem('bucket_sand', 'fire bucket', require('./items/bucket_sand.png')),
+    new InventoryItem('bucket_empty', 'fire bucket', require('./items/bucket.png')),
+    new InventoryItem('foil', 'aluminium foil', require('./items/foil.jpg')),
+    new InventoryItem('bourbon','bourbon', require('./items/bourbon.png')),
+    new InventoryItem('hamburger_bag','hamburgers', require('./items/bag.png')),
+    new InventoryItem('hamburger_platter','elegantly arranged hamburgers', require('./items/hamburgers_on_platter.png')),
+    new InventoryItem('platter','platter', require('./items/platter.png')),
 
 ]};
 
 var setGameVars = function ()  { return {
     cupboardEmpty: false,
     beenToKrustyBurger:false,
-    numberOfSomething: 5,
 	roastIsInOven: false,
 	iceBucketIsOnTable : false,
 	haveSeenBurningRoast: false,
