@@ -1,6 +1,3 @@
-import { gameName } from '../gameName'
-var gamePath = gameName; 
-// can't use imported value in require statement.
 
 function resetObject() {
 	var keyList = Object.keys(this.initialState);
@@ -14,17 +11,16 @@ function resetObject() {
 }
 
 
-function Sprite (id, fileName, dims, frameSize ) {
+function Sprite (id, url, dims, frameSize ) {
 	if (!dims) {dims = [1,1]}
 	if (!frameSize) {frameSize = [1,1]}
 
 	this.id = id;
-	this.url= require(`../${gamePath}/sprites/${fileName}`);
+	this.url=url
 	this.col = dims[0];
 	this.row = dims[1];
 	this.relativeWidth  = frameSize[0];
-	this.relativeHeight = frameSize[1];
-	
+	this.relativeHeight = frameSize[1];	
 }
 
 function Character(id,name,coords,speechColor,model,config={}) {
@@ -111,10 +107,10 @@ WorldItem.prototype.returnState = function() {
 };
 
 
-function Room (id, name, fileName, width,height, contents) {
+function Room (id, name, url, width,height, contents) {
 	this.id = this.id = id.toUpperCase()+"_R";
 	this.name = name;
-	this.url= require(`../${gamePath}/rooms/${fileName}`);
+	this.url= url;
 	this.width = width;
 	this.height = height;
 	this.worldItems = contents.worldItems || [];
@@ -139,8 +135,8 @@ function EffectZone (zone,effect) {
 	this.effect = effect;
 }
 
-function Foreground (fileName, coords, size, style) {
-	this.url= require(`../${gamePath}/rooms/${fileName}`);
+function Foreground (url, coords, size, style) {
+	this.url= url;
 	this.x=coords[0];
 	this.y=coords[1];
 	this.width=size[0];
@@ -155,18 +151,18 @@ function Verb (description, id, preposition) {
 	this.transitive = !!(preposition);
 }
 
-function InventoryItem (id, name, fileName, startWith=false, config={}) {
+function InventoryItem (id, name, url, startWith=false, config={}) {
 	this.id = id.toUpperCase() + "_I";
 	this.name=name;
 
-	if (typeof fileName === 'object') {
+	if (typeof url === 'object') {
 		this.picture = {};
-		Object.keys(fileName).forEach( (key) => {
-			this.picture[key] =  require(`../${gamePath}/items/${fileName[key]}`)
+		Object.keys(url).forEach( (key) => {
+			this.picture[key] = url[key];
 		});
 	} else {
 		this.picture = {
-			1: require(`../${gamePath}/items/${fileName}`)
+			1: url
 		}
 	}
 	
