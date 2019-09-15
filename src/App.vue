@@ -15,9 +15,7 @@
         <button @click="function(){fileMenuIsOpen = true}">restore</button>
       </template>
 
-      <template v-slot:loading-bar>
-        <LoadingBar v-bind:roomAssets="roomData" v-bind:spriteAssets="spriteData"/>
-      </template>
+      <template v-slot:loading-bar><LoadingBar /></template>
 
     </TitleScreen>
 
@@ -42,7 +40,7 @@
 import Game from "./components/game/Game";
 import LoadingBar from "./components/LoadingBar";
 import FileMenu from "./components/fileMenu";
-import {TitleScreen, EndingScreen, gameData} from "./gameIndex"
+import {TitleScreen, EndingScreen} from "./gameIndex"
 
 export default {
   name: 'App',
@@ -63,8 +61,6 @@ export default {
       showTitleScreen: true,
       showEndingScreen: false,
       fileMenuIsOpen: false,
-      roomData:gameData.makeRooms(),
-      spriteData:gameData.sprites,
     }
   },
 
