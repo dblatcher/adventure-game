@@ -1,7 +1,6 @@
 <template>
     <main class="title-page">
-        
-        <div class=title-page__info>[usual legal disclaimer]</div>
+
         <div class="title-page__text">
             <h1 class="title-page__title">
                 <span class="title-page__l">S</span>teamed 
@@ -9,10 +8,34 @@
             </h1>
             <p class="title-page__subtitle">But it's a point and click adventure game</p>
         </div>
-      
+
         <div class="title-page__button-set">
-            <slot></slot>
+            <slot name="file-buttons"></slot>
+            <button v-on:click="showAboutBlock = true">about</button>
         </div>
+
+        <div class="title-page__loading">
+            <slot name="loading-bar"></slot>
+        </div>
+
+        <section v-show="showAboutBlock" class="about">
+
+
+            <div class="about__content">
+            
+                <h2 class="about__heading">About this game</h2>
+                <p class="about__text"><i>Steamed Hams but it's a point and click adventure game</i> is a point and click adventure game based on the Simpsons scene commonly known as 'Steamed Hams'. </p>
+                <h3 class="about__sub-heading">Acknowledgments</h3>
+                <p class="about__text">I used the truely awesome <a href="https://frinkiac.com/">frinkiac.com</a> as a source of images.</p>
+                <h3 class="about__sub-heading">Amateurish Legalese Section</h3>
+                <p class="about__text">Don't rip this game off and try to sell it to someone. It's too short anyway.</p>
+                <p class="about__text">The Simpsons is copyrighted material, owned by 20th Century Fox. This game makes non-commercial use of that material. They haven't endorsed or licensed that useage. </p>
+                <p class="about__text">Given non-commercial use of this material is common and does no harm to the copyright owners, I consider it reasonable fair use. Try to think of this as a big interactive meme. Nobody gets upset about memes right? I'd take it down if they asked me.</p>
+
+            </div>    
+                    <button class="about__close-button" v-on:click="showAboutBlock = false">x</button>
+        </section>
+
     </main>
 </template>
 
@@ -22,17 +45,39 @@
 
 export default {
     name: "TitleScreen",
+
+    data: function() {
+        return {
+            showAboutBlock: false,
+        }
+    }
 }
 </script>
 
-<style scoped="true" lang="scss">
+<style lang="scss">
 
-@mixin placeByCenter($x,$y) {
+
+@mixin centerPoint () {
     position: absolute;
     transform-origin: center;
     transform: translateX(-50%) translateY(-50%);
+}
+
+@mixin placeAbsolute($x, $y, $fromRight:false, $fromBottom:false) {
+    position: absolute;
     left: $x;
     top: $y;
+
+    @if ($fromBottom) {
+        top: unset;
+        bottom: $y;
+    }
+
+    @if ($fromRight) {
+        right: $x;
+        left: unset;
+    }
+
     margin: 0;
 }
 
@@ -54,15 +99,15 @@ export default {
 
 
     &__text {
-        @include placeByCenter(50%,50%);
+        @include placeAbsolute(50%,50%);
         transform: translateX(-50%) translateY(-50%) rotate(-15deg);
         width:80%;
     }
 
     &__title  {
-        margin: 0;        
-        color: purple;
-        font-family: cursive;
+       margin: 0;
+       color: purple;
+       font-family: cursive;
        text-shadow: 0px 1px black;
        font-size: 2.5rem;
        line-height: 3.25rem;
@@ -81,7 +126,7 @@ export default {
     }
 
     &__button-set {
-        @include placeByCenter(80%, 10%);
+        @include placeAbsolute(1rem, .5rem, true);
 
         button {
             display:block;
@@ -92,12 +137,89 @@ export default {
         }
     }
 
-    &__info {
-       position: absolute;
-       margin: 0;
-       left: 5px;
-       bottom: 5px;
+    &__loading {
+
+        @include placeAbsolute(1rem, .5rem, false, true);
+        width: 50%;
+
+
+        #loadingBarHolder {
+            margin: 0;
+            height: 1rem;
+            padding: .1rem;
+            width: 100%;
+            background-color: white;
+            position: relative;
+        }
+
+        #loadingBar {
+            background-color: darkgreen;
+            height: 100%;
+            box-sizing: border-box
+        }
+
+        #loadingBarCaption {
+            color: white;
+            margin: 0;
+        }
     }
+
+
+}
+
+.about {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background-color: rgba($color: #000000, $alpha: .5);
+    box-sizing: border-box;
+    padding: 1rem;
+
+    &__content {
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        background-color: antiquewhite;
+        padding: .5rem;
+        border-radius: .5rem;
+        position: relative;
+        overflow: scroll;
+    }
+
+    &__close-button {
+        @include placeAbsolute(1.5rem, 1.5rem, true, false );
+        border-radius: 50%;
+        font-family: monospace;
+        font-size: 1.5rem;
+        background-color: transparent;
+        border: 2px solid black;
+        color: black;
+        cursor: pointer;
+
+        &:hover {
+            background-color: black;
+            color:antiquewhite;
+        }
+    }
+
+    &__heading {
+        margin: 0 0 .5rem 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    &__sub-heading {
+        margin: .75rem 0 0 0;
+        font-size: 1.1rem;
+        font-weight: 700;
+    }
+
+    &__text {
+        margin: 0 0 .25rem 0;
+        line-height: 1.1rem;
+
+    }
+
 }
 
 </style>
