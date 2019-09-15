@@ -49,31 +49,48 @@
 }
 
 
+@mixin navButton {
+    z-index: 300;
+    position: fixed;
+    top: .2rem;
+    height: 2rem;
+    width: 2rem;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+
+    img {
+        width: 1rem;
+        vertical-align: middle;
+    }
+
+}
+
 .file-button {
     @include btn-toggle ($colour-blue);
-    position: fixed;
-    top:.2rem;
+    @include navButton();
     right: .2rem;
     z-index: 500;
     
     &--active {
         @include btn-solid ($colour-blue);
-        position: fixed;
+        @include navButton();
     }
 }
 
 
 .skip-button {
-    z-index: 300;
     @include btn-solid ($colour-blue);
-    position: fixed;
-    top:.2rem;
+    @include navButton();
+
     left: .2rem;
     margin-left: .5rem;
     margin-right: auto;
-    
+
     &--disabled {
-        position: fixed;
         display: none;
     }
 }
@@ -81,22 +98,18 @@
 
 .highlight-button {
     @include btn-toggle ($colour-blue);
-    z-index: 300;
-    position: fixed;
-    top:.2rem;
+    @include navButton();
     right: 3.2rem;
 }
 
-.button-icon {
-    width: 1rem;
-    vertical-align: middle;
-}
+
 
 .highlight-control {
     display: none;
-
+    
     &:checked~.highlight-button {
         @include btn-solid ($colour-blue);
+        @include navButton();
         position: fixed;
     }
 }

@@ -28,6 +28,7 @@
       maxHeight: showGame ? 'unset': '0',
       position: showGame ? 'unset': 'fixed',
       overflow: showGame ? 'unset': 'hidden',
+      visibility: showGame ? 'unset': 'hidden',
     }">
       <Game ref="game"/> 
     </div>

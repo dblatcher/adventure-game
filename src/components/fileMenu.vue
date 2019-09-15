@@ -88,7 +88,7 @@ export default {
     height: 100%;
     z-index: 300;
     box-sizing: border-box;
-    background-color: rgba(0,0,0,0.25);
+    background-color: rgba(0,0,0,0.5);
 }
 
 .file-menu {
