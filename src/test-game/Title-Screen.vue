@@ -2,10 +2,14 @@
     <main class="title-page">
         <div class="title-page__frame">
             <h1 class="title-page__title">Test Game</h1>
+
             <div class="title-page__button-set">
-                <slot></slot>
+                <slot name="file-buttons"></slot>
             </div>
+
             <p class="title-page__text">This should have a picture of something</p>
+
+            <slot name="loading-bar"></slot>
         </div>
     </main>
 </template>
@@ -16,7 +20,7 @@ export default {
 }
 </script>
 
-<style scoped="true" lang="scss">
+<style lang="scss">
 
 .title-page {
 
@@ -47,8 +51,6 @@ export default {
 
     }
 
-
-
     &__title {
         align-self: center;
     }
@@ -61,6 +63,27 @@ export default {
             flex-basis: 6rem;
         }
     }
+
+}
+
+#loadingBarCaption {
+    margin: 0;
+    color: gray;
+}
+
+#loadingBarHolder {
+    height: 1rem;
+    margin: 5px 0;
+    position: relative;
+    background-color: gray;
+    padding: 2px;
+}
+
+#loadingBar {
+    background-color: red;
+    height: 100%;
+    width: 0;
+    transition: width, .2s;
 }
 
 </style>

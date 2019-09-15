@@ -9,8 +9,16 @@
     ></FileMenu>
 
     <TitleScreen v-show="showTitleScreen">
-      <button @click="loadGameOrRestart()">New Game</button>
-      <button @click="function(){fileMenuIsOpen = true}">restore</button>
+
+      <template v-slot:file-buttons>
+        <button @click="loadGameOrRestart()">New Game</button>
+        <button @click="function(){fileMenuIsOpen = true}">restore</button>
+      </template>
+
+      <template v-slot:loading-bar>
+        <LoadingBar v-bind:roomAssets="roomData" v-bind:spriteAssets="spriteData"/>
+      </template>
+
     </TitleScreen>
 
     <EndingScreen v-show="showEndingScreen">
@@ -26,22 +34,20 @@
       <Game ref="game"/> 
     </div>
 
-    <img v-for="room in roomData" v-bind:key="room.id" v-bind:src="room.url" style="display:none" />
-    <img v-for="item in spriteData"  v-bind:key="item.id" v-bind:src="item.url" style="display:none" />
-
   </div>
 </template>
 
 <script>
 
-import /* webpackPreload: true */ Game from "./components/game/Game";
+import Game from "./components/game/Game";
+import LoadingBar from "./components/LoadingBar";
 import FileMenu from "./components/fileMenu";
-import /* webpackPreload: true */{TitleScreen, EndingScreen, gameData} from "./gameIndex"
+import {TitleScreen, EndingScreen, gameData} from "./gameIndex"
 
 export default {
   name: 'App',
   components :{
-    Game, TitleScreen, EndingScreen, FileMenu
+    Game, TitleScreen, EndingScreen, FileMenu, LoadingBar
   },
 
 
