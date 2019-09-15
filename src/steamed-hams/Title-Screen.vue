@@ -83,12 +83,29 @@ export default {
 
 .title-page {
 
-
-    background: 
-    url(./title-skinner.png) top left no-repeat,
-    url(./title-chalmers.png) bottom right no-repeat,
+    background-image:
+    url(./title-skinner.png),
+    url(./title-chalmers.png),
     linear-gradient(-15deg,tan 20%, darkgreen 80%,)
     ;
+
+    background-repeat: 
+    no-repeat, 
+    no-repeat, 
+    repeat
+    ;
+
+    background-size: 
+    25%, 
+    25%, 
+    cover;
+
+    background-position: 
+    top left, 
+    bottom right, 
+    center;
+
+    background-origin: content-box, content-box, padding-box;
 
     box-sizing: border-box;
     top:0;
@@ -96,6 +113,8 @@ export default {
     
     width: 100%;
     height: 100vh;
+
+    padding: 1rem;
 
 
     &__text {
