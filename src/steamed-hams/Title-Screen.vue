@@ -23,6 +23,7 @@
 
             <div class="about__content">
             
+                <button class="about__close-button" v-on:click="showAboutBlock = false"><img src="./times-circle.svg"/></button>
                 <h2 class="about__heading">About this game</h2>
                 <p class="about__text"><i>Steamed Hams but it's a point and click adventure game</i> is a point and click adventure game based on the Simpsons scene commonly known as 'Steamed Hams'. </p>
                 <h3 class="about__sub-heading">Acknowledgments</h3>
@@ -33,7 +34,6 @@
                 <p class="about__text">Given non-commercial use of this material is common and does no harm to the copyright owners, I consider it reasonable fair use. Try to think of this as a big interactive meme. Nobody gets upset about memes right? I'd take it down if they asked me.</p>
 
             </div>    
-                    <button class="about__close-button" v-on:click="showAboutBlock = false">x</button>
         </section>
 
     </main>
@@ -192,7 +192,10 @@ export default {
     position: fixed;
     background-color: rgba($color: #000000, $alpha: .5);
     box-sizing: border-box;
-    padding: 1rem;
+    padding: 5%;
+    left: 0;
+    top: 0;
+    margin: 0;
 
     &__content {
         box-sizing: border-box;
@@ -202,22 +205,17 @@ export default {
         padding: .5rem;
         border-radius: .5rem;
         position: relative;
-        overflow: scroll;
+        overflow-y: auto;
     }
 
     &__close-button {
-        @include placeAbsolute(1.5rem, 1.5rem, true, false );
-        border-radius: 50%;
-        font-family: monospace;
-        font-size: 1.5rem;
+        float: right;
         background-color: transparent;
-        border: 2px solid black;
-        color: black;
+        border: none;
         cursor: pointer;
 
-        &:hover {
-            background-color: black;
-            color:antiquewhite;
+        img {
+            width: 1.5rem;
         }
     }
 
