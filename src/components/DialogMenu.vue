@@ -35,8 +35,6 @@ export default {
 <style lang="scss">
 
 .dialog-menu {
-	//max-height: 100%;
-    //min-height: 100%;
 	position: fixed;
 	bottom: 0;
 	height: 8rem;
