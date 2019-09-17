@@ -7,7 +7,7 @@
 			v-on:mouseover="hoverHandler($event,item)" 
 			v-on:mouseout="hoverHandler($event,item)"
 			class="inventory-menu__item"
-			v-bind:class= "{'inventory-menu__item--picked': itemIsPicked(item)}" 
+			v-bind:class= "{'inventory-menu__item--picked': isItemPicked(item)}" 
 			>
 				<img class="inventory-menu__pic" 
 				v-bind:src="findRightPicture(index)"
@@ -34,7 +34,7 @@ export default {
 		hoverHandler : function (event,item) {
 			this.$parent.$emit('hover-event', item, event);
 		},
-		itemIsPicked : function (item) {
+		isItemPicked : function (item) {
 			return item === this.subject;
 		},
 		findRightPicture : function (index) {
