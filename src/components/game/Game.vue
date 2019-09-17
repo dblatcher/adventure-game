@@ -49,7 +49,7 @@
         v-on:verb-picked="pickVerb($event)"
         v-bind:verb-list='verbList' 
         v-bind:initalPick='verbList[0].id' ></VerbMenu>
-        <InventoryMenu v-bind:items="inventory" ></InventoryMenu>
+        <InventoryMenu v-bind:items="inventory" v-bind:subject="subject" ></InventoryMenu>
       </div>
 
       <DialogMenu

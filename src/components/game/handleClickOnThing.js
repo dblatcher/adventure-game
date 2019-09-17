@@ -1,6 +1,11 @@
 export default function(thing) {
     if (this.gameStatus !== 'LIVE') {return false}
 
+    if (thing.id.endsWith('_I') && thing === this.subject) {
+      this.subject = null;
+      return false;
+    }
+
     if (this.verb.id === 'WALK' && thing.id.endsWith('_I')) {return false}
     if (!this.subject) {
       this.subject = thing;

@@ -30,7 +30,7 @@ export default {
 <style lang="scss">
 
 	.command-line {
-		margin: .25rem;
+		margin: 0 .25rem .25rem;
 		background-color: black;
 		display: flex;
 		flex-wrap: wrap;
@@ -49,6 +49,14 @@ export default {
 
 		&__last-phrase {
 			color: yellow;
+		}
+
+		@media (pointer: coarse) {
+			display: none;
+		}
+
+		@media (hover: none) {
+			display: none;
 		}
 
 	}

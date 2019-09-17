@@ -2,13 +2,16 @@
 	<section class="inventory-menu">
 
 		<div class="inventory-menu__holder">
-
 			<div @click="clickHandler(item)" 
+			v-for="item, index in this.items" v-bind:key="index"
 			v-on:mouseover="hoverHandler($event,item)" 
 			v-on:mouseout="hoverHandler($event,item)"
-			class="inventory-menu__item" 
-			v-for="item, index in this.items":key="index">
-				<img class="inventory-menu__pic" v-bind:src="findRightPicture(index)" v-bind:name="item.name"/>
+			class="inventory-menu__item"
+			v-bind:class= "{'inventory-menu__item--picked': isItemPicked(item)}" 
+			>
+				<img class="inventory-menu__pic" 
+				v-bind:src="findRightPicture(index)"
+				v-bind:name="item.name"/>
 			</div>
 			
 		</div>
@@ -22,7 +25,7 @@
 export default {
 	name: 'InventoryMenu',
 
-	props:['items'],
+	props:['items','subject'],
 
 	methods: {
 		clickHandler(item) {
@@ -30,6 +33,9 @@ export default {
 		},
 		hoverHandler : function (event,item) {
 			this.$parent.$emit('hover-event', item, event);
+		},
+		isItemPicked : function (item) {
+			return item === this.subject;
 		},
 		findRightPicture : function (index) {
 			let item = this.items[index];
@@ -44,7 +50,6 @@ export default {
 						numberToUse = keyList[index];
 						break;
 					}
-					
 				}
 			}
 
@@ -65,26 +70,33 @@ export default {
 
 	flex-basis: 100%;
 
-	height: 5rem;
+	height: 4.5rem;
     overflow-x: scroll;
 	margin-left: .5rem;
     margin-right: .5rem;
-    background-color: black;
 
     &__holder {
-		height: 3rem;
-    	width: max-content;
+		height: 100%;
+		width: max-content;
+		border-left: 3px solid black;
+		border-right: 3px solid black;
+		border-radius: 15px;
+		padding: 0 5px;
+
     }
     
     &__item {
+		cursor: pointer;
 		display: inline-block;
-
         width: 3.5rem;
         box-sizing:border-box;
         padding:2px;
-        margin:2px;
-        border: 1px solid black;
-        background-color: white;
+		margin:2px;
+		border: 1px dotted transparent;
+		
+		&--picked {
+			border: 1px dotted black;
+		}
     }
 
     &__pic {
