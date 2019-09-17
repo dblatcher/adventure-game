@@ -20,8 +20,10 @@
     </TitleScreen>
 
     <EndingScreen v-show="showEndingScreen">
-      <button @click="loadGameOrRestart()">New Game</button>
-      <button @click="function(){fileMenuIsOpen = true}">restore</button>
+      <template v-slot:file-buttons>
+        <button @click="loadGameOrRestart()">New Game</button>
+        <button @click="function(){fileMenuIsOpen = true}">restore</button>
+      </template>
     </EndingScreen>
 
     <div v-bind:style="{
