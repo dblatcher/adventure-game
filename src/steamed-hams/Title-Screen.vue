@@ -81,7 +81,20 @@ export default {
     margin: 0;
 }
 
+@mixin fullscreen() {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
 .title-page {
+
+    @include fullscreen();
+    padding: 1rem;
 
     background-image:
     url(./title-skinner.png),
@@ -89,38 +102,20 @@ export default {
     linear-gradient(-15deg,tan 20%, darkgreen 80%,)
     ;
 
-    background-repeat: 
-    no-repeat, 
-    no-repeat, 
-    repeat
-    ;
+    background-size: auto 25%, auto 25%, cover;
 
-    background-size: 
-    25%, 
-    25%, 
-    cover;
+    @media(orientation: landscape) {
+        background-size: 20%, 20%, cover;
+    }
 
-    background-position: 
-    top left, 
-    bottom right, 
-    center;
-
+    background-repeat: no-repeat, no-repeat, repeat;
+    background-position: top left, bottom right, center;
     background-origin: content-box, content-box, padding-box;
-
-    box-sizing: border-box;
-    top:0;
-    left:0;
-    
-    width: 100%;
-    height: 100vh;
-
-    padding: 1rem;
 
 
     &__text {
         @include placeAbsolute(50%,50%);
         transform: translateX(-50%) translateY(-50%) rotate(-15deg);
-        width:80%;
     }
 
     &__title  {
@@ -130,6 +125,11 @@ export default {
        text-shadow: 0px 1px black;
        font-size: 2.5rem;
        line-height: 3.25rem;
+
+        @media(min-width: 22rem) {
+            white-space: nowrap;
+        }
+
     }
 
     &__l  {
@@ -147,12 +147,18 @@ export default {
     &__button-set {
         @include placeAbsolute(1rem, .5rem, true);
 
+        @media(orientation: landscape) {
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: flex-end;
+        }
+
         button {
             display:block;
             margin: .5rem;
             min-width: 8rem;
             font-family: monospace;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
         }
     }
 
@@ -187,15 +193,11 @@ export default {
 }
 
 .about {
-    width: 100%;
-    height: 100%;
-    position: fixed;
+
+    @include fullscreen();
     background-color: rgba($color: #000000, $alpha: .5);
     box-sizing: border-box;
     padding: 5%;
-    left: 0;
-    top: 0;
-    margin: 0;
 
     &__content {
         box-sizing: border-box;
