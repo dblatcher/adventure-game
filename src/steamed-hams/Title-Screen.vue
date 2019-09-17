@@ -57,39 +57,8 @@ export default {
 <style lang="scss">
 
 
-@mixin centerPoint () {
-    position: absolute;
-    transform-origin: center;
-    transform: translateX(-50%) translateY(-50%);
-}
-
-@mixin placeAbsolute($x, $y, $fromRight:false, $fromBottom:false) {
-    position: absolute;
-    left: $x;
-    top: $y;
-
-    @if ($fromBottom) {
-        top: unset;
-        bottom: $y;
-    }
-
-    @if ($fromRight) {
-        right: $x;
-        left: unset;
-    }
-
-    margin: 0;
-}
-
-@mixin fullscreen() {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    left: 0;
-    top: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
+@import "../modules/_layout.scss";
+@import "../modules/_material.scss";
 
 .title-page {
 
@@ -138,7 +107,7 @@ export default {
     }
 
     &__subtitle {
-        font-size: 1.75rem;
+        font-size: 1.1rem;
         font-family: monospace;
         margin: 0;
         font-weight: bold;
