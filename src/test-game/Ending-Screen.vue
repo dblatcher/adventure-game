@@ -16,17 +16,17 @@ export default {
 
 <style scoped="true" lang="scss">
 
+@import "../modules/_layout.scss";
+@import "../modules/_material.scss";
+
 .ending-page {
+
+    @include fullscreen;
+    @include font;
 
     background-image: linear-gradient(45deg, black, transparent);
     padding: 2rem;
-    box-sizing: border-box;
-    top:0;
-    left:0;
-    
-    width: 100%;
-    height: 100vh;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
 
     display: flex;
     justify-content: center;

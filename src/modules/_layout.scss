@@ -1,0 +1,33 @@
+@mixin centerPoint () {
+    position: absolute;
+    transform-origin: center;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+@mixin placeAbsolute($x, $y, $fromRight:false, $fromBottom:false) {
+    position: absolute;
+    left: $x;
+    top: $y;
+
+    @if ($fromBottom) {
+        top: unset;
+        bottom: $y;
+    }
+
+    @if ($fromRight) {
+        right: $x;
+        left: unset;
+    }
+
+    margin: 0;
+}
+
+@mixin fullscreen() {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
