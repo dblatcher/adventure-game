@@ -1,11 +1,9 @@
 <template>
-    <main class="title-page">
-        <div class="title-page__frame">
-            <h1 class="title-page__title">Test Game COMPLETE</h1>
-            <div class="title-page__button-set">
-                <slot></slot>
-            </div>
-            <p class="title-page__text">Game over</p>
+    <main class="ending-page">
+        <div class="ending-page__frame">
+            <h1 class="ending-page__title">Test Game COMPLETE</h1>
+            <p class="ending-page__text">Game over</p>
+            <slot name="file-buttons"></slot>
         </div>
     </main>
 </template>
@@ -18,7 +16,7 @@ export default {
 
 <style scoped="true" lang="scss">
 
-.title-page {
+.ending-page {
 
     background-image: linear-gradient(45deg, black, transparent);
     padding: 2rem;
