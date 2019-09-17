@@ -51,6 +51,14 @@ export default {
 			color: yellow;
 		}
 
+		@media (pointer: coarse) {
+			display: none;
+		}
+
+		@media (hover: none) {
+			display: none;
+		}
+
 	}
 
 </style>
