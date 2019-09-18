@@ -183,21 +183,22 @@ function ending () {
     let skinner = game.getThings('pc');
     let chalmers = game.getThings('CHALMERS_C');
     let agnes = game.getThings('AGNES_C');
+    let fire = game.allRoomItemData.FRONT_R.WINDOW_FIRE_W;
 
     console.log(agnes, new Date)
 
     return new Promise (function (resolve) {
         game.setGameStatus('CUTSCENE');
+        fire.removed=false;
         chalmers.goTo({x:95,y:1})
         .then(()=> {   return agnes.say('help!',{time:200})        } )
         .then(()=> {   return agnes.say('heelp!',{time:200})       } )
         .then(()=> {   return agnes.say('heeelp!',{time:200})      } )
         .then(()=> {   return agnes.say('heeeelp!',{time:200})     } )
         .then(()=> {   return agnes.say('heeeeelp!',{time:2000})  } )
-        .then(()=> {   return chalmers.goTo({x:94,y:1})           } )
+        .then(()=> {   return chalmers.goTo({x:100,y:1})           } )
         .then(()=> {   return skinner.doAction('thumbs_up')       } )
         .then(()=> {
-            console.log('!',new Date)
             game.setGameStatus('COMPLETE')
             resolve();
         } )

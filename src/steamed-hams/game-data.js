@@ -13,7 +13,7 @@ var sprites = [
   new Sprite ('foil',  require('./sprites/foil.png'), [1,1]),
   new Sprite ('oven', require('./sprites/oven.png'), [6,1]),
 
-  new Sprite ('fire',  require('./sprites/Fire.png'), [4,2]),
+  new Sprite ('fire1',  require('./sprites/Fire.png'), [4,2]),
   new Sprite ('sk1',  require('./sprites/skinner-talk.png'), [6,1]),
   new Sprite ('sk2',  require('./sprites/skinner-talk-l.png'), [6,1]),
   new Sprite ('skw1',  require('./sprites/skinner-walk-r.png'), [3,1]),
@@ -25,6 +25,8 @@ var sprites = [
   new Sprite ('chTl',  require('./sprites/Chalmers-t-l.png'),[7,1]),
   new Sprite ('chTr',  require('./sprites/Chalmers-t-r.png'),[7,1]),
   new Sprite ('chTh-r',  require('./sprites/Chalmers-t-ham.png'),[7,1],[1,1.1]),
+  
+  new Sprite ('fire',  require('./sprites/window_fire.png'),[2,1]),
 
 ]
 
@@ -97,11 +99,6 @@ var worldItemModels = {
         closing:   [ ['door',2,0],['door',1,0],['door',0,0]  ],
         closing_fire:   [ ['door-burn',5,0], ['door-burn',2,0] ,['door-burn',4,0], ['door-burn',1,0]   ]
     }),
-    fire: new WorldItemModel ({
-        burning: [ ['fire',0,0],['fire',1,0],['fire',2,0],['fire',3,0],  ],
-        extinguishing: [ ['fire',0,1],['fire',1,1],['fire',2,1],['fire',3,1],['fire',2,1],['fire',3,1],['fire',2,1],['fire',3,1],  ],
-        out: [ ['fire',2,1],  ],
-    }),
     front_fence: new WorldItemModel({
         neutral:[['front_fence',0,0]],
     }),
@@ -126,6 +123,10 @@ var worldItemModels = {
         open_ham_inside:[['oven',2,0]],
         smoking:[['oven',3,0],['oven',4,0],['oven',5,0],['oven',4,0]],
     }),
+
+    fireInWindow: new WorldItemModel({
+        neutral:[['fire',0,0],['fire',1,0]],
+    })
 
 };
 
@@ -155,6 +156,7 @@ var makeRooms = function(){ return [
             new WorldItem('bush_3','bush',[225,23,10,-2],80,75),
             new WorldItem('front_door','door',[142,28,5,-10],80,120,'closed',worldItemModels.door),
             new WorldItem('front_fence','f',[155,8],470,129,'neutral',worldItemModels.front_fence,{unclickable:true,zAdjust:10}),
+            new WorldItem('window_fire','fire',[175,35],25,30,'neutral',worldItemModels.fireInWindow,{unclickable:true,removed:true, noZoneScaling:true,}),
         ],
         obstacles: [
             new PolyZone([ [0,40],[30,16],[100,20], [100,40] ]),
