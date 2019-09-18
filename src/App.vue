@@ -12,7 +12,7 @@
 
       <template v-slot:file-buttons>
         <button @click="loadGameOrRestart()">New Game</button>
-        <button @click="function(){fileMenuIsOpen = true}">restore</button>
+        <button @click="function(){fileMenuIsOpen = true}">Restore</button>
       </template>
 
       <template v-slot:loading-bar><LoadingBar /></template>
@@ -21,8 +21,8 @@
 
     <EndingScreen v-show="showEndingScreen">
       <template v-slot:file-buttons>
-        <button @click="loadGameOrRestart()">New Game</button>
-        <button @click="function(){fileMenuIsOpen = true}">restore</button>
+        <button @click="quitGame()">Restart</button>
+        <button @click="function(){fileMenuIsOpen = true}">Restore</button>
       </template>
     </EndingScreen>
 
