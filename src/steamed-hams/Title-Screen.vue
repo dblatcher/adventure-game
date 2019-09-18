@@ -11,7 +11,7 @@
 
         <div class="title-page__button-set">
             <slot name="file-buttons"></slot>
-            <button v-on:click="showAboutBlock = true">about</button>
+            <button v-on:click="showAboutBlock = true">About</button>
         </div>
 
         <div class="title-page__loading">
@@ -135,6 +135,7 @@ export default {
 
         @include placeAbsolute(1rem, .5rem, false, true);
         width: 50%;
+        max-width: 15rem;
 
 
         #loadingBarHolder {
@@ -149,7 +150,8 @@ export default {
         #loadingBar {
             background-color: darkgreen;
             height: 100%;
-            box-sizing: border-box
+            box-sizing: border-box;
+            transition: width .5s;
         }
 
         #loadingBarCaption {
