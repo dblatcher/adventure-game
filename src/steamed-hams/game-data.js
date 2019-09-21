@@ -5,7 +5,6 @@ import { Character, WorldItem, Room, EffectZone, Foreground, Verb, InventoryItem
 var sprites = [
 
   new Sprite ('door',  require('./sprites/door.png'), [3,1]),
-  new Sprite ('door-burn',  require('./sprites/door-burn.png'), [6,1],[1, 1.5]),
   new Sprite ('front_fence',  require('./sprites/fence_front.png'), [1,1]),
   new Sprite ('table',  require('./sprites/table.png'), [1,1]),
   new Sprite ('iceBucket',  require('./sprites/ice-bucket.png'), [1,1]),
@@ -13,7 +12,6 @@ var sprites = [
   new Sprite ('foil',  require('./sprites/foil.png'), [1,1]),
   new Sprite ('oven', require('./sprites/oven.png'), [6,1]),
 
-  new Sprite ('fire1',  require('./sprites/Fire.png'), [4,2]),
   new Sprite ('sk1',  require('./sprites/skinner-talk.png'), [6,1]),
   new Sprite ('sk2',  require('./sprites/skinner-talk-l.png'), [6,1]),
   new Sprite ('skw1',  require('./sprites/skinner-walk-r.png'), [3,1]),
@@ -27,6 +25,8 @@ var sprites = [
   new Sprite ('chTh-r',  require('./sprites/Chalmers-t-ham.png'),[7,1],[1,1.1]),
   
   new Sprite ('fire',  require('./sprites/window_fire.png'),[2,1]),
+
+  new Sprite ('k-dr', require('./sprites/kitchen-door.png'),[4,3]),
 
 ]
 
@@ -92,12 +92,18 @@ var characterModels = {
 var worldItemModels = {
     door: new WorldItemModel ({
         closed: [ ['door',0,0]  ],
-        closed_glowing: [ ['door-burn',0,0], ['door-burn',3,0]  ],
         open:   [ ['door',2,0]  ],
         opening:   [ ['door',0,0],['door',1,0],['door',2,0]  ],
-        opening_fire:   [ ['door',0,0],['door-burn',1,0], ['door-burn',4,0] ,['door-burn',2,0], ['door-burn',5,0]   ],
         closing:   [ ['door',2,0],['door',1,0],['door',0,0]  ],
-        closing_fire:   [ ['door-burn',5,0], ['door-burn',2,0] ,['door-burn',4,0], ['door-burn',1,0]   ]
+    }),
+    kitchen_door: new WorldItemModel ({
+        closed: [ ['k-dr',3,2]  ],
+        open:   [ ['k-dr',0,0]  ],
+        closed_glowing: [ ['k-dr',3,0], ['k-dr',3,1]  ],
+        opening:   [ ['k-dr',0,2],['k-dr',0,1],['k-dr',0,0]  ],
+        closing:   [ ['k-dr',0,1],['k-dr',0,2],['k-dr',3,2]  ],
+        opening_fire:   [ ['k-dr',1,2],['k-dr',2,2], ['k-dr',1,1] ,['k-dr',2,1], ['k-dr',1,0],['k-dr',2,0]   ],
+        closing_fire:   [  ['k-dr',2,0], ['k-dr',1,0],['k-dr',2,1], ['k-dr',1,1],['k-dr',2,2], ['k-dr',1,2]    ]
     }),
     front_fence: new WorldItemModel({
         neutral:[['front_fence',0,0]],
@@ -173,7 +179,9 @@ var makeRooms = function(){ return [
     new Room ('DINING','dining room', require('./rooms/dining_room2.png'),350,220,{
         worldItems: [
             new WorldItem('TABLE','table',[170,20,35,20],120,60,'neutral',worldItemModels.table),
-            new WorldItem('DINING_KITCHENDOOR','door',[310,55,-30,0],60,100,'closed',worldItemModels.door),
+            new WorldItem('DINING_KITCHENDOOR','door',[310,10,-30,0],68,150,'closed',worldItemModels.kitchen_door,{
+                zAdjust:500
+            }),
             new WorldItem('DINING_WAYOUT','way out',[45,45,20,10],50,125,'neutral'),
             new WorldItem('ICE_BUCKET', 'ice bucket', [170,70],30,25,'neutral',worldItemModels.iceBucket,{
                 zAdjust:-50,

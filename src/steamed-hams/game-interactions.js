@@ -90,10 +90,7 @@ var interactions =[
     new Interaction(['OPEN','FRONT_DOOR_W'],
     [function(){return this.getThings('FRONT_DOOR_W').item.status.cycle == 'closed'},],
     function(){
-        this.getThings('pc').say("ok")
-        .then ( (r)=> {
-            return this.getThings('pc').goTo(this.getThings('FRONT_DOOR_W').walkToPoint)
-        } )
+        this.getThings('pc').goTo(this.getThings('FRONT_DOOR_W').walkToPoint)
         .then( (r)=> { if (r.finished) {
             return this.getThings('FRONT_DOOR_W').setStatus('opening','open')
         } });
@@ -109,7 +106,6 @@ var interactions =[
     new Interaction(['SHUT','FRONT_DOOR_W'],
     [function(){return this.getThings('FRONT_DOOR_W').item.status.cycle == 'open'}],
     function(){
-        this.getThings('pc').say("ok");
         this.getThings('pc').goTo(this.getThings('FRONT_DOOR_W').walkToPoint)
         .then( (r)=> { if (r.finished) {
             this.getThings('FRONT_DOOR_W').setStatus('closing','closed')
@@ -206,6 +202,7 @@ var interactions =[
                 if (feedback.finished) {
                     this.setGameStatus('CUTSCENE');
                     this.changeRoom('DINING_R',300,50)
+                        .then( ()=> { return this.getThings('DINING_KITCHENDOOR_W').setStatus('closing','closed') } )
                         .then( ()=> { return this.getThings('pc').goTo({x:220, y:45})  } )
                         .then( ()=> {
                             this.allRoomItemData.DINING_R.HAMBURGERS_W.removed=false;
