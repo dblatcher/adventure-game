@@ -73,6 +73,7 @@ export default {
             left:   (this.x  * this.measure.scale) + this.measure.unit,
             backgroundColor: this.highlight && !this.item.unclickable ? 'rgba(255,255,255,.5)' : 'unset',
             backgroundImage: (this.highlight && !this.item.unclickable ? innerBorder('green') : 'unset'),
+            pointerEvents: (this.item.unclickable ? 'none' : 'unset'),
             transition: 'background-color 1s',
             borderRadius: '5px',
             transform: 'translateX(-50%)'

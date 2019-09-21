@@ -57,6 +57,7 @@ export default {
                     bottom: (rData[i].y * this.measure.scale) + this.measure.unit,
                     zIndex: rData[i].zIndex || 100,
                     backgroundImage: `url(${rData[i].url})`,
+                    pointerEvents: 'none',
                 })
                 }
                 

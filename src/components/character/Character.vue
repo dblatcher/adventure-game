@@ -126,7 +126,7 @@ export default {
             transform: 'translateX(-50%)',
             backgroundColor: (this.highlight ? 'rgba(255,255,255,.5)' : 'unset' ),
             backgroundImage: (this.highlight ?  innerBorder('blue') : 'unset'),
-
+            pointerEvents: (this.ident === this.theApp.pcId ? 'none' : 'unset'),
             transition: 'background-color 1s',
             borderRadius: '5px',
             filter: this.zoneEffects.filter,
