@@ -10,7 +10,7 @@
             </div>
             <form>
 
-                <p>Text time: {{options.textDelay}}%</p>
+                <p class="label">Text time: {{options.textDelay}}%</p>
                 <div class="slidecontainer">
                     <input type="range" min="1" max="300" v-model.number="options.textDelay" class="slider" id="myRange">
                 </div>
@@ -64,10 +64,21 @@ export default {
     margin: 0;
 }
 
+.label {
+    margin: .25rem 0 0 0;
+}
+
 .close-button {
     @include btn-solid ($colour-blue);
     @include navButton(false);
     display: inline-flex;
+}
+
+.slidecontainer {
+
+    input {
+        width: 100%;
+    }
 }
 
 </style>
