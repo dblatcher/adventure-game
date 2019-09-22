@@ -31,3 +31,26 @@
     margin: 0;
     box-sizing: border-box;
 }
+
+
+@mixin navButton($fixedTop) {
+
+    @if($fixedTop) {
+        position: fixed;
+        top: .2rem;
+    }
+
+    height: 2rem;
+    width: 2rem;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+
+    img {
+        width: 1rem;
+        vertical-align: middle;
+    }
+}

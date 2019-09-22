@@ -1,6 +1,11 @@
 <template>
   <div class="game">
 
+    <OptionsMenu v-show="optionsMenuIsOpen"
+    v-bind:options="options"
+    @close="toggleOptionsMenu()"
+    />
+
     <nav class="game__settings">
       <div class="skip-button" 
       v-bind:class="{'skip-button--disabled': gameStatus !== 'CUTSCENE'}"
@@ -11,6 +16,11 @@
       <label class="highlight-button" for="highlight-checkbox">
         <img class="button-icon" src="./eye.svg"/>
       </label>
+
+      <div class="options-button"
+      @click="toggleOptionsMenu()"
+      v-bind:class="{'options-button--active': optionsMenuIsOpen}"
+      ><img class="button-icon" src="./cogs.svg"/></div>
 
       <div class="file-button"
       @click="openFileMenu()"
@@ -62,6 +72,9 @@
 
     </div>
 
+
+ 
+
     <p style="display:none; position:absolute; bottom:0; right:0; background-color:white;">
       <span>{{message}}</span>
       <span ref="coordinateDisplay"></span>
@@ -94,11 +107,12 @@ import DialogMenu from "../DialogMenu";
 import CommandLine from "../CommandLine";
 import Room from "../Room";
 import ThingInRoom from "../ThingInRoom";
+import OptionsMenu from "../optionsMenu";
 
 export default {
   name: 'Game',
   components :{
-    VerbMenu, InventoryMenu, DialogMenu,CommandLine, Room, ThingInRoom
+    VerbMenu, InventoryMenu, DialogMenu,CommandLine, Room, ThingInRoom, OptionsMenu
   },
 
   data () {
@@ -190,13 +204,17 @@ export default {
     grid : pathFinding.makeGrid,
     fileMenuIsOpen () {
       return this.$parent.fileMenuIsOpen;
-    }
+    },
   },
   
   methods : {
 
     openFileMenu(event) {
       this.$parent.handleFileMenuClick([null, 'toggle']);
+    },
+
+    toggleOptionsMenu(event) {
+      this.optionsMenuIsOpen = !this.optionsMenuIsOpen;
     },
 
     findPath: pathFinding.findPath, 

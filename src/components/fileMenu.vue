@@ -6,8 +6,8 @@
         <div class="top-row">
             <h2 class='heading'>{{atTitle ? 'Restore saved game' : 'Saved games'}}</h2>
 
-            <div class="btn-solid-black btn-round" 
-            @click="clickEmit([null,'close'])">X</div>
+            <div class="close-button" 
+            @click="clickEmit([null,'close'])"><img src="../icons/window-close.svg"/></div>
         </div>
         
         <div v-for="(savedGame, index) in data" v-bind:key="index"
@@ -80,6 +80,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "../modules/_material.scss";
+@import "../modules/_layout.scss";
 
 .fullscreen-modal {
     position: fixed;
@@ -100,12 +101,12 @@ export default {
     
     min-width: 16rem;
 
-    padding: 2rem 1rem 1rem 1rem;
+    padding: .75rem;
     display: flex;
     flex-flow: column nowrap;
     background-color: white;
 
-    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    box-shadow: $drop-shadow2;
 
     
 }
@@ -122,14 +123,8 @@ export default {
 
 .top-row {
     @include row;
-    position: absolute;
-    margin: 0;
-    padding: 0 .25rem;
-    top:0;
-    left:0;
-    width: 100%;
-    box-sizing: border-box;
-    height: 2rem;
+
+
 }
 
 .bottom-row {
@@ -149,6 +144,16 @@ export default {
         display: inline-block;
     }
 
+}
+
+.heading {
+    margin:0;
+}
+
+.close-button {
+    @include btn-solid ($colour-blue);
+    @include navButton(false);
+    display: inline-flex;
 }
 
 

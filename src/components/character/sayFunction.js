@@ -37,7 +37,7 @@ export default function (text, options = {} ){
                 });
             }	
         
-        },order.time);
+        },order.time * (that.theApp.options.textDelay/100) );
         
     }
     

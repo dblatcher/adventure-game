@@ -80,7 +80,9 @@ function createGameData(savedGame) {
         thingHoveredOn:null, 
         subject: null, needObject:false, object:null,
         highlightingThings : false,
+        optionsMenuIsOpen: false,
         instantMode: false,
+        options: {textDelay: 100},
         defaultResponses:gameData.defaultResponses,
         sequences: gameData.sequences,
     }, state);
