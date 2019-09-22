@@ -8,11 +8,6 @@ function makeConversations() {
 	conversations.hamburgers = new Conversation('hamburgers','CHALMERS_C','start');
 
 	conversations.hamburgers.addBranch(new DialogBranch('start',[
-		new DialogChoice('-SKIP-',
-		[],
-		{consequence: function(theApp,choice){
-			theApp.sequences.fire.apply(theApp,[choice])
-		}}),
 		new DialogChoice('Sorry, to keep you waiting...',
 		['npc::hmm.'],
 		{canOnlySayOnce: true}),
