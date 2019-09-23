@@ -237,6 +237,7 @@ var verbList = [
 
 var makeInventoryItems = function() { return  [
     new InventoryItem('roast', 'raw roast', require('./items/roast.png'),true),
+    new InventoryItem('todo', 'to do list', require('./items/todo.png'),true),
     new InventoryItem('roast_glazed', 'glazed roast', require('./items/glazed-roast.png')),
     new InventoryItem('bucket_foil', 'ice bucket', require('./items/bucket_foil.png')),
     new InventoryItem('bucket_sand', 'fire bucket', require('./items/bucket_sand.png')),

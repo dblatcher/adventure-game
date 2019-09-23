@@ -21,10 +21,10 @@ var interactions =[
     }),
 
     //ITEM BASED
-    new Interaction(['LOOK','ROAST_I'],[],pcSays('Yes, this should be a reasonable quantity of meat to serve Superintendent Chalmers.',2000)),
-    new Interaction(['LOOK','ROAST_GLAZED_I'],[],pcSays('Glazed and ready for the oven!.',2000)),
-    new Interaction(['LOOK','BUCKET_FOIL_I'],[],pcSays('This should suffice. I can hardly see the foil',2000)),
-    new Interaction(['LOOK','BUCKET_SAND_I'],[],pcSays('Hmmm, this could serve as an ice bucket if it were empty and silver colored.',2000)),
+    new Interaction(['LOOK','ROAST_I'],[],pcSays('Yes, this should be a reasonable quantity of meat to serve Superintendent Chalmers.',3000)),
+    new Interaction(['LOOK','ROAST_GLAZED_I'],[],pcSays('Glazed and ready for the oven!',2000)),
+    new Interaction(['LOOK','BUCKET_FOIL_I'],[],pcSays('This should suffice. Better put it on the table',3000)),
+    new Interaction(['LOOK','BUCKET_SAND_I'],[],pcSays('Hmmm, this could serve as an ice bucket if it were empty and silver colored.',3000)),
     new Interaction(['LOOK','BUCKET_EMPTY_I'],[],pcSays('If only I could make it silver colored somehow.',2000)),
     new Interaction(['LOOK','FOIL_I'],[],pcSays('Shiny, metallic and used for wrapping things.',2000)),
 
@@ -55,6 +55,7 @@ var interactions =[
         let pc = this.getThings('pc');
         this.getInventoryItem('BUCKET_FOIL_I');
         this.looseInventoryItem('BUCKET_EMPTY_I');
+        this.looseInventoryItem('FOIL_I');
 
         pc.doAction('wrap_bucket')
         .then( () => {return pc.say('There!') } )
@@ -65,15 +66,42 @@ var interactions =[
         let pc = this.getThings('pc');
         this.getInventoryItem('ROAST_GLAZED_I');
         this.looseInventoryItem('ROAST_I');
+        this.looseInventoryItem('BOURBON_I');
 
         pc.doAction('glaze_roast')
-        .then( (r) => {return pc.say('Well glazed, Seymour, well glazed') } )
+        .then( () => {return pc.say('Well glazed, Seymour, well glazed') } )
 
     }),
 
+    new Interaction(['LOOK','TODO_I'],[function(){return this.gameVars.roastIsInOven && this.gameVars.iceBucketIsOnTable}],
+        pcSays('No need for the list now! The Superintendent is here!')
+    ),
+
+    new Interaction(['LOOK','TODO_I'],[],function(){
+
+        let pc = this.getThings('pc');
+
+        let roastComment = this.gameVars.roastIsInOven ?
+            'done.' :  this.allRoomItemData.KITCHEN_R.OVEN_W.status.cycle === 'open_ham_inside' ?
+            'better close the oven and turn it up to maximum heat!' : this.allInventoryItemsAsObject.ROAST_GLAZED_I.have ?
+            'hmm... better get this in the oven. The bourbon is dropping all over the floor.' : 'What can I use to glaze this roast?'
+
+        let bucketComment = this.gameVars.iceBucketIsOnTable ?
+            'done.' : this.allInventoryItemsAsObject.BUCKET_FOIL_I.have ?
+            'I have the bucket ready, it just needs to go on the table.' : this.allInventoryItemsAsObject.BUCKET_EMPTY_I.have ?
+            'I have a bucket, but it\'s not shiny enough.' : this.allInventoryItemsAsObject.BUCKET_SAND_I.have ?
+            'This fire bucket is the right size, but It\'s full of sand and not shiny.' : 'there must be a bucket around here somewhere.';
+
+        pc.say('1. Buy roast... done')
+        .then( ()=> { return pc.say( '2. Glaze roast and place in oven... ' ) } )
+        .then( ()=> { return pc.say( roastComment ) } )
+        .then( ()=> { return pc.say( '3. Put ice bucket on table...' ) } )
+        .then( ()=> { return pc.say( bucketComment ) } )
+
+    }),
 
     //FRONT OF HOUSE
-    new Interaction(['LOOK','GARAGE_W'],[],pcSays('I admire car owners. I aspire to be one after I\'ve reimbursed mother for the food I ate as a child.',2500)),
+    new Interaction(['LOOK','GARAGE_W'],[],pcSays('I admire car owners. I aspire to be one after I\'ve reimbursed mother for the food I ate as a child.',4000)),
     
     new Interaction(['USE','BUCKET_SAND_I','BUSH_W'],[],function(){
         this.sequences.pourSandInBush.apply(this,['BUSH_W']);
@@ -259,6 +287,15 @@ var interactions =[
         this.getThings('pc').goTo(this.getThings('OVEN_W').walkToPoint)
         .then( (r)=> {
             this.getThings('OVEN_W').setStatus('open_ham_inside');
+            this.looseInventoryItem('ROAST_GLAZED_I');
+        } )
+    }),
+    new Interaction(['USE','ROAST_GLAZED_I','OVEN_W'],
+    [function(){return this.getThings('OVEN_W').item.status.cycle == 'closed'}],
+    function(){
+        this.getThings('pc').goTo(this.getThings('OVEN_W').walkToPoint)
+        .then( ()=> {
+            this.getThings('OVEN_W').setStatus('open','open_ham_inside');
             this.looseInventoryItem('ROAST_GLAZED_I');
         } )
     }),
