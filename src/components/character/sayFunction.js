@@ -1,5 +1,5 @@
 export default function (text, options = {} ){
-    if (typeof options.time !== 'number') {options.time = 1000}
+    if (typeof options.time !== 'number') {options.time = 2000}
     if (typeof options.action !== 'string') {options.action = 'talk'}
     var currentOrder = Object.assign({text:text}, options);
     
