@@ -24,14 +24,19 @@
             <div class="about__content">
             
                 <button class="about__close-button" v-on:click="showAboutBlock = false"><img src="./times-circle.svg"/></button>
-                <h2 class="about__heading">About this game</h2>
-                <p class="about__text"><i>Steamed Hams but it's a point and click adventure game</i> is a point and click adventure game based on the Simpsons scene commonly known as 'Steamed Hams'. </p>
+                <h2 class="about__heading">About This Game</h2>
+                <p class="about__text"><i>Steamed Hams but it's a point and click adventure game</i> is a point and click adventure game based on the Simpsons scene commonly known as 'Steamed Hams'. With me so far?</p>
                 <h3 class="about__sub-heading">Acknowledgments</h3>
                 <p class="about__text">I used the truely awesome <a href="https://frinkiac.com/">frinkiac.com</a> as a source of images.</p>
+                <p class="about__text">Many thanks to the awesome redditers of r/SteamedHams and r/adventuregames for playtesting and feedback.</p>
                 <h3 class="about__sub-heading">Amateurish Legalese Section</h3>
                 <p class="about__text">Don't rip this game off and try to sell it to someone. It's too short anyway.</p>
-                <p class="about__text">The Simpsons is copyrighted material, owned by 20th Century Fox. This game makes non-commercial use of that material. They haven't endorsed or licensed that useage. </p>
-                <p class="about__text">Given non-commercial use of this material is common and does no harm to the copyright owners, I consider it reasonable fair use. Try to think of this as a big interactive meme. Nobody gets upset about memes right? I'd take it down if they asked me.</p>
+                <p class="about__text">The Simpsons is copyrighted material, owned by 20th Century Fox. This game makes non-commercial use of that material. They haven't endorsed or licensed it.  I'd take it down if they asked me to. I thik that's reasonable fair use, like a big interactive meme. Everyone loves memes.</p>
+
+                <div class=about__twitter-bar>
+                    <img class="about__logo" src='../icons/twitter-square.svg'/>
+                    <a href="https://twitter.com/webventurer1" class="about__handle">@webventurer1</a>
+                </div>
 
             </div>    
         </section>
@@ -91,26 +96,37 @@ export default {
        margin: 0;
        color: purple;
        font-family: cursive;
-       text-shadow: 0px 1px black;
-       font-size: 2.5rem;
-       line-height: 3.25rem;
 
         @media(min-width: 22rem) {
             white-space: nowrap;
         }
 
+        text-shadow: 0px .2vw black;
+        font-size: 6vw;
+        line-height: 6.5vw;
+
+        @media (orientation: portrait) {
+            text-shadow: 0px 1px black;
+            font-size: 2.5rem;
+            line-height: 3.25rem;
+        }
     }
 
-    &__l  {
+    &__l {
         font-size: 200%;
         font-family: inherit;
     }
 
     &__subtitle {
-        font-size: 1.1rem;
         font-family: monospace;
         margin: 0;
         font-weight: bold;
+        white-space: nowrap;
+        font-size: 2.5vw;
+
+        @media (orientation: portrait) {
+            font-size: 1.1rem;
+        }
     }
 
     &__button-set {
@@ -196,18 +212,44 @@ export default {
         margin: 0 0 .5rem 0;
         font-size: 1.5rem;
         font-weight: 700;
+        color: purple;
     }
 
     &__sub-heading {
         margin: .75rem 0 0 0;
         font-size: 1.1rem;
         font-weight: 700;
+        color: purple;
     }
 
     &__text {
         margin: 0 0 .25rem 0;
         line-height: 1.1rem;
+    }
 
+
+    &__twitter-bar {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        margin-top: 1rem;
+    }
+
+    &__handle {
+        margin-left: .5rem;
+        text-decoration: none;
+        font-weight: 700;
+        color: purple;
+
+        &:hover {
+            color: darkgreen;
+            transition: all .5s;
+            transform: skewX(-20deg);
+        }
+    }
+
+    &__logo {
+        height: 2rem;
     }
 
 }
