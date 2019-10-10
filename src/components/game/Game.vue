@@ -92,7 +92,7 @@ import state from "../../modules/savedStates";
 
 import * as pathFinding from "./pathFinding";
 import handleDialogChoice from "./handleDialogChoice";
-import changeRoom from "./changeRoom";
+import {changeRoom, characterRoomChange} from "./roomMethods";
 import executeCommand from "./executeCommand";
 import getThings from "./getThings";
 import removeThing from "./removeThing";
@@ -229,6 +229,7 @@ export default {
     handleHoverEvent,
     getInventoryItem,
     looseInventoryItem,
+    characterRoomChange,
 
     handleSkipButton() {
       console.log('skip button');
@@ -270,31 +271,6 @@ export default {
       console.warn(`${statusName} is not a valid gameStatus`);
     },
 
-    characterRoomChange: function (movingCharacter, rNum,x,y) {
-      let game = this;
-
-      if (typeof movingCharacter === 'string') {
-        let charId = movingCharacter;
-        game.allCharacters.forEach(char => {
-          if (char.id === charId) { movingCharacter = char}
-        });
-      }
-
-      if (typeof movingCharacter === 'string') {
-        return Promise.resolve( {success:false, reason:`no character with id ${movingCharacter}`} )
-      }
-
-      return new Promise ( function(resolve,reject) {
-        movingCharacter.room = rNum;
-        movingCharacter.x = x;
-        movingCharacter.y = y;
-        game.$nextTick( function() {
-          resolve({success:true, char:movingCharacter})
-        });
-
-      });
-
-    },
     pickVerb: function(verbID) {
       this.subject = null;
       for (var i=0; i<this.verbList.length; i++) {

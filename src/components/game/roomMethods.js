@@ -1,6 +1,6 @@
 
-export default function (rNum,pcX,pcY,data={}) {
-    
+function changeRoom (rNum,pcX,pcY,data={}) {
+
   let game = this;
   if (typeof rNum === 'string') {
     for (let i = 0; i < game.rooms.length; i++) {
@@ -10,7 +10,7 @@ export default function (rNum,pcX,pcY,data={}) {
       }
     }
   }
-    
+
   return new Promise (function (resolve) {
     //doesn't use getThings in case pc is not in the room we are changing from
     var pc;
@@ -38,3 +38,33 @@ export default function (rNum,pcX,pcY,data={}) {
   })
 
 }
+
+
+function characterRoomChange (movingCharacter, rNum,x,y) {
+  let game = this;
+
+  if (typeof movingCharacter === 'string') {
+    let charId = movingCharacter;
+    game.allCharacters.forEach(char => {
+      if (char.id === charId) { movingCharacter = char}
+    });
+  }
+
+  if (typeof movingCharacter === 'string') {
+    return Promise.resolve( {success:false, reason:`no character with id ${movingCharacter}`} )
+  }
+
+  return new Promise ( function(resolve,reject) {
+    movingCharacter.room = rNum;
+    movingCharacter.x = x;
+    movingCharacter.y = y;
+    game.$nextTick( function() {
+      resolve({success:true, char:movingCharacter})
+    });
+
+  });
+
+}
+
+
+export {changeRoom, characterRoomChange}
