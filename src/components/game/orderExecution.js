@@ -12,17 +12,12 @@ function executeStandardOrder(order) {
         //find actor
         // if character or roomObject, need to distinguish if in room
         let suffix = order.actorId.substring( order.actorId.length-2)
-        console.log (suffix);
-
-        switch (suffix) {
-            case '_C':
-                console.log('character...');
-                break;
-            case '_W':
-                console.log('World Item...');
-                break;
+        if (suffix === '_W') {
+            let idSet = order.actorId.split('.');
+            if (idSet.length === 2 && game.allRoomItemData[idSet[0]]) {
+                actor = game.allRoomItemData[idSet[0]][idSet[1]]
+            }
         }
-
     }
 
     if (!actor) {

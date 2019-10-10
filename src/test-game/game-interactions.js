@@ -77,7 +77,7 @@ var interactions =[
 		.then ( (r) => {return billy.say("That was my fire!")} )			
 		.then ( (r) => {return billy.goTo(house.walkToPoint)} )			
 		.then ( (r) => {		
-			billy.goToRoom(1,20,5);
+			billy.goToRoom([1,20,5]);
 			fire.name = 'sticks';
 			this.setGameStatus('LIVE');
 		});

@@ -1,24 +1,14 @@
-import { Interaction, doorFunction,takeFunction,pcSays } from "../modules/interaction-constructor";
+import { Interaction, StandardOrder, doorFunction,takeFunction,pcSays } from "../modules/interaction-constructor";
 
 
 var interactions =[
-    
-    //CHARACTER
 
-    new Interaction(['TALK','CHALMERS_C'],
-	[function(){return this.rooms[this.roomNumber].id === 'FRONT_R'}],
-    function() {
-        this.setGameStatus('CUTSCENE');
-        let chalmers = this.getThings('CHALMERS_C');
-        let skinner = this.getThings('pc');
-        chalmers.say('Well Seymour, I made it.')
-        .then( ()=> {return chalmers.say('dispite your directions.')} )
-        .then( ()=> {return skinner.say('Superintendent Chalmers!')} )
-        .then( ()=> {return skinner.say('Welcome!')} )
-        .then( ()=> {
-            this.setGameStatus('CONVERSATION','arrival');
-        })
-    }),
+    //CHARACTER
+    new Interaction(
+        ['TALK','CHALMERS_C'],
+        [function() {return this.rooms[this.roomNumber].id === 'FRONT_R'}],
+        function() { this.runSequence('greetChalmers'); }
+    ),
 
     //ITEM BASED
     new Interaction(['LOOK','ROAST_I'],[],pcSays('Yes, this should be a reasonable quantity of meat to serve Superintendent Chalmers.',3000)),
@@ -104,15 +94,24 @@ var interactions =[
     new Interaction(['LOOK','GARAGE_W'],[],pcSays('I admire car owners. I aspire to be one after I\'ve reimbursed mother for the food I ate as a child.',4000)),
 
     new Interaction(['USE','BUCKET_SAND_I','BUSH_W'],[],function(){
-        this.runSequence('pourSandInBush', 'BUSH_W');
+        this.setGameStatus('CUTSCENE')
+        Promise.resolve(true)
+        .then( ()=>{ return this.getThings('pc').goTo(this.getThings('BUSH_W').walkToPoint) } )
+        .then( ()=>{ return this.runSequence('pourSandInBush') } )
     }),
-
+    
     new Interaction(['USE','BUCKET_SAND_I','BUSH_2_W'],[],function(){
-        this.runSequence('pourSandInBush', 'BUSH_2_W');
+        this.setGameStatus('CUTSCENE')
+        Promise.resolve(true)
+        .then( ()=>{ return this.getThings('pc').goTo(this.getThings('BUSH_2_W').walkToPoint) } )
+        .then( ()=>{ return this.runSequence('pourSandInBush') } )
     }),
-
+    
     new Interaction(['USE','BUCKET_SAND_I','BUSH_3_W'],[],function(){
-        this.runSequence('pourSandInBush', 'BUSH_3_W');
+        this.setGameStatus('CUTSCENE')
+        Promise.resolve(true)
+        .then( ()=>{ return this.getThings('pc').goTo(this.getThings('BUSH_3_W').walkToPoint) } )
+        .then( ()=>{ return this.runSequence('pourSandInBush') } )
     }),
 
     new Interaction(['OPEN','FRONT_DOOR_W'],

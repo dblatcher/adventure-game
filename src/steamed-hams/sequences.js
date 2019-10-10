@@ -8,72 +8,42 @@ const starting = [
     new StandardOrder ('GAME', 'setGameStatus','LIVE'),
 ]
 
-function pourSandInBush (bushId = 'BUSH_W') {
-    const game = this;
+const pourSandInBush = [
+    new StandardOrder ('SKINNER_C', 'doAction','pour_sand'),
+    new StandardOrder ('SKINNER_C', 'say','There!'),
+    new StandardOrder ('SKINNER_C', 'say','I suppose its wrong to use fire-fighting equipment improperly...'),
+    new StandardOrder ('SKINNER_C', 'say','But what are the chances of a fire in the next half hour?'),
+    new StandardOrder ('GAME', 'getInventoryItem','BUCKET_EMPTY_I'),
+    new StandardOrder ('GAME', 'looseInventoryItem','BUCKET_SAND_I'),
+    new StandardOrder ('GAME', 'setGameStatus','LIVE'),
+]
 
-    return new Promise (function (resolve) {
-        
-        let pc = game.getThings('pc');
-        game.getInventoryItem('BUCKET_EMPTY_I');
-        game.looseInventoryItem('BUCKET_SAND_I');
-        game.setGameStatus('CUTSCENE');
+const chalmersAtDoor = [
+    new StandardOrder ('GAME', 'setGameStatus','CUTSCENE'),
+    new StandardOrder ('SKINNER_C', 'say','The doorbell!'),
+    new StandardOrder ('SKINNER_C', 'say','Superintendent Chalmers is outside!'),
+    new StandardOrder ('GAME', 'teleportCharacter',['CHALMERS_C', 'FRONT_R',100,10]),
+    new StandardOrder ('GAME', 'setGameStatus','LIVE'),
+];
 
-        pc.goTo(game.getThings(bushId).walkToPoint)
-        .then( (r) => {return pc.doAction('pour_sand')})
-        .then( (r) => {return pc.say('There!') } )
-        .then( (r) => {return pc.say('I suppose its wrong to use fire-fighting equipment improperly...') } )
-        .then( (r) => {return pc.say('But what are the chances of a fire in the next half hour?',{action:'ponder'}) } )
-        .then( (r) => { 
-            game.setGameStatus('LIVE') 
-            resolve ({success:true});
-        })
+const greetChalmers = [
+    new StandardOrder('GAME','setGameStatus','CUTSCENE'),
+    new StandardOrder('CHALMERS_C','say','Well Seymour, I made it.'),
+    new StandardOrder('CHALMERS_C','say','dispite your directions.'),
+    new StandardOrder('pc','say','Superintendent Chalmers!'),
+    new StandardOrder('pc','say','Welcome!'),
+    new StandardOrder('GAME','setGameStatus','CONVERSATION','arrival'),
+];
 
-    })
-
-}
-
-
-function chalmersAtDoor () {
-    const game = this;
-    return new Promise (function(resolve,reject) {
-        game.setGameStatus('CUTSCENE');
-        let skinner = game.getThings('pc');
-
-        skinner.say('The doorbell!')
-        .then( ()=> { return game.teleportCharacter(['CHALMERS_C', 'FRONT_R',100,10]) })
-        .then( ()=> {
-            game.setGameStatus('LIVE');
-            resolve ({success:true});
-        })
-
-    })
-}
-
-function chalmersComesIn () {
-    const game = this;
-    return new Promise (function(resolve, reject) {
-        game.setGameStatus('CUTSCENE');
-        let skinner = game.getThings('pc');
-        let chalmers = game.getThings('CHALMERS_C');
-        let door = game.getThings('FRONT_DOOR_W');
-
-        chalmers.goTo(door.walkToPoint)
-        .then( ()=> {
-            chalmers.goToRoom('DINING_R',100,10);
-            return skinner.say('phew...');
-        } )
-        .then ( ()=> {
-            return skinner.goTo(door.walkToPoint)
-        } )
-        .then ( ()=> {
-            game.changeRoom(['DINING_R',120,40]);
-            game.allRoomItemData.KITCHEN_R.OVEN_W.status.cycle="smoking";
-            game.setGameStatus('LIVE');
-            resolve ({success:true});
-        })
-
-    })
-}
+const chalmersComesIn = [
+    new StandardOrder ('GAME', 'setGameStatus','CUTSCENE'),
+    new StandardOrder ('CHALMERS_C', 'goToRoom',['DINING_R',100,10]),
+    new StandardOrder ('SKINNER_C', 'say','phew...'),
+    new StandardOrder ('SKINNER_C', 'goTo',{x:146,y:20}),
+    new StandardOrder ('KITCHEN_R.OVEN_W', 'setStatus',"smoking"),
+    new StandardOrder ('GAME', 'changeRoom',['DINING_R',120,40]),
+    new StandardOrder ('GAME', 'setGameStatus','LIVE'),
+];
 
 function seeBurningRoast () {
     const game = this;
@@ -100,7 +70,7 @@ function goToKrustyBurger() {
 
         chalmers.goTo({ x:100, y:-20})
         .then( () =>{
-            chalmers.goToRoom('DINING_R',100,10)
+            chalmers.goToRoom(['DINING_R',100,10])
             skinner.char.x=200;
             skinner.char.y=75;
             return skinner.goTo({x:220,y:90});
@@ -156,7 +126,7 @@ function fire () {
         } )
         .then( ()=> { 
             chalmers.char.behaviour_direction='right';
-            return chalmers.goToRoom('FRONT_R',150,15) })
+            return chalmers.goToRoom(['FRONT_R',150,15]) })
         .then( ()=> { return game.changeRoom(['FRONT_R',160,25]) })
         .then( ()=> { return game.getThings('AGNES_C').say('Seymour! the house is on fire!') })
         .then( ()=> {
@@ -197,4 +167,4 @@ function ending () {
 }
 
 
-export default { starting, fire, pourSandInBush, goToKrustyBurger, chalmersComesIn, chalmersAtDoor, seeBurningRoast,ending };
+export default { starting, fire, pourSandInBush, goToKrustyBurger, chalmersComesIn, chalmersAtDoor, greetChalmers,seeBurningRoast,ending };
