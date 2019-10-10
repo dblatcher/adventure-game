@@ -194,7 +194,7 @@ var interactions =[
    	function() { 
         this.getThings('pc').goTo(this.getThings('DINING_KITCHENDOOR_W').walkToPoint)
         .then( (r)=> { if (r.finished) {
-            return this.changeRoom('FRONT_R',146,27)
+            return this.changeRoom(['FRONT_R',146,27])
             .then( ()=> { this.sequences.seeBurningRoast.apply(this,[]) } )
         } });
     }),
@@ -229,7 +229,7 @@ var interactions =[
             .then( (feedback) => {
                 if (feedback.finished) {
                     this.setGameStatus('CUTSCENE');
-                    this.changeRoom('DINING_R',300,50)
+                    this.changeRoom(['DINING_R',300,50])
                         .then( ()=> { return this.getThings('DINING_KITCHENDOOR_W').setStatus('closing','closed') } )
                         .then( ()=> { return this.getThings('pc').goTo({x:220, y:45})  } )
                         .then( ()=> {
@@ -378,7 +378,7 @@ var interactions =[
         .then(()=>{ 
             skinner.char.behaviour_action='window_wait';
             skinner.char.behaviour_actframe=0;
-            return this.characterRoomChange('CHALMERS_C', 2, 100, -20)
+            return this.teleportCharacter(['CHALMERS_C', 'KITCHEN_R', 100, -20])
         })
         .then(()=>{ return this.getThings('CHALMERS_C').goTo({x:95, y:20}) })
         .then(()=>{ return this.getThings('CHALMERS_C').goTo({x:105, y:20}) })

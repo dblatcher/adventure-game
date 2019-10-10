@@ -1,24 +1,27 @@
 
-function changeRoom (rNum,pcX,pcY,data={}) {
+function findIndexById (id, list) {
+  for (let i = 0; i < list.length; i++) {
+    if (list[i].id === id ) { return i }
+  }
+  return false;
+}
+
+
+function changeRoom (target,options={}) {
+
+  let rNum = target[0], pcX=target[1], pcY=target[2];
 
   let game = this;
   if (typeof rNum === 'string') {
-    for (let i = 0; i < game.rooms.length; i++) {
-      if (game.rooms[i].id === rNum ) {
-        rNum = i;
-        break;
-      }
-    }
+    rNum = findIndexById (rNum, game.rooms)
   }
 
-  return new Promise (function (resolve) {
-    //doesn't use getThings in case pc is not in the room we are changing from
-    var pc;
-    game.allCharacters.forEach ( (charObject) => {
-      if (charObject.id === game.pcId) {pc=charObject}  
-    } )
+  //doesn't use getThings in case pc is not in the room we are changing from
+  const pc = game.allCharacters[ findIndexById(game.pcId, game.allCharacters) ];
 
-    if (pc && !data.pcNotMoving) {
+  return new Promise (function (resolve) {
+
+    if (pc && !options.pcNotMoving) {
       pc.room = rNum;
       pc.x = pcX;
       pc.y = pcY;
@@ -31,7 +34,7 @@ function changeRoom (rNum,pcX,pcY,data={}) {
     game.$nextTick( function() {
       game.reportEvent('room change to '+game.rooms[rNum].name);
       game.$refs.room.resize();
-      if (typeof data.callback === 'function' ) { data.callback.apply(game,[]); }
+      if (typeof options.callback === 'function' ) { options.callback.apply(game,[]); }
       resolve({success:true, newRoom:game.rooms[rNum].id})
     })
 
@@ -40,19 +43,23 @@ function changeRoom (rNum,pcX,pcY,data={}) {
 }
 
 
-function characterRoomChange (movingCharacter, rNum,x,y) {
+function teleportCharacter (target, options={}) {
+  
+  let movingCharacter = target[0], rNum = target[1], x=target[2], y=target[3];
+  
   let game = this;
-
-  if (typeof movingCharacter === 'string') {
-    let charId = movingCharacter;
-    game.allCharacters.forEach(char => {
-      if (char.id === charId) { movingCharacter = char}
-    });
+  if (typeof rNum === 'string') {
+    rNum = findIndexById (rNum, game.rooms)
   }
 
   if (typeof movingCharacter === 'string') {
-    return Promise.resolve( {success:false, reason:`no character with id ${movingCharacter}`} )
+    let charId = findIndexById(movingCharacter, game.allCharacters);
+    if (!charId) {
+      return Promise.resolve( {success:false, reason:`no character with id ${movingCharacter}`} )
+    }
+    movingCharacter = game.allCharacters[ findIndexById(movingCharacter, game.allCharacters) ]
   }
+
 
   return new Promise ( function(resolve,reject) {
     movingCharacter.room = rNum;
@@ -61,10 +68,9 @@ function characterRoomChange (movingCharacter, rNum,x,y) {
     game.$nextTick( function() {
       resolve({success:true, char:movingCharacter})
     });
-
   });
 
 }
 
 
-export {changeRoom, characterRoomChange}
+export {changeRoom, teleportCharacter}

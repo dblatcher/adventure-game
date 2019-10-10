@@ -92,7 +92,7 @@ import state from "../../modules/savedStates";
 
 import * as pathFinding from "./pathFinding";
 import handleDialogChoice from "./handleDialogChoice";
-import {changeRoom, characterRoomChange} from "./roomMethods";
+import {changeRoom, teleportCharacter} from "./roomMethods";
 import executeCommand from "./executeCommand";
 import getThings from "./getThings";
 import removeThing from "./removeThing";
@@ -229,7 +229,7 @@ export default {
     handleHoverEvent,
     getInventoryItem,
     looseInventoryItem,
-    characterRoomChange,
+    teleportCharacter,
 
     handleSkipButton() {
       console.log('skip button');
@@ -288,7 +288,7 @@ export default {
       this.$off();
       this.$on('hover-event',this.handleHoverEvent);	
       this.$on('clicked-thing', this.handleClickOnThing);
-      this.$on('character-room-change', this.characterRoomChange);
+      this.$on('character-room-change', this.teleportCharacter);
     },
     returnCurrentState: function() {
       return state.get(this);

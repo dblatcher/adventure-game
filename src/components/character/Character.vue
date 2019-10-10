@@ -155,8 +155,8 @@ export default {
         doAction : doFunction,
         goTo : goFunction,
         say : sayFunction,
-        changeRoom : function (rNum,x,y){
-            this.theApp.$emit('character-room-change',this.char,rNum,x,y);
+        goToRoom : function (rNum,x,y,options){
+            this.theApp.$emit('character-room-change',[this.char,rNum,x,y],options);
         },
         move : moveFunction,
         showNextFrame : function () {

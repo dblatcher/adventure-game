@@ -48,12 +48,10 @@ function chalmersAtDoor () {
         let skinner = game.getThings('pc');
 
         skinner.say('The doorbell!')
+        .then( ()=> { return game.teleportCharacter(['CHALMERS_C', 'FRONT_R',100,10]) })
         .then( ()=> {
             game.setGameStatus('LIVE');
-            game.allCharacters.forEach(char => {
-                if (char.id === 'CHALMERS_C') { game.characterRoomChange(char, 0,100,10)};
-                resolve ({success:true});
-            });
+            resolve ({success:true});
         })
 
     })
@@ -69,14 +67,14 @@ function chalmersComesIn () {
 
         chalmers.goTo(door.walkToPoint)
         .then( ()=> {
-            chalmers.changeRoom(1,100,10);
+            chalmers.goToRoom('DINING_R',100,10);
             return skinner.say('phew...');
         } )
         .then ( ()=> {
             return skinner.goTo(door.walkToPoint)
         } )
         .then ( ()=> {
-            game.changeRoom(1,120,40);
+            game.changeRoom(['DINING_R',120,40]);
             game.allRoomItemData.KITCHEN_R.OVEN_W.status.cycle="smoking";
             game.setGameStatus('LIVE');
             resolve ({success:true});
@@ -91,7 +89,7 @@ function seeBurningRoast () {
     game.gameVars.haveSeenBurningRoast = true;
 
     return new Promise (function(resolve) {
-        game.changeRoom('KITCHEN_R',100,10)
+        game.changeRoom(['KITCHEN_R',100,10])
         .then( ()=> { skinner.say('Egads! My roast is ruined!')} )
         .then( ()=> { resolve ({sucess: true})} )
     })
@@ -110,7 +108,7 @@ function goToKrustyBurger() {
 
         chalmers.goTo({ x:100, y:-20})
         .then( () =>{
-            chalmers.changeRoom(1,100,10)
+            chalmers.goToRoom('DINING_R',100,10)
             skinner.char.x=200;
             skinner.char.y=75;
             return skinner.goTo({x:220,y:90});
@@ -166,8 +164,8 @@ function fire () {
         } )
         .then( ()=> { 
             chalmers.char.behaviour_direction='right';
-            return chalmers.changeRoom(0,150,15) })
-        .then( ()=> { return game.changeRoom(0,160,25) })
+            return chalmers.goToRoom('FRONT_R',150,15) })
+        .then( ()=> { return game.changeRoom(['FRONT_R',160,25]) })
         .then( ()=> { return game.getThings('AGNES_C').say('Seymour! the house is on fire!') })
         .then( ()=> {
             game.setGameStatus('CONVERSATION', 'houseIsOnFire')

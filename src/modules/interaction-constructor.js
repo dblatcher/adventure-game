@@ -37,7 +37,7 @@ function doorFunction (doorId, destination) {
 	return function () {
 		this.getThings('pc').goTo(this.getThings(doorId).walkToPoint)
 		.then( (feedback) => {
-			if (feedback.finished) {this.changeRoom(destination[0],destination[1],destination[2],{});}
+			if (feedback.finished) {this.changeRoom(destination,{});}
 		} );
 	}
 }
