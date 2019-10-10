@@ -88,18 +88,19 @@ import { /* webpackPreload: true */ gameData } from "../../gameIndex";
 
 
 import state from "../../modules/savedStates";
-
-
 import * as pathFinding from "./pathFinding";
-import handleDialogChoice from "./handleDialogChoice";
+
+import { executeStandardOrder, runSequence } from "./orderExecution";
 import {changeRoom, teleportCharacter} from "./roomMethods";
+import {getInventoryItem, looseInventoryItem} from "./inventoryMethods";
+
+import handleDialogChoice from "./handleDialogChoice";
 import executeCommand from "./executeCommand";
 import getThings from "./getThings";
 import removeThing from "./removeThing";
 import handleClickOnRoom from "./handleClickOnRoom";
 import handleClickOnThing from "./handleClickOnThing";
 import handleHoverEvent from "./handleHoverEvent";
-import {getInventoryItem, looseInventoryItem} from "./inventoryMethods";
 
 import VerbMenu from "../VerbMenu";
 import InventoryMenu from "../InventoryMenu";
@@ -230,6 +231,8 @@ export default {
     getInventoryItem,
     looseInventoryItem,
     teleportCharacter,
+    executeStandardOrder,
+    runSequence,
 
     handleSkipButton() {
       console.log('skip button');
@@ -303,8 +306,8 @@ export default {
         this.$refs.room.resize();
       });
 
-      if (typeof this.sequences.starting === 'function') {
-        this.sequences.starting.apply(this,[]);
+      if (this.sequences.starting) {
+        this.runSequence('starting');
       }
     }
   },

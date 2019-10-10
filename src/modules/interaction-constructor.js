@@ -33,6 +33,14 @@ Interaction.makeMatrix = function (interactions) {
 	return interactionMatrix;
 }
 
+
+function StandardOrder (actorId, action, target, options={}) {
+	this.actorId = actorId;
+	this.action  = action;
+	this.target  = target;
+	this.options = options;
+}
+
 function doorFunction (doorId, destination) {	
 	return function () {
 		this.getThings('pc').goTo(this.getThings(doorId).walkToPoint)
@@ -58,4 +66,4 @@ function pcSays(text,time) {
 	return function() { this.getThings('pc').say(text,{time:time});}	
 }
 
-export { Interaction, doorFunction, pcSays, takeFunction }
+export { Interaction, StandardOrder, doorFunction, pcSays, takeFunction }

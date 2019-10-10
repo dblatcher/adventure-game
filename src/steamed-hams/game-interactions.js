@@ -102,17 +102,17 @@ var interactions =[
 
     //FRONT OF HOUSE
     new Interaction(['LOOK','GARAGE_W'],[],pcSays('I admire car owners. I aspire to be one after I\'ve reimbursed mother for the food I ate as a child.',4000)),
-    
+
     new Interaction(['USE','BUCKET_SAND_I','BUSH_W'],[],function(){
-        this.sequences.pourSandInBush.apply(this,['BUSH_W']);
+        this.runSequence('pourSandInBush', 'BUSH_W');
     }),
 
     new Interaction(['USE','BUCKET_SAND_I','BUSH_2_W'],[],function(){
-        this.sequences.pourSandInBush.apply(this,['BUSH_2_W']);
+        this.runSequence('pourSandInBush', 'BUSH_2_W');
     }),
 
     new Interaction(['USE','BUCKET_SAND_I','BUSH_3_W'],[],function(){
-        this.sequences.pourSandInBush.apply(this,['BUSH_3_W']);
+        this.runSequence('pourSandInBush', 'BUSH_3_W');
     }),
 
     new Interaction(['OPEN','FRONT_DOOR_W'],
@@ -161,7 +161,7 @@ var interactions =[
 		 .then ( ()=> {
 			this.gameVars.iceBucketIsOnTable = true;
 			if (this.gameVars.roastIsInOven && this.gameVars.iceBucketIsOnTable) {
-				this.sequences.chalmersAtDoor.apply(this,[]);
+				this.runSequence('chalmersAtDoor');
 			}
         })
 
@@ -195,7 +195,7 @@ var interactions =[
         this.getThings('pc').goTo(this.getThings('DINING_KITCHENDOOR_W').walkToPoint)
         .then( (r)=> { if (r.finished) {
             return this.changeRoom(['FRONT_R',146,27])
-            .then( ()=> { this.sequences.seeBurningRoast.apply(this,[]) } )
+            .then( ()=> { this.runSequence('seeBurningRoast') } )
         } });
     }),
 
@@ -312,7 +312,7 @@ var interactions =[
         .then ( ()=> {
 			this.gameVars.roastIsInOven = true;
 			if (this.gameVars.roastIsInOven && this.gameVars.iceBucketIsOnTable) {
-				this.sequences.chalmersAtDoor.apply(this,[]);
+				this.runSequence('chalmersAtDoor');
 			}
         })
     }),

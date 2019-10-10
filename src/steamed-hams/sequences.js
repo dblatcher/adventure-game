@@ -1,20 +1,12 @@
+import { StandardOrder } from "../modules/interaction-constructor";
 
-function starting () {
-   const game = this;
-   let skinner = game.getThings('pc');
-
-   return new Promise (function (resolve) {
-        game.setGameStatus('CUTSCENE');
-        skinner.say('I thought I\'d never get out of that superMarket!')
-        .then( ()=> { return skinner.say('I\'d better glaze this ham and get it in the oven before Superintendent Chalmers arrives')})
-        .then( ()=> { return skinner.say('also, I need an ice bucket...')})
-        .then( ()=> {
-            game.setGameStatus('LIVE');
-            resolve({success:true});
-        });
-   })
-
-}
+const starting = [
+    new StandardOrder ('GAME', 'setGameStatus','CUTSCENE'),
+    new StandardOrder ('SKINNER_C', 'say','I thought I\'d never get out of that superMarket!'),
+    new StandardOrder ('SKINNER_C', 'say','I\'d better glaze this ham and get it in the oven before Superintendent Chalmers arrives',{time:500}),
+    new StandardOrder ('SKINNER_C', 'say','also, I need an ice bucket...'),
+    new StandardOrder ('GAME', 'setGameStatus','LIVE'),
+]
 
 function pourSandInBush (bushId = 'BUSH_W') {
     const game = this;

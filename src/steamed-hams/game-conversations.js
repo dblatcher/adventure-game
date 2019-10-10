@@ -86,8 +86,8 @@ function makeConversations() {
 			'npc:: Yeah, so you call them \"steamed hams\" despite the fact they are obviously grilled.',
 			'pc:: Ye- hey- you know, the- one thing I should- excuse me for one second.',
 			'npc:: Of course.',],
-			{consequence: function(theApp,choice){
-				theApp.sequences.fire.apply(theApp,[choice]);
+			{consequence: function(game,choice){
+				game.runSequence('fire');
 			}}
 		),
 	]));
@@ -106,8 +106,8 @@ function makeConversations() {
 
 		new DialogChoice('Come in.',
 		[],
-		{consequence: function(theApp,choice){
-			theApp.sequences.chalmersComesIn.apply(theApp,[choice]);
+		{consequence: function(game,choice){
+			game.runSequence('chalmersComesIn');
 		}}),
 
 	]));
@@ -133,18 +133,18 @@ function makeConversations() {
 	conversations.iWasJust.addBranch(new DialogBranch('start',[
 		new DialogChoice('just stretching my calves on the windowsill.',
 		iWasJust_1('Isometric exercise. Care to join me?'),
-		{consequence: function(theApp,choice){
-			theApp.sequences.goToKrustyBurger.apply(theApp,[choice]);
+		{consequence: function(game,choice){
+			game.runSequence('goToKrustyBurger',choice);
 		}}),
 		new DialogChoice('just examining these new italian loafers for signs of wear.',
 		iWasJust_1('A principal must always be wary of his shoes!'),
-		{consequence: function(theApp,choice){
-			theApp.sequences.goToKrustyBurger.apply(theApp,[choice]);
+		{consequence: function(game,choice){
+			game.runSequence('goToKrustyBurger',choice);
 		}}),
 		new DialogChoice('stomping on an troublesome termite.',
 		iWasJust_1('take that!'),
-		{consequence: function(theApp,choice){
-			theApp.sequences.goToKrustyBurger.apply(theApp,[choice]);
+		{consequence: function(game,choice){
+			game.runSequence('goToKrustyBurger',choice);
 		}}),
 	]))
 
@@ -158,8 +158,8 @@ function makeConversations() {
 			{orderType: "say", options: {}, actor: "CHALMERS_C", text: 'Well Seymour, you are an odd fellow, but I must admit...'},
 			{orderType: "say", options: {}, actor: "CHALMERS_C", text: 'You steam a good ham'},
 		],
-		{consequence: function(theApp,choice){
-			theApp.sequences.ending.apply(theApp,[choice]);
+		{consequence: function(game,choice){
+			game.runSequence('ending',choice);
 		}}
 		),
 
