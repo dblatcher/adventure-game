@@ -54,7 +54,7 @@ function teleportCharacter (target, options={}) {
 
   if (typeof movingCharacter === 'string') {
     let charId = findIndexById(movingCharacter, game.allCharacters);
-    if (!charId) {
+    if (charId === false) {
       return Promise.resolve( {success:false, reason:`no character with id ${movingCharacter}`} )
     }
     movingCharacter = game.allCharacters[ findIndexById(movingCharacter, game.allCharacters) ]

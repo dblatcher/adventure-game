@@ -69,8 +69,6 @@ var interactions =[
 
     new Interaction(['LOOK','TODO_I'],[],function(){
 
-        let pc = this.getThings('pc');
-
         let roastComment = this.gameVars.roastIsInOven ?
             'done.' :  this.allRoomItemData.KITCHEN_R.OVEN_W.status.cycle === 'open_ham_inside' ?
             'better close the oven and turn it up to maximum heat!' : this.allInventoryItemsAsObject.ROAST_GLAZED_I.have ?
@@ -82,11 +80,13 @@ var interactions =[
             'I have a bucket, but it\'s not shiny enough.' : this.allInventoryItemsAsObject.BUCKET_SAND_I.have ?
             'This fire bucket is the right size, but It\'s full of sand and not shiny.' : 'there must be a bucket around here somewhere.';
 
-        pc.say('1. Buy roast... done')
-        .then( ()=> { return pc.say( '2. Glaze roast and place in oven... ' ) } )
-        .then( ()=> { return pc.say( roastComment ) } )
-        .then( ()=> { return pc.say( '3. Put ice bucket on table...' ) } )
-        .then( ()=> { return pc.say( bucketComment ) } )
+        this.runSequence([
+            new StandardOrder('pc', 'say', '1. Buy roast... done'),
+            new StandardOrder('pc', 'say', '2. Glaze roast and place in oven... '),
+            new StandardOrder('pc', 'say', roastComment),
+            new StandardOrder('pc', 'say', '3. Put ice bucket on table...'),
+            new StandardOrder('pc', 'say', bucketComment),
+        ])
 
     }),
 
@@ -335,27 +335,18 @@ var interactions =[
     new Interaction(['OPEN','CUPBOARD_W'],
     [function(){return !this.gameVars.cupboardEmpty}],
     function(){
-        let pc = this.getThings('pc');
-        this.setGameStatus('CUTSCENE');
-
-        pc.goTo(this.getThings('CUPBOARD_W').walkToPoint)
-        .then( (r) => {return pc.say('Let\'s see...') } )
-        .then( (r) => {
-            this.getInventoryItem('BUCKET_SAND_I');
-            return pc.say('...the old fire bucket...') 
-        } )
-        .then( (r) => {
-            this.getInventoryItem('PLATTER_I');
-            return pc.say('...the serving platter...') 
-        } )
-        .then( (r) => {
-            this.getInventoryItem('BOURBON_I');
-            return pc.say('... and a bottle of bourbon?! What\'s that doing here?') 
-        } )
-        .then( (r) => {
-            this.gameVars.cupboardEmpty = true;
-            this.setGameStatus('LIVE');
-         } )
+        this.runSequence([
+            new StandardOrder('GAME','setGameStatus','CUTSCENE'),
+            new StandardOrder('pc','goTo',this.getThings('CUPBOARD_W').walkToPoint),
+            new StandardOrder('pc','say','Let\'s see...'),
+            new StandardOrder('GAME','getInventoryItem','BUCKET_SAND_I'),
+            new StandardOrder('pc','say','...the old fire bucket...'),
+            new StandardOrder('GAME','getInventoryItem','PLATTER_I'),
+            new StandardOrder('pc','say','...the serving platter...'),
+            new StandardOrder('GAME','getInventoryItem','BOURBON_I'),
+            new StandardOrder('pc','say','...and a bottle of bourbon?! What\'s that doing here?'),
+            new StandardOrder('GAME','setGameStatus','LIVE'),
+        ])
     }),
 
     new Interaction(['OPEN','CUPBOARD_W'],[],
@@ -367,23 +358,26 @@ var interactions =[
     function () {
         let skinner = this.getThings('pc');
         let window = this.getThings('KRUSTYBURGER_W').walkToPoint;
-        
-
-        this.setGameStatus('CUTSCENE');
-
-        skinner.say('But what if I were to  purchase fast food and disguise it as my own cooking?',{time:2500})
-        .then(()=>{ return skinner.say('Delightfully devilish, Seymour!') })
-        .then(()=>{ return skinner.goTo(window) })
+        this.runSequence([
+            new StandardOrder ('GAME', 'setGameStatus','CUTSCENE'),
+            new StandardOrder ('pc', 'say','But what if I were to  purchase fast food and disguise it as my own cooking?',{time:2500}),
+            new StandardOrder ('pc', 'say','Delightfully devilish, Seymour!'),
+            new StandardOrder ('pc', 'goTo',window),
+        ])
         .then(()=>{ 
             skinner.char.behaviour_action='window_wait';
             skinner.char.behaviour_actframe=0;
             return this.teleportCharacter(['CHALMERS_C', 'KITCHEN_R', 100, -20])
         })
-        .then(()=>{ return this.getThings('CHALMERS_C').goTo({x:95, y:20}) })
-        .then(()=>{ return this.getThings('CHALMERS_C').goTo({x:105, y:20}) })
-        .then(()=>{ return this.getThings('CHALMERS_C').say('Seymour!') })
-        .then(()=>{ return this.getThings('pc').say('Superintendent, I was just- uh...',{time:2000,action:'window_talk'} ) })
-        .then(()=>{ this.setGameStatus('CONVERSATION', 'iWasJust') })
+        .then(()=>{ 
+            return this.runSequence([
+                new StandardOrder ('CHALMERS_C','goTo',{x:95, y:20}),
+                new StandardOrder ('CHALMERS_C','goTo',{x:105, y:20}),
+                new StandardOrder ('CHALMERS_C','say','Seymour!'),
+                new StandardOrder ('pc', 'say','Superintendent, I was just- uh...',{time:2500, action:'window_talk'}),
+                new StandardOrder ('GAME', 'setGameStatus','CONVERSATION','iWasJust'),
+            ])
+        })
     }
     )
 

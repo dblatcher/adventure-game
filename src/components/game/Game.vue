@@ -274,6 +274,13 @@ export default {
       console.warn(`${statusName} is not a valid gameStatus`);
     },
 
+    setGameVar(target,options) {
+      Object.keys(target).forEach(key => {
+        this.$set(this.gameVars,key, target[key])
+      })
+      return this.gameVars;
+    },
+
     pickVerb: function(verbID) {
       this.subject = null;
       for (var i=0; i<this.verbList.length; i++) {

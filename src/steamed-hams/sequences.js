@@ -45,51 +45,31 @@ const chalmersComesIn = [
     new StandardOrder ('GAME', 'setGameStatus','LIVE'),
 ];
 
-function seeBurningRoast () {
-    const game = this;
-    let skinner = game.getThings('pc');
-    game.gameVars.haveSeenBurningRoast = true;
+const seeBurningRoast = [
+    new StandardOrder ('GAME', 'setGameStatus','CUTSCENE'),
+    new StandardOrder ('GAME', 'changeRoom',['KITCHEN_R',100,10]),
+    new StandardOrder ('GAME','setGameVar',{haveSeenBurningRoast:true}),
+    new StandardOrder ('SKINNER_C','say','Egads! My roast is ruined!'),
+    new StandardOrder ('GAME', 'setGameStatus','LIVE'),
+];
 
-    return new Promise (function(resolve) {
-        game.changeRoom(['KITCHEN_R',100,10])
-        .then( ()=> { skinner.say('Egads! My roast is ruined!')} )
-        .then( ()=> { resolve ({sucess: true})} )
-    })
-}
+const goToKrustyBurger = [
+    new StandardOrder ('GAME', 'setGameStatus','CUTSCENE'),
+    new StandardOrder ('CHALMERS_C','goToRoom',['DINING_R',100,10]),
+    new StandardOrder ('GAME','teleportCharacter',['SKINNER_C','KITCHEN_R',200,75]),
+    new StandardOrder ('SKINNER_C','goTo',{x:220, y:90}),
+    new StandardOrder ('SKINNER_C','say','Four hamburgers, quickly!'),
+    new StandardOrder ('SERVER_C','say','uhhhh...'),
+    new StandardOrder ('SERVER_C','say','would you like fries with that?'),
+    new StandardOrder ('SKINNER_C','say','Fries... yes, two large fries. Hurry!'),
+    new StandardOrder ('SERVER_C','say','that\'ll be $21.97, please.'),
+    new StandardOrder ('GAME', 'getInventoryItem','HAMBURGER_BAG_I'),
+    new StandardOrder ('SKINNER_C','goTo',{x:200, y:73}),
+    new StandardOrder ('GAME','teleportCharacter',['SKINNER_C','KITCHEN_R',220,30]),
+    new StandardOrder ('SERVER_C','say','I don\'t think he\'s coming back...'),
+    new StandardOrder ('GAME', 'setGameStatus','LIVE'),
+];
 
-function goToKrustyBurger() {
-    const game = this;
-    let skinner = game.getThings('pc');
-    let server = game.getThings('SERVER_C');
-    let chalmers = game.getThings('CHALMERS_C');
-    game.getInventoryItem('HAMBURGER_BAG_I');
-    game.gameVars.beenToKrustyBurger = true;
-
-    return new Promise (function(resolve,reject) {
-        game.setGameStatus('CUTSCENE');
-
-        chalmers.goTo({ x:100, y:-20})
-        .then( () =>{
-            chalmers.goToRoom(['DINING_R',100,10])
-            skinner.char.x=200;
-            skinner.char.y=75;
-            return skinner.goTo({x:220,y:90});
-        })
-        .then( () => {return skinner.say('Four hamburgers, quickly!') } )
-        .then( () => {return server.say('uhhhh...') } )
-        .then( () => {return server.say('would you like fries with that?') } )
-        .then( () => {return skinner.say('Fries... yes, two large fries. Hurry!') } )
-        .then( () => {return server.say('that\'ll be $12.97, please.') } )
-        .then( () => {return skinner.goTo({x:200,y:73}) } )
-        .then( () => {
-            skinner.char.x=220;
-            skinner.char.y=30;
-            server.say('I don\'t think he\'s coming back...')
-            game.setGameStatus('LIVE'); 
-            resolve ({success:true});
-        } )
-    })
-}
 
 function fire () {
     const game = this;
