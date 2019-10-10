@@ -12,7 +12,7 @@ var interactions =[
 			return this.getThings('pc').goTo(this.getThings('DOOR_W').walkToPoint)
 		} )
 		.then( (r)=> { if (r.finished) {
-			return this.getThings('DOOR_W').setStatus('opening','open')
+			return this.getThings('DOOR_W').setStatus(['opening','open'])
 		} });
 	}),
 	
@@ -30,7 +30,7 @@ var interactions =[
 		this.getThings('pc').say("ok");
 		this.getThings('pc').goTo(this.getThings('DOOR_W').walkToPoint)
 		.then( (r)=> { if (r.finished) {
-			this.getThings('DOOR_W').setStatus('closing','closed')
+			this.getThings('DOOR_W').setStatus(['closing','closed'])
 		} });
 	
 	}),
@@ -72,7 +72,7 @@ var interactions =[
 		pc.say ("put out fire?")
 		.then ( (r) => {return pc.say("okay")})
 		.then ( (r) => {return pc.goTo(fire.walkToPoint)})
-		.then ( (r) => {return fire.setStatus('extinguishing','out' )})
+		.then ( (r) => {return fire.setStatus(['extinguishing','out'] )})
 		.then ( (r) => {return billy.say('hey!')})	
 		.then ( (r) => {return billy.say("That was my fire!")} )			
 		.then ( (r) => {return billy.goTo(house.walkToPoint)} )			

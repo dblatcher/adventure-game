@@ -119,7 +119,7 @@ var interactions =[
     function(){
         this.getThings('pc').goTo(this.getThings('FRONT_DOOR_W').walkToPoint)
         .then( (r)=> { if (r.finished) {
-            return this.getThings('FRONT_DOOR_W').setStatus('opening','open')
+            return this.getThings('FRONT_DOOR_W').setStatus(['opening','open'])
         } });
     }),
 
@@ -135,7 +135,7 @@ var interactions =[
     function(){
         this.getThings('pc').goTo(this.getThings('FRONT_DOOR_W').walkToPoint)
         .then( (r)=> { if (r.finished) {
-            this.getThings('FRONT_DOOR_W').setStatus('closing','closed')
+            this.getThings('FRONT_DOOR_W').setStatus(['closing','closed'])
         } });
     }),
     
@@ -175,7 +175,7 @@ var interactions =[
     ],function(){
         this.getThings('pc').goTo(this.getThings('DINING_KITCHENDOOR_W').walkToPoint)
         .then( (r)=> { if (r.finished) {
-            return this.getThings('DINING_KITCHENDOOR_W').setStatus('opening','open')
+            return this.getThings('DINING_KITCHENDOOR_W').setStatus(['opening','open'])
         } });
     }),
 
@@ -210,7 +210,7 @@ var interactions =[
     function(){
         this.getThings('pc').goTo(this.getThings('DINING_KITCHENDOOR_W').walkToPoint)
         .then( (r)=> { if (r.finished) {
-            this.getThings('DINING_KITCHENDOOR_W').setStatus('closing','closed')
+            this.getThings('DINING_KITCHENDOOR_W').setStatus(['closing','closed'])
         } });
     }),
 
@@ -229,7 +229,7 @@ var interactions =[
                 if (feedback.finished) {
                     this.setGameStatus('CUTSCENE');
                     this.changeRoom(['DINING_R',300,50])
-                        .then( ()=> { return this.getThings('DINING_KITCHENDOOR_W').setStatus('closing','closed') } )
+                        .then( ()=> { return this.getThings('DINING_KITCHENDOOR_W').setStatus(['closing','closed']) } )
                         .then( ()=> { return this.getThings('pc').goTo({x:220, y:45})  } )
                         .then( ()=> {
                             this.allRoomItemData.DINING_R.HAMBURGERS_W.removed=false;

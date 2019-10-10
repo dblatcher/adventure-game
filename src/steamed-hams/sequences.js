@@ -82,7 +82,7 @@ function fire () {
         game.setGameStatus('CUTSCENE');
         skinner.goTo({x:250,y:45})
         .then (r => {
-            return door.setStatus('opening_fire','closing_fire','closed_glowing')
+            return door.setStatus(['opening_fire','closing_fire','closed_glowing'])
         })
         .then (r => {
             skinner.goTo({x:240,y:23});

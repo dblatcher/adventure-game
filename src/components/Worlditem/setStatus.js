@@ -1,13 +1,15 @@
-export default function setStatus () {
+export default function setStatus (input) {
+
+    if (!Array.isArray(input)) {input = [input]}
 
     var orders = [], nextOrder;
-    for (var i = 0; i < arguments.length; i++) {
-        nextOrder = typeof arguments[i] === 'string' ? {cycle:arguments[i]} : arguments[i];
+    for (var i = 0; i < input.length; i++) {
+        nextOrder = typeof input[i] === 'string' ? {cycle:input[i]} : input[i];
         if (this.item.cycles[nextOrder.cycle]) { 
             orders.push(nextOrder);
         } else {
             // eslint-disable-next-line
-            console.warn ( `${this.ident} does not cycle ${nextOrder.cycle}.` ) 
+            console.warn ( `${this.ident} does not have a cycle called "${nextOrder.cycle}".` ) 
         }
     }
 
