@@ -1,16 +1,18 @@
 
-function getInventoryItem (id, quantity=1) {
+function getInventoryItem (id, options={}) {
     let item = this.inventoryItems.filter(function(a){return a.id==id})[0];
     if(!item){
       console.warn(`no inventory item with id ${id}`);
       return false;
     }
 
+    if (!options.quantity) {options.quantity = 1}
+
     if (item.quantified) {
       if (item.have) {
-        item.quantity += quantity;
+        item.quantity += options.quantity;
       } else {
-        item.quantity = quantity;
+        item.quantity = options.quantity;
         item.have = true;
       }
       return item.quantity;
@@ -20,12 +22,14 @@ function getInventoryItem (id, quantity=1) {
     return true;
 }
 
-function looseInventoryItem (id, quantity = 1) {
+function looseInventoryItem (id, options={}) {
     let item = this.inventoryItems.filter(function(a){return a.id==id})[0];
     if(!item) {
       console.warn(`no inventory item with id ${id}`);
       return false;
     };
+
+    if (!options.quantity) {options.quantity = 1}
 
     if (item.have === false) {return false};
 
@@ -34,12 +38,12 @@ function looseInventoryItem (id, quantity = 1) {
         return true;
     };
 
-    if (quantity === 'all') {
+    if (options.quantity === 'all') {
         item.quantity = 0;
         item.have = false;
     };
 
-    item.quantity -= quantity;
+    item.quantity -= options.quantity;
     if (item.quantity <= 0) {item.have = false};
     return item.quantity;
 }
