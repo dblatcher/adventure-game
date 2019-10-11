@@ -1,11 +1,11 @@
 import { StandardOrder } from "../modules/interaction-constructor";
 
 const starting = [
-    new StandardOrder ('GAME', 'setGameStatus','CUTSCENE'),
-    new StandardOrder ('SKINNER_C', 'say','I thought I\'d never get out of that superMarket!'),
-    new StandardOrder ('SKINNER_C', 'say','I\'d better glaze this ham and get it in the oven before Superintendent Chalmers arrives',{time:500}),
-    new StandardOrder ('SKINNER_C', 'say','also, I need an ice bucket...'),
-    new StandardOrder ('GAME', 'setGameStatus','LIVE'),
+    new StandardOrder ('[Status]CUTSCENE'),
+    new StandardOrder ('pc::I thought I\'d never get out of that superMarket!'),
+    new StandardOrder ('pc::I\'d better glaze this ham and get it in the oven before Superintendent Chalmers arrives',{time:3000}),
+    new StandardOrder ('pc::also, I need an ice bucket...'),
+    new StandardOrder ('[Status]LIVE'),
 ]
 
 const pourSandInBush = [
@@ -13,8 +13,8 @@ const pourSandInBush = [
     new StandardOrder ('SKINNER_C', 'say','There!'),
     new StandardOrder ('SKINNER_C', 'say','I suppose its wrong to use fire-fighting equipment improperly...'),
     new StandardOrder ('SKINNER_C', 'say','But what are the chances of a fire in the next half hour?'),
-    new StandardOrder ('GAME', 'getInventoryItem','BUCKET_EMPTY_I'),
-    new StandardOrder ('GAME', 'looseInventoryItem','BUCKET_SAND_I'),
+    new StandardOrder ('[get]BUCKET_EMPTY_I'),
+    new StandardOrder ('[Loose]BUCKET_SAND_I'),
     new StandardOrder ('GAME', 'setGameStatus','LIVE'),
 ]
 
@@ -22,7 +22,7 @@ const chalmersAtDoor = [
     new StandardOrder ('GAME', 'setGameStatus','CUTSCENE'),
     new StandardOrder ('SKINNER_C', 'say','The doorbell!'),
     new StandardOrder ('SKINNER_C', 'say','Superintendent Chalmers is outside!'),
-    new StandardOrder ('GAME', 'teleportCharacter',['CHALMERS_C', 'FRONT_R',100,10]),
+    new StandardOrder ('[Teleport]CHALMERS_C,FRONT_R,100,10'),
     new StandardOrder ('GAME', 'setGameStatus','LIVE'),
 ];
 
@@ -32,14 +32,14 @@ const greetChalmers = [
     new StandardOrder('CHALMERS_C','say','dispite your directions.'),
     new StandardOrder('pc','say','Superintendent Chalmers!'),
     new StandardOrder('pc','say','Welcome!'),
-    new StandardOrder('GAME','setGameStatus','CONVERSATION','arrival'),
+    new StandardOrder('[Status]CONVERSATION','arrival'),
 ];
 
 const chalmersComesIn = [
     new StandardOrder ('GAME', 'setGameStatus','CUTSCENE'),
     new StandardOrder ('CHALMERS_C', 'goToRoom',['DINING_R',100,10]),
     new StandardOrder ('SKINNER_C', 'say','phew...'),
-    new StandardOrder ('SKINNER_C', 'goTo',{x:146,y:20}),
+    new StandardOrder ('SKINNER_C', 'goTo',[146, 20]),
     new StandardOrder ('KITCHEN_R.OVEN_W', 'setStatus',"smoking"),
     new StandardOrder ('GAME', 'changeRoom',['DINING_R',120,40]),
     new StandardOrder ('GAME', 'setGameStatus','LIVE'),
