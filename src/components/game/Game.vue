@@ -235,7 +235,6 @@ export default {
     runSequence,
 
     handleSkipButton() {
-      console.log('skip button');
       if (this.gameStatus === 'LIVE') {return}
       else {this.instantMode = true};
     },

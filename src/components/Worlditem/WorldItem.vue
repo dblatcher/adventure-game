@@ -22,6 +22,7 @@
 <script>
 import Sprite from "../Sprite";
 import setStatus from "./setStatus.js";
+import setRemoval from "./setRemoval.js";
 import { innerBorder } from "../../modules/styleGen";
 
 export default {
@@ -108,7 +109,7 @@ export default {
             if (this.item.unclickable) {return false}
             this.gameInstance.$emit('hover-event', this, event);
         },
-        setStatus : setStatus,
+        setStatus, setRemoval,
         showNextFrame : function () {
             var cycle = this.item.cycles[this.item.status.cycle] ;
             var onLastFrame = !(cycle.length > this.cycleFrame+1);
