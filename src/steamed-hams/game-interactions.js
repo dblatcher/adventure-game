@@ -42,14 +42,12 @@ var interactions =[
     ),
 
     new Interaction(['USE','FOIL_I','BUCKET_EMPTY_I'],[],function(){
-        let pc = this.getThings('pc');
-        this.getInventoryItem('BUCKET_FOIL_I');
-        this.looseInventoryItem('BUCKET_EMPTY_I');
-        this.looseInventoryItem('FOIL_I');
-
-        pc.doAction('wrap_bucket')
-        .then( () => {return pc.say('There!') } )
-        .then( () => {return pc.say('It looks like a real ice bucket.') } )
+        this.runSequence([
+            new StandardOrder('[get]BUCKET_FOIL_I'),
+            new StandardOrder('[loose]BUCKET_EMPTY_I'),
+            new StandardOrder('[loose]FOIL_I'),
+            new StandardOrder('pc::Looks like a real ice bucket!'),
+        ]);
     }),
 
     new Interaction(['USE','BOURBON_I','ROAST_I'],[],function(){
@@ -94,24 +92,27 @@ var interactions =[
     new Interaction(['LOOK','GARAGE_W'],[],pcSays('I admire car owners. I aspire to be one after I\'ve reimbursed mother for the food I ate as a child.',4000)),
 
     new Interaction(['USE','BUCKET_SAND_I','BUSH_W'],[],function(){
-        this.setGameStatus('CUTSCENE')
-        Promise.resolve(true)
-        .then( ()=>{ return this.getThings('pc').goTo(this.getThings('BUSH_W').walkToPoint) } )
-        .then( ()=>{ return this.runSequence('pourSandInBush') } )
+        this.runSequence([].concat(
+            new StandardOrder ('[status]CUTSCENE'),
+            new StandardOrder ('pc>>BUSH_W'),
+            this.sequences.pourSandInBush
+        ) )
     }),
     
     new Interaction(['USE','BUCKET_SAND_I','BUSH_2_W'],[],function(){
-        this.setGameStatus('CUTSCENE')
-        Promise.resolve(true)
-        .then( ()=>{ return this.getThings('pc').goTo(this.getThings('BUSH_2_W').walkToPoint) } )
-        .then( ()=>{ return this.runSequence('pourSandInBush') } )
+        this.runSequence([].concat(
+            new StandardOrder ('[status]CUTSCENE'),
+            new StandardOrder ('pc>>BUSH_2_W'),
+            this.sequences.pourSandInBush
+        ) )
     }),
     
     new Interaction(['USE','BUCKET_SAND_I','BUSH_3_W'],[],function(){
-        this.setGameStatus('CUTSCENE')
-        Promise.resolve(true)
-        .then( ()=>{ return this.getThings('pc').goTo(this.getThings('BUSH_3_W').walkToPoint) } )
-        .then( ()=>{ return this.runSequence('pourSandInBush') } )
+        this.runSequence([].concat(
+            new StandardOrder ('[status]CUTSCENE'),
+            new StandardOrder ('pc>>BUSH_3_W'),
+            this.sequences.pourSandInBush
+        ) )
     }),
 
     new Interaction(['OPEN','FRONT_DOOR_W'],
@@ -263,20 +264,21 @@ var interactions =[
     new Interaction(['OPEN','OVEN_W'],
     [function(){return this.getThings('OVEN_W').item.status.cycle == 'closed'}],
     function(){
-        this.getThings('pc').goTo(this.getThings('OVEN_W').walkToPoint)
-        .then( (r)=> {
-            this.getThings('OVEN_W').setStatus('open');
-        } )
+        this.runSequence([
+            new StandardOrder('pc>>OVEN_W'),
+            new StandardOrder('OVEN_W','setStatus','open'),
+        ])
     }),
 
     new Interaction(['SHUT','OVEN_W'],
     [function(){return this.getThings('OVEN_W').item.status.cycle == 'open'}],
     function(){
-        this.getThings('pc').goTo(this.getThings('OVEN_W').walkToPoint)
-        .then( (r)=> {
-            this.getThings('OVEN_W').setStatus('closed');
-        } )
+        this.runSequence([
+            new StandardOrder('pc>>OVEN_W'),
+            new StandardOrder('OVEN_W','setStatus','closed'),
+        ])
     }),
+
     new Interaction(['USE','ROAST_I','OVEN_W'],[],
     pcSays('I need to glaze it first.')
     ),
@@ -357,12 +359,11 @@ var interactions =[
     function() {return this.allInventoryItemsAsObject.HAMBURGER_PLATTER_I.have === false},],
     function () {
         let skinner = this.getThings('pc');
-        let window = this.getThings('KRUSTYBURGER_W').walkToPoint;
         this.runSequence([
             new StandardOrder ('GAME', 'setGameStatus','CUTSCENE'),
             new StandardOrder ('pc', 'say','But what if I were to  purchase fast food and disguise it as my own cooking?',{time:2500}),
             new StandardOrder ('pc', 'say','Delightfully devilish, Seymour!'),
-            new StandardOrder ('pc', 'goTo',window),
+            new StandardOrder ('pc', 'goTo','KRUSTYBURGER_W'),
         ])
         .then(()=>{ 
             skinner.char.behaviour_action='window_wait';
