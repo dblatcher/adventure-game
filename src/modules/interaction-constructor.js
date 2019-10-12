@@ -53,6 +53,7 @@ function parseOrderString(oString, options) {
 			say: 		{code: '::'},
 			doAction: 	{code: '##'},
 			goTo: 		{code: '>>', targetParser: arrayParse},
+			turnTo: 	{code: '^^', targetParser: arrayParse},
 			goToRoom: 	{code: '}}', targetParser: arrayParse},
 		},
 		GAME: {

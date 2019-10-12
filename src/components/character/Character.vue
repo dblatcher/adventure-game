@@ -36,7 +36,7 @@
 import Sprite from "../Sprite";
 import SpeechLine from "./SpeechLine";
 import sayFunction from "./sayFunction";
-import goFunction from "./goFunction";
+import {goTo, turnTo } from "./goFunction";
 import doFunction from "./doFunction";
 import moveFunction from "./moveFunction";
 
@@ -153,12 +153,12 @@ export default {
     
     methods : {
         doAction : doFunction,
-        goTo : goFunction,
+        goTo, turnTo,
         say : sayFunction,
+        move : moveFunction,
         goToRoom : function (target,options){
             this.theApp.$emit('character-room-change',[this.char].concat(target),options);
         },
-        move : moveFunction,
         showNextFrame : function () {
             var noActions = ( this.char.actionQueue[0] ) ? false:true; 
             var order = this.char.actionQueue[0] || this.behaviour;

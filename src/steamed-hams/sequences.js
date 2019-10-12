@@ -92,11 +92,13 @@ const fire = [
     new StandardOrder( 'pc::Yes.'),
     new StandardOrder( 'CHALMERS_C::May I see it?') ,
     new StandardOrder( 'pc::No.') ,
-    new StandardOrder( 'CHALMERS_C>>DINING_WAYOUT_W'),
-    //need to allow ID as targets for Character.goTo
+    [
+        new StandardOrder( 'CHALMERS_C>>DINING_WAYOUT_W'),
+        new StandardOrder( 'pc>>75,45'),
+    ],
     new StandardOrder('CHALMERS_C}}FRONT_R,150,15'),
-    //need method for turning characters
     new StandardOrder('[room]FRONT_R,160,25'),
+    new StandardOrder('CHALMERS_C^^pc'),
     new StandardOrder( 'AGNES_C::Seymour! the house is on fire!'),
     new StandardOrder('[status]CONVERSATION','houseIsOnFire'),
 

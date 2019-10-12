@@ -1,14 +1,8 @@
 function skip (path) {
-	let horizontal = path[0].x > this.x ? 'right' : 'left';
-	let vertical   = path[0].y > this.y ? 'up' : 'down';	
-	let direction = Math.abs(path[0].x - this.x) > Math.abs(path[0].y - this.y) ? 
-		horizontal :
-		this.char.validDirections.includes(vertical) ? vertical : horizontal;
-
 	return [{
 		x: path[path.length-1].x,
 		y: path[path.length-1].y,
-		direction:direction,
+		direction: findDirection(path[0], this, this.char.validDirections),
 		action:'walk'
 	}];
 }
@@ -50,7 +44,26 @@ function standardiseDestination (destination, game) {
 }
 
 
-export default function (target, options = {}) {
+function findDirection (currentPoint, prevPoint, validDirections) {
+	let horizontal = currentPoint.x > prevPoint.x ? 'right' : 'left';
+	let vertical   = currentPoint.y > prevPoint.y ? 'up' : 'down';	
+	return  Math.abs(currentPoint.x - prevPoint.x) > Math.abs(currentPoint.y - prevPoint.y) ? 
+		horizontal :
+		validDirections.includes(vertical) ? vertical : horizontal;
+}
+
+
+function turnTo (target, options = {}) {
+	let destination = standardiseDestination(target, this.theApp);
+	if (destination === false ) {
+		return Promise.resolve( {finished: false, reason:'not valid destination'})
+	}
+	
+	this.char.behaviour_direction = findDirection (destination,this,this.char.validDirections)
+	return Promise.resolve( {finished: true})
+}
+
+function goTo (target, options = {}) {
 
 	let destination = standardiseDestination(target, this.theApp);
 	if (destination === false ) {
@@ -71,20 +84,12 @@ export default function (target, options = {}) {
 	if (this.theApp.instantMode) {
 		var orders = skip.apply(this,[path]);
 	} else {
-		var orders = [], currentPoint, prevPoint, direction, horizontal,vertical; 
+		var orders = []; 
 		for (var i=0; i<path.length; i++) {
-			currentPoint = path[i]
-			prevPoint = i > 0 ? path[i-1] : this; 
-			horizontal = currentPoint.x > prevPoint.x ? 'right' : 'left';
-			vertical   = currentPoint.y > prevPoint.y ? 'up' : 'down';	
-			direction = Math.abs(currentPoint.x - prevPoint.x) > Math.abs(currentPoint.y - prevPoint.y) ? 
-				horizontal :
-				this.char.validDirections.includes(vertical) ? vertical : horizontal;
-				
 			orders.push({
 				x: path[i].x,
 				y: path[i].y,
-				direction:direction,
+				direction: findDirection (path[i],  i > 0 ? path[i-1] : this, this.char.validDirections),
 				action:options.action
 			});
 		}
@@ -119,3 +124,5 @@ export default function (target, options = {}) {
 	});
 	
 }
+
+export { goTo, turnTo }
