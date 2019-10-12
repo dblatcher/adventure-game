@@ -13,9 +13,50 @@ function skip (path) {
 	}];
 }
 
-export default function (destination, options = {}) {
+
+function standardiseDestination (destination, game) {
+	function findTargetWalkTo(id) {
+		let thing = game.getThings(id)
+		return thing ? thing.walkToPoint : false;
+	}
+
+	if (typeof destination.x === 'number' && typeof destination.y === 'number') {
+		return destination;
+	}
+
+	if (typeof destination === 'string') {
+		let point = findTargetWalkTo(destination)
+		if (point === false) {
+			console.warn('Character.goTo failed: id ' + destination +  ' not found')
+			return false;
+		}
+		return point;
+	}
 	
-	if (Array.isArray(destination)) {destination = {x: destination[0], y: destination[1]}}
+	if (Array.isArray(destination)) {
+		if (typeof destination[0] === 'string') {
+			let point = findTargetWalkTo(destination[0])
+			if (point === false) {
+				console.warn('Character.goTo failed: id ' + destination[0] +  ' not found')
+				return false
+			}
+			return point;
+		} 
+		
+		return {x: destination[0], y: destination[1]}
+		
+	}
+
+}
+
+
+export default function (target, options = {}) {
+
+	let destination = standardiseDestination(target, this.theApp);
+	if (destination === false ) {
+		return Promise.resolve( {finished: false, reason:'not valid destination'})
+	}
+
 
 	if (typeof options.action === 'undefined' || !this.char.cycles[options.action]) {options.action = 'walk'}
 
@@ -24,6 +65,7 @@ export default function (destination, options = {}) {
 		return Promise.resolve( {finished: false, reason:'no route',  message:`No route found to [${destination.x},${destination.y}]`})
 	}
 	
+
 	// create list of orders
 	
 	if (this.theApp.instantMode) {

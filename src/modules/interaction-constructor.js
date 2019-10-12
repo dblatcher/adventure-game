@@ -44,8 +44,8 @@ function parseOrderString(oString, options) {
 		return output;
 	}
 	
-	function objectParse (input) {
-		return input;
+	function emptyObject () {
+		return {};
 	}
 
 	const actionCodes = {
@@ -57,17 +57,12 @@ function parseOrderString(oString, options) {
 		},
 		GAME: {
 			setGameStatus: 		{code: '[status]'},
-			setGameVar: 		{code: '[var]', targetParser: objectParse},
+			setGameVar: 		{code: '[var]', targetParser: emptyObject},
+			changeRoom: 		{code: '[room]', targetParser: arrayParse },
 			teleportCharacter: 	{code: '[teleport]', targetParser: arrayParse },
 			getInventoryItem: 	{code: '[get]'},
 			looseInventoryItem: {code: '[loose]'},
 		}
-	}
-
-	const suffixes = {
-		_C : 'CHARACTER',
-		_W : 'WORLDITEM',
-		_I : 'INVENTORYITEM',
 	}
 
 	let actorType, actorId,action,target;
@@ -85,7 +80,6 @@ function parseOrderString(oString, options) {
 	
 	if (!actorType) {
 
-		
 		Object.keys(actionCodes.CHARACTER).forEach((key)=>{
 			if (action) {return};
 			let code = actionCodes.CHARACTER[key].code
@@ -114,7 +108,6 @@ function parseOrderString(oString, options) {
 function StandardOrder (actorIdOrOrderString, actionOrOptions, target, options={}) {
 	if (arguments.length < 3 ) {
 		Object.assign(this, parseOrderString(actorIdOrOrderString, actionOrOptions))
-		console.log(this) 
 	} else {
 		this.actorId = actorIdOrOrderString;
 		this.action  = actionOrOptions;

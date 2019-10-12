@@ -273,9 +273,12 @@ export default {
       console.warn(`${statusName} is not a valid gameStatus`);
     },
 
-    setGameVar(target,options) {
+    setGameVar(target, options={}) {
       Object.keys(target).forEach(key => {
         this.$set(this.gameVars,key, target[key])
+      })
+      Object.keys(options).forEach(key => {
+        this.$set(this.gameVars,key, options[key])
       })
       return this.gameVars;
     },

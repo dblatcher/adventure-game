@@ -37,18 +37,18 @@ const greetChalmers = [
 
 const chalmersComesIn = [
     new StandardOrder ('GAME', 'setGameStatus','CUTSCENE'),
-    new StandardOrder ('CHALMERS_C', 'goToRoom',['DINING_R',100,10]),
+    new StandardOrder ('CHALMERS_C}}DINING_R,100,10'),
     new StandardOrder ('SKINNER_C', 'say','phew...'),
-    new StandardOrder ('SKINNER_C', 'goTo',[146, 20]),
+    new StandardOrder ('SKINNER_C>>146, 20'),
     new StandardOrder ('KITCHEN_R.OVEN_W', 'setStatus',"smoking"),
-    new StandardOrder ('GAME', 'changeRoom',['DINING_R',120,40]),
+    new StandardOrder ('[room]DINING_R,120,40'),
     new StandardOrder ('GAME', 'setGameStatus','LIVE'),
 ];
 
 const seeBurningRoast = [
     new StandardOrder ('GAME', 'setGameStatus','CUTSCENE'),
     new StandardOrder ('GAME', 'changeRoom',['KITCHEN_R',100,10]),
-    new StandardOrder ('GAME','setGameVar',{haveSeenBurningRoast:true}),
+    new StandardOrder ('[var]',{haveSeenBurningRoast:true}),
     new StandardOrder ('SKINNER_C','say','Egads! My roast is ruined!'),
     new StandardOrder ('GAME', 'setGameStatus','LIVE'),
 ];
@@ -70,52 +70,38 @@ const goToKrustyBurger = [
     new StandardOrder ('GAME', 'setGameStatus','LIVE'),
 ];
 
+const fire = [
+    new StandardOrder ('[status]CUTSCENE'),
+    new StandardOrder ('pc>>250,45'),
+    new StandardOrder ('DINING_KITCHENDOOR_W','setStatus',['opening_fire']),
+    [
+        new StandardOrder ('pc>>240,23'),
+        new StandardOrder ('DINING_KITCHENDOOR_W','setStatus',['closing_fire','closed_glowing']),
+    ],
+    new StandardOrder ('pc::Well, that was wonderful. A good time was had by all, I\'m pooped.'),
+    new StandardOrder( 'CHALMERS_C::Yes, I suppose I should be... good lord, what is happening in there?!'),
+    new StandardOrder( 'pc::Aurora borealis.'),
+    new StandardOrder( 'CHALMERS_C::Aurora borealis?'),
+    new StandardOrder( 'CHALMERS_C>>125,14'),
+    new StandardOrder( 'CHALMERS_C::at this time of year,') ,
+    new StandardOrder( 'CHALMERS_C::at this time of day,') ,
+    new StandardOrder( 'CHALMERS_C>>145,14'),
+    new StandardOrder( 'CHALMERS_C::in this part of the country'),
+    new StandardOrder( 'CHALMERS_C::localized entirely within your kitchen?'),
+    new StandardOrder( 'CHALMERS_C>>165,14'),
+    new StandardOrder( 'pc::Yes.'),
+    new StandardOrder( 'CHALMERS_C::May I see it?') ,
+    new StandardOrder( 'pc::No.') ,
+    new StandardOrder( 'CHALMERS_C>>DINING_WAYOUT_W'),
+    //need to allow ID as targets for Character.goTo
+    new StandardOrder('CHALMERS_C}}FRONT_R,150,15'),
+    //need method for turning characters
+    new StandardOrder('[room]FRONT_R,160,25'),
+    new StandardOrder( 'AGNES_C::Seymour! the house is on fire!'),
+    new StandardOrder('[status]CONVERSATION','houseIsOnFire'),
 
-function fire () {
-    const game = this;
-    return new Promise (function (resolve) {
-        let skinner = game.getThings('pc');
-        let chalmers = game.getThings('CHALMERS_C');
-        let door = game.getThings().DINING_KITCHENDOOR_W;
-        let wayOut = game.getThings().DINING_WAYOUT_W.walkToPoint;
+]
 
-        game.setGameStatus('CUTSCENE');
-        skinner.goTo({x:250,y:45})
-        .then (r => {
-            return door.setStatus(['opening_fire','closing_fire','closed_glowing'])
-        })
-        .then (r => {
-            skinner.goTo({x:240,y:23});
-            return skinner.say('Well, that was wonderful. A good time was had by all, I\'m pooped.');
-        })
-        .then( ()=> { return chalmers.say('Yes, I suppose I should be... good lord, what is happening in there?!')})
-        .then( ()=> { return skinner.say('Aurora borealis.') })
-        .then( ()=> { return chalmers.say('Aurora borealis?') })
-        .then( ()=> { return chalmers.goTo({x:140,y:16})} )
-        .then( ()=> { return chalmers.say('at this time of year,') })
-        .then( ()=> { return chalmers.say('at this time of day,') })
-        .then( ()=> { return chalmers.goTo({x:150,y:16})} )
-        .then( ()=> { return chalmers.say('in this part of the country') })
-        .then( ()=> { return chalmers.say('localized entirely within your kitchen?') })
-        .then( ()=> { return chalmers.goTo({x:160,y:16})} )
-        .then( ()=> { return skinner.say('Yes.') })
-        .then( ()=> { return chalmers.say('May I see it?') })
-        .then( ()=> { return skinner.say('No.') })
-        .then( ()=> { 
-            return chalmers.goTo(wayOut)
-        } )
-        .then( ()=> { 
-            chalmers.char.behaviour_direction='right';
-            return chalmers.goToRoom(['FRONT_R',150,15]) })
-        .then( ()=> { return game.changeRoom(['FRONT_R',160,25]) })
-        .then( ()=> { return game.getThings('AGNES_C').say('Seymour! the house is on fire!') })
-        .then( ()=> {
-            game.setGameStatus('CONVERSATION', 'houseIsOnFire')
-            resolve({success:true});
-        });
-    })
-
-}
 
 function ending () {
     const game = this;
