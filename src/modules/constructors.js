@@ -95,6 +95,10 @@ function WorldItem (id, name, coords ,width,height,initialCycle, model,config={}
 	this.initialState = Object.freeze(Object.assign({model:model},this));
 }
 WorldItem.prototype.reset = resetObject;
+WorldItem.prototype.setRemoval = function (input) {
+	this.removed =!!input
+	return this
+}
 WorldItem.prototype.setStatus = function (input) {
 	if (this.cycles[input]) {this.status.cycle = input}
 	return this;

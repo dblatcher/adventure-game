@@ -1,5 +1,6 @@
+import { StandardOrder } from "../modules/interaction-constructor";
 
-function starting () {
+function oldstarting () {
 
    const game = this;
     
@@ -17,5 +18,12 @@ function starting () {
 
 }
 
+const starting = [
+    new StandardOrder ('[status]CUTSCENE'),
+    new StandardOrder ('pc::This is the starting sequence'),
+    new StandardOrder ('pc##wave'),
+    new StandardOrder ('pc::Hello World'),
+    new StandardOrder ('[status]LIVE'),
+]
 
 export default { starting };

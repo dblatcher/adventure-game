@@ -101,38 +101,25 @@ const fire = [
     new StandardOrder('CHALMERS_C^^pc'),
     new StandardOrder( 'AGNES_C::Seymour! the house is on fire!'),
     new StandardOrder('[status]CONVERSATION','houseIsOnFire'),
-
+    
 ]
 
 
-function ending () {
-    const game = this;
+const ending = [
+    new StandardOrder ('[status]CUTSCENE'),
+    new StandardOrder ('FRONT_R.WINDOW_FIRE_W','setRemoval',false ),
+    new StandardOrder ('CHALMERS_C>>95,1'),
+    new StandardOrder ('AGNES_C::help!',{time:200}),
+    new StandardOrder ('AGNES_C::heelp!',{time:200}),
+    new StandardOrder ('AGNES_C::heeelp!',{time:200}),
+    new StandardOrder ('AGNES_C::heeeelp!',{time:200}),
+    new StandardOrder ('AGNES_C::heeeeelp!',{time:2000}),
+    new StandardOrder ('CHALMERS_C^^pc'),
+    new StandardOrder ('pc##thumbs_up'),
+    new StandardOrder ('[status]COMPLETE'),
+]
 
-    let skinner = game.getThings('pc');
-    let chalmers = game.getThings('CHALMERS_C');
-    let agnes = game.getThings('AGNES_C');
-    let fire = game.allRoomItemData.FRONT_R.WINDOW_FIRE_W;
 
-    console.log(agnes, new Date)
-
-    return new Promise (function (resolve) {
-        game.setGameStatus('CUTSCENE');
-        fire.removed=false;
-        chalmers.goTo({x:95,y:1})
-        .then(()=> {   return agnes.say('help!',{time:200})        } )
-        .then(()=> {   return agnes.say('heelp!',{time:200})       } )
-        .then(()=> {   return agnes.say('heeelp!',{time:200})      } )
-        .then(()=> {   return agnes.say('heeeelp!',{time:200})     } )
-        .then(()=> {   return agnes.say('heeeeelp!',{time:2000})  } )
-        .then(()=> {   return chalmers.goTo({x:100,y:1})           } )
-        .then(()=> {   return skinner.doAction('thumbs_up')       } )
-        .then(()=> {
-            game.setGameStatus('COMPLETE')
-            resolve();
-        } )
-
-    })
-}
 
 
 export default { starting, fire, pourSandInBush, goToKrustyBurger, chalmersComesIn, chalmersAtDoor, greetChalmers,seeBurningRoast,ending };
