@@ -1,6 +1,8 @@
 <template>
   <div class="game">
 
+    <HeartBeater @beat="onBeat" delay="50" v-bind:isPaused="isPaused"/>
+
     <OptionsMenu v-show="optionsMenuIsOpen"
     v-bind:options="options"
     @close="toggleOptionsMenu()"
@@ -73,8 +75,6 @@
     </div>
 
 
- 
-
     <p style="display:none; position:absolute; bottom:0; right:0; background-color:white;">
       <span>{{message}}</span>
       <span ref="coordinateDisplay"></span>
@@ -109,11 +109,12 @@ import CommandLine from "../CommandLine";
 import Room from "../Room";
 import ThingInRoom from "../ThingInRoom";
 import OptionsMenu from "../optionsMenu";
+import HeartBeater from "../HeartBeater";
 
 export default {
   name: 'Game',
   components :{
-    VerbMenu, InventoryMenu, DialogMenu,CommandLine, Room, ThingInRoom, OptionsMenu
+    VerbMenu, InventoryMenu, DialogMenu,CommandLine, Room, ThingInRoom, OptionsMenu, HeartBeater
   },
 
   data () {
@@ -206,9 +207,16 @@ export default {
     fileMenuIsOpen () {
       return this.$parent.fileMenuIsOpen;
     },
+    isPaused () {
+      return (this.gameStatus === 'PAUSED' || this.$parent.fileMenuIsOpen || this.optionsMenuIsOpen);
+    }
   },
   
   methods : {
+
+    onBeat (data) {
+      this.$refs.things.forEach(thing => {thing.onBeat(data)})
+    },
 
     openFileMenu(event) {
       this.$parent.handleFileMenuClick([null, 'toggle']);

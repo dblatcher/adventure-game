@@ -23,6 +23,10 @@ export default {
     components: { WorldItem, Character },
     props:['data','measure','roomWidth','highlight'],
 
+    methods : {
+        onBeat(data) {this.$children[0].onBeat(data) }
+    },
+
     computed : {
         type : function() {
             let id = this.data.id

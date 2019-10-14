@@ -120,16 +120,15 @@ export default {
                     this.item.status = this.item.queue.shift();
                 }
             }
-            
         },
+        onBeat(data) {
+            if (this.spriteSet.length > 0 && data.count % 5 === 0) {
+                this.showNextFrame()
+            }
+        }
 
     },
-    mounted : function() {
-        var that = this;
-        if (this.spriteSet.length > 0 ) {
-            setInterval (function(){that.showNextFrame()},250);
-        }
-    },
+
 }
 </script>
 
