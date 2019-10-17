@@ -1,9 +1,10 @@
-export default function makeChain(orders, execute, that) {
+export default function makeChain(orders, execute, that, checkIfHalted=function(){}, confirmHalt=function(){}) {
 
     function doStep(n, resolve, reject) {
-
         const nextOrEnd = () => {
-            if (n+1 >= orders.length) {
+            let wasHalted = checkIfHalted()
+            if (n+1 >= orders.length || wasHalted) {
+                if (wasHalted) {confirmHalt(n)}
                 resolve (true);
                 return;
             }
