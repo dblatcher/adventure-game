@@ -8,6 +8,7 @@ function skip() {
     this.char.behaviour_action = 'wait';
     this.char.behaviour_actFrame = 0;
     this.char.behaviour_direction = moveOrder.direction;
+    this.$emit('moveOrderDone', moveOrder)
 }
 
 export default function () {
