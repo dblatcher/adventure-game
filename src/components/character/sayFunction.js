@@ -36,17 +36,12 @@ function say (text, options = {} ){
                 if (that.char.sayingQueue.length > 0) { // not using the queing anymore - each line has its own Promise
                     executeOrder (that.char.sayingQueue.shift());
                 } else {
-                    that.saying = '';
-                    if (that.char.destinationQueue.length === 0) { //ie character is not moving
-                        that.char.behaviour_action = 'wait';
-                        that.char.behaviour_actFrame = 0;
-                    }
                     resolve({
                         finished:true,
                         message: that.name+' finished saying \"'+currentOrder.text + '\".'
                     });
+                    that.$off('sayOrderDone', handleSayOrderDone)
                 }
-                that.$off('sayOrderDone', handleSayOrderDone)
             }
             that.$on('sayOrderDone', handleSayOrderDone)
             executeOrder (currentOrder, resolve);
@@ -61,8 +56,22 @@ function countDownSpeech (beat) {
 
     if (this.sayingCountDown) {
         this.sayingCountDown = this.sayingCountDown - beat.delay;
+
+        if (this.theApp.instantMode) {
+            this.sayingCountDown = 0;
+        }
+
         if (this.sayingCountDown <= 0) {
-            this.$emit('sayOrderDone', this.saying)
+
+            let lineJustSaid = this.saying;
+
+            this.saying = '';
+            if (this.char.destinationQueue.length === 0) { //ie character is not moving
+                this.char.behaviour_action = 'wait';
+                this.char.behaviour_actFrame = 0;
+            }
+
+            this.$emit('sayOrderDone', lineJustSaid)
             this.sayingCountDown = 0;
         }
     }

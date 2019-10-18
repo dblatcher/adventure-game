@@ -57,6 +57,8 @@ Character.prototype.returnState = function () {
 		behaviour_action: this.behaviour_action,
 		behaviour_direction:this.behaviour_direction,
 		behaviour_actFrame:this.behaviour_actFrame,
+		saying: this.saying,
+		sayingCountDown: this.sayingCountDown,
 	}
 }
 
