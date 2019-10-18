@@ -56,8 +56,7 @@ export default {
         }
 
         return {
-            spriteSet : spriteSet,
-            timer : -1,
+            spriteSet : spriteSet
         }
     },
 
@@ -191,16 +190,11 @@ export default {
         hoverHandler : function (event) {
             if (this.ident === this.theApp.pcId) {return false}
             this.theApp.$emit('hover-event', this, event);
-        },        
-    },
-    
-    mounted : function() {        
-        var that = this;
-        this.timer = setInterval (function(){that.showNextFrame()},100);
-    },
-    
-    beforeDestroy: function() {
-        clearInterval(this.timer);    
+        },
+        
+        onBeat(data) {
+            if (data.count % 2 === 0 ) {this.showNextFrame()}
+        }
     }
 
 }

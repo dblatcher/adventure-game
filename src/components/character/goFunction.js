@@ -98,9 +98,26 @@ function goTo (target, options = {}) {
 	this.char.destinationQueue = orders;
 	var queEnd = orders[orders.length-1];
 	var that = this;
+
+
 	
 	return new Promise (function (resolve, reject) {
 	
+		let handleMoveOrderDone = function(doneOrder){
+			if ( doneOrder===queEnd) {
+				console.log('reached destination');
+				that.$off('moveOrderDone', handleMoveOrderDone )
+				return;
+			}
+			
+			if (!that.char.destinationQueue.includes(queEnd) ) {
+				console.log('not going there anymore')
+				that.$off('moveOrderDone', handleMoveOrderDone )
+			}
+		}
+
+		that.$on('moveOrderDone', handleMoveOrderDone )
+
 		function takeStepAndCheckIfFinished (resolve ) {					
 			if ( that.char.destinationQueue.indexOf(queEnd) == -1  ) {
 				//not the same destinationQueue - players has given new order
