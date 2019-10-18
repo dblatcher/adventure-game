@@ -6,6 +6,7 @@ function getCurrentGameData (gameInstance) {
     let currentState = {
         roomNumber : gameInstance.roomNumber,
         gameStatus : gameInstance.gameStatus,
+        gameStatusBeforePaused : gameInstance.gameStatusBeforePaused,
         conversation: gameInstance.conversation,
         inventoryItems : [],
         allCharacters : [],
@@ -38,6 +39,7 @@ function createGameData(savedGame) {
 
     let state = {
         gameStatus : 'LIVE',
+        gameStatusBeforePaused : null,
         roomNumber : null,
         conversation : null,
         rooms : gameData.makeRooms(),
@@ -93,6 +95,7 @@ function modifyGameData (state, loadData) {
     if (!loadData) {return state}
 
     state.gameStatus = loadData.gameStatus;
+    state.gameStatusBeforePaused = loadData.gameStatusBeforePaused;
     state.roomNumber = loadData.roomNumber;
     state.conversation = loadData.conversation;
 
