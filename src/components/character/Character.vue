@@ -180,6 +180,7 @@ export default {
 
             if (onLastFrame && (!order.loop && !noActions )) {
                 this.char.actionQueue.shift();
+                this.$emit ('actionOrderDone', order)
             }
         },    
         clickHandler : function (event) {

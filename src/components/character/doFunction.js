@@ -18,7 +18,7 @@ export default function (action, options = {} ) {
     }
     
     // default options.direction to current direction
-    if (!options.direction) {options.direction = this.currentDirection}			
+    if (!options.direction) {options.direction = this.currentDirection}            
     
     //ensure options.direction is a direction supported by the character model's cycle;
     var availableDirections = Object.keys(this.char.cycles[action]);
@@ -39,23 +39,28 @@ export default function (action, options = {} ) {
 
     var that = this;
 
-    function execute(order, resolve) {
-        that.char.actionQueue = [order];	
-        var count = 0;
-        var timer = setInterval (function(){
-            // order.actFrame is updated by showNextFrame
-            count++; 
-            if (count > 0 && order.actFrame == 0) {
-                clearInterval(timer);
+    return new Promise ( function (resolve, reject) {
+
+        that.char.actionQueue = [currentOrder];
+
+        let handleActionOrderDone = function(doneOrder){
+            if ( doneOrder===currentOrder) {
+                that.$off('actionOrderDone', handleActionOrderDone )
                 resolve({
                     finished: true,
-                    message:that.ident + ' finished action:' + order.action
+                    message:that.ident + ' finished action:' + currentOrder.action
                 });
             }
-        },100);
-    }
-    
-    return new Promise ( function (resolve, reject) {
-        execute (currentOrder, resolve);
+            else if (!that.char.actionQueue.includes(currentOrder) ) {
+                that.$off('actionOrderDone', handleActionOrderDone )
+                resolve({
+                    finished: false,
+                    message:that.ident + ' did not finish action:' + currentOrder.action
+                });
+            }
+        }
+
+        that.$on('actionOrderDone', handleActionOrderDone )
+
     });
 }
