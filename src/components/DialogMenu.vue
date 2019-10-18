@@ -39,10 +39,10 @@ export default {
 	bottom: 0;
 	height: 8rem;
 	width: 100%;
+	z-index: 150;
 
 	padding:.5rem;
     box-sizing: border-box;
-
 	
     overflow-y: auto;
 	background-color: black;
