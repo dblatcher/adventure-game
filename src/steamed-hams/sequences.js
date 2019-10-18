@@ -22,12 +22,13 @@ const chalmersAtDoor = [
     new StandardOrder ('GAME', 'setGameStatus','CUTSCENE'),
     new StandardOrder ('SKINNER_C', 'say','The doorbell!'),
     new StandardOrder ('SKINNER_C', 'say','Superintendent Chalmers is outside!'),
-    new StandardOrder ('[Teleport]CHALMERS_C,FRONT_R,100,10'),
+    new StandardOrder ('[Teleport]CHALMERS_C,FRONT_R,130,10'),
     new StandardOrder ('GAME', 'setGameStatus','LIVE'),
 ];
 
 const greetChalmers = [
     new StandardOrder('GAME','setGameStatus','CUTSCENE'),
+    new StandardOrder('CHALMERS_C^^pc'),
     new StandardOrder('CHALMERS_C','say','Well Seymour, I made it.'),
     new StandardOrder('CHALMERS_C','say','dispite your directions.'),
     new StandardOrder('pc','say','Superintendent Chalmers!'),
@@ -37,6 +38,7 @@ const greetChalmers = [
 
 const chalmersComesIn = [
     new StandardOrder ('GAME', 'setGameStatus','CUTSCENE'),
+    new StandardOrder ('CHALMERS_C>>FRONT_DOOR_W'),
     new StandardOrder ('CHALMERS_C}}DINING_R,100,10'),
     new StandardOrder ('SKINNER_C', 'say','phew...'),
     new StandardOrder ('SKINNER_C>>146, 20'),
