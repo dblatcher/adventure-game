@@ -120,6 +120,17 @@ const ending = [
 ]
 
 
+const test = [
+    new StandardOrder ('pc::talk test'),
+    new StandardOrder ('pc::talk test two'),
+    new StandardOrder ('pc>>100,10'),
+    new StandardOrder ('pc>>150,15'),
+    new StandardOrder ('pc##window_talk'),
+    new StandardOrder ('pc##nonRealAction'),
+    new StandardOrder ('pc##window_talk'),
+    new StandardOrder ('pc>>150,0'),
+    new StandardOrder ('pc::done'),
+]
 
 
-export default { starting, fire, pourSandInBush, goToKrustyBurger, chalmersComesIn, chalmersAtDoor, greetChalmers,seeBurningRoast,ending };
+export default { starting, fire, pourSandInBush, goToKrustyBurger, chalmersComesIn, chalmersAtDoor, greetChalmers,seeBurningRoast,ending, test };
