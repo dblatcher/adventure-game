@@ -117,6 +117,7 @@ export default {
 
             if (onLastFrame) {
                 if (this.item.queue.length) {
+                    this.$emit('statusOrderDone',this.item.queue[0])
                     this.item.status = this.item.queue.shift();
                 }
             }

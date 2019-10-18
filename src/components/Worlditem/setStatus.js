@@ -21,28 +21,26 @@ export default function setStatus (input) {
     var that = this;
 
     return new Promise( function(resolve) {
-        watchQueue(resolve);
-    });
 
-    function watchQueue(resolve) {
-        var timer = setInterval (function(){
-            if (that.item.queue[0] === lastOrder) {
-                clearInterval(timer);
+        function handleStatusOrderDone(order) {
+            if (order === lastOrder) {
                 resolve({
                     finished:true,
                     message: that.ident + ' finished sequence ending in ' + lastOrder.cycle
                 });
-            }
-
-            if (that.item.queue.indexOf(lastOrder) === -1) {
-                clearInterval(timer);
+                that.$off('statusOrderDone', handleStatusOrderDone);
+            } else if (that.item.queue.indexOf(lastOrder) === -1) {
                 resolve({
                     finished: false,
                     message: that.ident + ' no longer doing sequence ending with ' + lastOrder.cycle
                 });
+                that.$off('statusOrderDone', handleStatusOrderDone);
             }
-            
-        },100);
-    }
+        }
+
+        that.$on('statusOrderDone', handleStatusOrderDone);
+
+    });
+
 
 }
