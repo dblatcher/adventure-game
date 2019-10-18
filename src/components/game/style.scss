@@ -111,10 +111,27 @@
 }
 
 
+.pause-button {
+    @include btn-toggle ($colour-blue);
+    @include navButton(true);
+
+    &--active {
+        @include btn-solid ($colour-blue);
+        @include navButton(true);
+    }
+
+
+    right: 9.2rem;
+    z-index: 500;
+}
+
+
 .hidden {
 	display: none;
 }
 
 .disabled {
-	opacity: 0;
+    opacity: 0;
+    pointer-events: none;
+    cursor: not-allowed;
 }

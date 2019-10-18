@@ -19,6 +19,11 @@
         <img class="button-icon" src="./eye.svg"/>
       </label>
 
+      <div class="pause-button"
+      @click="togglePaused()"
+      v-bind:class="{'pause-button--active': isPaused}"
+      ><img class="button-icon" src="./pause.svg"/></div>
+
       <div class="options-button"
       @click="toggleOptionsMenu()"
       v-bind:class="{'options-button--active': optionsMenuIsOpen}"
@@ -51,12 +56,14 @@
       <CommandLine 
         v-bind:command='command' 
         v-bind:class="{
-          disabled:gameStatus === 'LIVE' ? false:true,
+          disabled: hideControls,
         }"
       ></CommandLine>
 
       <div class="game__menu-wrapper"
-        v-bind:class="{disabled:gameStatus === 'LIVE' ? false:true,}">
+        v-bind:class="{
+          disabled:hideControls,
+        }">
         <VerbMenu ref="VerbMenu" 
         v-on:verb-picked="pickVerb($event)"
         v-bind:verb-list='verbList' 
@@ -209,6 +216,9 @@ export default {
     },
     isPaused () {
       return (this.gameStatus === 'PAUSED' || this.$parent.fileMenuIsOpen || this.optionsMenuIsOpen);
+    },
+    hideControls () {
+      return !(this.gameStatus === 'LIVE')
     }
   },
   
@@ -224,6 +234,10 @@ export default {
 
     toggleOptionsMenu(event) {
       this.optionsMenuIsOpen = !this.optionsMenuIsOpen;
+    },
+
+    togglePaused() {
+      this.setGameStatus ( this.gameStatus === 'PAUSED' ? 'UNPAUSED' : 'PAUSED' )
     },
 
     findPath: pathFinding.findPath, 
@@ -268,7 +282,14 @@ export default {
       }
 
       if (statusName === 'PAUSED' ) {
+        this.gameStatusBeforePause = this.gameStatus;
         this.gameStatus = statusName;
+        return;
+      }
+
+      if (statusName === 'UNPAUSED' ) {
+        this.gameStatus = this.gameStatusBeforePause || 'LIVE';
+        this.gameStatusBeforePause = null;
         return;
       }
 
