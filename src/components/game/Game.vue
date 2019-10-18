@@ -31,7 +31,10 @@
 
       <div class="file-button"
       @click="openFileMenu()"
-      v-bind:class="{'file-button--active': fileMenuIsOpen}"
+      v-bind:class="{
+        'file-button--active': fileMenuIsOpen,
+        'disabled': gameStatus === 'CUTSCENE'
+      }"
       ><img class="button-icon" src="./save.svg"/></div>
 
     </nav>
@@ -234,7 +237,10 @@ export default {
     },
 
     openFileMenu(event) {
-      this.$parent.handleFileMenuClick([null, 'toggle']);
+     
+     if (this.gameStatus === 'CUTSCENE') {return false}
+
+     this.$parent.handleFileMenuClick([null, 'toggle']);
     },
 
     toggleOptionsMenu(event) {
@@ -242,6 +248,7 @@ export default {
     },
 
     togglePaused() {
+      if (this.fileMenuIsOpen || this.optionsMenuIsOpen) {return false}
       this.setGameStatus ( this.gameStatus === 'PAUSED' ? 'UNPAUSED' : 'PAUSED' )
     },
 
