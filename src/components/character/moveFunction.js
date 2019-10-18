@@ -11,13 +11,13 @@ function skip() {
 }
 
 export default function () {
+    if (this.char.destinationQueue.length === 0) {return false}
     
     if (this.theApp.instantMode) {
         skip.apply(this,[])
         return false;
     }
 
-    if (this.char.destinationQueue.length === 0) {return false}
     var moveOrder = this.char.destinationQueue[0];
     
     if (!moveOrder.started) {

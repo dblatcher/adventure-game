@@ -96,48 +96,31 @@ function goTo (target, options = {}) {
 	}
 
 	this.char.destinationQueue = orders;
-	var queEnd = orders[orders.length-1];
+	var targetOrder = orders[orders.length-1];
 	var that = this;
 
 
-	
 	return new Promise (function (resolve, reject) {
 	
 		let handleMoveOrderDone = function(doneOrder){
-			if ( doneOrder===queEnd) {
-				console.log('reached destination');
+			if ( doneOrder===targetOrder) {
 				that.$off('moveOrderDone', handleMoveOrderDone )
+				if (targetOrder.x === that.x && targetOrder.y === that.y) {
+					resolve({finished:true, message:`Reached [${targetOrder.x},${targetOrder.y}]`});
+				} else {
+					resolve({finished:false, message:`Did not reach [${targetOrder.x},${targetOrder.y}]`});		
+				}
 				return;
 			}
-			
-			if (!that.char.destinationQueue.includes(queEnd) ) {
-				console.log('not going there anymore')
+			else if (!that.char.destinationQueue.includes(targetOrder) ) {
 				that.$off('moveOrderDone', handleMoveOrderDone )
+				resolve ( {finished:false, reason:'destination change',  message:`Not going to [${targetOrder.x},${targetOrder.y}] any more`} )
 			}
 		}
 
+		// subscribe to event fired by this.move (called by onBeat) when a move order is finished
 		that.$on('moveOrderDone', handleMoveOrderDone )
 
-		function takeStepAndCheckIfFinished (resolve ) {					
-			if ( that.char.destinationQueue.indexOf(queEnd) == -1  ) {
-				//not the same destinationQueue - players has given new order
-				clearInterval(timer);
-				resolve ( {finished:false, reason:'destination change',  message:`Not going to [${queEnd.x},${queEnd.y}] any more`} )
-			}
-			
-			that.move(); // take step, shift destinationQueue if reached its end point
-			
-			if (that.char.destinationQueue.length === 0) { //finished orders
-				clearInterval(timer);
-				if (queEnd.x === that.x && queEnd.y === that.y) {
-					resolve({finished:true, message:`Reached [${queEnd.x},${queEnd.y}]`});
-				} else {
-					resolve({finished:false, message:`Did not reach [${queEnd.x},${queEnd.y}]`});		
-				}
-			} 	
-		}
-		
-		var timer = setInterval ( function(){takeStepAndCheckIfFinished (resolve) }, 50);
 	});
 	
 }

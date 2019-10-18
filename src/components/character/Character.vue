@@ -194,6 +194,9 @@ export default {
         
         onBeat(data) {
             if (data.count % 2 === 0 ) {this.showNextFrame()}
+
+            this.move();
+
         }
     }
 
