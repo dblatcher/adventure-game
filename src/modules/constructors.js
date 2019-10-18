@@ -36,6 +36,7 @@ function Character(id,name,coords,speechColor,model,config={}) {
 	this.zAdjust = config.zAdjust || 0;
 
 	this.saying = '';
+	this.sayingCountDown = 0;
 	this.sayingQueue = [];
 	this.actionQueue = [];
 	this.destinationQueue = [];

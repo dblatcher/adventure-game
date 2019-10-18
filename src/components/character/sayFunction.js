@@ -1,4 +1,4 @@
-export default function (text, options = {} ){
+function say (text, options = {} ){
     if (typeof options.time !== 'number') {options.time = 2000}
     if (typeof options.action !== 'string') {options.action = 'talk'}
     var currentOrder = Object.assign({text:text}, options);
@@ -12,41 +12,62 @@ export default function (text, options = {} ){
     }
 
     var that = this;  
-    function executeOrder (order,resolve) {		
+
+    function executeOrder (order) {		
         that.saying = order.text;
+        that.sayingCountDown = order.time * (that.theApp.options.textDelay/100);
         if (that.char.destinationQueue.length === 0) { //not moving
             if (that.char.cycles[order.action]) { //and the character model has a cycle matching the action options 
                 that.char.behaviour_action = order.action;
                 that.char.behaviour_actFrame = 0;
             }
         }
-        setTimeout(function(){
-            if (typeof order.callback == 'function') {order.callback()}
-            
-            if (that.char.sayingQueue.length > 0) {
-                executeOrder (that.char.sayingQueue.shift(),resolve);
-            } else {
-                that.saying = '';
-                if (that.char.destinationQueue.length === 0) { //not moving
-                    that.char.behaviour_action = 'wait';
-                    that.char.behaviour_actFrame = 0;
-                }
-                resolve({
-                    finished:true,
-                    message: that.name+' finished saying \"'+order.text + '\".'
-                });
-            }	
-        
-        },order.time * (that.theApp.options.textDelay/100) );
-        
     }
-    
-    if (that.isTalking === false) {
-        return new Promise ( function (resolve, reject) {
+
+    if (this.saying === '') {
+        return new Promise ( function (resolve) {
+
+            //unlike actionOrders and goOrders, the current sayOrder isn't held with the
+            //character's sayingQueue, so the beat method doesn't have access to it when firing the even
+            //it can only emit the saying text (not ideal - should fix)
+
+            function handleSayOrderDone (saying) {
+                if (saying !== currentOrder.text) {return false}
+                if (that.char.sayingQueue.length > 0) { // not using the queing anymore - each line has its own Promise
+                    executeOrder (that.char.sayingQueue.shift());
+                } else {
+                    that.saying = '';
+                    if (that.char.destinationQueue.length === 0) { //ie character is not moving
+                        that.char.behaviour_action = 'wait';
+                        that.char.behaviour_actFrame = 0;
+                    }
+                    resolve({
+                        finished:true,
+                        message: that.name+' finished saying \"'+currentOrder.text + '\".'
+                    });
+                }
+                that.$off('sayOrderDone', handleSayOrderDone)
+            }
+            that.$on('sayOrderDone', handleSayOrderDone)
             executeOrder (currentOrder, resolve);
         });
-    } else {
+    } else {  // not using the queing anymore - each line has its own Promise
         that.char.sayingQueue.push(currentOrder);
     }
-    
+
 }
+
+function countDownSpeech (beat) {
+
+    if (this.sayingCountDown) {
+        this.sayingCountDown = this.sayingCountDown - beat.delay;
+        if (this.sayingCountDown <= 0) {
+            this.$emit('sayOrderDone', this.saying)
+            this.sayingCountDown = 0;
+        }
+    }
+
+
+} 
+
+export {say, countDownSpeech}

@@ -19,7 +19,7 @@ export default {
         beat: function () {
             if (this.isPaused) {return false}
             this.count++;
-            this.$emit('beat',{count:this.count, time: new Date})
+            this.$emit('beat',{count:this.count, time: new Date, delay:this.currentDelay})
             if (this.delay !== this.currentDelay) {
                 clearInterval(this.timer);
                 this.currentDelay = this.delay;

@@ -35,7 +35,7 @@
 <script>
 import Sprite from "../Sprite";
 import SpeechLine from "./SpeechLine";
-import sayFunction from "./sayFunction";
+import {say, countDownSpeech} from "./sayFunction";
 import {goTo, turnTo } from "./goFunction";
 import doFunction from "./doFunction";
 import moveFunction from "./moveFunction";
@@ -62,7 +62,6 @@ export default {
 
     computed :{
         theApp: function() {return this.$parent.$parent.$parent},
-        
 
         name: function() {return this.char.name},
         x: function() {return this.char.x},
@@ -71,6 +70,10 @@ export default {
         saying : {
             get: function() { return this.char.saying },
             set: function(v) { this.char.saying=v }
+        },
+        sayingCountDown : {
+            get: function() { return this.char.sayingCountDown },
+            set: function(v) { this.char.sayingCountDown=v }
         },
         behaviour : {
             get: function() {return {
@@ -82,10 +85,6 @@ export default {
 
         scaledHeight : function() {return this.char.scale * this.char.baseHeight * this.zoneEffects.scale();},
         scaledWidth : function() {return this.char.scale * this.char.baseWidth* this.zoneEffects.scale();},
-        isTalking : {
-            get: function() {return this.saying !== ''},
-            set: function(v) {if (v===false){this.saying=''; this.char.sayingQueue=[]}}
-        },
         currentAction : function () {
             return (this.char.actionQueue.length) ? 
                 this.char.actionQueue[0].action : this.behaviour.action;
@@ -153,7 +152,7 @@ export default {
     methods : {
         doAction : doFunction,
         goTo, turnTo,
-        say : sayFunction,
+        say, countDownSpeech,
         move : moveFunction,
         goToRoom : function (target,options){
             this.theApp.$emit('character-room-change',[this.char].concat(target),options);
@@ -193,11 +192,10 @@ export default {
             this.theApp.$emit('hover-event', this, event);
         },
         
-        onBeat(data) {
-            if (data.count % 2 === 0 ) {this.showNextFrame()}
-
+        onBeat(beat) {
+            if (beat.count % 2 === 0 ) {this.showNextFrame()}
             this.move();
-
+            this.countDownSpeech(beat);
         }
     }
 
