@@ -5,7 +5,7 @@
 <script>
 export default {
 
-    props: ['delay','isPaused'],
+    props: ['delay','timerIsStopped'],
 
     data: function () {
         return {
@@ -17,7 +17,7 @@ export default {
 
     methods: {
         beat: function () {
-            if (this.isPaused) {return false}
+            if (this.timerIsStopped) {return false}
             this.count++;
             this.$emit('beat',{count:this.count, time: new Date, delay:this.currentDelay})
             if (this.delay !== this.currentDelay) {

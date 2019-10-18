@@ -44,6 +44,21 @@
 
     }
 
+    &__paused-message {
+        @include placeAbsolute(50%,50%,false,true);
+        @include centerPoint();
+
+        z-index: 200;
+        background-color: $colour-white-shade;
+        padding: .5rem 1rem;
+        border-radius: .5rem;
+        font-weight: 700;
+        min-width: 50%;
+        line-height: 1rem;
+        text-align: center;
+        cursor: pointer;
+    }
+
     &__settings {
         margin: 0;
     }

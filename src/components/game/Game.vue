@@ -1,7 +1,7 @@
 <template>
-  <div class="game">
+  <main class="game">
 
-    <HeartBeater @beat="onBeat" delay="50" v-bind:isPaused="isPaused"/>
+    <HeartBeater @beat="onBeat" delay="50" v-bind:timerIsStopped="timerIsStopped"/>
 
     <OptionsMenu v-show="optionsMenuIsOpen"
     v-bind:options="options"
@@ -21,7 +21,7 @@
 
       <div class="pause-button"
       @click="togglePaused()"
-      v-bind:class="{'pause-button--active': isPaused}"
+      v-bind:class="{'pause-button--active': gameStatus === 'PAUSED'}"
       ><img class="button-icon" src="./pause.svg"/></div>
 
       <div class="options-button"
@@ -52,7 +52,7 @@
       </Room>
     </div>
 
-    <div class="game__controls">
+    <nav class="game__controls">
       <CommandLine 
         v-bind:command='command' 
         v-bind:class="{
@@ -79,14 +79,19 @@
         }"
       ></DialogMenu>
 
-    </div>
+    </nav>
 
+    <aside v-show="gameStatus === 'PAUSED'" 
+    @click="togglePaused()"
+    class="game__paused-message">
+      PAUSED
+    </aside>
 
     <p style="display:none; position:absolute; bottom:0; right:0; background-color:white;">
       <span>{{message}}</span>
       <span ref="coordinateDisplay"></span>
     </p>
-  </div>
+  </main>
 </template>
 
 <script>
@@ -214,7 +219,7 @@ export default {
     fileMenuIsOpen () {
       return this.$parent.fileMenuIsOpen;
     },
-    isPaused () {
+    timerIsStopped () {
       return (this.gameStatus === 'PAUSED' || this.$parent.fileMenuIsOpen || this.optionsMenuIsOpen);
     },
     hideControls () {
