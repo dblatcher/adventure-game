@@ -113,14 +113,18 @@ const fire = [
 
 const ending = [
     new StandardOrder ('[status]CUTSCENE'),
+    new StandardOrder ('CHALMERS_C::Well Seymour, you are an odd fellow, but I must admit...'),
+    new StandardOrder ('CHALMERS_C::You steam a good ham.'),
     new StandardOrder ('FRONT_R.WINDOW_FIRE_W','setRemoval',false ),
     new StandardOrder ('CHALMERS_C>>95,1'),
+    [
     new StandardOrder ('AGNES_C::help!',{time:200}),
+    new StandardOrder ('CHALMERS_C^^pc')]
+    ,
     new StandardOrder ('AGNES_C::heelp!',{time:200}),
     new StandardOrder ('AGNES_C::heeelp!',{time:200}),
     new StandardOrder ('AGNES_C::heeeelp!',{time:200}),
     new StandardOrder ('AGNES_C::heeeeelp!',{time:2000}),
-    new StandardOrder ('CHALMERS_C^^pc'),
     new StandardOrder ('pc##thumbs_up'),
     new StandardOrder ('[status]COMPLETE'),
 ]

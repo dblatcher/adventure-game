@@ -154,8 +154,6 @@ function makeConversations() {
 
 		new DialogChoice('No, mother, it\'s just the Northern Lights.',
 		[
-			{orderType: "say", options: {}, actor: "CHALMERS_C", text: 'Well Seymour, you are an odd fellow, but I must admit...'},
-			{orderType: "say", options: {}, actor: "CHALMERS_C", text: 'You steam a good ham'},
 		],
 		{consequence: function(game,choice){
 			game.runSequence('ending',choice);
