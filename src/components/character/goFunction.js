@@ -3,7 +3,7 @@ function skip (path) {
 		x: path[path.length-1].x,
 		y: path[path.length-1].y,
 		direction: findDirection(path[0], this, this.char.validDirections),
-		action:'walk'
+		action:this.char.walkCycle
 	}];
 }
 
@@ -71,7 +71,7 @@ function goTo (target, options = {}) {
 	}
 
 
-	if (typeof options.action === 'undefined' || !this.char.cycles[options.action]) {options.action = 'walk'}
+	if (typeof options.action === 'undefined' || !this.char.cycles[options.action]) {options.action = this.char.walkCycle}
 
 	var path = this.theApp.findPath(this,destination); 
 	if (path.length === 0 ) {

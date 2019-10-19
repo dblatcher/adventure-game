@@ -37,6 +37,7 @@ import Sprite from "../Sprite";
 import SpeechLine from "./SpeechLine";
 import {say, countDownSpeech} from "./sayFunction";
 import {goTo, turnTo } from "./goFunction";
+import { setDefaultWait, setDefaultWalk, setDefaultTalk } from "./cycleFunctions";
 import doFunction from "./doFunction";
 import moveFunction from "./moveFunction";
 
@@ -153,6 +154,7 @@ export default {
         doAction : doFunction,
         goTo, turnTo,
         say, countDownSpeech,
+        setDefaultWait, setDefaultWalk, setDefaultTalk,
         move : moveFunction,
         goToRoom : function (target,options){
             this.theApp.$emit('character-room-change',[this.char].concat(target),options);

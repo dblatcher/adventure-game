@@ -1,6 +1,6 @@
 function say (text, options = {} ){
     if (typeof options.time !== 'number') {options.time = 2000}
-    if (typeof options.action !== 'string') {options.action = 'talk'}
+    if (typeof options.action !== 'string') {options.action = this.char.talkCycle}
     var currentOrder = Object.assign({text:text}, options);
     
     if (this.theApp.instantMode) {
@@ -67,7 +67,7 @@ function countDownSpeech (beat) {
 
             this.saying = '';
             if (this.char.destinationQueue.length === 0) { //ie character is not moving
-                this.char.behaviour_action = 'wait';
+                this.char.behaviour_action = this.char.waitCycle;
                 this.char.behaviour_actFrame = 0;
             }
 

@@ -5,7 +5,7 @@ function skip() {
     this.char.x =  moveOrder.x; 
     this.char.y = moveOrder.y;
     this.$set(this.char, 'destinationQueue', []);
-    this.char.behaviour_action = 'wait';
+    this.char.behaviour_action = this.char.waitCycle;
     this.char.behaviour_actFrame = 0;
     this.char.behaviour_direction = moveOrder.direction;
     this.$emit('moveOrderDone', moveOrder)
@@ -52,7 +52,7 @@ export default function () {
             movement = {x:0, y:0};
              // eslint-disable-next-line
             console.log('hit-obstacle', moveOrder);
-            this.char.behaviour_action = 'wait';
+            this.char.behaviour_action = this.char.waitCycle;
             this.char.behaviour_direction = moveOrder.direction;
             this.char.behaviour_actFrame = 0;
             this.char.destinationQueue.shift();
@@ -68,7 +68,7 @@ export default function () {
 
         this.char.destinationQueue.shift();
         if (this.char.destinationQueue.length === 0) {
-            this.char.behaviour_action = 'wait';
+            this.char.behaviour_action = this.char.waitCycle;
             this.char.behaviour_actFrame = 0;
             this.char.behaviour_direction = moveOrder.direction;
         }

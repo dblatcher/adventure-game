@@ -41,9 +41,13 @@ function Character(id,name,coords,speechColor,model,config={}) {
 	this.actionQueue = [];
 	this.destinationQueue = [];
 
-	this.behaviour_action = 'wait',
-	this.behaviour_actFrame = '0',
-	this.behaviour_direction = this.validDirections[0],
+	this.waitCycle = config.waitCycle || 'wait';
+	this.talkCycle = config.talkCycle || 'talk';
+	this.walkCycle = config.walkCycle || 'walk';
+
+	this.behaviour_action = config.waitCycle || 'wait';
+	this.behaviour_actFrame = '0';
+	this.behaviour_direction = this.validDirections[0];
 
 	this.initialState = Object.freeze(Object.assign({},this));
 }
@@ -54,6 +58,9 @@ Character.prototype.returnState = function () {
 		x: this.x,
 		y: this.y,
 		room: this.room,
+		waitCycle: this.waitCycle,
+		walkCycle: this.walkCycle,
+		talkCycle: this.talkCycle,
 		behaviour_action: this.behaviour_action,
 		behaviour_direction:this.behaviour_direction,
 		behaviour_actFrame:this.behaviour_actFrame,
