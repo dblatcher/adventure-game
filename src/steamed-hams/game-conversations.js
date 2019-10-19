@@ -9,35 +9,32 @@ function makeConversations() {
 
 	conversations.hamburgers.addBranch(new DialogBranch('start',[
 		new DialogChoice('Sorry, to keep you waiting...',
-		['npc::hmm.'],
+		['CHALMERS_C::hmm.'],
 		{canOnlySayOnce: true}),
 		new DialogChoice('Superintendent, I hope you\'re ready for mouthwatering hamburgers.',
 		[
-			'npc:: I thought we were having steamed clams.',
+			'CHALMERS_C:: I thought we were having steamed clams.',
 		],
 		{changesBranch:'iThought'}),
 	]));
 	
 	conversations.hamburgers.addBranch(new DialogBranch('iThought',[
 		new DialogChoice('Clams? What makes you think that?',
-		['npc::You did, Skinner.',
-		'npc::not five minutes ago, in that kitchen, you said we were having steamed clams.'],
+		['CHALMERS_C::You did, Skinner.',
+		'CHALMERS_C::not five minutes ago, in that kitchen, you said we were having steamed clams.'],
 		{canOnlySayOnce:true}),
 	
 		new DialogChoice('D\'oh, no. I said steamed hams!',
 		['pc::That\'s what I call hamburgers!',
-		'npc::You call hamburgers \"steamed hams?\"',
+		'CHALMERS_C::You call hamburgers \"steamed hams?\"',
 		'pc::Yes. It\'s a regional dialect!',
-		'npc::Uh-huh..',
-		'npc::What region?'],
-		{
-		changesBranch:'dialects',
-		consequence: function(game) { 
-			game.getThings('HAMBURGERS_W').setStatus('three');
-			game.getThings().CHALMERS_C.setDefaultWait('wait_with_ham'); 
-			game.getThings().CHALMERS_C.setDefaultTalk('talk_with_ham'); 
-		}
-		}
+		'CHALMERS_C::Uh-huh..',
+		'CHALMERS_C::What region?',
+		{order:['HAMBURGERS_W','setStatus','three']},
+		{order:['CHALMERS_C','setDefaultWait','wait_with_ham']},
+		{order:['CHALMERS_C','setDefaultTalk','talk_with_ham']},
+		],
+		{changesBranch:'dialects',}
 		),
 
 	]));
@@ -45,46 +42,43 @@ function makeConversations() {
 	conversations.hamburgers.addBranch(new DialogBranch('dialects',[
 		new DialogChoice('Upstate New York.',
 			[
-			'npc:: Really? Well, I\'m from Utica, and I\'ve never heard anyone use the phrase \"steamed hams.\"',
+			'CHALMERS_C:: Really? Well, I\'m from Utica, and I\'ve never heard anyone use the phrase \"steamed hams.\"',
 			'pc::Oh, not in Utica, no. It\'s an Albany expression.',
-			'npc::You know, these hamburgers are quite similar to the ones they have at Krusty Burger.',
+			'CHALMERS_C::You know, these hamburgers are quite similar to the ones they have at Krusty Burger.',
+			{order:['HAMBURGERS_W','setStatus','two']}
 			],
-			{changesBranch:'similar', consequence:function(game){
-				game.getThings('HAMBURGERS_W').setStatus('two');
-			}}
+			{changesBranch:'similar'}
 		),
 		new DialogChoice('Louisiana.',
 			[
-			'npc:: Is that so? And where exactly did you pick up a Louisiana dialect, Seymour?',
+			'CHALMERS_C:: Is that so? And where exactly did you pick up a Louisiana dialect, Seymour?',
 			'pc::I was born and bred there on the mean streets of New Orleans.',
-			'npc::I see. I fact which your personnel file somehow fails to mention',
-			'npc::You know, these hamburgers are quite similar to the ones they have at Krusty Burger.',
+			'CHALMERS_C::I see. I fact which your personnel file somehow fails to mention',
+			'CHALMERS_C::You know, these hamburgers are quite similar to the ones they have at Krusty Burger.',
+			{order:['HAMBURGERS_W','setStatus','two']}
 			],
-			{changesBranch:'similar', consequence:function(game){
-				game.getThings('HAMBURGERS_W').setStatus('two');
-			}}
+			{changesBranch:'similar'}
 		),
 		new DialogChoice('Mekon Delta, Vietnam.',
 			['pc::Not that I ever ate any steamed hams there, myself...',
 			'pc::I spent three years in a POW camp, forced to subsist on a thin stew made of fish, vegetables, prawns, coconut milk, and four kinds of rice.',
 			'pc::I came close to madness trying to find it here in the States, but they just can\'t get the spices right!',
-			'npc::uh - huh...',
-			'npc::You know, these hamburgers are quite similar to the ones they have at Krusty Burger.',
+			'CHALMERS_C::uh - huh...',
+			'CHALMERS_C::You know, these hamburgers are quite similar to the ones they have at Krusty Burger.',
+			{order:['HAMBURGERS_W','setStatus','two']}
 			],
-			{changesBranch:'similar', consequence:function(game){
-				game.getThings('HAMBURGERS_W').setStatus('two');
-			}}
+			{changesBranch:'similar'}
 		),
 	]));
 
 	conversations.hamburgers.addBranch(new DialogBranch('similar',[
 		new DialogChoice('Oh no, patented skinnerburgers.',
 			['pc:: old family recipe',
-			'npc:: for steamed-hams.',
+			'CHALMERS_C:: for steamed-hams.',
 			'pc:: Yes.',
-			'npc:: Yeah, so you call them \"steamed hams\" despite the fact they are obviously grilled.',
+			'CHALMERS_C:: Yeah, so you call them \"steamed hams\" despite the fact they are obviously grilled.',
 			'pc:: Ye- hey- you know, the- one thing I should- excuse me for one second.',
-			'npc:: Of course.',],
+			'CHALMERS_C:: Of course.',],
 			{consequence: function(game,choice){
 				game.runSequence('fire');
 			}}
@@ -96,7 +90,7 @@ function makeConversations() {
 
 	conversations.arrival.addBranch(new DialogBranch('start', [
 		new DialogChoice('I hope you\'re prepared for an unforgettable luncheon.',
-			['npc::hmmm'],
+			['CHALMERS_C::hmmm'],
 			{canOnlySayOnce:true,}
 		),
 		new DialogChoice('Damn you, Chalmers -  there was nothing wrong with my directions',
@@ -117,10 +111,10 @@ function makeConversations() {
 	function iWasJust_1(firstLines){
 		if (typeof firstLines === 'string') {firstLines = [firstLines]}
 		for (var i=0; i< firstLines.length; i++) {
-			firstLines[i] = {orderType: "say", options: {action:'window_talk'}, actor: "pc", text: firstLines[i]}
+			firstLines[i] = 'pc::'+firstLines[i]
 		}
 		let base= [
-		'npc::Why is there smoke coming out of your oven, Seymour?',
+		'CHALMERS_C::Why is there smoke coming out of your oven, Seymour?',
 		'pc::Oh, no! That isn\'t smoke.',
 		'pc::It\'s steam.',
 		'pc::Steam from the steamed clams we\'re having.',

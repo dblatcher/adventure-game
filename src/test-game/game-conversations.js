@@ -9,19 +9,19 @@ function makeConversations() {
 	conversations.withLuigi.addBranch (new DialogBranch(
 		'start', [
 			new DialogChoice ('Who are you?',
-				['npc::Green Mario...','npc::...also called Luigi.'],
+				['LUIGI_C::Green Mario...','LUIGI_C::...also called Luigi.'],
 				{canOnlySayOnce:true}),
 			new DialogChoice ('Do you have a hammer?',
-				['npc::Sure.','npc::swap it for the shoe.'],
+				['LUIGI_C::Sure.','LUIGI_C::swap it for the shoe.'],
 				{condition: function(){return this.gameVars.wantsHammer}, canOnlySayOnce:true, disabled:false, addItems:'HAMMER_I', removeItems:'SHOE_I'}),
 			new DialogChoice ('Do you know anything about plumbing?',
-				['npc::what do you want to know?'],
+				['LUIGI_C::what do you want to know?'],
 				{changesBranch:'plumbing'}),
 			new DialogChoice ('can you dance?',
-				['npc::Just watch!','npc##dance']),
+				['LUIGI_C::Just watch!','LUIGI_C##dance']),
 			new DialogChoice ('Let\'s play rock paper scissors',[],{changesBranch:'rockPaperScissors'}),
 			new DialogChoice ('Goodbye',
-				['npc::Bye Bye','pc##wave','npc##walk'], 
+				['LUIGI_C::Bye Bye','pc##wave','LUIGI_C##walk'], 
 				{ends:true})
 		]
 	));
@@ -29,7 +29,7 @@ function makeConversations() {
 	conversations.withLuigi.addBranch (new DialogBranch(
 		'plumbing', [
 			new DialogChoice ('What is a ballcock?',
-				['pc::What is a ball...','npc::ballcock? its the thing that tells the toilet if it\'s ready to flush.'],
+				['pc::What is a ball...','LUIGI_C::ballcock? its the thing that tells the toilet if it\'s ready to flush.'],
 				{canOnlySayOnce:true,firstLineUnsaid:true}),
 			new DialogChoice ('Never mind about plumbing...',
 				['pc##wave'], 
@@ -40,13 +40,13 @@ function makeConversations() {
 	conversations.withLuigi.addBranch (new DialogBranch(
 		'rockPaperScissors', [
 			new DialogChoice ('rock',
-				[ ['pc::rock','npc::scissors'] ,'pc::I win!'],
+				[ ['pc::rock','LUIGI_C::scissors'] ,'pc::I win!'],
 				{firstLineUnsaid:true}),
 			new DialogChoice ('paper',
-				[ ['pc::paper','npc::scissors'],'pc::you win!'],
+				[ ['pc::paper','LUIGI_C::scissors'],'pc::you win!'],
 				{firstLineUnsaid:true}),
 			new DialogChoice ('scissors',
-				[['pc::scissors','npc::scissors'],['pc::a draw!','npc::a draw!']],
+				[['pc::scissors','LUIGI_C::scissors'],['pc::a draw!','LUIGI_C::a draw!']],
 				{firstLineUnsaid:true}),
 			new DialogChoice ('no more.',
 				[], 
