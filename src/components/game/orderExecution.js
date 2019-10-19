@@ -27,6 +27,8 @@ function executeStandardOrder(order) {
 
     if (typeof actor[order.action] !== "function") {
         console.warn(`failed order: ${order.action}' is not a method of ${actor === game? 'Game' : subject.id }`)
+        console.log(order.actorId);
+        console.log(order);
         return Promise.resolve({})
     }
 

@@ -1,9 +1,10 @@
+import { StandardOrder } from "./interaction-constructor";
 
 function DialogChoice (optionText,script,config={}) {
 	this.optionText = optionText;
 	
 	if (!config.firstLineUnsaid) {
-		script.unshift(optionText);
+		script.unshift('pc::'+optionText);
 	}
 	this.script = []; 
 	var groupOfLines; 
@@ -36,27 +37,8 @@ function DialogChoice (optionText,script,config={}) {
 	
 	
 	function parseScriptLine(line) {
-		if (typeof line === 'object') {return line}
-		
-		var parsedLine = {orderType:'say', options:{}};
-		
-		var separatorIndex=false;
-		if (line.indexOf('::') != -1) {
-			parsedLine.orderType = 'say';
-			separatorIndex = line.indexOf('::');
-		} else if (line.indexOf('##') != -1) {
-			parsedLine.orderType = 'doAction';
-			separatorIndex = line.indexOf('##');
-		}
-		
-		if (separatorIndex) {
-			parsedLine.actor = line.substring(0,separatorIndex);
-			parsedLine.text = line.substring(separatorIndex + 2);			
-		} else {
-			parsedLine.actor = 'pc';
-			parsedLine.text = line;
-		}
-		return parsedLine;
+		if (typeof line === 'object') {return new StandardOrder (...line.order)}
+		if (typeof line === 'string') {return new StandardOrder (line)}
 	}
 }
 
