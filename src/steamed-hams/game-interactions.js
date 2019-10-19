@@ -228,16 +228,18 @@ var interactions =[
             this.getThings('pc').goTo(this.getThings('KITCHEN_DININGDOOR_W').walkToPoint)
             .then( (feedback) => {
                 if (feedback.finished) {
-                    this.setGameStatus('CUTSCENE');
-                    this.changeRoom(['DINING_R',300,50])
-                        .then( ()=> { return this.getThings('DINING_KITCHENDOOR_W').setStatus(['closing','closed']) } )
-                        .then( ()=> { return this.getThings('pc').goTo({x:220, y:45})  } )
-                        .then( ()=> {
-                            this.allRoomItemData.DINING_R.HAMBURGERS_W.removed=false;
-                            this.getThings('CHALMERS_C').char.behaviour_direction='right';
-                            return this.getThings('pc').goTo({x:214, y:12})
-                        })
-                        .then(()=>{this.setGameStatus('CONVERSATION','hamburgers')})
+
+                    this.runSequence([
+                        new StandardOrder('[status]CUTSCENE'),
+                        new StandardOrder('GAME','changeRoom',['DINING_R',300,50]),
+                        new StandardOrder('DINING_KITCHENDOOR_W','setStatus',['closing','closed']),
+                        new StandardOrder('pc>>220,45'),
+                        new StandardOrder('DINING_R.HAMBURGERS_W','setRemoval',false),
+                        new StandardOrder('CHALMERS_C^^pc'),
+                        new StandardOrder('pc>>214,12'),
+                        new StandardOrder('[status]CONVERSATION', 'hamburgers'),
+                    ])
+
                 }
             } )
         }
@@ -358,28 +360,20 @@ var interactions =[
     [function() {return this.getThings('OVEN_W').item.status.cycle==='smoking'}, 
     function() {return this.allInventoryItemsAsObject.HAMBURGER_PLATTER_I.have === false},],
     function () {
-        let skinner = this.getThings('pc');
         this.runSequence([
             new StandardOrder ('GAME', 'setGameStatus','CUTSCENE'),
             new StandardOrder ('pc', 'say','But what if I were to  purchase fast food and disguise it as my own cooking?',{time:2500}),
             new StandardOrder ('pc', 'say','Delightfully devilish, Seymour!'),
             new StandardOrder ('pc', 'goTo','KRUSTYBURGER_W'),
-        ])
-        .then(()=>{ 
-            skinner.char.behaviour_action='window_wait';
-            skinner.char.behaviour_actframe=0;
-            return this.teleportCharacter(['CHALMERS_C', 'KITCHEN_R', 100, -20])
-        })
-        .then(()=>{ 
-            return this.runSequence([
-                new StandardOrder ('CHALMERS_C','goTo',{x:95, y:20}),
-                new StandardOrder ('CHALMERS_C','goTo',{x:105, y:20}),
-                new StandardOrder ('CHALMERS_C','say','Seymour!'),
-                new StandardOrder ('pc', 'say','Superintendent, I was just- uh...',{time:2500, action:'window_talk'}),
-                new StandardOrder ('GAME', 'setGameStatus','CONVERSATION','iWasJust'),
-            ])
-        })
-    }
+            new StandardOrder ('pc', 'setDefaultWait','window_wait'),
+            new StandardOrder ('pc', 'setDefaultTalk','window_talk'),
+            new StandardOrder ('GAME','teleportCharacter',['CHALMERS_C', 'KITCHEN_R', 100, -20]),
+            new StandardOrder ('CHALMERS_C','goTo',{x:95, y:20}),
+            new StandardOrder ('CHALMERS_C','goTo',{x:105, y:20}),
+            new StandardOrder ('CHALMERS_C','say','Seymour!'),
+            new StandardOrder ('pc', 'say','Superintendent, I was just- uh...',{time:2500, action:'window_talk'}),
+            new StandardOrder ('GAME', 'setGameStatus','CONVERSATION','iWasJust'),
+        ]) }
     )
 
 ]

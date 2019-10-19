@@ -34,7 +34,8 @@ function makeConversations() {
 		changesBranch:'dialects',
 		consequence: function(game) { 
 			game.getThings('HAMBURGERS_W').setStatus('three');
-			game.getThings().CHALMERS_C.char.behaviour_action = 'wait_with_ham'; 
+			game.getThings().CHALMERS_C.setDefaultWait('wait_with_ham'); 
+			game.getThings().CHALMERS_C.setDefaultTalk('talk_with_ham'); 
 		}
 		}
 		),
@@ -43,12 +44,12 @@ function makeConversations() {
 	
 	conversations.hamburgers.addBranch(new DialogBranch('dialects',[
 		new DialogChoice('Upstate New York.',
-			['npc:: Really? Well, I\'m from Utica, and I\'ve never heard anyone use the phrase \"steamed hams.\"',
+			[
+			'npc:: Really? Well, I\'m from Utica, and I\'ve never heard anyone use the phrase \"steamed hams.\"',
 			'pc::Oh, not in Utica, no. It\'s an Albany expression.',
-			{orderType: "say", options: {action:'talk_with_ham'}, actor: "npc", text: "You know, these hamburgers are quite similar to the ones they have at Krusty Burger."},
+			'npc::You know, these hamburgers are quite similar to the ones they have at Krusty Burger.',
 			],
 			{changesBranch:'similar', consequence:function(game){
-				game.getThings().CHALMERS_C.char.behaviour_action = 'wait_with_ham';
 				game.getThings('HAMBURGERS_W').setStatus('two');
 			}}
 		),
@@ -57,10 +58,9 @@ function makeConversations() {
 			'npc:: Is that so? And where exactly did you pick up a Louisiana dialect, Seymour?',
 			'pc::I was born and bred there on the mean streets of New Orleans.',
 			'npc::I see. I fact which your personnel file somehow fails to mention',
-			{orderType: "say", options: {action:'talk_with_ham'}, actor: "npc", text: "You know, these hamburgers are quite similar to the ones they have at Krusty Burger."},
+			'npc::You know, these hamburgers are quite similar to the ones they have at Krusty Burger.',
 			],
 			{changesBranch:'similar', consequence:function(game){
-				game.getThings().CHALMERS_C.char.behaviour_action = 'wait_with_ham';
 				game.getThings('HAMBURGERS_W').setStatus('two');
 			}}
 		),
@@ -69,10 +69,9 @@ function makeConversations() {
 			'pc::I spent three years in a POW camp, forced to subsist on a thin stew made of fish, vegetables, prawns, coconut milk, and four kinds of rice.',
 			'pc::I came close to madness trying to find it here in the States, but they just can\'t get the spices right!',
 			'npc::uh - huh...',
-			{orderType: "say", options: {action:'talk_with_ham'}, actor: "npc", text: "You know, these hamburgers are quite similar to the ones they have at Krusty Burger."},
+			'npc::You know, these hamburgers are quite similar to the ones they have at Krusty Burger.',
 			],
 			{changesBranch:'similar', consequence:function(game){
-				game.getThings().CHALMERS_C.char.behaviour_action = 'wait_with_ham';
 				game.getThings('HAMBURGERS_W').setStatus('two');
 			}}
 		),
@@ -122,7 +121,7 @@ function makeConversations() {
 		}
 		let base= [
 		'npc::Why is there smoke coming out of your oven, Seymour?',
-		'pc::Oh, not! That isn\'t smoke.',
+		'pc::Oh, no! That isn\'t smoke.',
 		'pc::It\'s steam.',
 		'pc::Steam from the steamed clams we\'re having.',
 		'pc::Mmm, steamed clams.'

@@ -57,6 +57,8 @@ const seeBurningRoast = [
 
 const goToKrustyBurger = [
     new StandardOrder ('GAME', 'setGameStatus','CUTSCENE'),
+    new StandardOrder ('pc', 'setDefaultWait','wait'),
+    new StandardOrder ('pc', 'setDefaultTalk','talk'),
     new StandardOrder ('CHALMERS_C','goToRoom',['DINING_R',100,10]),
     new StandardOrder ('GAME','teleportCharacter',['SKINNER_C','KITCHEN_R',200,75]),
     new StandardOrder ('SKINNER_C','goTo',{x:220, y:90}),
@@ -74,6 +76,8 @@ const goToKrustyBurger = [
 
 const fire = [
     new StandardOrder ('[status]CUTSCENE'),
+    new StandardOrder ('CHALMERS_C', 'setDefaultWait','wait'),
+    new StandardOrder ('CHALMERS_C', 'setDefaultTalk','talk'),
     new StandardOrder ('pc>>250,45'),
     new StandardOrder ('DINING_KITCHENDOOR_W','setStatus',['opening_fire']),
     [
