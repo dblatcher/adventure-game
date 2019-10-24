@@ -101,13 +101,13 @@ export default {
 
 	flex-basis: 100%;
 
-	height: 4rem;
+	height: 4.5rem;
     overflow-x: auto;
 	margin-left: .5rem;
     margin-right: .5rem;
 
     &__holder {
-		height: 100%;
+		height: 3rem;
 		width: max-content;
 		border-left: 3px solid black;
 		border-right: 3px solid black;
@@ -119,8 +119,8 @@ export default {
     &__item {
 		cursor: pointer;
 		display: inline-block;
-        width: 3.5rem;
-		height: 3.5rem;
+        width: 3rem;
+		height: 3rem;
         box-sizing:border-box;
         padding:2px;
 		margin:2px;
