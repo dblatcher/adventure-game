@@ -6,9 +6,11 @@
 			v-for="item, index in this.items" v-bind:key="index"
 			v-on:mouseover="hoverHandler($event,item)" 
 			v-on:mouseout="hoverHandler($event,item)"
+			
 			class="inventory-menu__item"
 			v-bind:class= "{'inventory-menu__item--picked': isItemPicked(item)}" 
 			>
+				<div class="inventory-menu__pic-background" v-bind:style="makeItemBackground(item)"></div>
 				<img class="inventory-menu__pic" 
 				v-bind:src="findRightPicture(index)"
 				v-bind:name="item.name"/>
@@ -37,6 +39,32 @@ export default {
 		isItemPicked : function (item) {
 			return item === this.subject;
 		},
+		makeItemBackground : function (item) {
+			let bg= item.background
+			if (typeof bg !== 'object'){return {display:'none'}}
+
+			switch (bg.shape) {
+				case 'circle': return {
+					borderRadius: '50%',
+					backgroundColor : bg.color,
+					boxShadow: '2px 2px black',
+				}
+				break;
+				case 'square': return {
+					backgroundColor : bg.color,
+					boxShadow: '2px 2px black',
+				}
+				break;
+				case 'diamond': return {
+					transform: 'translateX(-50%) translateY(-50%) rotate(45deg) scale(.75,.75)',
+					backgroundColor : bg.color,
+					boxShadow: '3px 1px black',
+				}
+				break;
+				default: return {}
+			}
+
+		},
 		findRightPicture : function (index) {
 			let item = this.items[index];
 			if(!item.quantified) {return item.picture[1]}
@@ -63,6 +91,9 @@ export default {
 
 <style scoped="true" lang="scss">
 
+@import '../modules/material';
+@import '../modules/layout';
+
 .inventory-menu {
 	overflow:hidden;
 	box-sizing:border-box;
@@ -70,8 +101,8 @@ export default {
 
 	flex-basis: 100%;
 
-	height: 4.5rem;
-    overflow-x: scroll;
+	height: 4rem;
+    overflow-x: auto;
 	margin-left: .5rem;
     margin-right: .5rem;
 
@@ -89,13 +120,16 @@ export default {
 		cursor: pointer;
 		display: inline-block;
         width: 3.5rem;
+		height: 3.5rem;
         box-sizing:border-box;
         padding:2px;
 		margin:2px;
-		border: 1px dotted transparent;
+		border: 2px dotted transparent;
+		position:relative;
 		
 		&--picked {
-			border: 1px dotted black;
+			border: 2px dashed black;
+			border-radius: 5px;
 		}
     }
 
@@ -103,7 +137,14 @@ export default {
 		max-width: 100%;
     }
 
-
+	&__pic-background {
+		@include centerPoint;
+		@include placeAbsolute(50%, 50%);
+    	width: 95%;
+    	height: 95%;
+    	z-index: -1;
+		box-sizing: border-box;
+	}
 
 
 }

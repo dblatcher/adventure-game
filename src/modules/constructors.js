@@ -169,7 +169,7 @@ function Verb (description, id, preposition) {
 	this.transitive = !!(preposition);
 }
 
-function InventoryItem (id, name, url, startWith=false, config={}) {
+function InventoryItem (id, name, url, config={}) {
 	this.id = id.toUpperCase() + "_I";
 	this.name=name;
 
@@ -184,7 +184,9 @@ function InventoryItem (id, name, url, startWith=false, config={}) {
 		}
 	}
 	
-	this.have=startWith;
+	this.background = config.bg;
+
+	this.have=!!config.startWith;
 	this.quantified = typeof config.quantity === 'number' ? true  : false;
 	if (this.quantified) {
 		this.quantity = config.quantity;
