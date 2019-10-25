@@ -11,8 +11,20 @@ export default function (choice) {
   this.setGameStatus('CUTSCENE')
   this.runSequence(choice.script)
   .then( ()=>{   
-    if (typeof choice.consequence === 'function' ) {choice.consequence(that,choice)}
-    if (that.gameStatus === 'CUTSCENE') { that.setGameStatus(choice.ends ? "LIVE" : "CONVERSATION"); }
+    let consequences = {};
+    if (typeof choice.consequence === 'function' ) {
+      conseqences = choice.consequence(that,choice)
+    }
+
+    if (consequences.then) {
+      consequences.then(() => {
+        if (that.gameStatus === 'CUTSCENE') { that.setGameStatus(choice.ends ? "LIVE" : "CONVERSATION"); }
+      } )
+    } else {
+      if (that.gameStatus === 'CUTSCENE') { that.setGameStatus(choice.ends ? "LIVE" : "CONVERSATION"); }
+    }
+
+    
   })
     
 }
