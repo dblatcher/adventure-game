@@ -1,38 +1,22 @@
 <template>
-    <form class="verb-menu" v-on:change="update" >
+    <section class="verb-menu" >
         <div class="verb-menu__option" v-for="verb, index in this.verbList":key="index">
-            
-            <input class="verb-menu__input" type="radio" name="verb" 
-            v-bind:id="'verb_'+verb.id"  v-bind:value="verb.id" v-model="picked"/>
-            
-            <label class="verb-menu__box" v-bind:for="'verb_'+verb.id">
-                {{verb.description}}
-            </label>
+
+            <div class="verb-menu__box"
+                v-bind:for="'verb_'+verb.id"
+                v-bind:class="{'verb-menu__box--on' : (verb == picked)}"
+                @click="$emit('verb-picked',verb.id)"
+                >{{verb.description}}</div>
 
         </div>
-    </form>
+    </section>
 </template>
 
 <script>
 export default {
     name: 'VerbMenu',
-    props:['verbList','initalPick'],
-    data () {
-        return {picked:this.initalPick}
-    },
+    props:['picked','verbList',],
 
-    methods: {
-        update : function () {
-            this.$emit('verb-picked',this.picked);
-        },
-        reset : function () {
-            this.picked = this.initalPick;
-        }   
-    },
-
-    mounted: function () {
-        this.update();
-    },
 }
 </script>
 
@@ -57,6 +41,10 @@ export default {
     &__box {
         @include btn-outline(black); 
         display: block;
+
+        &--on {
+            @include btn-solid(black); 
+        }
     }
 
     &__input {

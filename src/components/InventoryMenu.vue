@@ -2,10 +2,10 @@
 	<section class="inventory-menu">
 
 		<div class="inventory-menu__holder">
-			<div @click="clickHandler(item)" 
+			<div @click="$emit('item-clicked', item)" 
 			v-for="item, index in this.items" v-bind:key="index"
-			v-on:mouseover="hoverHandler($event,item)" 
-			v-on:mouseout="hoverHandler($event,item)"
+			v-on:mouseover="hoverHandler(item,$event)" 
+			v-on:mouseout="hoverHandler(item,$event)"
 			
 			class="inventory-menu__item"
 			v-bind:class= "{'inventory-menu__item--picked': isItemPicked(item)}" 
@@ -30,11 +30,8 @@ export default {
 	props:['items','subject'],
 
 	methods: {
-		clickHandler(item) {
-			this.$parent.$emit('clicked-thing', item);
-		},
-		hoverHandler : function (event,item) {
-			this.$parent.$emit('hover-event', item, event);
+		hoverHandler : function (item, event) {
+			this.$emit('hover-event', [item, event]);
 		},
 		isItemPicked : function (item) {
 			return item === this.subject;

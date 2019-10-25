@@ -42,5 +42,4 @@ export default function (command) {
     this.subject = null; 
     this.object = null;
     this.verb = this.verbList[0];
-    this.$refs.VerbMenu.reset(); 
   }
