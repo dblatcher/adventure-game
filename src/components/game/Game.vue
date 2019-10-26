@@ -58,11 +58,13 @@
 
     <ScummInterface
     v-bind:disabled="hideControls"
-    v-bind:command="command"
     v-bind:verbList="verbList"
-    v-bind:currentVerb="verb"
     v-bind:items="inventory"
+    v-bind:currentVerb="verb"
     v-bind:subject="subject"
+    v-bind:object="object"
+    v-bind:needObject="needObject"
+    v-bind:thingHoveredOn="thingHoveredOn"
     v-on:verb-picked="pickVerb($event)"
     v-on:item-clicked="handleClickOnThing($event)"
     v-on:hover-event="handleHoverEvent($event[0],$event[1])"
@@ -129,32 +131,8 @@ export default {
   },
 
   computed : {
-    command : function() {
-
-      function describe(thing) {
-       return thing.quantified && thing.quantity !== 1 ? 
-        thing.quantity + ' ' +thing.pluralName : 
-        thing.name;
-      }
-
-      var sentence = this.verb.description + ' ';
-      if (this.subject) {
-        sentence += describe(this.subject) + ' ';
-        if (this.needObject) {sentence += this.verb.preposition + ' ';}
-      }
-      if (this.object) {
-        sentence +=  describe(this.object);
-      }
-
-      var completeCommand = (this.subject && ! this.needObject) || (this.subject && this.object)
-      var undecidedNoun='';	
-      if (!completeCommand && this.thingHoveredOn) {undecidedNoun = describe(this.thingHoveredOn);} 
-      
-      return {
-        sentence: sentence,
-        undecidedNoun: undecidedNoun,
-        complete:completeCommand
-      }
+    haveCompleteCommand : function() {
+      return (this.subject && ! this.needObject) || (this.subject && this.object)
     },
     thingsInRoom : function() {
       var that = this, set = [];

@@ -7,6 +7,7 @@ export default function(thing) {
     }
 
     if (this.verb.id === 'WALK' && thing.id.endsWith('_I')) {return false}
+
     if (!this.subject) {
       this.subject = thing;
       if (this.verb.transitive) {
@@ -19,10 +20,10 @@ export default function(thing) {
         this.needObject = false;
       }
     } else {
-      if (!this.command.complete && thing !== this.subject) {
+      if (!this.haveCompleteCommand && thing !== this.subject) {
         this.object = thing;
       }
     }
 
-    if (this.command.complete) {this.executeCommand();}		
+    if (this.haveCompleteCommand) {this.executeCommand();}		
   }

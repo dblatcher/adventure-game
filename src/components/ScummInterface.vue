@@ -3,10 +3,12 @@
 <aside class="scumm">  
 
     <CommandLine 
-    v-bind:command='command' 
-    v-bind:class="{
-    disabled: disabled,
-    }"
+    v-bind:verb='currentVerb' 
+    v-bind:subject='subject' 
+    v-bind:object='object' 
+    v-bind:thingHoveredOn='thingHoveredOn' 
+    v-bind:disabled="disabled"
+    v-bind:needObject="needObject"
     ></CommandLine>
 
     <div class="scumm__menu-wrapper"
@@ -40,7 +42,7 @@ import CommandLine from "./CommandLine";
 export default {
     name: 'ScummInterface',
     components: {VerbMenu, InventoryMenu, CommandLine},
-    props: ['disabled', 'command', 'currentVerb','verbList', 'items', 'subject'],
+    props: ['disabled', 'currentVerb','verbList', 'items', 'subject','object','thingHoveredOn','needObject'],
 }
 </script>
 
