@@ -1,5 +1,8 @@
 <template>
-	<section class="command-line" v-bind:class="{'command-line--complete' : command.complete, disabled:disabled}">
+	<section class="command-line" 
+	v-bind:class="{
+		 disabled:disabled
+	}">
 	
 		<p class="command-line__sentence">
 		{{choosenText}}<span class="command-line__last-phrase">{{possibleText}}</span>
@@ -10,17 +13,35 @@
 </template>
 
 <script>
+
+function describe(thing) {
+return thing.quantified && thing.quantity !== 1 ? 
+	thing.quantity + ' ' +thing.pluralName : 
+	thing.name;
+}
+
 export default {
 	name:'CommandLine',
 
-	props:['command','disabled'],
+	props:['needObject','disabled', 'verb','subject','object','thingHoveredOn'],
 	
 	computed: {
 		choosenText : function () {
-			return this.disabled ? '' : this.command.sentence;
+
+
+			var sentence = this.verb.description + ' ';
+			if (this.subject) {
+				sentence += describe(this.subject) + ' ';
+				if (this.needObject) {sentence += this.verb.preposition + ' ';}
+			}
+			if (this.object) {
+				sentence +=  describe(this.object);
+			}
+			
+			return sentence;
 		},
 		possibleText : function () {
-			return this.disabled ? '' : this.command.undecidedNoun;
+			return  this.thingHoveredOn ? describe(this.thingHoveredOn) : '';
 		}
 	},
 

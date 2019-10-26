@@ -24,26 +24,6 @@
         overflow: hidden;
     }
 
-    &__controls {
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        flex-shrink: 0;
-        margin-top: .25rem;
-    }
-
-    &__menu-wrapper {
-        display: flex;	
-        justify-content:center;
-        flex-wrap: nowrap;
-        align-items: flex-start;
-
-        @media (orientation: portrait) {
-            flex-wrap: wrap;
-        }
-
-    }
-
     &__paused-message {
         @include placeAbsolute(50%,50%,false,true);
         @include centerPoint();
