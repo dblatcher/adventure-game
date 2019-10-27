@@ -187,11 +187,11 @@ export default {
         clickHandler : function (event) {
             if (this.ident === this.theApp.pcId) {return false}
             event.stopPropagation();
-            this.theApp.$emit('clicked-thing', this.char);
+            this.$emit('clicked-thing', this.char);
         },
         hoverHandler : function (event) {
             if (this.ident === this.theApp.pcId) {return false}
-            this.theApp.$emit('hover-event', this, event);
+            this.$emit('hover-event', [this, event]);
         },
         
         onBeat(beat) {

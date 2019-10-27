@@ -50,7 +50,9 @@
           v-bind:measure="roomMeasure"
           v-bind:data="thing"
           v-bind:roomWidth="rooms[roomNumber].width"
-          v-bind:highlight="highlightingThings"/>
+          v-bind:highlight="highlightingThings"
+          @clicked-thing="handleClickOnThing($event)"
+          @hover-event="handleHoverEvent($event[0],$event[1])"/>
  
       </Room>
     </div>
@@ -309,8 +311,6 @@ export default {
     },
     resetListeners: function() {
       this.$off();
-      this.$on('hover-event',this.handleHoverEvent);	
-      this.$on('clicked-thing', this.handleClickOnThing);
       this.$on('character-room-change', this.teleportCharacter);
     },
     returnCurrentState: function() {

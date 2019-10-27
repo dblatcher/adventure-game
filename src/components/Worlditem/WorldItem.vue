@@ -103,11 +103,11 @@ export default {
         clickHandler : function (event) {
             if (this.item.unclickable) {return false}
             event.stopPropagation();
-            this.gameInstance.$emit('clicked-thing', this.item);
+            this.$emit('clicked-thing', this.item);
         },
         hoverHandler : function (event) {
             if (this.item.unclickable) {return false}
-            this.gameInstance.$emit('hover-event', this, event);
+            this.$emit('hover-event', [this, event]);
         },
         setStatus, setRemoval,
         showNextFrame : function () {
