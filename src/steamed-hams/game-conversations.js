@@ -80,7 +80,7 @@ function makeConversations() {
 			'pc:: Ye- hey- you know, the- one thing I should- excuse me for one second.',
 			'CHALMERS_C:: Of course.',],
 			{consequence: function(game,choice){
-				game.runSequence('fire');
+				return game.runSequence('fire');
 			}}
 		),
 	]));
@@ -100,12 +100,12 @@ function makeConversations() {
 		new DialogChoice('Come in.',
 		[],
 		{consequence: function(game,choice){
-			game.runSequence('chalmersComesIn');
+			return game.runSequence('chalmersComesIn');
 		}}),
 
 	]));
 
-
+	//TO DO - simplify this. 'base' can just be called as a runSequence in the script of each choice
 	conversations.iWasJust = new Conversation('iWasJust','CHALMERS_C','start');
 
 	function iWasJust_1(firstLines){
@@ -127,17 +127,17 @@ function makeConversations() {
 		new DialogChoice('just stretching my calves on the windowsill.',
 		iWasJust_1('Isometric exercise. Care to join me?'),
 		{consequence: function(game,choice){
-			game.runSequence('goToKrustyBurger',choice);
+			return game.runSequence('goToKrustyBurger',choice);
 		}}),
 		new DialogChoice('just examining these new italian loafers for signs of wear.',
 		iWasJust_1('A principal must always be wary of his shoes!'),
 		{consequence: function(game,choice){
-			game.runSequence('goToKrustyBurger',choice);
+			return game.runSequence('goToKrustyBurger',choice);
 		}}),
 		new DialogChoice('stomping on an troublesome termite.',
 		iWasJust_1('take that!'),
 		{consequence: function(game,choice){
-			game.runSequence('goToKrustyBurger',choice);
+			return game.runSequence('goToKrustyBurger',choice);
 		}}),
 	]))
 
