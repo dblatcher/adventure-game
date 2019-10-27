@@ -29,7 +29,6 @@ function changeRoom (target,options={}) {
 
     game.roomNumber = rNum;
     game.thingHoveredOn = null;
-    game.resetListeners();
 
     game.$nextTick( function() {
       game.reportEvent('room change to '+game.rooms[rNum].name);

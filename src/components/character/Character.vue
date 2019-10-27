@@ -157,7 +157,7 @@ export default {
         setDefaultWait, setDefaultWalk, setDefaultTalk,
         move : moveFunction,
         goToRoom : function (target,options){
-            this.theApp.$emit('character-room-change',[this.char].concat(target),options);
+            this.theApp.teleportCharacter ([this.char].concat(target), options)
         },
         showNextFrame : function () {
             var noActions = ( this.char.actionQueue[0] ) ? false:true; 

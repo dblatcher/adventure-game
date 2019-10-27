@@ -309,10 +309,6 @@ export default {
       var now = new Date();
       this.message = `${now.getHours()}:${now.getMinutes()}.${now.getSeconds()} - ${message}. `
     },
-    resetListeners: function() {
-      this.$off();
-      this.$on('character-room-change', this.teleportCharacter);
-    },
     returnCurrentState: function() {
       return state.get(this);
     },
@@ -335,8 +331,6 @@ export default {
 
   beforeMount: function () {
     window.vm = this;
-
-    this.resetListeners(); 
     console.log('GAME RESTARTED!', new Date);
 
   },
