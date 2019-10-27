@@ -13,7 +13,7 @@ export default function (choice) {
   .then( ()=>{   
     let consequences = {};
     if (typeof choice.consequence === 'function' ) {
-      conseqences = choice.consequence(that,choice)
+      consequences = choice.consequence(that,choice)
     }
 
     if (consequences.then) {
