@@ -114,7 +114,7 @@ function makeConversations() {
 		'[sequence]goToKrustyBurger'],
 		),
 
-		new DialogChoice('stomping on an troublesome termite.',
+		new DialogChoice('stomping on a troublesome termite.',
 		['pc::take that!',
 		'[sequence]goToKrustyBurger'],
 		),
