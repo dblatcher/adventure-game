@@ -63,6 +63,7 @@ function parseOrderString(oString, options) {
 			teleportCharacter: 	{code: '[teleport]', targetParser: arrayParse },
 			getInventoryItem: 	{code: '[get]'},
 			looseInventoryItem: {code: '[loose]'},
+			runSequence:		{code: '[sequence]'},
 		}
 	}
 

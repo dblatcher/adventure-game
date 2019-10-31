@@ -22,10 +22,8 @@ function DialogChoice (optionText,script,config={}) {
 		
 	}
 	
-	
 	if (typeof config.condition === 'function') {this.condition = config.condition}
 
-	this.consequence = config.consequence || null;
 	this.canOnlySayOnce = config.canOnlySayOnce || false;
 	this.ends = config.ends || false;
 	this.changesBranch = config.changesBranch || false;

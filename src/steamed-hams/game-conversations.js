@@ -76,12 +76,10 @@ function makeConversations() {
 			['pc:: old family recipe',
 			'CHALMERS_C:: for steamed-hams.',
 			'pc:: Yes.',
-			'CHALMERS_C:: Yeah, so you call them \"steamed hams\" despite the fact they are obviously grilled.',
+			'CHALMERS_C:: Yeah, so you call them "steamed hams" despite the fact they are obviously grilled.',
 			'pc:: Ye- hey- you know, the- one thing I should- excuse me for one second.',
-			'CHALMERS_C:: Of course.',],
-			{consequence: function(game,choice){
-				return game.runSequence('fire');
-			}}
+			'CHALMERS_C:: Of course.',
+			{order:['GAME','runSequence','fire']}]
 		),
 	]));
 
@@ -98,47 +96,28 @@ function makeConversations() {
 		{canOnlySayOnce:true, firstLineUnsaid:true}),
 
 		new DialogChoice('Come in.',
-		[],
-		{consequence: function(game,choice){
-			return game.runSequence('chalmersComesIn');
-		}}),
+		['[sequence]chalmersComesIn'],
+		),
 
 	]));
 
-	//TO DO - simplify this. 'base' can just be called as a runSequence in the script of each choice
 	conversations.iWasJust = new Conversation('iWasJust','CHALMERS_C','start');
-
-	function iWasJust_1(firstLines){
-		if (typeof firstLines === 'string') {firstLines = [firstLines]}
-		for (var i=0; i< firstLines.length; i++) {
-			firstLines[i] = 'pc::'+firstLines[i]
-		}
-		let base= [
-		'CHALMERS_C::Why is there smoke coming out of your oven, Seymour?',
-		'pc::Oh, no! That isn\'t smoke.',
-		'pc::It\'s steam.',
-		'pc::Steam from the steamed clams we\'re having.',
-		'pc::Mmm, steamed clams.'
-		];
-		return firstLines.concat(base);
-	}
 
 	conversations.iWasJust.addBranch(new DialogBranch('start',[
 		new DialogChoice('just stretching my calves on the windowsill.',
-		iWasJust_1('Isometric exercise. Care to join me?'),
-		{consequence: function(game,choice){
-			return game.runSequence('goToKrustyBurger',choice);
-		}}),
+		['pc::Isometric exercise. Care to join me?',
+		'[sequence]goToKrustyBurger'],
+		),
+		
 		new DialogChoice('just examining these new italian loafers for signs of wear.',
-		iWasJust_1('A principal must always be wary of his shoes!'),
-		{consequence: function(game,choice){
-			return game.runSequence('goToKrustyBurger',choice);
-		}}),
+		['pc::A principal must always be wary of his shoes!',
+		'[sequence]goToKrustyBurger'],
+		),
+
 		new DialogChoice('stomping on an troublesome termite.',
-		iWasJust_1('take that!'),
-		{consequence: function(game,choice){
-			return game.runSequence('goToKrustyBurger',choice);
-		}}),
+		['pc::take that!',
+		'[sequence]goToKrustyBurger'],
+		),
 	]))
 
 
@@ -147,11 +126,7 @@ function makeConversations() {
 	 conversations.houseIsOnFire.addBranch(new DialogBranch('start',[
 
 		new DialogChoice('No, mother, it\'s just the Northern Lights.',
-		[
-		],
-		{consequence: function(game,choice){
-			game.runSequence('ending',choice);
-		}}
+		['[sequence]ending'],
 		),
 
 	 ]))

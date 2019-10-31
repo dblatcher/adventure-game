@@ -56,7 +56,12 @@ const seeBurningRoast = [
 ];
 
 const goToKrustyBurger = [
-    new StandardOrder ('GAME', 'setGameStatus','CUTSCENE'),
+    
+    new StandardOrder('CHALMERS_C::Why is there smoke coming out of your oven, Seymour?'),
+    new StandardOrder('pc::Oh, no! That isn\'t smoke.'),
+    new StandardOrder('pc::It\'s steam.'),
+    new StandardOrder('pc::Steam from the steamed clams we\'re having.'),
+    new StandardOrder('pc::Mmm, steamed clams.'),
     new StandardOrder ('pc', 'setDefaultWait','wait'),
     new StandardOrder ('pc', 'setDefaultTalk','talk'),
     new StandardOrder ('CHALMERS_C','goToRoom',['DINING_R',100,10]),
