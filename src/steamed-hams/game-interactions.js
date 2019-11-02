@@ -41,25 +41,20 @@ var interactions =[
     }
     ),
 
-    new Interaction(['USE','FOIL_I','BUCKET_EMPTY_I'],[],function(){
-        this.runSequence([
-            new StandardOrder('[get]BUCKET_FOIL_I'),
-            new StandardOrder('[loose]BUCKET_EMPTY_I'),
-            new StandardOrder('[loose]FOIL_I'),
-            new StandardOrder('pc::Looks like a real ice bucket!'),
-        ]);
-    }),
+    new Interaction(['USE','FOIL_I','BUCKET_EMPTY_I'],[],[
+        new StandardOrder('[get]BUCKET_FOIL_I'),
+        new StandardOrder('[loose]BUCKET_EMPTY_I'),
+        new StandardOrder('[loose]FOIL_I'),
+        new StandardOrder('pc::Looks like a real ice bucket!'),
+    ]),
 
-    new Interaction(['USE','BOURBON_I','ROAST_I'],[],function(){
-        let pc = this.getThings('pc');
-        this.getInventoryItem('ROAST_GLAZED_I');
-        this.looseInventoryItem('ROAST_I');
-        this.looseInventoryItem('BOURBON_I');
-
-        pc.doAction('glaze_roast')
-        .then( () => {return pc.say('Well glazed, Seymour, well glazed') } )
-
-    }),
+    new Interaction(['USE','BOURBON_I','ROAST_I'],[],[
+        new StandardOrder('[get]ROAST_GLAZED_I'),
+        new StandardOrder('[loose]ROAST_I'),
+        new StandardOrder('[loose]BOURBON_I'),
+        new StandardOrder('pc##glaze_roast'),
+        new StandardOrder('pc::Well glazed, Seymour, well glazed'),
+    ]),
 
     new Interaction(['LOOK','TODO_I'],[function(){return this.gameVars.roastIsInOven && this.gameVars.iceBucketIsOnTable}],
         pcSays('No need for the list now! The Superintendent is here!')
@@ -338,20 +333,17 @@ var interactions =[
 
     new Interaction(['OPEN','CUPBOARD_W'],
     [function(){return !this.gameVars.cupboardEmpty}],
-    function(){
-        this.runSequence([
-            new StandardOrder('GAME','setGameStatus','CUTSCENE'),
-            new StandardOrder('pc','goTo',this.getThings('CUPBOARD_W').walkToPoint),
-            new StandardOrder('pc','say','Let\'s see...'),
-            new StandardOrder('GAME','getInventoryItem','BUCKET_SAND_I'),
-            new StandardOrder('pc','say','...the old fire bucket...'),
-            new StandardOrder('GAME','getInventoryItem','PLATTER_I'),
-            new StandardOrder('pc','say','...the serving platter...'),
-            new StandardOrder('GAME','getInventoryItem','BOURBON_I'),
-            new StandardOrder('pc','say','...and a bottle of bourbon?! What\'s that doing here?'),
-            new StandardOrder('GAME','setGameStatus','LIVE'),
-        ])
-    }),
+    [new StandardOrder('GAME','setGameStatus','CUTSCENE'),
+    new StandardOrder('pc','goTo','CUPBOARD_W'),
+    new StandardOrder('pc','say','Let\'s see...'),
+    new StandardOrder('GAME','getInventoryItem','BUCKET_SAND_I'),
+    new StandardOrder('pc','say','...the old fire bucket...'),
+    new StandardOrder('GAME','getInventoryItem','PLATTER_I'),
+    new StandardOrder('pc','say','...the serving platter...'),
+    new StandardOrder('GAME','getInventoryItem','BOURBON_I'),
+    new StandardOrder('pc','say','...and a bottle of bourbon?! What\'s that doing here?'),
+    new StandardOrder('GAME','setGameStatus','LIVE'),]
+    ),
 
     new Interaction(['OPEN','CUPBOARD_W'],[],
     pcSays('There was nothing else in there.')),

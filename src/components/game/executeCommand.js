@@ -22,7 +22,14 @@ export default function (command) {
       }
       if (failedCondition) {continue}
           
-      matchingList[i].response.apply(this,[]);
+      if (typeof matchingList[i].response ===  'function') {
+        matchingList[i].response.apply(this,[]);
+      } else if ( Array.isArray(matchingList[i].response)) {
+        this.runSequence(matchingList[i].response)
+      } else {
+        console.warn('bad response, neither function or array', matchingList[i].response)
+      }
+      
       interactionDone = true;
       break;
     }
