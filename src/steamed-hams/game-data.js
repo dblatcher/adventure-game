@@ -16,6 +16,8 @@ var sprites = [
   new Sprite ('sk2',  require('./sprites/skinner-talk-l.png'), [6,1]),
   new Sprite ('skw1',  require('./sprites/skinner-walk-r.png'), [3,1]),
   new Sprite ('skw2',  require('./sprites/skinner-walk-l.png'), [3,1]),
+  new Sprite('ser', require('./sprites/eyeroll.png'),[5,1]),
+  new Sprite('ser-l', require('./sprites/eyeroll-l.png'),[5,1]),
 
   new Sprite ('skw',  require('./sprites/skinner-w-1.png'), [3,1]),
   new Sprite ('ch1l',  require('./sprites/Chalmers-w-l.png'),[7,1]),
@@ -48,7 +50,10 @@ var characterModels = {
         },
         window_talk : [ ['skw',0,0],['skw',1,0],['skw',2,0] ],
         window_wait : [ ['skw',1,0] ],
-            
+        eye_roll: {
+            right: [ ['ser',0,0],['ser',1,0],['ser',2,0],['ser',3,0],['ser',4,0], ],
+            left: [ ['ser-l',0,0],['ser-l',1,0],['ser-l',2,0],['ser-l',3,0],['ser-l',4,0],]
+        },
         
     },'left'),
     
