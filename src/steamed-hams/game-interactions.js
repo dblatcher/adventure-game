@@ -151,26 +151,27 @@ var interactions =[
 
     //DINING ROOM
 
-    new Interaction(['USE','BUCKET_FOIL_I','TABLE_W'],[],function(){
-        let pc = this.getThings('pc');
-        this.looseInventoryItem('BUCKET_FOIL_I');
-        this.setGameStatus('CUTSCENE');
+    new Interaction(['USE','BUCKET_FOIL_I','TABLE_W'],[
+        function(){ return this.gameVars.roastIsInOven }
+    ],
+    [
+        new StandardOrder('pc>>TABLE_W'),
+        new StandardOrder('[loose]BUCKET_FOIL_I'),
+        new StandardOrder('pc::There...'),
+        new StandardOrder('DINING_R.ICE_BUCKET_W', 'setRemoval', false),
+        new StandardOrder('[var]',{iceBucketIsOnTable:true}),
+        new StandardOrder('[sequence]chalmersAtDoor')
+    ]),
 
-        pc.goTo(this.getThings('TABLE_W').walkToPoint)
-        .then( (r) => {return pc.say('Here we are') } )
-        .then( (r) => {
-            this.allRoomItemData.DINING_R.ICE_BUCKET_W.removed = false;
-            this.setGameStatus('LIVE');
-		 } )
-		 .then ( ()=> {
-			this.gameVars.iceBucketIsOnTable = true;
-			if (this.gameVars.roastIsInOven && this.gameVars.iceBucketIsOnTable) {
-				this.runSequence('chalmersAtDoor');
-			}
-        })
-
-    }),
-
+    new Interaction(['USE','BUCKET_FOIL_I','TABLE_W'],[],
+    [
+        new StandardOrder('pc>>TABLE_W'),
+        new StandardOrder('[loose]BUCKET_FOIL_I'),
+        new StandardOrder('pc::There...'),
+        new StandardOrder('DINING_R.ICE_BUCKET_W', 'setRemoval', false),
+        new StandardOrder('[var]',{iceBucketIsOnTable:true}),
+    ]
+    ),
 
     new Interaction(['WALK','DINING_WAYOUT_W'],[],
     doorFunction('DINING_WAYOUT_W',['PORCH_R',265,86])),
