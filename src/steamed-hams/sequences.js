@@ -22,13 +22,14 @@ const chalmersAtDoor = [
     new StandardOrder ('GAME', 'setGameStatus','CUTSCENE'),
     new StandardOrder ('SKINNER_C', 'say','The doorbell!'),
     new StandardOrder ('SKINNER_C', 'say','Superintendent Chalmers is outside!'),
-    new StandardOrder ('[Teleport]CHALMERS_C,FRONT_R,130,10'),
+    new StandardOrder ('[Teleport]CHALMERS_C,PORCH_R,134,25'),
     new StandardOrder ('GAME', 'setGameStatus','LIVE'),
 ];
 
 const greetChalmers = [
     new StandardOrder('GAME','setGameStatus','CUTSCENE'),
     new StandardOrder('CHALMERS_C^^pc'),
+    new StandardOrder('pc^^CHALMERS_C'),
     new StandardOrder('CHALMERS_C','say','Well Seymour, I made it.'),
     new StandardOrder('CHALMERS_C','say','dispite your directions.'),
     new StandardOrder('pc','say','Superintendent Chalmers!'),
@@ -41,7 +42,7 @@ const chalmersComesIn = [
     new StandardOrder ('CHALMERS_C>>FRONT_DOOR_W'),
     new StandardOrder ('CHALMERS_C}}DINING_R,100,10'),
     new StandardOrder ('SKINNER_C', 'say','phew...'),
-    new StandardOrder ('SKINNER_C>>146, 20'),
+    new StandardOrder ('pc>>FRONT_DOOR_W'),
     new StandardOrder ('KITCHEN_R.OVEN_W', 'setStatus',"smoking"),
     new StandardOrder ('[room]DINING_R,120,40'),
     new StandardOrder ('GAME', 'setGameStatus','LIVE'),
@@ -107,9 +108,10 @@ const fire = [
         new StandardOrder( 'CHALMERS_C>>DINING_WAYOUT_W'),
         new StandardOrder( 'pc>>75,45'),
     ],
-    new StandardOrder('CHALMERS_C}}FRONT_R,150,15'),
-    new StandardOrder('[room]FRONT_R,160,25'),
+    new StandardOrder('CHALMERS_C}}PORCH_R,160,25'),
+    new StandardOrder('[room]PORCH_R,273,80'),
     new StandardOrder('CHALMERS_C^^pc'),
+    new StandardOrder('pc^^CHALMERS_C'),
     new StandardOrder( 'AGNES_C::Seymour! the house is on fire!'),
     new StandardOrder('[status]CONVERSATION','houseIsOnFire'),
     
@@ -120,7 +122,7 @@ const ending = [
     new StandardOrder ('[status]CUTSCENE'),
     new StandardOrder ('CHALMERS_C::Well Seymour, you are an odd fellow, but I must admit...'),
     new StandardOrder ('CHALMERS_C::You steam a good ham.'),
-    new StandardOrder ('FRONT_R.WINDOW_FIRE_W','setRemoval',false ),
+    new StandardOrder ('PORCH_R.WINDOW_FIRE_W','setRemoval',false ),
     new StandardOrder ('CHALMERS_C>>95,1'),
     [
     new StandardOrder ('AGNES_C::help!',{time:200}),

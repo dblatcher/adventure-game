@@ -6,7 +6,7 @@ var interactions =[
     //CHARACTER
     new Interaction(
         ['TALK','CHALMERS_C'],
-        [function() {return this.rooms[this.roomNumber].id === 'FRONT_R'}],
+        [function() {return this.rooms[this.roomNumber].id === 'PORCH_R'}],
         function() { this.runSequence('greetChalmers'); }
     ),
 
@@ -110,6 +110,15 @@ var interactions =[
         ) )
     }),
 
+    new Interaction(['USE','BUCKET_SAND_I','BUSH_4_W'],[],function(){
+        this.runSequence([].concat(
+            new StandardOrder ('[status]CUTSCENE'),
+            new StandardOrder ('pc>>BUSH_4_W'),
+            this.sequences.pourSandInBush
+        ) )
+    }),
+
+
     new Interaction(['OPEN','FRONT_DOOR_W'],
     [function(){return this.getThings('FRONT_DOOR_W').item.status.cycle == 'closed'},],
     function(){
@@ -164,7 +173,7 @@ var interactions =[
 
 
     new Interaction(['WALK','DINING_WAYOUT_W'],[],
-    doorFunction('DINING_WAYOUT_W',['FRONT_R',146,27])),
+    doorFunction('DINING_WAYOUT_W',['PORCH_R',265,86])),
 
     new Interaction(['OPEN','DINING_KITCHENDOOR_W'],[
         function(){return this.getThings('DINING_KITCHENDOOR_W').item.status.cycle == 'closed'},
@@ -189,7 +198,7 @@ var interactions =[
    	function() { 
         this.getThings('pc').goTo(this.getThings('DINING_KITCHENDOOR_W').walkToPoint)
         .then( (r)=> { if (r.finished) {
-            return this.changeRoom(['FRONT_R',146,27])
+            return this.changeRoom(['KITCHEN_R',146,27])
             .then( ()=> { this.runSequence('seeBurningRoast') } )
         } });
     }),

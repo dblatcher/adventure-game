@@ -143,10 +143,10 @@ var worldItemModels = {
 
 
 var makeCharacters = function() {return [
-    new Character ('skinner','Skinner',[200,10,0],'white',characterModels.skinner),
+    new Character ('skinner','Skinner',[200,10,3],'white',characterModels.skinner),
     new Character ('chalmers','Superintendent Chalmers',[100,10,null],'red',characterModels.chalmers),
     new Character ('server','sever',[230,100,2],'lime',characterModels.invisible),
-    new Character ('agnes','agnes',[165,90,0],'violet',characterModels.invisible),
+    new Character ('agnes','agnes',[400,260,3],'violet',characterModels.invisible),
 ]}
 
 var pcId = 'SKINNER_C';
@@ -162,12 +162,9 @@ var makeRooms = function(){ return [
         ],
         worldItems: [
             new WorldItem('garage','car hole',[65,16,0,-10],200,170),
-            new WorldItem('bush','bush',[185,14,20,-2],130,65),
-            new WorldItem('bush_2','bush',[125,14,20,-2],120,65),
-            new WorldItem('bush_3','bush',[225,23,10,-2],80,75),
-            new WorldItem('front_door','door',[142,28,5,-10],80,120,'closed',worldItemModels.door),
+            new WorldItem('front_doorOld','door',[142,28,5,-10],80,120,'closed',worldItemModels.door),
             new WorldItem('front_fence','f',[155,8],470,129,'neutral',worldItemModels.front_fence,{unclickable:true,zAdjust:10}),
-            new WorldItem('window_fire','fire',[175,35],25,30,'neutral',worldItemModels.fireInWindow,{unclickable:true,removed:true, noZoneScaling:true,}),
+            new WorldItem('front_window_fire','fire',[175,35],25,30,'neutral',worldItemModels.fireInWindow,{unclickable:true,removed:true, noZoneScaling:true,}),
         ],
         obstacles: [
             new PolyZone([ [0,40],[30,16],[100,20], [100,40] ]),
@@ -224,7 +221,33 @@ var makeRooms = function(){ return [
                 scale: function(){return .175 - (this.y-70)/150}
             })
         ]
-    })
+    }),
+
+    new Room('PORCH', 'porch', require('./rooms/bigfront.png'),523,320,{
+        effectZones: [
+            new EffectZone (
+                new RectZone(0,0,523,320), {scale: function(){ 
+                    return this.y > 100 ? 1.5 : 1.5 + 0.006* ( 100 - this.y ) 
+                }}
+            )
+        ],
+        obstacles: [
+            new RectZone(0,40,157,280),
+            new RectZone(150,83,65,280),
+            new RectZone(215,105,105,280),
+            new RectZone(310,40,300,280),
+        ],
+
+        worldItems: [
+            new WorldItem('bush','bush',[35,49,20,-15],70,50,undefined,null,{noZoneScaling:true}),
+            new WorldItem('bush_2','bush',[120,49,20,-15],60,70,undefined,null,{noZoneScaling:true}),
+            new WorldItem('bush_3','bush',[370,44,-20,-10],55,80,undefined,null,{noZoneScaling:true}),
+            new WorldItem('bush_4','bush',[445,44,-20,-10],70,50,undefined,null,{noZoneScaling:true}),
+            new WorldItem('front_door','door',[268,90,5,-10],130,160,'closed',worldItemModels.door, {noZoneScaling:true}),
+            new WorldItem('window_fire','fire',[432,124],120,152,'neutral',worldItemModels.fireInWindow,{unclickable:true,removed:true, noZoneScaling:true,}),
+        ],
+
+    } )
 
 ]}
 
