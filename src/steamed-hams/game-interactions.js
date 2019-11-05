@@ -160,6 +160,8 @@ var interactions =[
         new StandardOrder('pc::There...'),
         new StandardOrder('DINING_R.ICE_BUCKET_W', 'setRemoval', false),
         new StandardOrder('[var]',{iceBucketIsOnTable:true}),
+        new StandardOrder('[sequence]chalmersWalkingAlong'),
+        new StandardOrder ('GAME','changeRoom',['DINING_R'], {pcNotMoving:true}),
         new StandardOrder('[sequence]chalmersAtDoor')
     ]),
 
@@ -307,23 +309,31 @@ var interactions =[
             this.looseInventoryItem('ROAST_GLAZED_I');
         } )
     }),
+
+
+    new Interaction(['SHUT','OVEN_W'],
+    [function(){return this.getThings('OVEN_W').item.status.cycle == 'open_ham_inside'}, function(){return this.gameVars.iceBucketIsOnTable}],
+    [
+        new StandardOrder('[status]CUTSCENE'),
+        new StandardOrder('pc>>OVEN_W'),
+        new StandardOrder('OVEN_W','setStatus','closed_ham_inside'),
+        new StandardOrder('pc::I\'ll just turn this on...'),
+        new StandardOrder('[var]',{roastIsInOven:true}),
+        new StandardOrder('[sequence]chalmersWalkingAlong'),
+        new StandardOrder ('GAME','changeRoom',['KITCHEN_R'], {pcNotMoving:true}),
+        new StandardOrder('[sequence]chalmersAtDoor')
+    ]),
+
     new Interaction(['SHUT','OVEN_W'],
     [function(){return this.getThings('OVEN_W').item.status.cycle == 'open_ham_inside'}],
-    function(){
-        this.getThings('pc').goTo(this.getThings('OVEN_W').walkToPoint)
-        .then( ()=> {
-            return this.getThings('OVEN_W').setStatus('closed_ham_inside');
-        } )
-        .then( ()=> {
-            return this.getThings('pc').say('I\'ll just turn this on...');
-        } )
-        .then ( ()=> {
-			this.gameVars.roastIsInOven = true;
-			if (this.gameVars.roastIsInOven && this.gameVars.iceBucketIsOnTable) {
-				this.runSequence('chalmersAtDoor');
-			}
-        })
-    }),
+    [
+        new StandardOrder('[status]CUTSCENE'),
+        new StandardOrder('pc>>OVEN_W'),
+        new StandardOrder('OVEN_W','setStatus','closed_ham_inside'),
+        new StandardOrder('pc::I\'ll just turn this on...'),
+        new StandardOrder('[var]',{roastIsInOven:true}),
+        new StandardOrder('[status]LIVE'),
+    ]),
 
 
     new Interaction(['SHUT','OVEN_W'],

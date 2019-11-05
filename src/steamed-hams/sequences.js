@@ -18,6 +18,13 @@ const pourSandInBush = [
     new StandardOrder ('GAME', 'setGameStatus','LIVE'),
 ]
 
+const chalmersWalkingAlong = [
+    new StandardOrder ('GAME', 'setGameStatus','CUTSCENE'),
+    new StandardOrder ('[Teleport]CHALMERS_C,FRONT_R,14,15'),
+    new StandardOrder ('GAME','changeRoom',['FRONT_R'], {pcNotMoving:true}),
+    new StandardOrder ('CHALMERS_C>>DOORBELL_W')
+];
+
 const chalmersAtDoor = [
     new StandardOrder ('GAME', 'setGameStatus','CUTSCENE'),
     new StandardOrder ('SKINNER_C', 'say','The doorbell!'),
@@ -150,4 +157,4 @@ const test = [
 ]
 
 
-export default { starting, fire, pourSandInBush, goToKrustyBurger, chalmersComesIn, chalmersAtDoor, greetChalmers,seeBurningRoast,ending, test };
+export default { starting, fire, pourSandInBush, goToKrustyBurger, chalmersComesIn, chalmersWalkingAlong, chalmersAtDoor, greetChalmers,seeBurningRoast,ending, test };

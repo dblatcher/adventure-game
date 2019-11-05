@@ -162,7 +162,7 @@ var makeRooms = function(){ return [
         ],
         worldItems: [
             new WorldItem('garage','car hole',[65,16,0,-10],200,170),
-            new WorldItem('front_doorOld','door',[142,28,5,-10],80,120,'closed',worldItemModels.door),
+            new WorldItem('doorbell','door',[142,28,5,-10],80,120,'closed',worldItemModels.door),
             new WorldItem('front_fence','f',[155,8],470,129,'neutral',worldItemModels.front_fence,{unclickable:true,zAdjust:10}),
             new WorldItem('front_window_fire','fire',[175,35],25,30,'neutral',worldItemModels.fireInWindow,{unclickable:true,removed:true, noZoneScaling:true,}),
         ],
