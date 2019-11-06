@@ -102,7 +102,7 @@ import { /* webpackPreload: true */ gameData } from "../../gameIndex";
 import state from "../../modules/savedStates";
 import * as pathFinding from "./pathFinding";
 
-import { executeStandardOrder, runSequence } from "./orderExecution";
+import { executeStandardOrder, runSequence, evaluateStandardCondition } from "./orderExecution";
 import {changeRoom, teleportCharacter} from "./roomMethods";
 import {getInventoryItem, looseInventoryItem} from "./inventoryMethods";
 
@@ -238,6 +238,7 @@ export default {
     looseInventoryItem,
     teleportCharacter,
     executeStandardOrder,
+    evaluateStandardCondition,
     runSequence,
 
     handleSkipButton() {

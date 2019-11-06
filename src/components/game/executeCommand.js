@@ -1,7 +1,7 @@
 export default function (command) {
     if (!command) {command = {verb: this.verb, subject: this.subject, object: this.object};}
     
-    var interactionDone = false, failedCondition = false;
+    var interactionDone = false, failedCondition = false, condition, passed;
     //find array of conditions/response object matching the command
     var thirdParam = command.object? command.object.id : 'intransitive';
     var matchingList = [];
@@ -15,13 +15,19 @@ export default function (command) {
 
       // test for matchingList[i].conditions being satisfied, if not skip to next 
       for (var j=0; j<matchingList[i].conditions.length; j++) {
-        if (matchingList[i].conditions[j].apply(this,[]) == false) {
+        condition = matchingList[i].conditions[j];
+        if (condition.isStandardCondition) {
+         passed = this.evaluateStandardCondition (matchingList[i].conditions[j])
+        } else {
+          passed = condition.apply(this,[])
+        }
+        if (passed == false) {
           failedCondition = true;
           break;
         }
       }
       if (failedCondition) {continue}
-          
+
       if (typeof matchingList[i].response ===  'function') {
         matchingList[i].response.apply(this,[]);
       } else if ( Array.isArray(matchingList[i].response)) {

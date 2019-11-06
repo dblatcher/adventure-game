@@ -117,6 +117,16 @@ function StandardOrder (actorIdOrOrderString, actionOrOptions, target, options={
 		this.options = options;
 	}
 }
+StandardOrder.prototype.isStandardOrder = true;
+
+function StandardCondition (actorId, property, operator, comparitor) {
+	this.actorId = actorId;
+	this.property = property;
+	this.operator = operator;
+	this.comparitor = comparitor;
+}
+StandardCondition.prototype.isStandardCondition = true;
+
 
 function doorFunction (doorId, destination) {	
 	return function () {
@@ -143,4 +153,4 @@ function pcSays(text,time) {
 	return function() { this.getThings('pc').say(text,{time:time});}	
 }
 
-export { Interaction, StandardOrder, doorFunction, pcSays, takeFunction }
+export { Interaction, StandardOrder, StandardCondition, doorFunction, pcSays, takeFunction }

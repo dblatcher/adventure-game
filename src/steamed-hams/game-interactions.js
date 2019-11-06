@@ -1,5 +1,6 @@
-import { Interaction, StandardOrder, doorFunction,takeFunction,pcSays } from "../modules/interaction-constructor";
+import { Interaction, StandardOrder, StandardCondition, doorFunction,takeFunction,pcSays } from "../modules/interaction-constructor";
 
+console.log( StandardCondition)
 
 var interactions =[
 
@@ -10,7 +11,7 @@ var interactions =[
         function() { this.runSequence('greetChalmers'); }
     ),
 
-    //ITEM BASED
+    //ITEM BASED    
     new Interaction(['LOOK','ROAST_I'],[],pcSays('Yes, this should be a reasonable quantity of meat to serve Superintendent Chalmers.',3000)),
     new Interaction(['LOOK','ROAST_GLAZED_I'],[],pcSays('Glazed and ready for the oven!',2000)),
     new Interaction(['LOOK','BUCKET_FOIL_I'],[],pcSays('This should suffice. Better put it on the table',3000)),
@@ -354,6 +355,7 @@ var interactions =[
     new Interaction(['OPEN','CUPBOARD_W'],
     [function(){return !this.gameVars.cupboardEmpty}],
     [new StandardOrder('GAME','setGameStatus','CUTSCENE'),
+    new StandardOrder('[var]',{cupboardEmpty:true}),
     new StandardOrder('pc','goTo','CUPBOARD_W'),
     new StandardOrder('pc','say','Let\'s see...'),
     new StandardOrder('GAME','getInventoryItem','BUCKET_SAND_I'),
