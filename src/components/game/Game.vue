@@ -176,6 +176,13 @@ export default {
       })
       return result;
     },
+    allCharactersAsObject: function() {
+      let result = {};
+        this.allCharacters.forEach (char => {
+          result[char.id] = char;
+        })
+      return result;
+    },
     dialogChoices : function () {
       if (!this.conversations[this.conversation]) return [];
       let validChoices = this.conversations[this.conversation].getEnabledOptions();
