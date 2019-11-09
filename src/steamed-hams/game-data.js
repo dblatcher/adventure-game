@@ -1,6 +1,7 @@
 
 import { RectZone, PolyZone } from "../modules/zone";
 import { Character, WorldItem, Room, EffectZone, Foreground, Verb, InventoryItem, Sprite, CharacterModel, WorldItemModel } from "../modules/constructors"
+import { pathToFileURL } from "url";
 
 var sprites = [
 
@@ -20,6 +21,8 @@ var sprites = [
   new Sprite('ser-l', require('./sprites/eyeroll-l.png'),[5,1]),
 
   new Sprite ('skw',  require('./sprites/skinner-w-1.png'), [3,1]),
+  new Sprite('pour', require('./sprites/pour.png'),[5,1]),
+
   new Sprite ('ch1l',  require('./sprites/Chalmers-w-l.png'),[7,1]),
   new Sprite ('ch1r',  require('./sprites/Chalmers-w-r.png'),[7,1]),
   new Sprite ('chTl',  require('./sprites/Chalmers-t-l.png'),[7,1]),
@@ -54,6 +57,7 @@ var characterModels = {
             right: [ ['ser',0,0],['ser',1,0],['ser',2,0],['ser',3,0],['ser',4,0], ],
             left: [ ['ser-l',0,0],['ser-l',1,0],['ser-l',2,0],['ser-l',3,0],['ser-l',4,0],]
         },
+        pour_sand: [ ['pour',0,0],['pour',1,0],['pour',2,0],['pour',3,0],['pour',4,0], ]
         
     },'left'),
     
