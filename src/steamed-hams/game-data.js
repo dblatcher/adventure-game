@@ -12,8 +12,8 @@ var sprites = [
   new Sprite ('foil',  require('./sprites/foil.png'), [1,1]),
   new Sprite ('oven', require('./sprites/oven.png'), [6,1]),
 
-  new Sprite ('sk1',  require('./sprites/skinner-talk.png'), [6,1]),
-  new Sprite ('sk2',  require('./sprites/skinner-talk-l.png'), [6,1]),
+  new Sprite ('sk1',  require('./sprites/skinner-talk-r.png'), [5,1]),
+  new Sprite ('sk2',  require('./sprites/skinner-talk-l.png'), [5,1]),
   new Sprite ('skw1',  require('./sprites/skinner-walk-r.png'), [3,1]),
   new Sprite ('skw2',  require('./sprites/skinner-walk-l.png'), [3,1]),
   new Sprite('ser', require('./sprites/eyeroll.png'),[5,1]),
@@ -38,15 +38,15 @@ var characterModels = {
     skinner : new CharacterModel (65,100,{
         wait : {
             right : [ ['sk1',0,0] ],
-            left : [ ['sk2',5,0] ],
+            left : [ ['sk2',4,0] ],
         },
         walk : {
             right : [ ['skw1',0,0],['skw1',1,0],['skw1',2,0],  ] ,
             left : [ ['skw2',0,0],['skw2',1,0],['skw2',2,0], ] ,
         },
         talk : {
-            right : [ ['sk1',1,0],['sk1',2,0],['sk1',3,0],['sk1',4,0] ],
-            left : [ ['sk2',4,0],['sk2',3,0],['sk2',3,0],['sk2',1,0]],
+            right : [ ['sk1',1,0],['sk1',2,0],['sk1',3,0],['sk1',4,0],['sk1',3,0] ],
+            left : [ ['sk2',3,0],['sk2',3,0],['sk2',1,0],['sk2',0,0],['sk2',1,0]],
         },
         window_talk : [ ['skw',0,0],['skw',1,0],['skw',2,0] ],
         window_wait : [ ['skw',1,0] ],
