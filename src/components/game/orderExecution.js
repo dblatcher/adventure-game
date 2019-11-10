@@ -1,27 +1,8 @@
 import makeChain from "../../modules/chainPromises";
 
-function findActor (actorId) {
-    let game = this;
-    if (!actorId || actorId === 'GAME') { return game}
-    if (actorId === 'VAR') {return game.gameVars}
-    if ( game.getThings(actorId) ) { return game.getThings(actorId) }
-
-
-
-    // if character or roomObject, need to distinguish if in room
-    let suffix = actorId.substring( actorId.length-2)
-    if (suffix === '_W') {
-        let idSet = actorId.split('.');
-        if (idSet.length === 2 && game.allRoomItemData[idSet[0]]) {
-            return  game.allRoomItemData[idSet[0]][idSet[1]]
-        }
-    }
-    return false;
-}
-
 
 function executeStandardOrder(order) {
-    let actor = findActor.apply(this,[order.actorId])
+    let actor = this.getComponentOrDataObject(order.actorId)
 
     if (!actor) {
         console.warn(`failed order: ${order.actorId}' not found`)
@@ -41,7 +22,7 @@ function executeStandardOrder(order) {
 }
 
 function evaluateStandardCondition (condition) {
-    let actor = findActor.apply(this,[condition.actorId])
+    let actor = this.getComponentOrDataObject(order.actorId)
 
     if (!actor) {
         console.warn(`condition invalid: ${condition.actorId}' not found`)

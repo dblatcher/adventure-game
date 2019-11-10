@@ -1,6 +1,5 @@
 import { Interaction, StandardOrder, StandardCondition, doorFunction,takeFunction,pcSays } from "../modules/interaction-constructor";
 
-console.log( StandardCondition)
 
 var interactions =[
 

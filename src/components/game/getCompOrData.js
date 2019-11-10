@@ -1,7 +1,9 @@
 export default function getComponentOrDataObject (input) {
-    if (!input) {return this}
-
+    if (!input || input.toUpperCase() === 'GAME') {return this}
     input = input.toUpperCase();
+
+    if (input === 'VAR') {return this.gameVars}
+
     let idSet = input.split('.');
     let id = idSet.pop();
     if (id === 'PC') {id = this.pcId}
