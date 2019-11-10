@@ -1,7 +1,10 @@
 export default function getComponentOrDataObject (input) {
+    if (!input) {return this}
+
     input = input.toUpperCase();
     let idSet = input.split('.');
     let id = idSet.pop();
+    if (id === 'PC') {id = this.pcId}
     let roomId = idSet.pop();
     let currentRoomId = this.rooms[this.roomNumber].id;
 
