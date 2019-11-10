@@ -109,6 +109,7 @@ import {getInventoryItem, looseInventoryItem} from "./inventoryMethods";
 import handleDialogChoice from "./handleDialogChoice";
 import executeCommand from "./executeCommand";
 import getThings from "./getThings";
+import getComponentOrDataObject from "./getCompOrData";
 import removeThing from "./removeThing";
 import handleClickOnRoom from "./handleClickOnRoom";
 import handleClickOnThing from "./handleClickOnThing";
@@ -235,6 +236,7 @@ export default {
 
     changeRoom, 
     getThings,
+    getComponentOrDataObject,
     executeCommand,
     removeThing,
     handleDialogChoice,
