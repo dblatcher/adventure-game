@@ -51,6 +51,26 @@ function Character(id,name,coords,speechColor,model,config={}) {
 
 	this.initialState = Object.freeze(Object.assign({},this));
 }
+Character.prototype.isDataObject = true;
+Character.prototype.goTo = function(target, options={}, game) {
+
+	if (typeof this.room !== 'number') {return false}
+
+	let destination = game.resolveDestination(target)
+
+	console.log(target, destination);
+	if (!destination) {return false}
+	let obstaclesContainDestination = game.rooms[this.room].obstacles.map (obstacle=>{return obstacle.containsPoint(destination) })
+	if (obstaclesContainDestination.includes(true)) {return false}
+
+	this.x = destination.x;
+	this.y = destination.y;
+	return true;
+
+}
+Character.prototype.goToRoom = function (target,options,game){
+	game.teleportCharacter ([this].concat(target), options)
+},
 Character.prototype.reset = resetObject;
 Character.prototype.returnState = function () {
 	return {
@@ -104,6 +124,7 @@ function WorldItem (id, name, coords ,width,height,initialCycle, model,config={}
 	
 	this.initialState = Object.freeze(Object.assign({model:model},this));
 }
+WorldItem.prototype.isDataObject = true;
 WorldItem.prototype.reset = resetObject;
 WorldItem.prototype.setRemoval = function (input) {
 	this.removed =!!input
