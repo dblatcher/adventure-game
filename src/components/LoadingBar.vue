@@ -20,6 +20,12 @@
   v-bind:src="item.url"
   style="display:none" />
 
+  <img v-for="item in itemData"  
+  v-on:load="imageLoadHandler(item)"
+  v-bind:key="item.id"
+  v-bind:src="item.picture[1]"
+  style="display:none" />
+
 </div>
 </template>
 
@@ -38,11 +44,12 @@ export default {
         loadedCount: 0,
         roomData:gameData.makeRooms(),
         spriteData:gameData.sprites,
+        itemData:gameData.makeInventoryItems(),
       }
     },
 
     computed: {
-      total: function() { return (this.spriteData.length + this.roomData.length); },
+      total: function() { return (this.spriteData.length + this.roomData.length + this.itemData.length); },
       isDone: function() { return (this.total === this.loadedCount) },
       progress: function() { return (this.loadedCount / this.total ) }
     },
