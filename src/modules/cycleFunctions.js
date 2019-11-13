@@ -8,26 +8,26 @@ function setDefaultCycle (type, cycleName) {
         default: return Promise.resolve(false);
     }
 
-    if ( !this.char.cycles[cycleName]) {
+    if ( !this.cycles[cycleName]) {
 
         console.warn ( `set default ${type} failed : ${this.ident} does not have a cycle called "${cycleName}".` ) 
 
         return Promise.resolve({
             finished:true,
-            cycle: this.char[propertyName],
+            cycle: this[propertyName],
             message:`set default ${type} : ${this.ident} does not have a cycle called "${cycleName}".`
         });
     }
 
-    if (this.char.behaviour_action === this.char[propertyName]) { 
-        this.char.behaviour_action = cycleName;
-        this.char.behaviour_actFrame = 0;
+    if (this.behaviour_action === this[propertyName]) { 
+        this.behaviour_action = cycleName;
+        this.behaviour_actFrame = 0;
     }
-    this.char[propertyName] = cycleName;
+    this[propertyName] = cycleName;
 
     return Promise.resolve({
         finished:true,
-        cycle: this.char[propertyName],
+        cycle: this[propertyName],
     });
 }
 

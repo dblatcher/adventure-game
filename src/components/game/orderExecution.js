@@ -30,7 +30,7 @@ function executeStandardOrder(order) {
 
     if (!actor) {
         console.warn(`failed order: ${order.actorId}' not found`)
-        return Promise.resolve({})
+        return Promise.resolve({result:'failed'})
     }
 
     if (typeof actor[order.action] !== "function") {

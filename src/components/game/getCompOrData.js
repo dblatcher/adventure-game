@@ -9,6 +9,7 @@ export default function getComponentOrDataObject (input) {
     if (id === 'PC') {id = this.pcId}
     let roomId = idSet.pop();
     let currentRoomId = this.rooms[this.roomNumber].id;
+    if (roomId === 'HERE') {roomId = currentRoomId}
 
     if (this.getThings(id)) {return this.getThings(id)}
 

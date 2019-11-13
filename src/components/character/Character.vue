@@ -37,7 +37,6 @@ import Sprite from "../Sprite";
 import SpeechLine from "./SpeechLine";
 import {say, countDownSpeech} from "./sayFunction";
 import {goTo, turnTo } from "./goFunction";
-import { setDefaultWait, setDefaultWalk, setDefaultTalk } from "./cycleFunctions";
 import doFunction from "./doFunction";
 import moveFunction from "./moveFunction";
 
@@ -154,8 +153,11 @@ export default {
         doAction : doFunction,
         goTo, turnTo,
         say, countDownSpeech,
-        setDefaultWait, setDefaultWalk, setDefaultTalk,
         move : moveFunction,
+        setDefaultWait: function (type, cycleName){ return this.char.setDefaultWait (type, cycleName) },
+        setDefaultWalk: function (type, cycleName){ return this.char.setDefaultWalk (type, cycleName) },
+        setDefaultTalk: function (type, cycleName){ return this.char.setDefaultTalk (type, cycleName) },
+
         goToRoom : function (target,options){
             this.theApp.teleportCharacter ([this.char].concat(target), options)
         },

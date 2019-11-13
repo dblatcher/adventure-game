@@ -1,3 +1,4 @@
+import {  setDefaultWait, setDefaultWalk, setDefaultTalk } from "./cycleFunctions";
 
 function resetObject() {
 	var keyList = Object.keys(this.initialState);
@@ -71,6 +72,9 @@ Character.prototype.goTo = function(target, options={}, game) {
 Character.prototype.goToRoom = function (target,options,game){
 	game.teleportCharacter ([this].concat(target), options)
 },
+Character.prototype.setDefaultTalk = setDefaultTalk;
+Character.prototype.setDefaultWalk = setDefaultWalk;
+Character.prototype.setDefaultWait = setDefaultWait;
 Character.prototype.reset = resetObject;
 Character.prototype.returnState = function () {
 	return {
