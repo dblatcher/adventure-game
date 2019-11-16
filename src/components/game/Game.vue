@@ -195,6 +195,9 @@ export default {
 
       return validChoices;
     },
+    currentRoom : function() {
+      return this.rooms[this.roomNumber].id
+    },
     obstacles : function(){
       return this.rooms[this.roomNumber].obstacles;
     },
