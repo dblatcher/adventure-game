@@ -44,7 +44,7 @@ function executeStandardOrder(order) {
 }
 
 function evaluateStandardCondition (condition) {
-    let actor = this.getComponentOrDataObject(order.actorId)
+    let actor = this.getComponentOrDataObject(condition.actorId)
 
     if (!actor) {
         console.warn(`condition invalid: ${condition.actorId}' not found`)
@@ -56,14 +56,28 @@ function evaluateStandardCondition (condition) {
             return !!actor[condition.property]; 
         case "false":
             return !actor[condition.property]; 
+        case "eq":
         case "=":
         case "==":
         case "===":
             return actor[condition.property] == condition.comparitor;
+        case "ne":
         case "!=":
         case "!==":
         case "<>":
             return actor[condition.property] !== condition.comparitor;
+        case "gt":
+        case ">":
+            return actor[condition.property] > condition.comparitor;
+        case "lt":
+        case "<":
+            return actor[condition.property] < condition.comparitor;
+        case "ge":
+        case ">=":
+            return actor[condition.property] >= condition.comparitor;
+        case "le":
+        case "<=":
+            return actor[condition.property] <= condition.comparitor;
     }
 
     console.warn ('condition invalid',condition)
