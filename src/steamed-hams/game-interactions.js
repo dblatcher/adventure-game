@@ -6,8 +6,8 @@ var interactions =[
     //CHARACTER
     new Interaction(
         ['TALK','CHALMERS_C'],
-        [function() {return this.rooms[this.roomNumber].id === 'PORCH_R'}],
-        function() { this.runSequence('greetChalmers'); }
+        [new StandardCondition('GAME', 'currentRoom', '===', 'PORCH_R')],
+        'greetChalmers'
     ),
 
     //ITEM BASED    
@@ -22,23 +22,21 @@ var interactions =[
     new Interaction(['USE','FOIL_I','BUCKET_FOIL_I'],[],pcSays('It\'s already wrapped.',1500)),
 
     new Interaction(['USE','HAMBURGER_BAG_I','PLATTER_I'],[],
-    function(){
-        let pc = this.getThings('pc');
-        this.getInventoryItem('HAMBURGER_PLATTER_I');
-        this.looseInventoryItem('HAMBURGER_BAG_I');
-        this.looseInventoryItem('PLATTER_I');
-        pc.doAction('arrange_burgers')
-    }
+    [
+      new StandardOrder ('[loose]PLATTER_I'),  
+      new StandardOrder ('[loose]HAMBURGER_BAG_I'),  
+      new StandardOrder ('[get]HAMBURGER_PLATTER_I'),
+      new StandardOrder ('pc##arrange_burgers'),
+    ]
     ),
 
     new Interaction(['USE','PLATTER_I','HAMBURGER_BAG_I'],[],
-    function(){
-        let pc = this.getThings('pc');
-        this.getInventoryItem('HAMBURGER_PLATTER_I');
-        this.looseInventoryItem('HAMBURGER_BAG_I');
-        this.looseInventoryItem('PLATTER_I');
-        pc.doAction('arrange_burgers')
-    }
+    [
+        new StandardOrder ('[loose]PLATTER_I'),  
+        new StandardOrder ('[loose]HAMBURGER_BAG_I'),  
+        new StandardOrder ('[get]HAMBURGER_PLATTER_I'),
+        new StandardOrder ('pc##arrange_burgers'),
+      ]
     ),
 
     new Interaction(['USE','FOIL_I','BUCKET_EMPTY_I'],[],[
@@ -120,7 +118,7 @@ var interactions =[
 
 
     new Interaction(['OPEN','FRONT_DOOR_W'],
-    [function(){return this.getThings('FRONT_DOOR_W').item.status.cycle == 'closed'},],
+    [new StandardCondition('FRONT_DOOR_W','status','===','closed')],
     function(){
         this.getThings('pc').goTo(this.getThings('FRONT_DOOR_W').walkToPoint)
         .then( (r)=> { if (r.finished) {
@@ -131,12 +129,12 @@ var interactions =[
     new Interaction(['OPEN','FRONT_DOOR_W'],[],pcSays("It's not closed!")),
 
     new Interaction(['WALK','FRONT_DOOR_W'],
-    [function(){return this.getThings('FRONT_DOOR_W').item.status.cycle == 'open'}],
+    [new StandardCondition('FRONT_DOOR_W','status','===','open')],
     doorFunction('FRONT_DOOR_W',['DINING_R',50,50])
     ),
 
     new Interaction(['SHUT','FRONT_DOOR_W'],
-    [function(){return this.getThings('FRONT_DOOR_W').item.status.cycle == 'open'}],
+    [new StandardCondition('FRONT_DOOR_W','status','===','open')],
     function(){
         this.getThings('pc').goTo(this.getThings('FRONT_DOOR_W').walkToPoint)
         .then( (r)=> { if (r.finished) {
