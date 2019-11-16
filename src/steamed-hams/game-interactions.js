@@ -70,7 +70,8 @@ var interactions =[
         new StandardOrder('pc::Well glazed, Seymour, well glazed'),
     ]),
 
-    new Interaction(['LOOK','TODO_I'],[function(){return this.gameVars.roastIsInOven && this.gameVars.iceBucketIsOnTable}],
+    new Interaction(['LOOK','TODO_I'],
+    [function(){return this.gameVars.roastIsInOven && this.gameVars.iceBucketIsOnTable}],
     [new StandardOrder('pc::No need for the list now! The Superintendent is here!')]
     ),
 
@@ -101,38 +102,29 @@ var interactions =[
     new Interaction(['LOOK','GARAGE_W'],[],[new StandardOrder('pc::I admire car owners. I aspire to be one after I\'ve reimbursed mother for the food I ate as a child.')]),
 
 
-    new Interaction(['USE','BUCKET_SAND_I','BUSH_W'],[],function(){
-        this.runSequence([].concat(
-            new StandardOrder ('[status]CUTSCENE'),
-            new StandardOrder ('pc>>BUSH_W'),
-            this.sequences.pourSandInBush
-        ) )
-    }),
+    new Interaction(['USE','BUCKET_SAND_I','BUSH_W'],[],[
+        new StandardOrder ('[status]CUTSCENE'),
+        new StandardOrder ('pc>>BUSH_W'),
+        new StandardOrder('[sequence]pourSandInBush')
+    ]),
 
-    new Interaction(['USE','BUCKET_SAND_I','BUSH_2_W'],[],function(){
-        this.runSequence([].concat(
-            new StandardOrder ('[status]CUTSCENE'),
-            new StandardOrder ('pc>>BUSH_2_W'),
-            this.sequences.pourSandInBush
-        ) )
-    }),
+    new Interaction(['USE','BUCKET_SAND_I','BUSH_2_W'],[],[
+        new StandardOrder ('[status]CUTSCENE'),
+        new StandardOrder ('pc>>BUSH_2_W'),
+        new StandardOrder('[sequence]pourSandInBush')
+    ]),
 
-    new Interaction(['USE','BUCKET_SAND_I','BUSH_3_W'],[],function(){
-        this.runSequence([].concat(
-            new StandardOrder ('[status]CUTSCENE'),
-            new StandardOrder ('pc>>BUSH_3_W'),
-            this.sequences.pourSandInBush
-        ) )
-    }),
+    new Interaction(['USE','BUCKET_SAND_I','BUSH_3_W'],[],[
+        new StandardOrder ('[status]CUTSCENE'),
+        new StandardOrder ('pc>>BUSH_3_W'),
+        new StandardOrder('[sequence]pourSandInBush')
+    ]),
 
-    new Interaction(['USE','BUCKET_SAND_I','BUSH_4_W'],[],function(){
-        this.runSequence([].concat(
-            new StandardOrder ('[status]CUTSCENE'),
-            new StandardOrder ('pc>>BUSH_4_W'),
-            this.sequences.pourSandInBush
-        ) )
-    }),
-
+    new Interaction(['USE','BUCKET_SAND_I','BUSH_4_W'],[],[
+        new StandardOrder ('[status]CUTSCENE'),
+        new StandardOrder ('pc>>BUSH_4_W'),
+        new StandardOrder('[sequence]pourSandInBush')
+    ]),
 
     new Interaction(['OPEN','FRONT_DOOR_W'],
     [new StandardCondition('FRONT_DOOR_W','status','===','closed')],
@@ -167,7 +159,7 @@ var interactions =[
     //DINING ROOM
 
     new Interaction(['USE','BUCKET_FOIL_I','TABLE_W'],[
-        function(){ return this.gameVars.roastIsInOven }
+       new StandardCondition('VAR','roastIsInOven','true')
     ],
     [
         new StandardOrder('pc>>TABLE_W'),
@@ -193,9 +185,11 @@ var interactions =[
     new Interaction(['WALK','DINING_WAYOUT_W'],[],
     doorFunction('DINING_WAYOUT_W',['PORCH_R',265,86])),
 
-    new Interaction(['OPEN','DINING_KITCHENDOOR_W'],[
-        function(){return this.getThings('DINING_KITCHENDOOR_W').item.status.cycle == 'closed'},
-    ],function(){
+
+
+    new Interaction(['OPEN','DINING_KITCHENDOOR_W'],
+    [new StandardCondition('DINING_KITCHENDOOR_W','status','===','closed')],
+    function(){
         this.getThings('pc').goTo(this.getThings('DINING_KITCHENDOOR_W').walkToPoint)
         .then( (r)=> { if (r.finished) {
             return this.getThings('DINING_KITCHENDOOR_W').setStatus(['opening','open'])
@@ -203,7 +197,7 @@ var interactions =[
     }),
 
     new Interaction(['OPEN','DINING_KITCHENDOOR_W'],
-    [function(){return this.getThings('DINING_KITCHENDOOR_W').item.status.cycle == 'open'}],
+    [new StandardCondition('DINING_KITCHENDOOR_W','status','===','open')],
     [new StandardOrder("pc::It's not closed!")]),
 
 
