@@ -1,4 +1,5 @@
-import { Interaction, StandardOrder, StandardCondition, doorFunction,takeFunction,pcSays } from "../modules/interaction-constructor";
+import { Interaction, StandardOrder, StandardCondition, doorFunction,takeFunction } from "../modules/interaction-constructor";
+
 
 
 var interactions =[
@@ -11,15 +12,30 @@ var interactions =[
     ),
 
     //ITEM BASED    
-    new Interaction(['LOOK','ROAST_I'],[],pcSays('Yes, this should be a reasonable quantity of meat to serve Superintendent Chalmers.',3000)),
-    new Interaction(['LOOK','ROAST_GLAZED_I'],[],pcSays('Glazed and ready for the oven!',2000)),
-    new Interaction(['LOOK','BUCKET_FOIL_I'],[],pcSays('This should suffice. Better put it on the table',3000)),
-    new Interaction(['LOOK','BUCKET_SAND_I'],[],pcSays('Hmmm, this could serve as an ice bucket if it were empty and silver colored.',3000)),
-    new Interaction(['LOOK','BUCKET_EMPTY_I'],[],pcSays('If only I could make it silver colored somehow.',2000)),
-    new Interaction(['LOOK','FOIL_I'],[],pcSays('Shiny, metallic and used for wrapping things.',2000)),
+    new Interaction(['LOOK','ROAST_I'],[],
+    [new StandardOrder('pc::Yes, this should be a reasonable quantity of meat to serve Superintendent Chalmers.')]),
 
-    new Interaction(['USE','FOIL_I','BUCKET_SAND_I'],[],pcSays('I need to get rid of this sand first. I should dump it somewhere outside.',2000)),
-    new Interaction(['USE','FOIL_I','BUCKET_FOIL_I'],[],pcSays('It\'s already wrapped.',1500)),
+    new Interaction(['LOOK','ROAST_GLAZED_I'],[],
+    [new StandardOrder('pc::Glazed and ready for the oven!')]),
+
+    new Interaction(['LOOK','BUCKET_FOIL_I'],[],
+    [new StandardOrder('pc::This should suffice. Better put it on the table')]),
+
+    new Interaction(['LOOK','BUCKET_SAND_I'],[],
+    [new StandardOrder('pc::Hmmm, this could serve as an ice bucket if it were empty and silver colored.')]),
+
+    new Interaction(['LOOK','BUCKET_EMPTY_I'],[],
+    [new StandardOrder('pc::If only I could make it silver colored somehow.')]),
+
+    new Interaction(['LOOK','FOIL_I'],[],
+    [new StandardOrder('pc::Shiny, metallic and used for wrapping things.')]),
+
+    new Interaction(['USE','FOIL_I','BUCKET_SAND_I'],[],
+    [new StandardOrder('pc::I need to get rid of this sand first. I should dump it somewhere outside.')]),
+
+    new Interaction(['USE','FOIL_I','BUCKET_FOIL_I'],[],
+    [new StandardOrder('pc::It\'s already wrapped.')]),
+
 
     new Interaction(['USE','HAMBURGER_BAG_I','PLATTER_I'],[],
     [
@@ -55,7 +71,7 @@ var interactions =[
     ]),
 
     new Interaction(['LOOK','TODO_I'],[function(){return this.gameVars.roastIsInOven && this.gameVars.iceBucketIsOnTable}],
-        pcSays('No need for the list now! The Superintendent is here!')
+    [new StandardOrder('pc::No need for the list now! The Superintendent is here!')]
     ),
 
     new Interaction(['LOOK','TODO_I'],[],function(){
@@ -82,7 +98,8 @@ var interactions =[
     }),
 
     //FRONT OF HOUSE
-    new Interaction(['LOOK','GARAGE_W'],[],pcSays('I admire car owners. I aspire to be one after I\'ve reimbursed mother for the food I ate as a child.',4000)),
+    new Interaction(['LOOK','GARAGE_W'],[],[new StandardOrder('pc::I admire car owners. I aspire to be one after I\'ve reimbursed mother for the food I ate as a child.')]),
+
 
     new Interaction(['USE','BUCKET_SAND_I','BUSH_W'],[],function(){
         this.runSequence([].concat(
@@ -91,7 +108,7 @@ var interactions =[
             this.sequences.pourSandInBush
         ) )
     }),
-    
+
     new Interaction(['USE','BUCKET_SAND_I','BUSH_2_W'],[],function(){
         this.runSequence([].concat(
             new StandardOrder ('[status]CUTSCENE'),
@@ -99,7 +116,7 @@ var interactions =[
             this.sequences.pourSandInBush
         ) )
     }),
-    
+
     new Interaction(['USE','BUCKET_SAND_I','BUSH_3_W'],[],function(){
         this.runSequence([].concat(
             new StandardOrder ('[status]CUTSCENE'),
@@ -126,7 +143,8 @@ var interactions =[
         } });
     }),
 
-    new Interaction(['OPEN','FRONT_DOOR_W'],[],pcSays("It's not closed!")),
+    new Interaction(['OPEN','FRONT_DOOR_W'],[],[new StandardOrder("pc::It's not closed!")]),
+
 
     new Interaction(['WALK','FRONT_DOOR_W'],
     [new StandardCondition('FRONT_DOOR_W','status','===','open')],
@@ -141,9 +159,8 @@ var interactions =[
             this.getThings('FRONT_DOOR_W').setStatus(['closing','closed'])
         } });
     }),
-    
-    new Interaction(['SHUT','FRONT_DOOR_W'],[],pcSays('It\'s already closed.')),
 
+    new Interaction(['SHUT','FRONT_DOOR_W'],[],[new StandardOrder('pc::It\'s already closed.')]),
 
 
 
@@ -187,7 +204,8 @@ var interactions =[
 
     new Interaction(['OPEN','DINING_KITCHENDOOR_W'],
     [function(){return this.getThings('DINING_KITCHENDOOR_W').item.status.cycle == 'open'}],
-    pcSays("It's not closed!")),
+    [new StandardOrder("pc::It's not closed!")]),
+
 
 
 	new Interaction(['WALK','DINING_KITCHENDOOR_W'],
@@ -220,7 +238,9 @@ var interactions =[
         } });
     }),
 
-    new Interaction(['SHUT','DINING_KITCHENDOOR_W'],[],pcSays('It\'s already closed.')),
+    new Interaction(['SHUT','DINING_KITCHENDOOR_W'],[],
+    [new StandardOrder('pc::It\'s already closed.')]),
+
 
 
     //KITCHEN
@@ -254,13 +274,17 @@ var interactions =[
        new Interaction(['WALK','KITCHEN_DININGDOOR_W'],[
         function() {return this.getThings('OVEN_W').item.status.cycle==='smoking'}, 
         function() {return this.allInventoryItemsAsObject.HAMBURGER_BAG_I.have === true}, 
-       ],pcSays('I can\'t serve the hamburgers like this! I need to disguise them as my own cooking somehow...')
+       ],
+       [new StandardOrder('pc::I can\'t serve the hamburgers like this! I need to disguise them as my own cooking somehow...')]
+
        ),
 
     new Interaction(['WALK','KITCHEN_DININGDOOR_W'],[
      function() {return this.getThings('OVEN_W').item.status.cycle==='smoking'}, 
      function() {return this.allInventoryItemsAsObject.HAMBURGER_PLATTER_I.have === false}, 
-    ],pcSays('I can\'t go back there! I don\'t have any food for the Superintendent!')
+    ],
+    [new StandardOrder('pc::I can\'t go back there! I don\'t have any food for the Superintendent!')]
+
     ),
 
     new Interaction(['WALK','KITCHEN_DININGDOOR_W'],
@@ -287,8 +311,9 @@ var interactions =[
     }),
 
     new Interaction(['USE','ROAST_I','OVEN_W'],[],
-    pcSays('I need to glaze it first.')
+    [new StandardOrder('pc::I need to glaze it first.')]
     ),
+
     new Interaction(['USE','ROAST_GLAZED_I','OVEN_W'],
     [function(){return this.getThings('OVEN_W').item.status.cycle == 'open'}],
     function(){
@@ -336,15 +361,18 @@ var interactions =[
 
     new Interaction(['SHUT','OVEN_W'],
     [function(){return this.getThings('OVEN_W').item.status.cycle.substring(0,6) == 'closed'}],
-    pcSays('It\'s already closed.')),
+    [new StandardOrder('pc::It\'s already closed.')]),
+
 
     new Interaction(['OPEN','OVEN_W'],
     [function(){return this.getThings('OVEN_W').item.status.cycle.substring(0,4) == 'open'}],
-    pcSays('It\'s already open.')),
+    [new StandardOrder('pc::It\'s already open.')]),
+
 
     new Interaction(['OPEN','OVEN_W'],
     [function(){return this.getThings('OVEN_W').item.status.cycle == 'closed_ham_inside'}],
-    pcSays('No, I\'d better leave it to get as cooked as possible.')),
+    [new StandardOrder('pc::No, I\'d better leave it to get as cooked as possible.')]),
+
 
     new Interaction(['TAKE','FOIL_W'],[],
     takeFunction('FOIL_W','FOIL_I')), 
@@ -365,7 +393,8 @@ var interactions =[
     ),
 
     new Interaction(['OPEN','CUPBOARD_W'],[],
-    pcSays('There was nothing else in there.')),
+    [new StandardOrder('pc::There was nothing else in there.')]),
+
 
     new Interaction(['WALK', 'KRUSTYBURGER_W'],
     [function() {return this.getThings('OVEN_W').item.status.cycle==='smoking'}, 

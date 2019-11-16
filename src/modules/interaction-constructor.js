@@ -149,8 +149,5 @@ function takeFunction (worldItemId, inventoryItemId, worldItemStays=false) {
 	}
 }
 
-function pcSays(text,time) {
-	return function() { this.getThings('pc').say(text,{time:time});}	
-}
 
-export { Interaction, StandardOrder, StandardCondition, doorFunction, pcSays, takeFunction }
+export { Interaction, StandardOrder, StandardCondition, doorFunction, takeFunction }

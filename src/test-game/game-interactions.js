@@ -1,5 +1,8 @@
-import { Interaction, doorFunction,pcSays } from "../modules/interaction-constructor";
+import { Interaction, doorFunction } from "../modules/interaction-constructor";
 
+function pcSays(text,time) {
+	return function() { this.getThings('pc').say(text,{time:time});}	
+}
 
 var interactions =[
 	new Interaction(['LOOK','WINDOW_W'],[],pcSays('It\'s a nice window')),
