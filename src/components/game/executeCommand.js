@@ -31,9 +31,11 @@ export default function (command) {
       if (typeof matchingList[i].response ===  'function') {
         matchingList[i].response.apply(this,[]);
       } else if ( Array.isArray(matchingList[i].response)) {
-        this.runSequence(matchingList[i].response)
+        this.runSequence(matchingList[i].response) 
+      } else if (typeof matchingList[i].response === 'string' && this.sequences[matchingList[i].response]) {
+        this.runSequence( this.sequences[matchingList[i].response] )
       } else {
-        console.warn('bad response, neither function or array', matchingList[i].response)
+        console.warn('bad response, neither function, array, nor name of sequence', matchingList[i].response)
       }
       
       interactionDone = true;
