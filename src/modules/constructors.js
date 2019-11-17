@@ -50,6 +50,8 @@ function Character(id,name,coords,speechColor,model,config={}) {
 	this.behaviour_actFrame = '0';
 	this.behaviour_direction = this.validDirections[0];
 
+	this.idleAnimations = config.idleAnimations || false;
+
 	this.initialState = Object.freeze(Object.assign({},this));
 }
 Character.prototype.isDataObject = true;

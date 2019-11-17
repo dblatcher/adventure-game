@@ -56,7 +56,8 @@ export default {
         }
 
         return {
-            spriteSet : spriteSet
+            spriteSet : spriteSet,
+            timeSpentIdle : 0
         }
     },
 
@@ -147,6 +148,9 @@ export default {
             }
             return result;
         },
+        isIdle : function() {
+            return !this.char.actionQueue[0] && !this.char.destinationQueue[0] && !this.char.actionQueue[0] && !this.char.saying
+        }
     },
     
     methods : {
@@ -161,7 +165,7 @@ export default {
         goToRoom : function (target,options){
             this.theApp.teleportCharacter ([this.char].concat(target), options)
         },
-        showNextFrame : function () {
+        showNextFrame : function () { //TO DO - move this method to the data Model?
             var noActions = ( this.char.actionQueue[0] ) ? false:true; 
             var order = this.char.actionQueue[0] || this.behaviour;
 
@@ -195,8 +199,23 @@ export default {
             if (this.ident === this.theApp.pcId) {return false}
             this.$emit('hover-event', [this, event]);
         },
+        checkForIdleAnimation : function () {
+            if ( this.isIdle ) {
+                this.timeSpentIdle++
+                if (this.char.idleAnimations && this.timeSpentIdle >= this.char.idleAnimations.delay) {
+                    if (Math.random() < this.char.idleAnimations.chance) {
+                        let randomChoice = Math.ceil( Math.random()*this.char.idleAnimations.cycles.length )-1;
+                        this.doAction( this.char.idleAnimations.cycles[randomChoice] )
+                    }
+                    this.timeSpentIdle = 0;
+                }
+            } else if (this.timeSpentIdle) {
+                this.timeSpentIdle = 0;
+            }
+        },
         
         onBeat(beat) {
+            this.checkForIdleAnimation()
             if (beat.count % 2 === 0 ) {this.showNextFrame()}
             this.move();
             this.countDownSpeech(beat);
