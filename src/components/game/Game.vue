@@ -43,7 +43,8 @@
       <Room ref="room" 
         v-bind:room="rooms[roomNumber]" 
         v-bind:measure="roomMeasure"
-        v-on:clicked-room="handleClickOnRoom($event)">
+        v-on:clicked-room="handleClickOnRoom($event)"
+        v-on:double-click="handleDoubleClick($event)">
 
         <ThingInRoom ref="things"
           v-for="thing in thingsInRoom":key="rooms[roomNumber].id + '--' + thing.id"
@@ -257,6 +258,15 @@ export default {
     handleSkipButton() {
       if (this.gameStatus === 'LIVE') {return}
       else {this.instantMode = true};
+    },
+
+    handleDoubleClick (event) {
+      let pc = this.getThings('pc');
+      if (!pc) { return false}
+      pc.char.destinationQueue.forEach (order=> {
+        if (order.wasManual) {order.isRun = true}
+      })
+
     },
 
     setGameStatus(statusName,parameter) {

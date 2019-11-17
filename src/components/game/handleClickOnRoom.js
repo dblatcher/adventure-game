@@ -17,5 +17,5 @@ export default function (event){
     };
 
     this.$refs.coordinateDisplay.innerText = `[${Math.round(clickCoord.x)} , ${Math.round(clickCoord.y)}]`
-    this.getThings('pc').goTo ( {x:clickCoord.x, y:clickCoord.y, ref:false});
+    this.getThings('pc').goTo ( {x:clickCoord.x, y:clickCoord.y}, {wasManual: true});
   }

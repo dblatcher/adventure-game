@@ -90,7 +90,8 @@ function goTo (target, options = {}) {
 				x: path[i].x,
 				y: path[i].y,
 				direction: findDirection (path[i],  i > 0 ? path[i-1] : this, this.char.validDirections),
-				action:options.action
+				action:options.action,
+				wasManual: options.wasManual,
 			});
 		}
 	}
