@@ -14,7 +14,7 @@ function resetObject() {
 
 function Sprite (id, url, dims, frameSize ) {
 	if (!dims) {dims = [1,1]}
-	if (!frameSize) {frameSize = [1,1]}
+	if (!frameSize) {frameSize = [1,1,0,0]}
 
 	this.id = id;
 	this.url=url
@@ -22,6 +22,8 @@ function Sprite (id, url, dims, frameSize ) {
 	this.row = dims[1];
 	this.relativeWidth  = frameSize[0];
 	this.relativeHeight = frameSize[1];	
+	this.xOffset = frameSize[2] || 0;
+	this.yOffset = frameSize[3] || 0;
 }
 
 function Character(id,name,coords,speechColor,model,config={}) {
