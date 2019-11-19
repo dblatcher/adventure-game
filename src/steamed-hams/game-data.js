@@ -17,11 +17,12 @@ var sprites = [
   new Sprite ('sk2',  require('./sprites/skinner-talk-l.png'), [5,1]),
   new Sprite ('skw1',  require('./sprites/skinner-walk-r.png'), [3,1]),
   new Sprite ('skw2',  require('./sprites/skinner-walk-l.png'), [3,1]),
-  new Sprite('ser', require('./sprites/eyeroll.png'),[5,1]),
-  new Sprite('ser-l', require('./sprites/eyeroll-l.png'),[5,1]),
+  new Sprite('ser', require('./sprites/eyeroll.png'),[5,1],[1,1,1,-.5]),
+  new Sprite('ser-l', require('./sprites/eyeroll-l.png'),[5,1],[1,1,-1,-.5]),
 
   new Sprite ('skw',  require('./sprites/skinner-w-1.png'), [3,1]),
   new Sprite('pour', require('./sprites/pour.png'),[5,1]),
+  new Sprite('thb', require('./sprites/thumbup.png'),[4,1],[1.1,1,-17]),
 
   new Sprite ('ch1l',  require('./sprites/Chalmers-w-l.png'),[7,1]),
   new Sprite ('ch1r',  require('./sprites/Chalmers-w-r.png'),[7,1]),
@@ -57,7 +58,8 @@ var characterModels = {
             right: [ ['ser',0,0],['ser',1,0],['ser',2,0],['ser',3,0],['ser',4,0], ],
             left: [ ['ser-l',0,0],['ser-l',1,0],['ser-l',2,0],['ser-l',3,0],['ser-l',4,0],]
         },
-        pour_sand: [ ['pour',0,0],['pour',1,0],['pour',2,0],['pour',3,0],['pour',4,0], ]
+        pour_sand: [ ['pour',0,0],['pour',1,0],['pour',2,0],['pour',3,0],['pour',4,0], ],
+        thumb_up: [ ['thb',0,0],['thb',1,0],['thb',2,0],['thb',2,0],['thb',3,0],['thb',2,0],['thb',2,0],['thb',3,0],['thb',2,0],['thb',2,0],['thb',3,0],['thb',2,0],['thb',2,0],['thb',3,0],['thb',2,0],['thb',2,0],['thb',3,0], ],
         
     },'left'),
     

@@ -18,6 +18,9 @@ export default {
 	  var backgroundPositionXOffset = -this.fx*this.width * rW * this.measure.scale;
 	  var backgroundPositionYOffset = -this.fy*this.height* rH * this.measure.scale;
 	  
+	  var xShift = (this.sprite.xOffset) + '%';
+	  var yShift = (this.sprite.yOffset) + '%';
+
 	  return {
 		display: this.index == this.sprite.id ? 'block' : 'none',
 		backgroundImage: `url(${this.sprite.url})`,
@@ -27,8 +30,8 @@ export default {
         backgroundPosition: `${backgroundPositionXOffset}${this.measure.unit} ${backgroundPositionYOffset}${this.measure.unit}`,
 		position: 'absolute',
 		margin: '0',
-		bottom:'0',
-		left:'0',
+		bottom: yShift,
+		left: xShift,
       }
     }
   },

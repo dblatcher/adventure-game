@@ -139,7 +139,7 @@ const ending = [
     new StandardOrder ('AGNES_C::heeelp!',{time:200}),
     new StandardOrder ('AGNES_C::heeeelp!',{time:200}),
     new StandardOrder ('AGNES_C::heeeeelp!',{time:2000}),
-    new StandardOrder ('pc##thumbs_up'),
+    new StandardOrder ('pc##thumb_up'),
     new StandardOrder ('[status]COMPLETE'),
 ]
 
