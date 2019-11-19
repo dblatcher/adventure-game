@@ -130,7 +130,7 @@ StandardCondition.prototype.isStandardCondition = true;
 
 function doorFunction (doorId, destination) {	
 	return function () {
-		this.getThings('pc').goTo(this.getThings(doorId).walkToPoint)
+		this.getThings('pc').goTo(this.getThings(doorId).walkToPoint,{wasManual:true})
 		.then( (feedback) => {
 			if (feedback.finished) {this.changeRoom(destination,{});}
 		} );
@@ -139,7 +139,7 @@ function doorFunction (doorId, destination) {
 	
 function takeFunction (worldItemId, inventoryItemId, worldItemStays=false) {	
 	return function () {
-		this.getThings('pc').goTo(this.getThings(worldItemId).walkToPoint)
+		this.getThings('pc').goTo(this.getThings(worldItemId).walkToPoint,{wasManual:true})
 		.then( (feedback) => {
 			if (feedback.finished) {
 				this.getInventoryItem(inventoryItemId);

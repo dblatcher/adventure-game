@@ -52,6 +52,7 @@
           v-bind:data="thing"
           v-bind:roomWidth="rooms[roomNumber].width"
           v-bind:highlight="highlightingThings"
+          @dblclick="handleDoubleClick($event)"
           @clicked-thing="handleClickOnThing($event)"
           @hover-event="handleHoverEvent($event[0],$event[1])"/>
  

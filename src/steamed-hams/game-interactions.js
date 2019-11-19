@@ -413,7 +413,7 @@ var interactions =[
 ]
 
 var defaultResponses = {
-    "WALK" : function(command) {this.getThings('pc').goTo(this.getThings(command.subject.id).walkToPoint)},
+    "WALK" : function(command) {this.getThings('pc').goTo(this.getThings(command.subject.id).walkToPoint, {wasManual:true})},
     "LOOK" : function(command) {
         if (command.subject.id.endsWith('W')) {
             this.getThings('pc').say(`It looks like a normal ${command.subject.name} to me.`);
