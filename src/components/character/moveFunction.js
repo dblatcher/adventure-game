@@ -36,6 +36,9 @@ export default function () {
     var d = {x: moveOrder.x - this.x, y:moveOrder.y - this.y};
     var absD = {x: Math.abs(d.x), y: Math.abs(d.y) };
     var speed = 6 * this.zoneEffects.scale();
+    
+    if (moveOrder.isRun) {speed = speed * 3}
+
     var movement = {x:0,y:0};
 
     var rX = absD.x ? absD.x / ( absD.x + absD.y) : 0;
