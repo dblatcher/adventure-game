@@ -39,7 +39,7 @@ var sprites = [
 
 var characterModels = {
 
-    skinner : new CharacterModel (65,100,{
+    skinner : new CharacterModel (50,100,{
         wait : {
             right : [ ['sk1',0,0] ],
             left : [ ['sk2',4,0] ],
