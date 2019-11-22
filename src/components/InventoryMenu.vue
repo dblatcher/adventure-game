@@ -120,7 +120,7 @@ export default {
 		height: 3rem;
         box-sizing:border-box;
         padding:2px;
-		margin:2px;
+		margin: -1px 2px 2px 2px;
 		border: 2px dotted transparent;
 		position:relative;
 		
