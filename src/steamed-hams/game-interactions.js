@@ -308,24 +308,30 @@ var interactions =[
     [new StandardOrder('pc::I need to glaze it first.')]
     ),
 
+
     new Interaction(['USE','ROAST_GLAZED_I','OVEN_W'],
-    [function(){return this.getThings('OVEN_W').item.status.cycle == 'open'}],
-    function(){
-        this.getThings('pc').goTo(this.getThings('OVEN_W').walkToPoint)
-        .then( (r)=> {
-            this.getThings('OVEN_W').setStatus('open_ham_inside');
-            this.looseInventoryItem('ROAST_GLAZED_I');
-        } )
-    }),
+    [
+        new StandardCondition('OVEN_W','status','open')
+    ],
+    [
+        new StandardOrder('[status]CUTSCENE'),
+        new StandardOrder('pc>>OVEN_W'),
+        new StandardOrder('OVEN_W', 'setStatus', 'open_ham_inside'),
+        new StandardOrder('[loose]ROAST_GLAZED_I'),
+        new StandardOrder('[status]LIVE'),
+    ]),
     new Interaction(['USE','ROAST_GLAZED_I','OVEN_W'],
-    [function(){return this.getThings('OVEN_W').item.status.cycle == 'closed'}],
-    function(){
-        this.getThings('pc').goTo(this.getThings('OVEN_W').walkToPoint)
-        .then( ()=> {
-            this.getThings('OVEN_W').setStatus('open','open_ham_inside');
-            this.looseInventoryItem('ROAST_GLAZED_I');
-        } )
-    }),
+    [
+        new StandardCondition('OVEN_W','status','closed')
+    ],
+    [
+        new StandardOrder('[status]CUTSCENE'),
+        new StandardOrder('pc>>OVEN_W'),
+        new StandardOrder('OVEN_W', 'setStatus', 'open'),
+        new StandardOrder('OVEN_W', 'setStatus', 'open_ham_inside'),
+        new StandardOrder('[loose]ROAST_GLAZED_I'),
+        new StandardOrder('[status]LIVE'),
+    ]),
 
 
     new Interaction(['SHUT','OVEN_W'],
