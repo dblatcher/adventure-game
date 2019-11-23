@@ -1,30 +1,47 @@
 <template>
-	<p v-bind:style="styleObject">{{text}}</p>
+	<p v-bind:style="styleObject">
+		<span class="tail" v-bind:style="tailStyleObject"></span>
+		<span>{{text}}</span>
+	</p>
 </template>
 
 <script>
 export default {
 	name:'SpeechLine',
-	props: ['color','text','left','right','side','measure'],
+	props: ['color','text','measure','pos'],
 	computed: {
 		styleObject : function() {
-			var that = this;
+			const {x,y,characterHeight, characterWidth,roomHeight, roomWidth} = this.pos;
+			const {unit, scale} = this.measure
+			const toCssValue = (v) => ((v*scale)+unit)
+
+			const onRight = (x > roomWidth/2);
+			const left  = onRight  ? 'unset' : toCssValue (x + characterWidth/2)
+			const right = !onRight ? 'unset' : toCssValue (roomWidth - x + characterWidth/2)
+			const top   = toCssValue (Math.max((roomHeight - y - characterHeight),0))
+			const padding  = this.text === '' ? '0': '.5em'
+			const borderBottomRightRadius = onRight  ? '0': '.5rem';
+			const borderBottomLeftRadius  = !onRight ? '0': '.5rem';
+
 			return {
 				color:this.color,
-				padding: function() {
-					return that.text === '' ? '0': '.5em'
-				}(),				
-				transform: 'translateY(-1em)',
-
-				left: this.side == 'left' ?
-					(this.left * this.measure.scale)+this.measure.unit :
-					'unset',
-
-				right: this.side == 'right' ?
-					(this.right * this.measure.scale)+this.measure.unit :
-					'unset',
-
+				padding,left,right,top, borderBottomRightRadius,borderBottomLeftRadius
 			}
+		},
+		tailStyleObject : function() {
+			const {x,y,characterHeight, characterWidth,roomHeight, roomWidth} = this.pos;
+			const {unit, scale} = this.measure
+			const toCssValue = (v) => ((v*scale)+unit)
+
+			const onRight = (x > roomWidth/2);
+			const left  = onRight  ? 'unset' : '-1rem'
+			const right = !onRight ? 'unset' : '-1rem'
+			const display = this.text === '' ? 'none' : 'inline-block'
+			const borderTopLeftRadius     = !onRight ? '.5rem' : '0'
+			const borderTopRightRadius    =  onRight ? '.5rem' : '0'
+
+			return {left, right, display, 
+			borderTopLeftRadius, borderTopRightRadius}
 		}
 	},
 }
@@ -35,10 +52,23 @@ export default {
 		position: absolute;
 		font-family: monospace;
 		font-weight: 600;
-		background-color: rgba(0,0,0,.5);
+		background-color: rgba(0,0,0,.6);
 		z-index: 200;
 		margin: 0;
 		border-radius: .5rem;
+		max-width: 50%;
+		margin: 0 .5rem;
+		min-height: 2rem;
+	}
+	.tail {
+		position: relative;
+		position: absolute;
+		width: 1rem;
+		height: .5rem;
+		background-color: rgba(0,0,0,.6);
+		//border-top: 5px solid rgba(255,255,255,.25);
+		bottom:0;
+
 	}
 </style>
 

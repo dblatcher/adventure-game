@@ -18,15 +18,10 @@
         </div>
         
         <SpeechLine 
-            v-bind:style="{
-                bottom: ( (y+scaledHeight) * this.measure.scale )+this.measure.unit
-            }"
             v-bind:text="saying"
-            v-bind:left="x"
-            v-bind:right="roomWidth - x"
             v-bind:measure="this.measure"
-            v-bind:side="(x > roomWidth/2) ? 'right' : 'left'"
             v-bind:color="char.speechColor"
+            v-bind:pos="this.speechLinePositioning"
         ></SpeechLine>
         
     </article>
@@ -46,7 +41,7 @@ export default {
     name:'Character',
     components:{Sprite, SpeechLine},
 
-    props:['char','measure','roomWidth','highlight'],
+    props:['char','measure','roomWidth','roomHeight','highlight'],
 
     data: function() {        
         var spriteSet = [];        
@@ -150,7 +145,17 @@ export default {
         },
         isIdle : function() {
             return !this.char.actionQueue[0] && !this.char.destinationQueue[0] && !this.char.actionQueue[0] && !this.char.saying
-        }
+        },
+        speechLinePositioning : function() {
+            return {
+                x:this.x,
+                y:this.y,
+                characterHeight:this.scaledHeight,
+                characterWidth:this.scaledWidth,
+                roomHeight:this.roomHeight,
+                roomWidth:this.roomWidth
+            }
+        },
     },
     
     methods : {

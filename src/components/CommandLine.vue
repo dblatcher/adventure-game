@@ -70,15 +70,14 @@ export default {
 
 		&__last-phrase {
 			color: yellow;
+			@media (pointer: coarse) {
+				display: none;
+			}
+			@media (hover: none) {
+				display: none;
+			}
 		}
 
-		@media (pointer: coarse) {
-			display: none;
-		}
-
-		@media (hover: none) {
-			display: none;
-		}
 
 	}
 

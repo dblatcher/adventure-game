@@ -12,6 +12,7 @@
         v-bind:measure="measure"
         v-bind:char="data" 
         v-bind:roomWidth="roomWidth"
+        v-bind:roomHeight="roomHeight"
         v-bind:highlight="highlight"
         @clicked-thing="$emit('clicked-thing',$event)"
         @hover-event="$emit('hover-event',$event)"
@@ -27,7 +28,7 @@ import Character from "./character/Character";
 export default {
     name:'ThingInRoom',
     components: { WorldItem, Character },
-    props:['data','measure','roomWidth','highlight'],
+    props:['data','measure','roomWidth','roomHeight','highlight'],
 
     methods : {
         onBeat(data) {this.$children[0].onBeat(data) }
