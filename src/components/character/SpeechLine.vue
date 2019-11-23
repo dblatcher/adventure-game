@@ -20,14 +20,12 @@ export default {
 			const right = !onRight ? 'unset' : toCssValue (roomWidth - x + characterWidth/2)
 			const top   = toCssValue (Math.max((roomHeight - y - characterHeight),0))
 			const padding  = this.text === '' ? '0': '.5em'
-			const borderBottomRightRadius = onRight  ? '0': '.5rem'
-			const borderBottomLeftRadius  = !onRight ? '0': '.5rem'
 			const marginLeft  = !onRight ? '0' : '.5rem'
 			const marginRight = onRight  ? '0' : '.5rem'
 
 			return {
 				color:this.color,
-				padding,left,right,top, borderBottomRightRadius,borderBottomLeftRadius, marginLeft, marginRight
+				padding,left,right,top, marginLeft, marginRight
 			}
 		},
 		tailStyleObject : function() {
@@ -41,9 +39,12 @@ export default {
 			const display = this.text === '' ? 'none' : 'inline-block'
 			const borderTopLeftRadius   = !onRight ? '.5rem' : '0'
 			const borderTopRightRadius  =  onRight ? '.5rem' : '0'
+			const borderBottomLeftRadius   = !onRight ? '.5rem' : '0'
+			const borderBottomRightRadius  =  onRight ? '.5rem' : '0'
 
 			return {left, right, display, 
-			borderTopLeftRadius, borderTopRightRadius}
+			borderTopLeftRadius, borderTopRightRadius,
+			borderBottomLeftRadius, borderBottomRightRadius}
 		}
 	},
 }
@@ -59,7 +60,9 @@ export default {
 		margin: 0;
 		border-radius: .5rem;
 		max-width: 50%;
-		min-height: 2rem;
+		min-height: 3rem;
+		display: flex;
+		align-items: center;
 	}
 	.tail {
 		position: relative;
@@ -67,8 +70,8 @@ export default {
 		width: 1rem;
 		height: .5rem;
 		background-color: rgba(0,0,0,.6);
-		//border-top: 5px solid rgba(255,255,255,.25);
-		bottom:0;
+		bottom:50%;
+		transform: (translateY(50%));
 
 	}
 </style>
