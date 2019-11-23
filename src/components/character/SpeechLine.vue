@@ -20,12 +20,14 @@ export default {
 			const right = !onRight ? 'unset' : toCssValue (roomWidth - x + characterWidth/2)
 			const top   = toCssValue (Math.max((roomHeight - y - characterHeight),0))
 			const padding  = this.text === '' ? '0': '.5em'
-			const borderBottomRightRadius = onRight  ? '0': '.5rem';
-			const borderBottomLeftRadius  = !onRight ? '0': '.5rem';
+			const borderBottomRightRadius = onRight  ? '0': '.5rem'
+			const borderBottomLeftRadius  = !onRight ? '0': '.5rem'
+			const marginLeft  = !onRight ? '0' : '.5rem'
+			const marginRight = onRight  ? '0' : '.5rem'
 
 			return {
 				color:this.color,
-				padding,left,right,top, borderBottomRightRadius,borderBottomLeftRadius
+				padding,left,right,top, borderBottomRightRadius,borderBottomLeftRadius, marginLeft, marginRight
 			}
 		},
 		tailStyleObject : function() {
@@ -37,8 +39,8 @@ export default {
 			const left  = onRight  ? 'unset' : '-1rem'
 			const right = !onRight ? 'unset' : '-1rem'
 			const display = this.text === '' ? 'none' : 'inline-block'
-			const borderTopLeftRadius     = !onRight ? '.5rem' : '0'
-			const borderTopRightRadius    =  onRight ? '.5rem' : '0'
+			const borderTopLeftRadius   = !onRight ? '.5rem' : '0'
+			const borderTopRightRadius  =  onRight ? '.5rem' : '0'
 
 			return {left, right, display, 
 			borderTopLeftRadius, borderTopRightRadius}
@@ -57,7 +59,6 @@ export default {
 		margin: 0;
 		border-radius: .5rem;
 		max-width: 50%;
-		margin: 0 .5rem;
 		min-height: 2rem;
 	}
 	.tail {
