@@ -11,7 +11,7 @@ function executeSayOrder (order) {
 
 
 function say (text, options = {} ) {
-    if (typeof options.time !== 'number') {options.time = 2000}
+    if (typeof options.time !== 'number') {options.time = 3000}
     if (typeof options.action !== 'string') {options.action = this.char.talkCycle}
     var currentOrder = Object.assign({text:text}, options);
     
