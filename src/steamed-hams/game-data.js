@@ -61,7 +61,7 @@ var characterModels = {
         pour_sand: [ ['pour',0,0],['pour',1,0],['pour',2,0],['pour',3,0],['pour',4,0], ],
         thumb_up: [ ['thb',0,0],['thb',1,0],['thb',2,0],['thb',2,0],['thb',3,0],['thb',2,0],['thb',2,0],['thb',3,0],['thb',2,0],['thb',2,0],['thb',3,0],['thb',2,0],['thb',2,0],['thb',3,0],['thb',2,0],['thb',2,0],['thb',3,0], ],
         
-    },'left'),
+    },'left',{speechBubbleDown:.3, speechBubbleIn:.3}),
     
     chalmers : new CharacterModel (50,100,{
         wait : {
@@ -81,7 +81,7 @@ var characterModels = {
         wait_with_ham : 
         [ ['chTh-r',0,0] ],
         
-    },'right'),
+    },'right',{speechBubbleDown:.22, speechBubbleIn:.25}),
 
     invisible : new CharacterModel (1,1,{
         wait : {

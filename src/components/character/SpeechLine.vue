@@ -11,18 +11,22 @@ export default {
 	props: ['color','text','measure','pos'],
 	computed: {
 		style : function() {
-			const {x,y,characterHeight, characterWidth,roomHeight, roomWidth} = this.pos;
+			const {x,y,characterHeight, characterWidth,roomHeight, roomWidth, speechBubbleDown,speechBubbleIn} = this.pos
 			const {unit, scale} = this.measure
 			const {text, color} = this
-			const onRight = (x > roomWidth/2);
+			const onRight = (x > roomWidth/2)
 			const toCssValue = (v) => ((v*scale)+unit)
+
+			const tailTop = characterHeight * speechBubbleDown
+			const tailWidth = characterWidth * speechBubbleIn
 
 			function tail() {return {
 				display: text === '' ? 'none' : 'inline-block',
-				borderLeft:  onRight ? 'unset' : "2rem solid transparent",
-				borderRight:  !onRight ? 'unset' : "2rem solid transparent",
-				left  : onRight  ? 'unset' : '-2rem',
-			 	right : !onRight ? 'unset' : '-2rem',
+				borderLeft:  onRight ? 'unset' : `${toCssValue(tailWidth)} solid transparent`,
+				borderRight:  !onRight ? 'unset' : `${toCssValue(tailWidth)} solid transparent`,
+				left  : onRight  ? 'unset' : toCssValue(-tailWidth),
+				right : !onRight ? 'unset' : toCssValue(-tailWidth),
+				top: toCssValue(tailTop), 
 			} }
 
 			function box () {return {
@@ -33,6 +37,8 @@ export default {
 				top: toCssValue (Math.max((roomHeight - y - characterHeight),0)), 
 				marginLeft:  !onRight ? '0' : '.5rem', 
 				marginRight:  onRight  ? '0' : '.5rem',
+				minHeight: toCssValue(tailTop), 
+				minWidth: toCssValue(tailTop), 
 			}}
 
 			return {
@@ -56,15 +62,15 @@ export default {
 		margin: 0;
 		border-radius: .5rem;
 		max-width: 50%;
-		min-height: 3rem;
-		padding: .5rem;
+		padding: .25rem .5rem;
 		align-items: center;
+		justify-content: center;
 	}
 	.tail {
 		position: absolute;
-		bottom: .5rem;
 		border-bottom: 1rem solid  rgba(0,0,0,.6);
 		width: 0rem;
+		transform: translateY(-1rem);
 
 	}
 </style>

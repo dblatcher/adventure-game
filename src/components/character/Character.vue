@@ -153,7 +153,9 @@ export default {
                 characterHeight:this.scaledHeight,
                 characterWidth:this.scaledWidth,
                 roomHeight:this.roomHeight,
-                roomWidth:this.roomWidth
+                roomWidth:this.roomWidth,
+                speechBubbleDown:this.char.speechBubbleDown,
+                speechBubbleIn:this.char.speechBubbleIn,
             }
         },
     },

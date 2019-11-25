@@ -230,7 +230,7 @@ InventoryItem.prototype.returnState = function(){
 	}
 }
 
-function CharacterModel (baseWidth,baseHeight, cycles,defaultDirection=false) {
+function CharacterModel (baseWidth,baseHeight, cycles,defaultDirection=false, options={}) {
 	this.baseWidth=baseWidth;
 	this.baseHeight=baseHeight;
 	this.cycles=cycles;
@@ -264,6 +264,10 @@ function CharacterModel (baseWidth,baseHeight, cycles,defaultDirection=false) {
 	
 	this.spritesUsed = spritesUsed;
 	this.validDirections = validDirections;
+
+	this.speechBubbleDown = options.speechBubbleDown || .2
+	this.speechBubbleIn = options.speechBubbleIn || .25
+
 }
 
  function WorldItemModel ( input ) {
