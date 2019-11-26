@@ -1,7 +1,7 @@
 
 import { RectZone, PolyZone } from "../modules/zone";
 import { Character, WorldItem, Room, EffectZone, Foreground, Verb, InventoryItem, Sprite, CharacterModel, WorldItemModel } from "../modules/constructors"
-import { pathToFileURL } from "url";
+
 
 var sprites = [
 
@@ -24,12 +24,14 @@ var sprites = [
   new Sprite('pour', require('./sprites/pour.png'),[5,1]),
   new Sprite('thb', require('./sprites/thumbup.png'),[4,1],[1.1,1,-17]),
 
-  new Sprite ('ch1l',  require('./sprites/Chalmers-w-l.png'),[7,1]),
-  new Sprite ('ch1r',  require('./sprites/Chalmers-w-r.png'),[7,1]),
-  new Sprite ('chTl',  require('./sprites/Chalmers-t-l.png'),[7,1]),
-  new Sprite ('chTr',  require('./sprites/Chalmers-t-r.png'),[7,1]),
-  new Sprite ('chTh-r',  require('./sprites/Chalmers-t-ham.png'),[7,1],[1,1.1]),
-  
+  new Sprite ('ch1l',  require('./sprites/Chalmers-w-l.png'),[7,1],[1, .9]),
+  new Sprite ('ch1r',  require('./sprites/Chalmers-w-r.png'),[7,1],[1, .9]),
+
+    new Sprite ('c1r', require('./sprites/chal-1-r.png'),[6,1]),
+    new Sprite ('c1l', require('./sprites/chal-1-l.png'),[6,1]),
+    new Sprite ('c2r', require('./sprites/chal-2-r.png'),[5,1]),
+    new Sprite ('c2l', require('./sprites/chal-2-l.png'),[5,1]),
+
   new Sprite ('fire',  require('./sprites/window_fire.png'),[2,1]),
 
   new Sprite ('k-dr', require('./sprites/kitchen-door.png'),[4,3]),
@@ -65,36 +67,40 @@ var characterModels = {
     
     chalmers : new CharacterModel (50,100,{
         wait : {
-            right : [ ['ch1r',0,0] ],
-            left : [ ['ch1l',6,0] ],
+            right : [ ['c1r',1,0] ],
+            left : [ ['c1l',4,0] ],
         },
         walk : {
             right : [ ['ch1r',1,0],['ch1r',2,0],['ch1r',3,0],['ch1r',4,0], ['ch1r',5,0]  ] ,
             left : [ ['ch1l',1,0],['ch1l',2,0],['ch1l',3,0],['ch1l',4,0], ['ch1l',5,0]  ] ,
         },
         talk : {
-            right : [ ['chTr',0,0],['chTr',1,0],['chTr',2,0],['chTr',3,0],['chTr',4,0] ],
-            left :  [ ['chTl',2,0],['chTl',3,0],['chTl',4,0],['chTl',5,0],['chTl',6,0], ],
+            right : [ ['c1r',4,0],['c1r',2,0],['c1r',3,0],['c1r',4,0],['c1r',5,0] ],
+            left :  [ ['c1l',1,0],['c1l',3,0],['c1l',2,0],['c1l',1,0],['c1l',0,0], ],
+        },
+        blink : {
+            right : [ ['c1r',1,0],['c1r',0,0],['c1r',1,0] ],
+            left :  [ ['c1l',4,0],['c1l',5,0],['c1l',4,0] ],
         },
         talk_with_ham : 
-        [ ['chTh-r',0,0],['chTh-r',1,0],['chTh-r',2,0],['chTh-r',3,0],['chTh-r',4,0] ],
+        [ ['c2r',0,2],['c2r',1,0],['c2r',2,0],['c2r',3,0],['c2r',4,0] ],
         wait_with_ham : 
-        [ ['chTh-r',0,0] ],
+        [ ['c2r',0,0] ],
         
-    },'right',{speechBubbleDown:.22, speechBubbleIn:.25}),
+    },'right',{speechBubbleDown:.3, speechBubbleIn:.25}),
 
     invisible : new CharacterModel (1,1,{
         wait : {
-            right : [ ['ch1r',0,0] ],
-            left : [ ['ch1l',6,0] ],
+            right : [ ['c1r',0,0] ],
+            left : [ ['c1r',6,0] ],
         },
         walk : {
-            right : [ ['ch1r',1,0],['ch1r',2,0],['ch1r',3,0],['ch1r',4,0], ['ch1r',5,0]  ] ,
-            left : [ ['ch1l',1,0],['ch1l',2,0],['ch1l',3,0],['ch1l',4,0], ['ch1l',5,0]  ] ,
+            right : [ ['c1r',0,0] ],
+            left : [ ['c1r',6,0] ],
         },
         talk : {
-            right : [ ['chTr',0,0],['chTr',1,0],['chTr',2,0],['chTr',3,0],['chTr',4,0] ],
-            left :  [ ['chTl',2,0],['chTl',3,0],['chTl',4,0],['chTl',5,0],['chTl',6,0], ],
+            right : [ ['c1r',0,0] ],
+            left : [ ['c1r',6,0] ],
         },
     },'right')
 }
@@ -152,7 +158,9 @@ var makeCharacters = function() {return [
     new Character ('skinner','Skinner',[200,10,3],'white',characterModels.skinner,{
         idleAnimations: {delay: 100, chance:0.75, cycles:['eye_roll']}
     }),
-    new Character ('chalmers','Superintendent Chalmers',[100,10,null],'red',characterModels.chalmers),
+    new Character ('chalmers','Superintendent Chalmers',[100,10,null],'red',characterModels.chalmers,{
+        idleAnimations: {delay: 50, chance:0.7, cycles:['blink']}
+    }),
     new Character ('server','sever',[230,100,2],'lime',characterModels.invisible),
     new Character ('agnes','agnes',[400,260,3],'violet',characterModels.invisible),
 ]}
