@@ -71,14 +71,17 @@ var interactions =[
     ]),
 
     new Interaction(['LOOK','TODO_I'],
-    [function(){return this.gameVars.roastIsInOven && this.gameVars.iceBucketIsOnTable}],
+    [
+        new StandardCondition('VAR','roastIsInOven','true'),
+        new StandardCondition('VAR','iceBucketIsOnTable','true')
+    ],
     [new StandardOrder('pc::No need for the list now! The Superintendent is here!')]
     ),
 
     new Interaction(['LOOK','TODO_I'],[],function(){
 
         let roastComment = this.gameVars.roastIsInOven ?
-            'done.' :  this.allRoomItemData.KITCHEN_R.OVEN_W.status.cycle === 'open_ham_inside' ?
+            'done.' :  this.allRoomItemData.KITCHEN_R.OVEN_W.status === 'open_ham_inside' ?
             'better close the oven and turn it up to maximum heat!' : this.allInventoryItemsAsObject.ROAST_GLAZED_I.have ?
             'hmm... better get this in the oven. The bourbon is dropping all over the floor.' : 'What can I use to glaze this roast?'
 
@@ -204,9 +207,9 @@ var interactions =[
 
 	new Interaction(['WALK','DINING_KITCHENDOOR_W'],
 	[
-		function(){return this.allRoomItemData.KITCHEN_R.OVEN_W.status.cycle==="smoking"},
-		function(){return !this.gameVars.haveSeenBurningRoast},
-		function(){return this.getThings('DINING_KITCHENDOOR_W').item.status.cycle == 'open'}
+        new StandardCondition('KITCHEN_R.OVEN_W','status','===','smoking'),
+        new StandardCondition('VAR','haveSeenBurningRoast','false'),
+        new StandardCondition('DINING_KITCHENDOOR_W','status','===','open'),
 	],
    	function() { 
         this.getThings('pc').goTo(this.getThings('DINING_KITCHENDOOR_W').walkToPoint)
@@ -218,13 +221,13 @@ var interactions =[
 
 
     new Interaction(['WALK','DINING_KITCHENDOOR_W'],
-    [function(){return this.getThings('DINING_KITCHENDOOR_W').item.status.cycle == 'open'}],
+    [function(){return this.getThings('DINING_KITCHENDOOR_W').item.status == 'open'}],
     doorFunction('DINING_KITCHENDOOR_W',['KITCHEN_R',120,10])
     ),
 
 
     new Interaction(['SHUT','DINING_KITCHENDOOR_W'],
-    [function(){return this.getThings('DINING_KITCHENDOOR_W').item.status.cycle == 'open'}],
+    [function(){return this.getThings('DINING_KITCHENDOOR_W').item.status == 'open'}],
     function(){
         this.getThings('pc').goTo(this.getThings('DINING_KITCHENDOOR_W').walkToPoint)
         .then( (r)=> { if (r.finished) {
@@ -240,7 +243,7 @@ var interactions =[
     //KITCHEN
 
     new Interaction(['WALK','KITCHEN_DININGDOOR_W'],[
-        function() {return this.getThings('OVEN_W').item.status.cycle==='smoking'}, 
+        function() {return this.getThings('OVEN_W').item.status==='smoking'}, 
         function() {return this.allInventoryItemsAsObject.HAMBURGER_PLATTER_I.have === true}, 
        ],
         function() {
@@ -266,7 +269,7 @@ var interactions =[
    
 
        new Interaction(['WALK','KITCHEN_DININGDOOR_W'],[
-        function() {return this.getThings('OVEN_W').item.status.cycle==='smoking'}, 
+        function() {return this.getThings('OVEN_W').item.status==='smoking'}, 
         function() {return this.allInventoryItemsAsObject.HAMBURGER_BAG_I.have === true}, 
        ],
        [new StandardOrder('pc::I can\'t serve the hamburgers like this! I need to disguise them as my own cooking somehow...')]
@@ -274,7 +277,7 @@ var interactions =[
        ),
 
     new Interaction(['WALK','KITCHEN_DININGDOOR_W'],[
-     function() {return this.getThings('OVEN_W').item.status.cycle==='smoking'}, 
+     function() {return this.getThings('OVEN_W').item.status==='smoking'}, 
      function() {return this.allInventoryItemsAsObject.HAMBURGER_PLATTER_I.have === false}, 
     ],
     [new StandardOrder('pc::I can\'t go back there! I don\'t have any food for the Superintendent!')]
@@ -287,7 +290,7 @@ var interactions =[
     ),
 
     new Interaction(['OPEN','OVEN_W'],
-    [function(){return this.getThings('OVEN_W').item.status.cycle == 'closed'}],
+    [function(){return this.getThings('OVEN_W').item.status == 'closed'}],
     function(){
         this.runSequence([
             new StandardOrder('pc>>OVEN_W'),
@@ -296,7 +299,7 @@ var interactions =[
     }),
 
     new Interaction(['SHUT','OVEN_W'],
-    [function(){return this.getThings('OVEN_W').item.status.cycle == 'open'}],
+    [function(){return this.getThings('OVEN_W').item.status == 'open'}],
     function(){
         this.runSequence([
             new StandardOrder('pc>>OVEN_W'),
@@ -335,7 +338,7 @@ var interactions =[
 
 
     new Interaction(['SHUT','OVEN_W'],
-    [function(){return this.getThings('OVEN_W').item.status.cycle == 'open_ham_inside'}, function(){return this.gameVars.iceBucketIsOnTable}],
+    [function(){return this.getThings('OVEN_W').item.status == 'open_ham_inside'}, function(){return this.gameVars.iceBucketIsOnTable}],
     [
         new StandardOrder('[status]CUTSCENE'),
         new StandardOrder('pc>>OVEN_W'),
@@ -348,7 +351,7 @@ var interactions =[
     ]),
 
     new Interaction(['SHUT','OVEN_W'],
-    [function(){return this.getThings('OVEN_W').item.status.cycle == 'open_ham_inside'}],
+    [function(){return this.getThings('OVEN_W').item.status == 'open_ham_inside'}],
     [
         new StandardOrder('[status]CUTSCENE'),
         new StandardOrder('pc>>OVEN_W'),
@@ -360,17 +363,17 @@ var interactions =[
 
 
     new Interaction(['SHUT','OVEN_W'],
-    [function(){return this.getThings('OVEN_W').item.status.cycle.substring(0,6) == 'closed'}],
+    [function(){return this.getThings('OVEN_W').item.status.substring(0,6) == 'closed'}],
     [new StandardOrder('pc::It\'s already closed.')]),
 
 
     new Interaction(['OPEN','OVEN_W'],
-    [function(){return this.getThings('OVEN_W').item.status.cycle.substring(0,4) == 'open'}],
+    [function(){return this.getThings('OVEN_W').item.status.substring(0,4) == 'open'}],
     [new StandardOrder('pc::It\'s already open.')]),
 
 
     new Interaction(['OPEN','OVEN_W'],
-    [function(){return this.getThings('OVEN_W').item.status.cycle == 'closed_ham_inside'}],
+    [function(){return this.getThings('OVEN_W').item.status == 'closed_ham_inside'}],
     [new StandardOrder('pc::No, I\'d better leave it to get as cooked as possible.')]),
 
 
@@ -397,7 +400,7 @@ var interactions =[
 
 
     new Interaction(['WALK', 'KRUSTYBURGER_W'],
-    [function() {return this.getThings('OVEN_W').item.status.cycle==='smoking'}, 
+    [function() {return this.getThings('OVEN_W').item.status==='smoking'}, 
     function() {return this.allInventoryItemsAsObject.HAMBURGER_PLATTER_I.have === false},],
     function () {
         this.runSequence([

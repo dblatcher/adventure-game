@@ -45,12 +45,12 @@ function executeStandardOrder(order) {
 
 function evaluateStandardCondition (condition) {
     let actor = this.getComponentOrDataObject(condition.actorId)
-
+    
     if (!actor) {
         console.warn(`condition invalid: ${condition.actorId}' not found`)
         return true
     }
-
+    
     switch (condition.operator) {
         case "true":
             return !!actor[condition.property]; 

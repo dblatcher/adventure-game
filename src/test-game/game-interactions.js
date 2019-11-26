@@ -8,7 +8,7 @@ var interactions =[
 	new Interaction(['LOOK','WINDOW_W'],[],pcSays('It\'s a nice window')),
 	
 	new Interaction(['OPEN','DOOR_W'],[
-		function(){return this.getThings('DOOR_W').item.status.cycle == 'closed'},
+		function(){return this.getThings('DOOR_W').item.status == 'closed'},
 	],function(){
 		this.getThings('pc').say("ok")
 		.then ( (r)=> {
@@ -22,12 +22,12 @@ var interactions =[
 	new Interaction(['OPEN','DOOR_W'],[],pcSays("It's not closed!")),
 
 	new Interaction(['WALK','DOOR_W'],
-	[function(){return this.getThings('DOOR_W').item.status.cycle == 'open'}],
+	[function(){return this.getThings('DOOR_W').item.status == 'open'}],
 	doorFunction('DOOR_W',['SWAMP_R',375,10])
 	),
 
 	new Interaction(['SHUT','DOOR_W'],
-	[function(){return this.getThings('DOOR_W').item.status.cycle == 'open'}],
+	[function(){return this.getThings('DOOR_W').item.status == 'open'}],
 	function(){
 
 		this.getThings('pc').say("ok");
@@ -63,7 +63,7 @@ var interactions =[
 	new Interaction(['USE','SHOE_I'],[],pcSays("It doesn't fit me")),
 	
 	new Interaction(['USE','BUCKET_I','FIRE_W'],
-	[function(){return this.getThings('FIRE_W').item.status.cycle == 'burning'}],
+	[function(){return this.getThings('FIRE_W').item.status == 'burning'}],
 	function() {
 		this.setGameStatus('CUTSCENE');
 		

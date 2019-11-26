@@ -120,7 +120,7 @@ function WorldItem (id, name, coords ,width,height,initialCycle, model,config={}
 	
 	this.baseWidth = width || 20;
 	this.baseHeight = height || 20;
-	this.status = {cycle: initialCycle||'neutral'};
+	this.status = initialCycle||'neutral';
 	this.queue = [];
 	
 	if (model) {
@@ -139,7 +139,7 @@ WorldItem.prototype.setRemoval = function (input) {
 	return this
 }
 WorldItem.prototype.setStatus = function (input) {
-	if (this.cycles[input]) {this.status.cycle = input}
+	if (this.cycles[input]) {this.status = input}
 	return this;
 }
 WorldItem.prototype.returnState = function() {
@@ -149,7 +149,7 @@ WorldItem.prototype.returnState = function() {
 		y:this.y,
 		scale: this.scale,
 		removed: this.removed,
-		status: {cycle: this.status.cycle},
+		status: this.status,
 	}
 };
 

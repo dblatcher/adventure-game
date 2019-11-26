@@ -52,13 +52,13 @@ export default {
         scaledHeight : function() {return this.scale * this.baseHeight*this.zoneEffects.scale();},
         scaledWidth : function() {return this.scale * this.baseWidth*this.zoneEffects.scale();},
         frame : function() {
-            let cycle = this.item.status.cycle;
+            let cycle = this.item.status;
             //fix for issue where this.cycleFrame exceeds length? cause unknown, causes error
             let frameNumber = this.cycleFrame >= this.item.cycles[cycle].length ? 0 : this.cycleFrame
             var v= this.item.cycles[cycle][frameNumber];
             return {sprite: v[0], fx:v[1], fy:v[2]}
         },
-        status : function() {return this.item.status.cycle},
+        status : function() {return this.item.status},
         name : {
             get: function () {return this.item.name},
             set: function(v) {this.item.name = v}
@@ -111,14 +111,14 @@ export default {
         },
         setStatus, setRemoval,
         showNextFrame : function () {
-            var cycle = this.item.cycles[this.item.status.cycle] ;
+            var cycle = this.item.cycles[this.item.status] ;
             var onLastFrame = !(cycle.length > this.cycleFrame+1);
             this.cycleFrame = onLastFrame ? 0: this.cycleFrame + 1;
 
             if (onLastFrame) {
                 if (this.item.queue.length) {
                     this.$emit('statusOrderDone',this.item.queue[0])
-                    this.item.status = this.item.queue.shift();
+                    this.item.status = this.item.queue.shift().cycle;
                 }
             }
         },
