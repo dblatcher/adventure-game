@@ -56,6 +56,10 @@ function parseOrderString(oString, options) {
 			turnTo: 	{code: '^^', targetParser: arrayParse},
 			goToRoom: 	{code: '}}', targetParser: arrayParse},
 		},
+		INVENTORYITEM: {
+			add: 		{code: '++'},
+			loose:	 	{code: '--'},
+		},
 		GAME: {
 			setGameStatus: 		{code: '[status]'},
 			setGameVar: 		{code: '[var]', targetParser: emptyObject},
@@ -81,7 +85,6 @@ function parseOrderString(oString, options) {
 	})
 	
 	if (!actorType) {
-
 		Object.keys(actionCodes.CHARACTER).forEach((key)=>{
 			if (action) {return};
 			let code = actionCodes.CHARACTER[key].code
@@ -93,8 +96,20 @@ function parseOrderString(oString, options) {
 				target = oString.substring(codePos + code.length);
 			}
 		})
+	}
 
-
+	if (!actorType) {
+		Object.keys(actionCodes.INVENTORYITEM).forEach((key)=>{
+			if (action) {return};
+			let code = actionCodes.INVENTORYITEM[key].code
+			let codePos = oString.indexOf(code) 
+			if (codePos !== -1) {
+				actorType = 'INVENTORYITEM';
+				action = key;
+				actorId = oString.substring(0, codePos)
+				target = oString.substring(codePos + code.length);
+			}
+		})
 	}
 
 	

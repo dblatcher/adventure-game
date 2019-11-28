@@ -27,7 +27,6 @@ function resolveDestination (target) {
 
 function executeStandardOrder(order) {
     let actor = this.getComponentOrDataObject(order.actorId)
-
     if (!actor) {
         console.warn(`failed order: ${order.actorId}' not found`)
         return Promise.resolve({result:'failed'})
