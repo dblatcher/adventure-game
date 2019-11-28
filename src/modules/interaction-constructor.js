@@ -1,3 +1,4 @@
+import { isArray } from "util";
 
 function Interaction (command,conditions,response) {
 	this.command = {
@@ -143,6 +144,25 @@ function StandardCondition (actorId, property, operator, comparitor) {
 StandardCondition.prototype.isStandardCondition = true;
 
 
+class ConditionalOrder {
+	constructor (conditions, orderIfTrue, orderIfFalse) {
+
+		this.conditions = conditions.map( condition => {
+			return new StandardCondition(...condition)
+		})
+
+		this.orderIfTrue = orderIfTrue ? 
+		new StandardOrder(...orderIfTrue) : null;
+
+		this.orderIfFalse = orderIfFalse ? 
+		new StandardOrder(...orderIfFalse) : null;
+
+	}
+
+	get isConditionalOrder() {return true}
+}
+
+
 function doorFunction (doorId, destination) {	
 	return function () {
 		this.getThings('pc').goTo(this.getThings(doorId).walkToPoint,{wasManual:true})
@@ -165,4 +185,4 @@ function takeFunction (worldItemId, inventoryItemId, worldItemStays=false) {
 }
 
 
-export { Interaction, StandardOrder, StandardCondition, doorFunction, takeFunction }
+export { Interaction, StandardOrder, StandardCondition, ConditionalOrder, doorFunction, takeFunction }

@@ -1,4 +1,4 @@
-import { Interaction, StandardOrder, StandardCondition, doorFunction,takeFunction } from "../modules/interaction-constructor";
+import { Interaction, StandardOrder, StandardCondition, ConditionalOrder, doorFunction,takeFunction } from "../modules/interaction-constructor";
 
 
 
@@ -13,7 +13,11 @@ var interactions =[
 
     //ITEM BASED    
     new Interaction(['LOOK','ROAST_I'],[],
-    [new StandardOrder('pc::Yes, this should be a reasonable quantity of meat to serve Superintendent Chalmers.')]),
+    [new ConditionalOrder(
+        [['GAME', 'currentRoom', '===', 'KITCHEN_R']],
+        ['pc::I\'d better glaze this and get it in the oven.'],
+        ['pc::Yes, this should be a reasonable quantity of meat to serve Superintendent Chalmers.'],
+    )]),
 
     new Interaction(['LOOK','ROAST_GLAZED_I'],[],
     [new StandardOrder('pc::Glazed and ready for the oven!')]),

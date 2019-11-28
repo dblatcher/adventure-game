@@ -42,6 +42,23 @@ function executeStandardOrder(order) {
     return execution;
 }
 
+function executeOrder (order) {
+
+    if (order.isStandardOrder) {return executeStandardOrder.apply(this, [order])}
+
+    if (order.isConditionalOrder) {
+
+        let conditionsPassed = order.conditions.map( 
+            (condition)=>{ return evaluateStandardCondition.apply(this,[condition])}
+        ).includes(false) === false;
+
+        if (conditionsPassed && order.orderIfTrue) { return executeStandardOrder.apply (this,[order.orderIfTrue])}
+        if (!conditionsPassed && order.orderIfFalse) { return executeStandardOrder.apply (this,[order.orderIfFalse])}
+        return Promise.resolve()
+    }
+
+}
+
 function evaluateStandardCondition (condition) {
     let actor = this.getComponentOrDataObject(condition.actorId)
     
@@ -93,7 +110,7 @@ function runSequence(input, options){
     }
     
     if (Array.isArray(sequence)) {
-        return makeChain(sequence, executeStandardOrder, this)
+        return makeChain(sequence, executeOrder, this)
     }
 
     console.warn("unrecognised sequence", sequence)
@@ -101,4 +118,4 @@ function runSequence(input, options){
 }
 
 
-export {executeStandardOrder, evaluateStandardCondition, runSequence, resolveDestination}
+export {executeStandardOrder,executeOrder, evaluateStandardCondition, runSequence, resolveDestination}
