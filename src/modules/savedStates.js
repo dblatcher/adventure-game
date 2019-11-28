@@ -1,6 +1,7 @@
 
 
 import { gameData } from "../gameIndex";
+import { WorldItem } from "./constructors";
 
 function getCurrentGameData (gameInstance) {
     let currentState = {
@@ -94,25 +95,28 @@ function createGameData(savedGame) {
 function modifyGameData (state, loadData) {
     if (!loadData) {return state}
 
+    //update literal properties
     state.gameStatus = loadData.gameStatus;
     state.gameStatusBeforePaused = loadData.gameStatusBeforePaused;
     state.roomNumber = loadData.roomNumber;
     state.conversation = loadData.conversation;
 
-    // replace each item in the worldItems array of each room in the loadData
-    // with the corresponding WorldItem taken from state and modified with that item's properties
-    for (let index = 0; index < loadData.rooms.length; index++) {
-        const room = loadData.rooms[index];
-        for (let index2 = 0; index2 < room.worldItems.length; index2++) {
-            const item = room.worldItems[index2];
-            room.worldItems.splice (index2, 1, Object.assign(state.rooms[index].worldItems[index2], item) );
-        }
-    }
+    let newRoomsArray = [];
+    loadData.rooms.forEach(roomDatum=> {
+        newRoomsArray.push({
+            name: roomDatum.name,
+            worldItems: roomDatum.worldItems.map( worldItem => { return worldItem.returnState ? worldItem.returnState() : worldItem })
+        })
+    }) 
+
+    state.rooms.forEach ((room, index1) => {
+        room.worldItems.forEach ( (worldItem, index2) => {
+            Object.assign(worldItem, newRoomsArray[index1].worldItems[index2])
+        }) 
+    })
+
 
     var i
-    for (i=0; i<state.rooms.length; i++) {
-        state.rooms[i] = Object.assign(state.rooms[i], loadData.rooms[i]);
-    }
     for (i=0; i<state.inventoryItems.length; i++) {
         state.inventoryItems[i] = Object.assign(state.inventoryItems[i], loadData.inventoryItems[i]);
     }

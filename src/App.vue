@@ -11,7 +11,7 @@
     <TitleScreen v-show="showTitleScreen">
 
       <template v-slot:file-buttons>
-        <button @click="loadGameOrRestart()">New Game</button>
+        <button @click="restartGame()">New Game</button>
         <button @click="function(){fileMenuIsOpen = true}">Restore</button>
       </template>
 
@@ -86,7 +86,7 @@ export default {
           this.fileMenuIsOpen = !this.fileMenuIsOpen;
           break;
         case 'restart':
-          this.loadGameOrRestart();
+          this.restartGame();
           this.fileMenuIsOpen = false;
           break;
         case 'quit':
@@ -98,7 +98,7 @@ export default {
           this.fileMenuIsOpen = false;
           break;
         case 'load':
-          this.loadGameOrRestart(this.savedGames[event[0]]);
+          this.loadGame(this.savedGames[event[0]]);
           this.fileMenuIsOpen = false;
           break;
         case 'clear':
@@ -118,14 +118,16 @@ export default {
       this.showEndingScreen = true;
     },
 
-    loadGameOrRestart : function (saveFile = null) {
+    loadGame : function(saveFile) {
       this.showTitleScreen = false;
       this.showEndingScreen = false;
-      if (saveFile) { 
-          this.$refs.game.loadSaveGame(saveFile);
-      } else {
-          this.$refs.game.restart();
-      }
+      this.$refs.game.loadSaveGame(saveFile);
+    },
+
+    restartGame : function () {
+      this.showTitleScreen = false;
+      this.showEndingScreen = false;
+      this.$refs.game.restart();
     },
 
     saveGame : function (slotNumber) {
