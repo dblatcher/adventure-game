@@ -2,7 +2,7 @@ import { StandardOrder } from "../modules/interaction-constructor";
 
 const starting = [
     new StandardOrder ('[Status]CUTSCENE'),
-
+    new StandardOrder ('GAME','showNarration',['Springfield','The Skinner house'],{time:3}),
     new StandardOrder ('pc>>175,10'),
     new StandardOrder ('pc::I thought I\'d never get out of that superMarket!'),
     new StandardOrder ('pc>>153,25'),
