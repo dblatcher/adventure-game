@@ -42,6 +42,10 @@
           @hover-event="handleHoverEvent($event[0],$event[1])"/>
  
       </Room>
+
+       <NarrationMessage
+       @dismiss="dismissMessage()"
+       v-bind:narration="narration"/>
     </div>
 
 
@@ -66,7 +70,6 @@
         hidden:gameStatus === 'CONVERSATION' ? false:true
       }"
     ></DialogMenu>
-
 
     <aside v-show="gameStatus === 'PAUSED'" 
     @click="togglePaused()"
@@ -94,6 +97,7 @@ import {changeRoom, teleportCharacter} from "./roomMethods";
 import {getInventoryItem, looseInventoryItem} from "./inventoryMethods";
 
 import {wait} from "./wait";
+import {showNarration} from "./showNarration";
 
 import handleDialogChoice from "./handleDialogChoice";
 import handleCommand from "./handleCommand";
@@ -112,11 +116,13 @@ import OptionsMenu from "../optionsMenu";
 import HeartBeater from "../HeartBeater";
 import ScummInterface from "../ScummInterface";
 import ControlButtons from "../ControlButtons";
+import NarrationMessage from "../NarrationMessage";
 
 export default {
   name: 'Game',
   components :{
-    DialogMenu, Room, ThingInRoom, OptionsMenu, HeartBeater, ScummInterface, ControlButtons
+    DialogMenu, Room, ThingInRoom, OptionsMenu, 
+    HeartBeater, ScummInterface, ControlButtons, NarrationMessage
   },
 
   data () {
@@ -210,9 +216,7 @@ export default {
     },
 
     openFileMenu(event) {
-     
      if (this.gameStatus === 'CUTSCENE') {return false}
-
      this.$parent.handleFileMenuClick([null, 'toggle']);
     },
 
@@ -244,6 +248,13 @@ export default {
     runSequence,
     resolveDestination,
     wait,
+    showNarration,
+
+    dismissMessage(forceDismiss) {
+      if (this.narration.dismissable === false && !forceDismiss) {return false}
+      this.narration.contents.splice(0, this.narration.contents.length)
+      this.$emit('dismissed-message',{})
+    },
 
     handleSkipButton() {
       if (this.gameStatus === 'LIVE') {return}
@@ -260,7 +271,6 @@ export default {
       pc.char.destinationQueue.forEach (order=> {
         if (order.wasManual) {order.isRun = true}
       })
-
     },
 
     setGameStatus(statusName,parameter) {

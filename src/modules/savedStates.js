@@ -84,6 +84,7 @@ function createGameData(savedGame) {
         highlightingThings : false,
         optionsMenuIsOpen: false,
         instantMode: false,
+        narration: {contents:[], dismissable:true},
         options: {textDelay: 100},
         defaultResponses:gameData.defaultResponses,
         sequences: gameData.sequences,
