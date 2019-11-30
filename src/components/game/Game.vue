@@ -9,39 +9,19 @@
 
     <OptionsMenu v-show="optionsMenuIsOpen"
     v-bind:options="options"
-    @close="toggleOptionsMenu()"
-    />
+    @close="toggleOptionsMenu()"/>
 
-    <nav class="game__settings">
-      <div class="skip-button" 
-      v-bind:class="{'skip-button--disabled': gameStatus !== 'CUTSCENE'}"
-      @click="handleSkipButton">
-      <img class="button-icon" src="./forward.svg"/></div>
-
-      <input class="highlight-control" type="checkbox" id="highlight-checkbox" v-model="highlightingThings">
-      <label class="highlight-button" for="highlight-checkbox">
-        <img class="button-icon" src="./eye.svg"/>
-      </label>
-
-      <div class="pause-button"
-      @click="togglePaused()"
-      v-bind:class="{'pause-button--active': gameStatus === 'PAUSED'}"
-      ><img class="button-icon" src="./pause.svg"/></div>
-
-      <div class="options-button"
-      @click="toggleOptionsMenu()"
-      v-bind:class="{'options-button--active': optionsMenuIsOpen}"
-      ><img class="button-icon" src="./cogs.svg"/></div>
-
-      <div class="file-button"
-      @click="openFileMenu()"
-      v-bind:class="{
-        'file-button--active': fileMenuIsOpen,
-        'disabled': gameStatus === 'CUTSCENE'
-      }"
-      ><img class="button-icon" src="./save.svg"/></div>
-
-    </nav>
+   <ControlButtons
+    v-bind:gameStatus="gameStatus"
+    v-bind:highlightingThings="highlightingThings"
+    v-bind:fileMenuIsOpen="fileMenuIsOpen"
+    v-bind:optionsMenuIsOpen="optionsMenuIsOpen"
+    @pause-button="togglePaused"
+    @options-button="toggleOptionsMenu"
+    @file-button="openFileMenu"
+    @skip-button="handleSkipButton"
+    @highlight-button="handleHighlightButton"
+   />
 
     <div class="game__room-wrapper">
       <Room ref="room" 
@@ -131,11 +111,12 @@ import ThingInRoom from "../ThingInRoom";
 import OptionsMenu from "../optionsMenu";
 import HeartBeater from "../HeartBeater";
 import ScummInterface from "../ScummInterface";
+import ControlButtons from "../ControlButtons";
 
 export default {
   name: 'Game',
   components :{
-    DialogMenu, Room, ThingInRoom, OptionsMenu, HeartBeater, ScummInterface
+    DialogMenu, Room, ThingInRoom, OptionsMenu, HeartBeater, ScummInterface, ControlButtons
   },
 
   data () {
@@ -267,6 +248,10 @@ export default {
     handleSkipButton() {
       if (this.gameStatus === 'LIVE') {return}
       else {this.instantMode = true};
+    },
+
+    handleHighlightButton() {
+      this.highlightingThings = !this.highlightingThings;
     },
 
     handleDoubleClick (event) {
