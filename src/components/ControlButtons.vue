@@ -1,29 +1,29 @@
 <template>
      <nav class="game__settings">
-      <div class="skip-button" 
-      v-bind:class="{'skip-button--disabled': gameStatus !== 'CUTSCENE'}"
-      @click="$emit('skip-button', $event)">
+      <div class="control-button control-button--skip" 
+      @click="$emit('skip-button', $event)"
+      v-bind:class="{'control-button--disabled': gameStatus !== 'CUTSCENE'}">
       <img class="button-icon" src="./_icons/forward.svg"/></div>
 
-      <div class="highlight-button"
+      <div class="control-button control-button--highlighting"
       @click="$emit('highlight-button', $event)"
-      v-bind:class="{'highlight-button--active': highlightingThings }"
+      v-bind:class="{'control-button--active': highlightingThings }"
       ><img class="button-icon" src="./_icons/eye.svg"/></div>
 
-      <div class="pause-button"
+      <div class="control-button control-button--pause"
       @click="$emit('pause-button', $event)"
-      v-bind:class="{'pause-button--active': gameStatus === 'PAUSED'}"
+      v-bind:class="{'control-button--active': gameStatus === 'PAUSED'}"
       ><img class="button-icon" src="./_icons/pause.svg"/></div>
 
-      <div class="options-button"
+      <div class="control-button control-button--options"
       @click="$emit('options-button', $event)"
-      v-bind:class="{'options-button--active': optionsMenuIsOpen}"
+      v-bind:class="{'control-button--active': optionsMenuIsOpen}"
       ><img class="button-icon" src="./_icons/cogs.svg"/></div>
 
-      <div class="file-button"
+      <div class="control-button control-button--file"
       @click="$emit('file-button', $event)"
       v-bind:class="{
-        'file-button--active': fileMenuIsOpen,
+        'control-button--active': fileMenuIsOpen,
         'disabled': gameStatus === 'CUTSCENE'
       }"
       ><img class="button-icon" src="./_icons/save.svg"/></div>
@@ -42,8 +42,7 @@ export default {
 @import '../modules/material';
 @import '../modules/layout';
 
-
-.file-button {
+.control-button {
     @include btn-toggle ($colour-blue);
     @include navButton(true);
 
@@ -51,65 +50,34 @@ export default {
         @include btn-solid ($colour-blue);
         @include navButton(true);
     }
-
-    right: .2rem;
-    z-index: 500;
-}
-
-.options-button {
-    @include btn-toggle ($colour-blue);
-    @include navButton(true);
-
-    &--active {
-        @include btn-solid ($colour-blue);
-        @include navButton(true);
-    }
-
-
-    right: 3.2rem;
-    z-index: 500;
-}
-
-
-.skip-button {
-    @include btn-solid ($colour-blue);
-    @include navButton(true);
 
     &--disabled {
         display: none;
     }
-
-
-    left: .2rem;
-    z-index: 300;
-}
-
-
-.highlight-button {
-    @include btn-toggle ($colour-blue);
-    @include navButton(true);
-
-    &--active {
-        @include btn-solid ($colour-blue);
-        @include navButton(true);
-    }
-
-    right: 6.2rem;
-    z-index: 300;
-}
-
-.pause-button {
-    @include btn-toggle ($colour-blue);
-    @include navButton(true);
-
-    &--active {
-        @include btn-solid ($colour-blue);
-        @include navButton(true);
-    }
-
-
-    right: 9.2rem;
+    
     z-index: 500;
+
+    &--file {
+        right: .2rem;
+    }
+
+    &--options {
+        right: 3.2rem;
+    }
+
+    &--skip {
+        left: .2rem;
+        z-index: 300;
+    }
+
+    &--highlighting {
+        right: 6.2rem;
+        z-index: 300;
+    }
+
+    &--pause {
+        right: 9.2rem;
+    }
 }
 
 
