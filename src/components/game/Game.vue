@@ -110,7 +110,7 @@ import {changeRoom, teleportCharacter} from "./roomMethods";
 import {getInventoryItem, looseInventoryItem} from "./inventoryMethods";
 
 import handleDialogChoice from "./handleDialogChoice";
-import executeCommand from "./executeCommand";
+import handleCommand from "./handleCommand";
 import getThings from "./getThings";
 import getComponentOrDataObject from "./getCompOrData";
 import removeThing from "./removeThing";
@@ -243,7 +243,7 @@ export default {
     changeRoom, 
     getThings,
     getComponentOrDataObject,
-    executeCommand,
+    handleCommand,
     removeThing,
     handleDialogChoice,
     handleClickOnRoom,
