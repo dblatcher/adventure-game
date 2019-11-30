@@ -146,7 +146,9 @@ const ending = [
 
 const test = [
     new StandardOrder ('pc::talk test'),
+    new StandardOrder ('GAME','wait',3),
     new StandardOrder ('pc::talk test two'),
+    new StandardOrder ('[wait]2'),
     new StandardOrder ('pc>>100,10'),
     new StandardOrder ('pc>>150,15'),
     new StandardOrder ('pc##window_talk'),

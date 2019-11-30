@@ -1,7 +1,11 @@
 <template>
   <main class="game">
 
-    <HeartBeater @beat="onBeat" delay="50" v-bind:timerIsStopped="timerIsStopped"/>
+    <HeartBeater 
+    @beat="onBeat" 
+    delay="50" 
+    v-bind:timerIsStopped="timerIsStopped"
+    ref="heartBeat"/>
 
     <OptionsMenu v-show="optionsMenuIsOpen"
     v-bind:options="options"
@@ -108,6 +112,8 @@ import * as pathFinding from "./pathFinding";
 import { executeStandardOrder, runSequence, evaluateStandardCondition, resolveDestination } from "./orderExecution";
 import {changeRoom, teleportCharacter} from "./roomMethods";
 import {getInventoryItem, looseInventoryItem} from "./inventoryMethods";
+
+import {wait} from "./wait";
 
 import handleDialogChoice from "./handleDialogChoice";
 import handleCommand from "./handleCommand";
@@ -256,6 +262,7 @@ export default {
     evaluateStandardCondition,
     runSequence,
     resolveDestination,
+    wait,
 
     handleSkipButton() {
       if (this.gameStatus === 'LIVE') {return}
