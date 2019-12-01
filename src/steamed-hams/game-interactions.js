@@ -1,4 +1,7 @@
-import { Interaction, StandardOrder, StandardCondition, ConditionalOrder, doorFunction,takeFunction } from "../modules/interaction-constructor";
+import { Interaction, doorFunction,takeFunction } from "../modules/interaction-constructor";
+import { StandardOrder } from "../modules/StandardOrder";
+import { ConditionalOrder } from "../modules/ConditionalOrder";
+import { StandardCondition } from "../modules/StandardCondition";
 
 
 

@@ -1,4 +1,4 @@
-import { StandardOrder } from "./interaction-constructor";
+import { StandardOrder } from "./StandardOrder";
 
 function DialogChoice (optionText,script,config={}) {
 	this.optionText = optionText;

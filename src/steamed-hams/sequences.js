@@ -1,4 +1,5 @@
-import { StandardOrder } from "../modules/interaction-constructor";
+import { StandardOrder } from "../modules/StandardOrder";
+import { ConditionalOrder } from "../modules/ConditionalOrder";
 
 const starting = [
     new StandardOrder ('[Status]CUTSCENE'),
