@@ -273,7 +273,11 @@ export default {
 
     handleSkipButton() {
       if (this.gameStatus === 'LIVE') {return}
-      else {this.instantMode = true};
+      else {
+        this.instantMode = true
+        this.$emit('instant-mode',{})
+      };
+
     },
 
     handleHighlightButton() {
