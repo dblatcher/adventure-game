@@ -13,11 +13,13 @@ var interactions =[
 
     //ITEM BASED    
     new Interaction(['LOOK','ROAST_I'],[],
-    [new ConditionalOrder(
-        [['GAME', 'currentRoom', '===', 'KITCHEN_R']],
-        ['pc::I\'d better glaze this and get it in the oven.'],
-        ['pc::Yes, this should be a reasonable quantity of meat to serve Superintendent Chalmers.'],
-    )]),
+    [
+        new ConditionalOrder({
+            conditions: [['GAME', 'currentRoom', '===', 'KITCHEN_R']],
+            orderIfTrue:  ['pc::I\'d better glaze this and get it in the oven.'],
+            orderIfFalse:  ['pc::Yes, this should be a reasonable quantity of meat to serve Superintendent Chalmers.']
+        })
+    ]),
 
     new Interaction(['LOOK','ROAST_GLAZED_I'],[],
     [new StandardOrder('pc::Glazed and ready for the oven!')]),
@@ -82,28 +84,51 @@ var interactions =[
     [new StandardOrder('pc::No need for the list now! The Superintendent is here!')]
     ),
 
-    new Interaction(['LOOK','TODO_I'],[],function(){
-
-        let roastComment = this.gameVars.roastIsInOven ?
-            'done.' :  this.allRoomItemData.KITCHEN_R.OVEN_W.status === 'open_ham_inside' ?
-            'better close the oven and turn it up to maximum heat!' : this.allInventoryItemsAsObject.ROAST_GLAZED_I.have ?
-            'hmm... better get this in the oven. The bourbon is dropping all over the floor.' : 'What can I use to glaze this roast?'
-
-        let bucketComment = this.gameVars.iceBucketIsOnTable ?
-            'done.' : this.allInventoryItemsAsObject.BUCKET_FOIL_I.have ?
-            'I have the bucket ready, it just needs to go on the table.' : this.allInventoryItemsAsObject.BUCKET_EMPTY_I.have ?
-            'I have a bucket, but it\'s not shiny enough.' : this.allInventoryItemsAsObject.BUCKET_SAND_I.have ?
-            'This fire bucket is the right size, but It\'s full of sand and not shiny.' : 'there must be a bucket around here somewhere.';
-
-        this.runSequence([
-            new StandardOrder('pc', 'say', '1. Buy roast... done'),
-            new StandardOrder('pc', 'say', '2. Glaze roast and place in oven... '),
-            new StandardOrder('pc', 'say', roastComment),
-            new StandardOrder('pc', 'say', '3. Put ice bucket on table...'),
-            new StandardOrder('pc', 'say', bucketComment),
-        ])
-
-    }),
+    new Interaction(['LOOK','TODO_I'],[],[
+        new StandardOrder('pc', 'say', '1. Buy roast... done'),
+        new StandardOrder('pc', 'say', '2. Glaze roast and place in oven... '),
+        new ConditionalOrder({
+            conditions: [['VAR','roastIsInOven','true']],
+            orderIfTrue: ['pc::done!']
+        }),
+        new ConditionalOrder({
+            conditions: [['KITCHEN_R.OVEN_W','status','===','open_ham_inside']],
+            orderIfTrue: ['pc::better close the oven and turn it up to maximum heat!']
+        }),
+        new ConditionalOrder({
+            conditions: [['ROAST_GLAZED_I','have','true']],
+            orderIfTrue: ['pc::hmm... better get the roast in the oven. The bourbon is dropping all over the floor.']
+        }),
+        new ConditionalOrder({
+            conditions: [
+                ['ROAST_GLAZED_I','have','false'],
+                ['VAR','roastIsInOven','false'], 
+                ['KITCHEN_R.OVEN_W','status','!==','open_ham_inside'],
+            ], 
+            orderIfTrue: ['pc::hmm... What can I use to glaze this roast?']
+        }),
+        new StandardOrder('pc', 'say', '3. Put ice bucket on table...'),
+        new ConditionalOrder({
+            conditions: [['VAR','iceBucketIsOnTable','true']],
+            orderIfTrue: ['pc::done!']
+        }),
+        new ConditionalOrder({
+            conditions: [['BUCKET_FOIL_I','have','true']],
+            orderIfTrue: ['pc::I have the bucket ready, it just needs to go on the table.']
+        }),
+        new ConditionalOrder({
+            conditions: [['BUCKET_EMPTY_I','have','true']],
+            orderIfTrue: ['pc::I have a bucket, but it\'s not shiny enough.']
+        }),
+        new ConditionalOrder({
+            conditions: [['BUCKET_SAND_I','have','true']],
+            orderIfTrue: ['pc::This fire bucket is the right size, but It\'s full of sand and not shiny.']
+        }),
+        new ConditionalOrder({
+            conditions: [['VAR','cupboardEmpty','false']],
+            orderIfTrue: ['pc::There must be a bucket around here somewhere.']
+        }),
+        ]),
 
     //FRONT OF HOUSE
     new Interaction(['LOOK','GARAGE_W'],[],[new StandardOrder('pc::I admire car owners. I aspire to be one after I\'ve reimbursed mother for the food I ate as a child.')]),

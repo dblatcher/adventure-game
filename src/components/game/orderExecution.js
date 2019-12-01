@@ -34,6 +34,7 @@ function executeStandardOrder(order) {
 
     if (typeof actor[order.action] !== "function") {
         console.warn(`failed order: ${order.action}' is not a method of ${actor === this? 'Game' : order.actorId }`)
+        console.log('failed order:',order)
         return Promise.resolve({})
     }
 
@@ -47,7 +48,6 @@ function executeOrder (order) {
     if (order.isStandardOrder) {return executeStandardOrder.apply(this, [order])}
 
     if (order.isConditionalOrder) {
-
         let conditionsPassed = order.conditions.map( 
             (condition)=>{ return evaluateStandardCondition.apply(this,[condition])}
         ).includes(false) === false;

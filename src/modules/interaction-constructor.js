@@ -146,7 +146,9 @@ StandardCondition.prototype.isStandardCondition = true;
 
 
 class ConditionalOrder {
-	constructor (conditions, orderIfTrue, orderIfFalse) {
+	constructor (inputObject) {
+
+		const { conditions, orderIfTrue, orderIfFalse} = inputObject;
 
 		this.conditions = conditions.map( condition => {
 			return new StandardCondition(...condition)
