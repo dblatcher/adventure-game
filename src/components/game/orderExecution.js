@@ -26,23 +26,6 @@ function resolveDestination (target) {
 }
 
 
-function executeOrder (order) {
-
-    if (order.isStandardOrder) { return order.execute(this) }
-
-    if (order.isConditionalOrder) {
-        let conditionsPassed = order.conditions.map( 
-            (condition)=>{ return condition.evaluate(this)}
-        ).includes(false) === false;
-
-        if (conditionsPassed && order.orderIfTrue) {return order.orderIfTrue.execute(this)}
-        if (!conditionsPassed && order.orderIfFalse) {return order.orderIfFalse.execute(this)}
-        return Promise.resolve()
-    }
-
-}
-
-
 function runSequence(input, options){
 
     let sequence = typeof input === "string" ?
@@ -53,7 +36,7 @@ function runSequence(input, options){
     }
     
     if (Array.isArray(sequence)) {
-        return makeChain(sequence, executeOrder, this)
+        return makeChain(sequence, function(order){return order.execute(this)}, this)
     }
 
     console.warn("unrecognised sequence", sequence)
@@ -61,4 +44,4 @@ function runSequence(input, options){
 }
 
 
-export {executeOrder, runSequence, resolveDestination}
+export { runSequence, resolveDestination}
