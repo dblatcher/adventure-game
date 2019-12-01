@@ -74,21 +74,7 @@ function createGameData(savedGame) {
     }
 
     return Object.assign({
-        interactionMatrix: gameData.interactionMatrix,
-        verbList : gameData.verbList,
-        sprites : gameData.sprites, 
-        message: 'blank message',
-        roomMeasure: {unit:'px',scale:1}, //only supporting px ?
-        verb: gameData.verbList[0],
-        thingHoveredOn:null, 
-        subject: null, needObject:false, object:null,
-        highlightingThings : false,
-        optionsMenuIsOpen: false,
-        instantMode: false,
-        narration: {contents:[], dismissable:true},
-        options: {textDelay: 100},
-        defaultResponses:gameData.defaultResponses,
-        sequences: gameData.sequences,
+
     }, state);
 
 }

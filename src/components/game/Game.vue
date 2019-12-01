@@ -126,7 +126,24 @@ export default {
   },
 
   data () {
-    return state.create(this.loadData);
+
+    return Object.assign({
+      message: 'blank message',
+        roomMeasure: {unit:'px',scale:1}, //only supporting px ?
+        thingHoveredOn:null, 
+        subject: null, needObject:false, object:null,
+        highlightingThings : false,
+        optionsMenuIsOpen: false,
+        instantMode: false,
+        narration: {contents:[], dismissable:true},
+        options: {textDelay: 100},
+        interactionMatrix: gameData.interactionMatrix,
+        verb: gameData.verbList[0],
+        verbList : gameData.verbList,
+        sprites : gameData.sprites, 
+        defaultResponses:gameData.defaultResponses,
+        sequences: gameData.sequences,
+    }, state.create(this.loadData) );
   },
 
   computed : {
@@ -348,7 +365,6 @@ export default {
     },
     restart () {
       state.modify(this.$data, state.create());
-
       this.$nextTick(function(){
         this.$refs.room.resize();
       });
