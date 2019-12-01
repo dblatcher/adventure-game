@@ -92,7 +92,7 @@ import { /* webpackPreload: true */ gameData } from "../../gameIndex";
 import state from "../../modules/savedStates";
 import * as pathFinding from "./pathFinding";
 
-import { executeStandardOrder, executeOrder, runSequence, evaluateStandardCondition, resolveDestination } from "./orderExecution";
+import { executeStandardOrder, executeOrder, runSequence, resolveDestination } from "./orderExecution";
 import {changeRoom, teleportCharacter} from "./roomMethods";
 import {getInventoryItem, looseInventoryItem} from "./inventoryMethods";
 
@@ -261,7 +261,6 @@ export default {
     looseInventoryItem,
     teleportCharacter,
     executeStandardOrder, executeOrder,
-    evaluateStandardCondition,
     runSequence,
     resolveDestination,
     wait,

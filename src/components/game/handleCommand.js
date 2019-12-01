@@ -16,11 +16,8 @@ export default function (command) {
       // test for matchingList[i].conditions being satisfied, if not skip to next 
       for (var j=0; j<matchingList[i].conditions.length; j++) {
         condition = matchingList[i].conditions[j];
-        if (condition.isStandardCondition) {
-         passed = this.evaluateStandardCondition (matchingList[i].conditions[j])
-        } else {
-          passed = condition.apply(this,[])
-        }
+        if (condition.isStandardCondition) { passed = condition.evaluate(this) } 
+        else { passed = condition.apply(this,[]) }
         if (passed == false) {
           failedCondition = true;
           break;
