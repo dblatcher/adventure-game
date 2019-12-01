@@ -69,6 +69,7 @@ function parseOrderString(oString, options) {
 			getInventoryItem: 	{code: '[get]'},
 			looseInventoryItem: {code: '[loose]'},
 			runSequence:		{code: '[sequence]'},
+			wait:				{code: '[wait]'},
 		}
 	}
 

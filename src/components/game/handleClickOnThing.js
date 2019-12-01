@@ -25,5 +25,5 @@ export default function(thing) {
       }
     }
 
-    if (this.haveCompleteCommand) {this.executeCommand();}		
+    if (this.haveCompleteCommand) {this.handleCommand();}		
   }

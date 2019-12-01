@@ -155,7 +155,7 @@ var worldItemModels = {
 
 
 var makeCharacters = function() {return [
-    new Character ('skinner','Skinner',[200,10,3],'white',characterModels.skinner,{
+    new Character ('skinner','Skinner',[270,5,0],'white',characterModels.skinner,{
         idleAnimations: {delay: 100, chance:0.75, cycles:['eye_roll']}
     }),
     new Character ('chalmers','Superintendent Chalmers',[100,10,null],'red',characterModels.chalmers,{

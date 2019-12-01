@@ -2,7 +2,11 @@ import { StandardOrder } from "../modules/interaction-constructor";
 
 const starting = [
     new StandardOrder ('[Status]CUTSCENE'),
+    new StandardOrder ('GAME','showNarration',['Springfield','The Skinner house'],{time:3}),
+    new StandardOrder ('pc>>175,10'),
     new StandardOrder ('pc::I thought I\'d never get out of that superMarket!'),
+    new StandardOrder ('pc>>153,25'),
+    new StandardOrder ('[room]PORCH_R,273,80'),
     new StandardOrder ('pc::I\'d better glaze this ham and get it in the oven before Superintendent Chalmers arrives',{time:3000}),
     new StandardOrder ('pc::also, I need an ice bucket...'),
     new StandardOrder ('[Status]LIVE'),
@@ -146,7 +150,9 @@ const ending = [
 
 const test = [
     new StandardOrder ('pc::talk test'),
+    new StandardOrder ('GAME','wait',3),
     new StandardOrder ('pc::talk test two'),
+    new StandardOrder ('[wait]2'),
     new StandardOrder ('pc>>100,10'),
     new StandardOrder ('pc>>150,15'),
     new StandardOrder ('pc##window_talk'),
