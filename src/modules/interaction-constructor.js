@@ -1,4 +1,3 @@
-import { isArray } from "util";
 
 function Interaction (command,conditions,response) {
 	this.command = {
