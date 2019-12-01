@@ -25,35 +25,18 @@ function resolveDestination (target) {
     return false;
 }
 
-function executeStandardOrder(order) {
-    let actor = this.getComponentOrDataObject(order.actorId)
-    if (!actor) {
-        console.warn(`failed order: ${order.actorId}' not found`)
-        return Promise.resolve({result:'failed'})
-    }
-
-    if (typeof actor[order.action] !== "function") {
-        console.warn(`failed order: ${order.action}' is not a method of ${actor === this? 'Game' : order.actorId }`)
-        console.log('failed order:',order)
-        return Promise.resolve({})
-    }
-
-    let execution = actor[order.action](order.target, order.options || {}, this)
-    if (!execution || !execution.then) { return Promise.resolve({result: execution}) }
-    return execution;
-}
 
 function executeOrder (order) {
 
-    if (order.isStandardOrder) {return executeStandardOrder.apply(this, [order])}
+    if (order.isStandardOrder) { return order.execute(this) }
 
     if (order.isConditionalOrder) {
         let conditionsPassed = order.conditions.map( 
             (condition)=>{ return condition.evaluate(this)}
         ).includes(false) === false;
 
-        if (conditionsPassed && order.orderIfTrue) { return executeStandardOrder.apply (this,[order.orderIfTrue])}
-        if (!conditionsPassed && order.orderIfFalse) { return executeStandardOrder.apply (this,[order.orderIfFalse])}
+        if (conditionsPassed && order.orderIfTrue) {return order.orderIfTrue.execute(this)}
+        if (!conditionsPassed && order.orderIfFalse) {return order.orderIfFalse.execute(this)}
         return Promise.resolve()
     }
 
@@ -78,4 +61,4 @@ function runSequence(input, options){
 }
 
 
-export {executeStandardOrder,executeOrder, runSequence, resolveDestination}
+export {executeOrder, runSequence, resolveDestination}
