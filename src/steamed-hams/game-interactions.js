@@ -322,22 +322,22 @@ var interactions =[
     ),
 
     new Interaction(['OPEN','OVEN_W'],
-    [function(){return this.getThings('OVEN_W').item.status == 'closed'}],
-    function(){
-        this.runSequence([
-            new StandardOrder('pc>>OVEN_W'),
-            new StandardOrder('OVEN_W','setStatus','open'),
-        ])
-    }),
+    [
+        new StandardCondition('OVEN_W','status','===','closed')
+    ],
+    [
+        new StandardOrder('pc>>OVEN_W'),
+        new StandardOrder('OVEN_W','setStatus','open'),
+    ]),
 
     new Interaction(['SHUT','OVEN_W'],
-    [function(){return this.getThings('OVEN_W').item.status == 'open'}],
-    function(){
-        this.runSequence([
-            new StandardOrder('pc>>OVEN_W'),
-            new StandardOrder('OVEN_W','setStatus','closed'),
-        ])
-    }),
+    [
+        new StandardCondition('OVEN_W','status','===','open')
+    ],
+    [
+        new StandardOrder('pc>>OVEN_W'),
+        new StandardOrder('OVEN_W','setStatus','closed'),
+    ]),
 
     new Interaction(['USE','ROAST_I','OVEN_W'],[],
     [new StandardOrder('pc::I need to glaze it first.')]
@@ -346,7 +346,7 @@ var interactions =[
 
     new Interaction(['USE','ROAST_GLAZED_I','OVEN_W'],
     [
-        new StandardCondition('OVEN_W','status','open')
+        new StandardCondition('OVEN_W','status','===','open')
     ],
     [
         new StandardOrder('[status]CUTSCENE'),
@@ -357,7 +357,7 @@ var interactions =[
     ]),
     new Interaction(['USE','ROAST_GLAZED_I','OVEN_W'],
     [
-        new StandardCondition('OVEN_W','status','closed')
+        new StandardCondition('OVEN_W','status','===','closed')
     ],
     [
         new StandardOrder('[status]CUTSCENE'),
@@ -370,7 +370,10 @@ var interactions =[
 
 
     new Interaction(['SHUT','OVEN_W'],
-    [function(){return this.getThings('OVEN_W').item.status == 'open_ham_inside'}, function(){return this.gameVars.iceBucketIsOnTable}],
+    [
+        new StandardCondition('KITCHEN_R.OVEN_W','status','===','open_ham_inside'),
+        new StandardCondition('var','iceBucketIsOnTable', 'true') 
+    ],
     [
         new StandardOrder('[status]CUTSCENE'),
         new StandardOrder('pc>>OVEN_W'),
@@ -383,7 +386,7 @@ var interactions =[
     ]),
 
     new Interaction(['SHUT','OVEN_W'],
-    [function(){return this.getThings('OVEN_W').item.status == 'open_ham_inside'}],
+    [new StandardCondition('KITCHEN_R.OVEN_W','status','===','open_ham_inside')],
     [
         new StandardOrder('[status]CUTSCENE'),
         new StandardOrder('pc>>OVEN_W'),
@@ -405,7 +408,7 @@ var interactions =[
 
 
     new Interaction(['OPEN','OVEN_W'],
-    [function(){return this.getThings('OVEN_W').item.status == 'closed_ham_inside'}],
+    [new StandardCondition('KITCHEN_R.OVEN_W','status','===','closed_ham_inside')],
     [new StandardOrder('pc::No, I\'d better leave it to get as cooked as possible.')]),
 
 
@@ -413,18 +416,15 @@ var interactions =[
     takeFunction('FOIL_W','FOIL_I')), 
 
     new Interaction(['OPEN','CUPBOARD_W'],
-    [function(){return !this.gameVars.cupboardEmpty}],
+    [new StandardCondition('var','cupboardEmpty', 'false')],
     [new StandardOrder('GAME','setGameStatus','CUTSCENE'),
     new StandardOrder('[var]',{cupboardEmpty:true}),
     new StandardOrder('pc','goTo','CUPBOARD_W'),
     new StandardOrder('pc','say','Let\'s see...'),
- //   new StandardOrder('GAME','getInventoryItem','BUCKET_SAND_I'),
     new StandardOrder('BUCKET_SAND_I','add',0),
     new StandardOrder('pc','say','...the old fire bucket...'),
- //   new StandardOrder('GAME','getInventoryItem','PLATTER_I'),
     new StandardOrder('PLATTER_I++',),
     new StandardOrder('pc','say','...the serving platter...'),
- //   new StandardOrder('GAME','getInventoryItem','BOURBON_I'),
     new StandardOrder('BOURBON_I','add',0),
     new StandardOrder('pc','say','...and a bottle of bourbon?! What\'s that doing here?'),
     new StandardOrder('GAME','setGameStatus','LIVE'),]
@@ -435,24 +435,24 @@ var interactions =[
 
 
     new Interaction(['WALK', 'KRUSTYBURGER_W'],
-    [function() {return this.getThings('OVEN_W').item.status==='smoking'}, 
-    function() {return this.allInventoryItemsAsObject.HAMBURGER_PLATTER_I.have === false},],
-    function () {
-        this.runSequence([
-            new StandardOrder ('GAME', 'setGameStatus','CUTSCENE'),
-            new StandardOrder ('pc', 'say','But what if I were to  purchase fast food and disguise it as my own cooking?',{time:2500}),
-            new StandardOrder ('pc', 'say','Delightfully devilish, Seymour!'),
-            new StandardOrder ('pc', 'goTo','KRUSTYBURGER_W'),
-            new StandardOrder ('pc', 'setDefaultWait','window_wait'),
-            new StandardOrder ('pc', 'setDefaultTalk','window_talk'),
-            new StandardOrder ('GAME','teleportCharacter',['CHALMERS_C', 'KITCHEN_R', 100, -20]),
-            new StandardOrder ('CHALMERS_C','goTo',{x:95, y:20}),
-            new StandardOrder ('CHALMERS_C','goTo',{x:105, y:20}),
-            new StandardOrder ('CHALMERS_C','say','Seymour!'),
-            new StandardOrder ('pc', 'say','Superintendent, I was just- uh...',{time:2500, action:'window_talk'}),
-            new StandardOrder ('GAME', 'setGameStatus','CONVERSATION','iWasJust'),
-        ]) }
-    )
+    [
+        new StandardCondition('KITCHEN_R.OVEN_W','status','===','smoking'),
+        new StandardCondition('KITCHEN_R.HAMBURGER_PLATTER_I','have','false'),
+    ],
+    [
+        new StandardOrder ('GAME', 'setGameStatus','CUTSCENE'),
+        new StandardOrder ('pc', 'say','But what if I were to  purchase fast food and disguise it as my own cooking?',{time:2500}),
+        new StandardOrder ('pc', 'say','Delightfully devilish, Seymour!'),
+        new StandardOrder ('pc', 'goTo','KRUSTYBURGER_W'),
+        new StandardOrder ('pc', 'setDefaultWait','window_wait'),
+        new StandardOrder ('pc', 'setDefaultTalk','window_talk'),
+        new StandardOrder ('GAME','teleportCharacter',['CHALMERS_C', 'KITCHEN_R', 100, -20]),
+        new StandardOrder ('CHALMERS_C','goTo',{x:95, y:20}),
+        new StandardOrder ('CHALMERS_C','goTo',{x:105, y:20}),
+        new StandardOrder ('CHALMERS_C','say','Seymour!'),
+        new StandardOrder ('pc', 'say','Superintendent, I was just- uh...',{time:2500, action:'window_talk'}),
+        new StandardOrder ('GAME', 'setGameStatus','CONVERSATION','iWasJust'),
+    ])
 
 ]
 
