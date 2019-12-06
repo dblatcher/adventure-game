@@ -36,11 +36,27 @@ function runSequence(input, options){
     }
     
     if (Array.isArray(sequence)) {
-        return makeChain(sequence, function(order){return order.execute(this)}, this)
+        return makeChain(
+            sequence,
+            function(order){return order.execute(this)}, 
+            function(order, result) { 
+
+                if (Array.isArray(order)) { //TO DO move this array logic to chain Promises module
+                    let subEvaluations = order.map( (subOrder,index) => {
+                        if (!subOrder.evaluate) {return true}
+                        return subOrder.evaluate(result[index])
+                    } )
+                    return !subEvaluations.includes(false)
+                }
+
+                if (!order.evaluate) {return true}
+                return order.evaluate(result)
+            },
+            this)
     }
 
     console.warn("unrecognised sequence", sequence)
-    return Promise.resolve(false)
+    return Promise.resolve({finished:false})
 }
 
 

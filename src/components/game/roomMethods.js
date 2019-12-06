@@ -34,7 +34,7 @@ function changeRoom (target,options={}) {
       game.reportEvent('room change to '+game.rooms[rNum].name);
       game.$refs.room.resize();
       if (typeof options.callback === 'function' ) { options.callback.apply(game,[]); }
-      resolve({success:true, newRoom:game.rooms[rNum].id})
+      resolve({finished:true, newRoom:game.rooms[rNum].id})
     })
 
   })
@@ -54,7 +54,7 @@ function teleportCharacter (target, options={}) {
   if (typeof movingCharacter === 'string') {
     let charId = findIndexById(movingCharacter, game.allCharacters);
     if (charId === false) {
-      return Promise.resolve( {success:false, reason:`no character with id ${movingCharacter}`} )
+      return Promise.resolve( {finished:false, reason:`no character with id ${movingCharacter}`} )
     }
     movingCharacter = game.allCharacters[ findIndexById(movingCharacter, game.allCharacters) ]
   }
@@ -65,7 +65,7 @@ function teleportCharacter (target, options={}) {
     movingCharacter.x = x;
     movingCharacter.y = y;
     game.$nextTick( function() {
-      resolve({success:true, char:movingCharacter})
+      resolve({finished:true, char:movingCharacter})
     });
   });
 

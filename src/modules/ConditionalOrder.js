@@ -24,7 +24,10 @@ class ConditionalOrder {
 
         if (conditionsPassed && orderIfTrue) {return orderIfTrue.execute(game)}
         if (!conditionsPassed && orderIfFalse) {return orderIfFalse.execute(game)}
-        return Promise.resolve()
+        return Promise.resolve({
+            finished:true,
+            message: conditionsPassed ? 'condiitions passed and no order if true' : 'condiitions failed but not order if false' 
+        })
     }
 }
 

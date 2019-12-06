@@ -112,11 +112,11 @@ class StandardOrder {
 		if (typeof actor[action] !== "function") {
 			console.warn(`failed order: ${action}' is not a method of ${actor === game? 'Game' : actorId }`)
 			console.log('failed order:',this)
-			return Promise.resolve({})
+			return Promise.resolve({result:'failed - no action found'})
 		}
 
 		let execution = actor[action](target, options || {}, game)
-		if (!execution || !execution.then) { return Promise.resolve({result: execution}) }
+		if (!execution || !execution.then) { return Promise.resolve({finished:true, result: execution}) }
 		return execution;
 	}
 }

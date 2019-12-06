@@ -1,11 +1,17 @@
-export default function makeChain(orders, execute, that, checkIfHalted=function(){}, confirmHalt=function(){}) {
+export default function makeChain(orders, execute, evaluate, that) {
+
+    let results = []
 
     function doStep(n, resolve, reject) {
-        const nextOrEnd = () => {
-            let wasHalted = checkIfHalted()
-            if (n+1 >= orders.length || wasHalted) {
-                if (wasHalted) {confirmHalt(n)}
-                resolve (true);
+        const nextOrEnd = (result) => {
+            results.push(result)
+            let evaluation = evaluate.apply(that, [orders[n], result])
+            if (evaluation === false) {
+                resolve ({ finished:false, results:results, failedOrder:orders[n]});
+                return;
+            }
+            if (n+1 >= orders.length ) { // last order
+                resolve ({ finished:true, results:results});
                 return;
             }
             doStep (n+1, resolve, reject)
@@ -20,12 +26,12 @@ export default function makeChain(orders, execute, that, checkIfHalted=function(
                 return execute.apply (that, [order])
             } )
             Promise.all(promiseSubset)
+            .then(nextOrEnd)
             .catch(logRejections)
-            .finally(nextOrEnd)
         } else {
             execute.apply (that, [orders[n]])
+            .then(nextOrEnd)
             .catch(logRejections)
-            .finally(nextOrEnd)
         }
     }
 

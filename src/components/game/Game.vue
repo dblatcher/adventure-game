@@ -297,40 +297,41 @@ export default {
       if (statusName === 'LIVE' ) {
         this.gameStatus = statusName;
         this.instantMode = false;
-        return;
+        return this.gameStatus;
       };
 
       if (statusName === 'CONVERSATION' ) {
         this.gameStatus = statusName;
         if (parameter) {this.conversation = parameter};
         this.instantMode = false;
-        return;
+        return this.gameStatus;
       }
 
       if (statusName === 'CUTSCENE' ) {
         this.gameStatus = statusName;
-        return;
+        return this.gameStatus;
       }
 
       if (statusName === 'PAUSED' ) {
         this.gameStatusBeforePause = this.gameStatus;
         this.gameStatus = statusName;
-        return;
+        return this.gameStatus;
       }
 
       if (statusName === 'UNPAUSED' ) {
         this.gameStatus = this.gameStatusBeforePause || 'LIVE';
         this.gameStatusBeforePause = null;
-        return;
+        return this.gameStatus;
       }
 
       if (statusName === 'COMPLETE' ) {
         this.gameStatus = statusName;
         this.$parent.endGame(parameter);
-        return;
+        return this.gameStatus;
       }
 
       console.warn(`${statusName} is not a valid gameStatus`);
+      return false;
     },
 
     setGameVar(target, options={}) {

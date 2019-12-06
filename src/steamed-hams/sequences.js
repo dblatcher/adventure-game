@@ -1,5 +1,6 @@
 import { StandardOrder } from "../modules/StandardOrder";
 import { ConditionalOrder } from "../modules/ConditionalOrder";
+import { failableOrder } from "../modules/failableOrder"
 
 const starting = [
     new StandardOrder ('[Status]CUTSCENE'),
@@ -151,16 +152,8 @@ const ending = [
 
 const test = [
     new StandardOrder ('pc::talk test'),
-    new StandardOrder ('GAME','wait',3),
-    new StandardOrder ('pc::talk test two'),
-    new StandardOrder ('[wait]2'),
-    new StandardOrder ('pc>>100,10'),
-    new StandardOrder ('pc>>150,15'),
-    new StandardOrder ('pc##window_talk'),
-    new StandardOrder ('pc##nonRealAction'),
-    new StandardOrder ('pc##window_talk'),
-    new StandardOrder ('pc>>150,0'),
-    new StandardOrder ('pc::done'),
+    new failableOrder ('pc>>100,30'),
+    new StandardOrder ('pc::If I say this, order passed'),
 ]
 
 

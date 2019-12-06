@@ -13,7 +13,10 @@ export default function setStatus (input) {
         }
     }
 
-    if (orders.length === 0 ) { return Promise.resolve('no valid orders')}
+    if (orders.length === 0 ) { return Promise.resolve({
+        finished:false, 
+        message:'no valid orders'
+    })}
 
     this.item.queue = orders;
     var lastOrder = this.item.queue[this.item.queue.length-1];

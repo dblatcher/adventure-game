@@ -2,6 +2,7 @@ import { Interaction, doorFunction,takeFunction } from "../modules/interaction-c
 import { StandardOrder } from "../modules/StandardOrder";
 import { ConditionalOrder } from "../modules/ConditionalOrder";
 import { StandardCondition } from "../modules/StandardCondition";
+import { failableOrder } from "../modules/failableOrder";
 
 
 
@@ -163,19 +164,22 @@ var interactions =[
 
     new Interaction(['OPEN','FRONT_DOOR_W'],
     [new StandardCondition('FRONT_DOOR_W','status','===','closed')],
-    function(){
-        this.getThings('pc').goTo(this.getThings('FRONT_DOOR_W').walkToPoint)
-        .then( (r)=> { if (r.finished) {
-            return this.getThings('FRONT_DOOR_W').setStatus(['opening','open'])
-        } });
-    }),
+    [
+        new failableOrder('pc>>FRONT_DOOR_W'),
+        new StandardOrder('FRONT_DOOR_W','setStatus','opening'),
+        new StandardOrder('FRONT_DOOR_W','setStatus','open')
+    ]
+    ),
 
     new Interaction(['OPEN','FRONT_DOOR_W'],[],[new StandardOrder("pc::It's not closed!")]),
 
 
     new Interaction(['WALK','FRONT_DOOR_W'],
     [new StandardCondition('FRONT_DOOR_W','status','===','open')],
-    doorFunction('FRONT_DOOR_W',['DINING_R',50,50])
+    [
+        new failableOrder('pc>>FRONT_DOOR_W'),
+        new StandardOrder('[room]DINING_R,50,50'),
+    ]
     ),
 
     new Interaction(['SHUT','FRONT_DOOR_W'],
