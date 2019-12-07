@@ -183,13 +183,15 @@ var interactions =[
     ),
 
     new Interaction(['SHUT','FRONT_DOOR_W'],
-    [new StandardCondition('FRONT_DOOR_W','status','===','open')],
-    function(){
-        this.getThings('pc').goTo(this.getThings('FRONT_DOOR_W').walkToPoint)
-        .then( (r)=> { if (r.finished) {
-            this.getThings('FRONT_DOOR_W').setStatus(['closing','closed'])
-        } });
-    }),
+    [
+        new StandardCondition('FRONT_DOOR_W','status','===','open')
+    ],
+    [
+        new failableOrder('PC>>FRONT_DOOR_W'),
+        new StandardOrder('FRONT_DOOR_W','setStatus','closing'),
+        new StandardOrder('FRONT_DOOR_W','setStatus','closed'),
+    ]
+    ),
 
     new Interaction(['SHUT','FRONT_DOOR_W'],[],[new StandardOrder('pc::It\'s already closed.')]),
 
@@ -222,18 +224,19 @@ var interactions =[
     ),
 
     new Interaction(['WALK','DINING_WAYOUT_W'],[],
-    doorFunction('DINING_WAYOUT_W',['PORCH_R',265,86])),
-
+    [
+        new failableOrder('PC>>DINING_WAYOUT_W'),
+        new StandardOrder('[room]PORCH_R,265,86'),
+    ]),
 
 
     new Interaction(['OPEN','DINING_KITCHENDOOR_W'],
     [new StandardCondition('DINING_KITCHENDOOR_W','status','===','closed')],
-    function(){
-        this.getThings('pc').goTo(this.getThings('DINING_KITCHENDOOR_W').walkToPoint)
-        .then( (r)=> { if (r.finished) {
-            return this.getThings('DINING_KITCHENDOOR_W').setStatus(['opening','open'])
-        } });
-    }),
+    [
+        new failableOrder('PC>>DINING_KITCHENDOOR_W'),
+        new StandardOrder('DINING_KITCHENDOOR_W','setStatus','opening'),
+        new StandardOrder('DINING_KITCHENDOOR_W','setStatus','open'),
+    ]),
 
     new Interaction(['OPEN','DINING_KITCHENDOOR_W'],
     [new StandardCondition('DINING_KITCHENDOOR_W','status','===','open')],
@@ -247,29 +250,31 @@ var interactions =[
         new StandardCondition('VAR','haveSeenBurningRoast','false'),
         new StandardCondition('DINING_KITCHENDOOR_W','status','===','open'),
 	],
-   	function() { 
-        this.getThings('pc').goTo(this.getThings('DINING_KITCHENDOOR_W').walkToPoint)
-        .then( (r)=> { if (r.finished) {
-            return this.changeRoom(['KITCHEN_R',146,27])
-            .then( ()=> { this.runSequence('seeBurningRoast') } )
-        } });
-    }),
-
-
-    new Interaction(['WALK','DINING_KITCHENDOOR_W'],
-    [function(){return this.getThings('DINING_KITCHENDOOR_W').item.status == 'open'}],
-    doorFunction('DINING_KITCHENDOOR_W',['KITCHEN_R',120,10])
+    [
+        new failableOrder('PC>>DINING_KITCHENDOOR_W'),
+        new StandardOrder('[room]KITCHEN_R,146,27'),
+        new StandardOrder('[sequence]seeBurningRoast')
+    ]
     ),
 
 
+    new Interaction(
+    ['WALK','DINING_KITCHENDOOR_W'],
+    [new StandardCondition('DINING_KITCHENDOOR_W','status','===','open')],
+    [
+        new failableOrder('PC>>DINING_KITCHENDOOR_W'),
+        new StandardOrder('[room]KITCHEN_R,120,10'),
+    ]),
+               
+
     new Interaction(['SHUT','DINING_KITCHENDOOR_W'],
-    [function(){return this.getThings('DINING_KITCHENDOOR_W').item.status == 'open'}],
-    function(){
-        this.getThings('pc').goTo(this.getThings('DINING_KITCHENDOOR_W').walkToPoint)
-        .then( (r)=> { if (r.finished) {
-            this.getThings('DINING_KITCHENDOOR_W').setStatus(['closing','closed'])
-        } });
-    }),
+    [new StandardCondition('DINING_KITCHENDOOR_W','status','===','open')],   
+    [
+        new failableOrder('PC>>DINING_KITCHENDOOR_W'),
+        new StandardOrder('DINING_KITCHENDOOR_W','setStatus','closing'),
+        new StandardOrder('DINING_KITCHENDOOR_W','setStatus','closed'),
+    ]
+    ),
 
     new Interaction(['SHUT','DINING_KITCHENDOOR_W'],[],
     [new StandardOrder('pc::It\'s already closed.')]),
@@ -278,43 +283,35 @@ var interactions =[
 
     //KITCHEN
 
-    new Interaction(['WALK','KITCHEN_DININGDOOR_W'],[
-        function() {return this.getThings('OVEN_W').item.status==='smoking'}, 
-        function() {return this.allInventoryItemsAsObject.HAMBURGER_PLATTER_I.have === true}, 
-       ],
-        function() {
-            this.getThings('pc').goTo(this.getThings('KITCHEN_DININGDOOR_W').walkToPoint)
-            .then( (feedback) => {
-                if (feedback.finished) {
-
-                    this.runSequence([
-                        new StandardOrder('[status]CUTSCENE'),
-                        new StandardOrder('GAME','changeRoom',['DINING_R',300,50]),
-                        new StandardOrder('DINING_KITCHENDOOR_W','setStatus',['closing','closed']),
-                        new StandardOrder('pc>>220,45'),
-                        new StandardOrder('DINING_R.HAMBURGERS_W','setRemoval',false),
-                        new StandardOrder('CHALMERS_C^^pc'),
-                        new StandardOrder('pc>>214,12'),
-                        new StandardOrder('[status]CONVERSATION', 'hamburgers'),
-                    ])
-
-                }
-            } )
-        }
-       ),
+    new Interaction(['WALK','KITCHEN_DININGDOOR_W'],
+    [
+        new StandardCondition('OVEN_W','status','===','smoking'),
+        new StandardCondition('HAMBURGER_PLATTER_I','have','true')
+    ],
+    [
+        new failableOrder('pc>>KITCHEN_DININGDOOR_W'),
+        new StandardOrder('[status]CUTSCENE'),
+        new StandardOrder('GAME','changeRoom',['DINING_R',300,50]),
+        new StandardOrder('DINING_KITCHENDOOR_W','setStatus',['closing','closed']),
+        new StandardOrder('pc>>220,45'),
+        new StandardOrder('DINING_R.HAMBURGERS_W','setRemoval',false),
+        new StandardOrder('CHALMERS_C^^pc'),
+        new StandardOrder('pc>>214,12'),
+        new StandardOrder('[status]CONVERSATION', 'hamburgers'),
+    ]
+    ),
    
 
-       new Interaction(['WALK','KITCHEN_DININGDOOR_W'],[
-        function() {return this.getThings('OVEN_W').item.status==='smoking'}, 
-        function() {return this.allInventoryItemsAsObject.HAMBURGER_BAG_I.have === true}, 
-       ],
-       [new StandardOrder('pc::I can\'t serve the hamburgers like this! I need to disguise them as my own cooking somehow...')]
-
-       ),
+    new Interaction(['WALK','KITCHEN_DININGDOOR_W'],[
+        new StandardCondition('OVEN_W','status','===','smoking'), 
+        new StandardCondition('HAMBURGER_BAG_I','have','true'), 
+    ],
+    [new StandardOrder('pc::I can\'t serve the hamburgers like this! I need to disguise them as my own cooking somehow...')]
+    ),
 
     new Interaction(['WALK','KITCHEN_DININGDOOR_W'],[
-     function() {return this.getThings('OVEN_W').item.status==='smoking'}, 
-     function() {return this.allInventoryItemsAsObject.HAMBURGER_PLATTER_I.have === false}, 
+        new StandardCondition('OVEN_W','status','===','smoking'), 
+        new StandardCondition('HAMBURGER_BAG_I','have','false'), 
     ],
     [new StandardOrder('pc::I can\'t go back there! I don\'t have any food for the Superintendent!')]
 
@@ -322,7 +319,10 @@ var interactions =[
 
     new Interaction(['WALK','KITCHEN_DININGDOOR_W'],
     [],
-    doorFunction('KITCHEN_DININGDOOR_W',['DINING_R',300,50])
+    [
+        new failableOrder('pc>>KITCHEN_DININGDOOR_W'),
+        new StandardOrder('[room]DINING_R,300,50'),
+    ],
     ),
 
     new Interaction(['OPEN','OVEN_W'],
@@ -417,7 +417,12 @@ var interactions =[
 
 
     new Interaction(['TAKE','FOIL_W'],[],
-    takeFunction('FOIL_W','FOIL_I')), 
+    [
+        new failableOrder('pc>>FOIL_W'),
+        new StandardOrder('FOIL_W','setRemoval',true),
+        new StandardOrder('FOIL_I','add',true),
+    ]
+    ), 
 
     new Interaction(['OPEN','CUPBOARD_W'],
     [new StandardCondition('var','cupboardEmpty', 'false')],
