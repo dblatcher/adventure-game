@@ -20,6 +20,8 @@ var sprites = [
   new Sprite('ser', require('./sprites/eyeroll.png'),[5,1],[1,1,1,-.5]),
   new Sprite('ser-l', require('./sprites/eyeroll-l.png'),[5,1],[1,1,-1,-.5]),
 
+  new Sprite ('swb', require('./sprites/wrap.png'),[3,1]),
+
   new Sprite ('skw',  require('./sprites/skinner-w-1.png'), [3,1]),
   new Sprite('pour', require('./sprites/pour.png'),[5,1]),
   new Sprite('thb', require('./sprites/thumbup.png'),[4,1],[1.1,1,-17]),
@@ -62,7 +64,9 @@ var characterModels = {
         },
         pour_sand: [ ['pour',0,0],['pour',1,0],['pour',2,0],['pour',3,0],['pour',4,0], ],
         thumb_up: [ ['thb',0,0],['thb',1,0],['thb',2,0],['thb',2,0],['thb',3,0],['thb',2,0],['thb',2,0],['thb',3,0],['thb',2,0],['thb',2,0],['thb',3,0],['thb',2,0],['thb',2,0],['thb',3,0],['thb',2,0],['thb',2,0],['thb',3,0], ],
-        
+        wrap_bucket: [['swb',0,0],['swb',1,0],['swb',2,0],['swb',2,0],['swb',2,0]],
+
+
     },'left',{speechBubbleDown:.3, speechBubbleIn:.3}),
     
     chalmers : new CharacterModel (50,100,{

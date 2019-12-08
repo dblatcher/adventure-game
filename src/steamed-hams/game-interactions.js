@@ -66,6 +66,7 @@ var interactions =[
     ),
 
     new Interaction(['USE','FOIL_I','BUCKET_EMPTY_I'],[],[
+        new StandardOrder('pc##wrap_bucket'),
         new StandardOrder('[get]BUCKET_FOIL_I'),
         new StandardOrder('[loose]BUCKET_EMPTY_I'),
         new StandardOrder('[loose]FOIL_I'),
@@ -213,6 +214,16 @@ var interactions =[
         new StandardOrder('[sequence]chalmersAtDoor')
     ]),
 
+    new Interaction(['USE','BUCKET_SAND_I','TABLE_W'],[],
+    [
+        new StandardOrder ('pc::It\'s full of sand and not shiny enough to be an ice bucket.')
+    ]),
+
+    new Interaction(['USE','BUCKET_EMPTY_I','TABLE_W'],[],
+    [
+        new StandardOrder ('pc::It\'s not shiny enough to be an ice bucket.')
+    ]),
+
     new Interaction(['USE','BUCKET_FOIL_I','TABLE_W'],[],
     [
         new StandardOrder('pc>>TABLE_W'),
@@ -220,8 +231,7 @@ var interactions =[
         new StandardOrder('pc::There...'),
         new StandardOrder('DINING_R.ICE_BUCKET_W', 'setRemoval', false),
         new StandardOrder('[var]',{iceBucketIsOnTable:true}),
-    ]
-    ),
+    ]),
 
     new Interaction(['WALK','DINING_WAYOUT_W'],[],
     [
