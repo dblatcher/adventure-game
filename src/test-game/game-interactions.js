@@ -1,4 +1,5 @@
 import { Interaction, doorFunction } from "../modules/interaction-constructor";
+import { StandardOrder } from "../modules/StandardOrder";
 
 function pcSays(text,time) {
 	return function() { this.getThings('pc').say(text,{time:time});}	
@@ -112,19 +113,25 @@ var interactions =[
 ]
 
 var defaultResponses = {
-	"WALK" : function(command) {this.getThings('pc').goTo(this.getThings(command.subject.id).walkToPoint)},
-	"LOOK" : function(command) {
-		if (command.subject.id.endsWith('W')) {
-			this.getThings('pc').say(`It looks like a normal ${command.subject.name} to me.`);
-		} else {
-		this.getThings('pc').say(`I don't see anything special about ${command.subject.name}.`);
-		}
-	},
-	"OPEN" : function(command) {
-		this.getThings('pc').say(`The ${command.subject.name} doesn't open.`);
-	},
-	"misc" : function(command) {this.getThings('pc').say(`I can't do that.`);} 
+    "WALK" : function(command) {
+        return [new StandardOrder('pc','goTo',command.subject.id, {wasManual:true})]
+        
+    },
+    "LOOK" : function(command) {
+        if (command.subject.id.endsWith('W')) {
+            return [new StandardOrder('pc','say',`It looks like a normal ${command.subject.name} to me.`)]
+        } else {
+            return [new StandardOrder('pc','say',`I don't see anything special about ${command.subject.name}.`) ]
+        }
+    },
+    "OPEN" : function(command) {
+        return [new StandardOrder('pc','say',`The ${command.subject.name} doesn't open.`)]    
+    },
+    "misc" : function(command) {
+        return [new StandardOrder('pc','say',`I can't do that.`)  ]  
+    } 
 };
+
 
 
 var interactionMatrix = Interaction.makeMatrix(interactions);

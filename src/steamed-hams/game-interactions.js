@@ -466,18 +466,23 @@ var interactions =[
 ]
 
 var defaultResponses = {
-    "WALK" : function(command) {this.getThings('pc').goTo(this.getThings(command.subject.id).walkToPoint, {wasManual:true})},
+    "WALK" : function(command) {
+        return [new StandardOrder('pc','goTo',command.subject.id, {wasManual:true})]
+        
+    },
     "LOOK" : function(command) {
         if (command.subject.id.endsWith('W')) {
-            this.getThings('pc').say(`It looks like a normal ${command.subject.name} to me.`);
+            return [new StandardOrder('pc','say',`It looks like a normal ${command.subject.name} to me.`)]
         } else {
-        this.getThings('pc').say(`I don't see anything special about ${command.subject.name}.`);
+            return [new StandardOrder('pc','say',`I don't see anything special about ${command.subject.name}.`) ]
         }
     },
     "OPEN" : function(command) {
-        this.getThings('pc').say(`The ${command.subject.name} doesn't open.`);
+        return [new StandardOrder('pc','say',`The ${command.subject.name} doesn't open.`)]    
     },
-    "misc" : function(command) {this.getThings('pc').say(`I can't do that.`);} 
+    "misc" : function(command) {
+        return [new StandardOrder('pc','say',`I can't do that.`)  ]  
+    } 
 };
 
 
