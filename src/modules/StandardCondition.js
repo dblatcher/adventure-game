@@ -41,6 +41,11 @@ class StandardCondition {
             case "le":
             case "<=":
                 return actor[property] <= comparitor;
+            case "begins":
+            case "left":
+            case "starts":
+                if (typeof actor[property] !== 'string' || typeof comparitor !== 'string' ) {return false}
+                return (actor[property].indexOf(comparitor) === 0)
         }
 
         console.warn ('condition invalid',condition)

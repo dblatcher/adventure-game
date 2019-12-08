@@ -402,12 +402,12 @@ var interactions =[
 
 
     new Interaction(['SHUT','OVEN_W'],
-    [function(){return this.getThings('OVEN_W').item.status.substring(0,6) == 'closed'}],
+    [ new StandardCondition('OVEN_W','status','starts','closed')],
     [new StandardOrder('pc::It\'s already closed.')]),
 
 
     new Interaction(['OPEN','OVEN_W'],
-    [function(){return this.getThings('OVEN_W').item.status.substring(0,4) == 'open'}],
+    [ new StandardCondition('OVEN_W','status','starts','open')],
     [new StandardOrder('pc::It\'s already open.')]),
 
 
