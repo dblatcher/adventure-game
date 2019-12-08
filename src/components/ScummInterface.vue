@@ -6,14 +6,16 @@
     v-bind:verb='currentVerb' 
     v-bind:subject='subject' 
     v-bind:object='object' 
-    v-bind:thingHoveredOn='thingHoveredOn' 
-    v-bind:disabled="disabled"
+    v-bind:thingHoveredOn='thingHoveredOn'
+    v-bind:lastCommand='lastCommand'
+    v-bind:disabled="(conversation !== null)"
+
     v-bind:needObject="needObject"
     ></CommandLine>
 
     <div class="scumm__menu-wrapper"
     v-bind:class="{
-    disabled:disabled,
+        disabled:(gameStatus !== 'LIVE'),
     }">
 
         <VerbMenu 
@@ -42,7 +44,7 @@ import CommandLine from "./CommandLine";
 export default {
     name: 'ScummInterface',
     components: {VerbMenu, InventoryMenu, CommandLine},
-    props: ['disabled', 'currentVerb','verbList', 'items', 'subject','object','thingHoveredOn','needObject'],
+    props: ['gameStatus', 'currentVerb','verbList', 'items', 'subject','object','thingHoveredOn','needObject', 'lastCommand', 'conversation'],
 }
 </script>
 

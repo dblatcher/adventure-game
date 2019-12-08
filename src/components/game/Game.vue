@@ -50,7 +50,7 @@
 
 
     <ScummInterface
-    v-bind:disabled="hideControls"
+    v-bind:gameStatus="gameStatus"
     v-bind:verbList="verbList"
     v-bind:items="inventory"
     v-bind:currentVerb="verb"
@@ -58,6 +58,8 @@
     v-bind:object="object"
     v-bind:needObject="needObject"
     v-bind:thingHoveredOn="thingHoveredOn"
+    v-bind:lastCommand="lastCommand"
+    v-bind:conversation="conversation"
     v-on:verb-picked="pickVerb($event)"
     v-on:item-clicked="handleClickOnThing($event)"
     v-on:hover-event="handleHoverEvent($event[0],$event[1])"
@@ -131,14 +133,15 @@ export default {
       message: 'blank message',
         roomMeasure: {unit:'px',scale:1}, //only supporting px ?
         thingHoveredOn:null, 
+        verb: gameData.verbList[0],
         subject: null, needObject:false, object:null,
+        lastCommand: {verb:undefined, subject:undefined, object:undefined, inProgress:false},
         highlightingThings : false,
         optionsMenuIsOpen: false,
         instantMode: false,
         narration: {contents:[], dismissable:true},
         options: {textDelay: 100},
         interactionMatrix: gameData.interactionMatrix,
-        verb: gameData.verbList[0],
         verbList : gameData.verbList,
         sprites : gameData.sprites, 
         defaultResponses:gameData.defaultResponses,
@@ -296,6 +299,7 @@ export default {
 
       if (statusName === 'LIVE' ) {
         this.gameStatus = statusName;
+        this.conversation = null;
         this.instantMode = false;
         return this.gameStatus;
       };

@@ -4,8 +4,13 @@
 		 disabled:disabled
 	}">
 	
-		<p class="command-line__sentence">
-		{{choosenText}}<span class="command-line__last-phrase">{{possibleText}}</span>
+		<p v-show="!lastCommand.inProgress" 
+		class="command-line__sentence">
+			{{choosenText}}<span class="command-line__last-phrase">{{possibleText}}</span>
+		</p>
+		<p v-show="lastCommand.inProgress" 
+		class="command-line__sentence command-line__sentence--in-progress">
+			{{commandInProgessText}}
 		</p>
 	
 	</section>
@@ -23,11 +28,10 @@ return thing.quantified && thing.quantity !== 1 ?
 export default {
 	name:'CommandLine',
 
-	props:['needObject','disabled', 'verb','subject','object','thingHoveredOn'],
+	props:['needObject','disabled', 'verb','subject','object','thingHoveredOn','lastCommand'],
 	
 	computed: {
 		choosenText : function () {
-
 
 			var sentence = this.verb.description + ' ';
 			if (this.subject) {
@@ -42,6 +46,19 @@ export default {
 		},
 		possibleText : function () {
 			return  this.thingHoveredOn ? describe(this.thingHoveredOn) : '';
+		},
+		commandInProgessText: function() {
+			const {verb, subject, object, inProgress} = this.lastCommand
+			if (!inProgress) { return ''}
+			let sentence = verb.description + ' ';
+			if (subject) {
+				sentence += describe(subject) + ' ';
+			}
+			if (object) {
+				sentence +=  verb.preposition + ' '
+				sentence +=  describe(object);
+			}
+			return sentence
 		}
 	},
 
@@ -66,6 +83,10 @@ export default {
 			margin: 0;
 			padding: .25rem 1rem;
 			color:white;
+
+			&--in-progress {
+				color: red;
+			}
 		}
 
 		&__last-phrase {

@@ -1,6 +1,6 @@
 export default function (command) {
     if (!command) {command = {verb: this.verb, subject: this.subject, object: this.object};}
-    var failedCondition = false, condition, passed, response=null;
+    let failedCondition = false, condition, passed, response=null, execution=null;
     
     //find array of interactions  matching the command from the InteractionMatrix
     var thirdParam = command.object? command.object.id : 'intransitive';
@@ -39,16 +39,30 @@ export default function (command) {
       response = defaultResponseFunction(command)
     }
 
+
+    // execute the response
     if (typeof response ===  'function') {
-      response.apply(this,[]);
+      execution = response.apply(this,[]);
     } else if ( Array.isArray(response)) {
-      this.runSequence(response) 
+      execution= this.runSequence(response) 
     } else if (typeof response === 'string' && this.sequences[response]) {
-      this.runSequence( this.sequences[response] )
+      execution =  this.runSequence( this.sequences[response] )
     } else {
       console.warn('bad response, neither function, array, nor name of sequence', response)
     }
 
+    this.lastCommand.verb = this.verb;
+    this.lastCommand.subject = this.subject;
+    this.lastCommand.object = this.object;
+    this.lastCommand.inProgress = true
+
+    if (execution.then) {
+      execution.then ( r => {
+        this.lastCommand.inProgress = false
+      } ) 
+    } else {
+      this.lastCommand.inProgress = false
+    }
 
     this.subject = null; 
     this.object = null;
