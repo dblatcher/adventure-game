@@ -5,7 +5,7 @@ import { Character, WorldItem, Room, EffectZone, Foreground, Verb, InventoryItem
 
 var sprites = [
 
-  new Sprite ('door',  require('./sprites/door.png'), [3,1]),
+  new Sprite ('door',  require('./sprites/frontDoor.png'), [5,1]),
   new Sprite ('front_fence',  require('./sprites/fence_front.png'), [1,1]),
   new Sprite ('table',  require('./sprites/table.png'), [1,1]),
   new Sprite ('iceBucket',  require('./sprites/ice-bucket.png'), [1,1]),
@@ -112,10 +112,10 @@ var characterModels = {
 
 var worldItemModels = {
     door: new WorldItemModel ({
-        closed: [ ['door',0,0]  ],
-        open:   [ ['door',2,0]  ],
-        opening:   [ ['door',0,0],['door',1,0],['door',2,0]  ],
-        closing:   [ ['door',2,0],['door',1,0],['door',0,0]  ],
+        closed: [ ['door',4,0]  ],
+        open:   [ ['door',3,0]  ],
+        opening:   [ ['door',4,0],['door',0,0],['door',1,0],['door',2,0],['door',3,0]  ],
+        closing:   [ ['door',3,0],['door',2,0],['door',1,0],['door',0,0],['door',4,0]  ],
     }),
     kitchen_door: new WorldItemModel ({
         closed: [ ['k-dr',3,2]  ],
@@ -263,7 +263,7 @@ var makeRooms = function(){ return [
             new WorldItem('bush_2','bush',[120,49,20,-15],60,70,undefined,null,{noZoneScaling:true}),
             new WorldItem('bush_3','bush',[370,44,-20,-10],55,80,undefined,null,{noZoneScaling:true}),
             new WorldItem('bush_4','bush',[445,44,-20,-10],70,50,undefined,null,{noZoneScaling:true}),
-            new WorldItem('front_door','door',[268,90,5,-10],130,160,'closed',worldItemModels.door, {noZoneScaling:true}),
+            new WorldItem('front_door','door',[268,89,5,-10],123,160,'closed',worldItemModels.door, {noZoneScaling:true}),
             new WorldItem('window_fire','fire',[432,124],120,152,'neutral',worldItemModels.fireInWindow,{unclickable:true,removed:true, noZoneScaling:true,}),
         ],
 
