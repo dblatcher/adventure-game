@@ -1,7 +1,7 @@
-
 import { RectZone, PolyZone } from "../modules/zone";
-import { WorldItem, Room, EffectZone, Foreground, InventoryItem, Sprite, WorldItemModel } from "../modules/constructors"
+import { WorldItem, Room, EffectZone, Foreground, Sprite, WorldItemModel } from "../modules/constructors"
 import Character from "../modules/characterDataClass"
+import InventoryItem from "../modules/InventoryItem"
 
 
 var sprites = [
