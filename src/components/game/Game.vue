@@ -146,6 +146,7 @@ export default {
         sprites : gameData.sprites, 
         defaultResponses:gameData.defaultResponses,
         sequences: gameData.sequences,
+        config: gameData.config,
     }, state.create(this.loadData) );
   },
 

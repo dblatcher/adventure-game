@@ -1,12 +1,11 @@
-import { Interaction, doorFunction,takeFunction } from "../modules/interaction-constructor";
+import { Interaction } from "../modules/interaction-constructor";
 import { StandardOrder } from "../modules/StandardOrder";
 import { ConditionalOrder } from "../modules/ConditionalOrder";
 import { StandardCondition } from "../modules/StandardCondition";
 import { failableOrder } from "../modules/failableOrder";
 
 
-
-var interactions =[
+var interactions = [
 
     //CHARACTER
     new Interaction(
@@ -475,26 +474,6 @@ var interactions =[
 
 ]
 
-var defaultResponses = {
-    "WALK" : function(command) {
-        return [new StandardOrder('pc','goTo',command.subject.id, {wasManual:true})]
-        
-    },
-    "LOOK" : function(command) {
-        if (command.subject.id.endsWith('W')) {
-            return [new StandardOrder('pc','say',`It looks like a normal ${command.subject.name} to me.`)]
-        } else {
-            return [new StandardOrder('pc','say',`I don't see anything special about ${command.subject.name}.`) ]
-        }
-    },
-    "OPEN" : function(command) {
-        return [new StandardOrder('pc','say',`The ${command.subject.name} doesn't open.`)]    
-    },
-    "misc" : function(command) {
-        return [new StandardOrder('pc','say',`I can't do that.`)  ]  
-    } 
-};
-
 
 var interactionMatrix = Interaction.makeMatrix(interactions);
-export { interactionMatrix, defaultResponses }
+export { interactionMatrix }

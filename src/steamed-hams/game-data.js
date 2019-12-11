@@ -1,6 +1,6 @@
 
 import { RectZone, PolyZone } from "../modules/zone";
-import { Character, WorldItem, Room, EffectZone, Foreground, Verb, InventoryItem, Sprite, CharacterModel, WorldItemModel } from "../modules/constructors"
+import { Character, WorldItem, Room, EffectZone, Foreground, InventoryItem, Sprite, CharacterModel, WorldItemModel } from "../modules/constructors"
 
 
 var sprites = [
@@ -272,17 +272,6 @@ var makeRooms = function(){ return [
 ]}
 
 
-var verbList = [
-    new Verb('walk to','WALK'),
-    new Verb('pick up','TAKE'),
-    new Verb('look at','LOOK'),
-    new Verb('give','GIVE', 'to'),
-    new Verb('use','USE', 'with'),
-    new Verb('talk to','TALK'),
-    new Verb('open','OPEN'),
-    new Verb('close','SHUT')
-];
-
 var makeInventoryItems = function() { return  [
     new InventoryItem('roast', 'raw roast', require('./items/roast.png'),{startWith:true, bg:{shape:'diamond', color:'pink'}}),
     new InventoryItem('todo', 'to do list', require('./items/todo.png'),{startWith:true, bg:{shape:'circle', color:'lightgreen'}}),
@@ -306,4 +295,4 @@ var setGameVars = function ()  { return {
 	haveSeenBurningRoast: false,
 }};
 
-export { sprites, makeRooms, verbList, makeInventoryItems, makeCharacters, pcId, setGameVars }
+export { sprites, makeRooms, makeInventoryItems, makeCharacters, pcId, setGameVars }
