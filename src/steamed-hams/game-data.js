@@ -1,6 +1,7 @@
 
 import { RectZone, PolyZone } from "../modules/zone";
-import { Character, WorldItem, Room, EffectZone, Foreground, InventoryItem, Sprite, CharacterModel, WorldItemModel } from "../modules/constructors"
+import { WorldItem, Room, EffectZone, Foreground, InventoryItem, Sprite, WorldItemModel } from "../modules/constructors"
+import Character from "../modules/characterDataClass"
 
 
 var sprites = [
@@ -43,7 +44,7 @@ var sprites = [
 
 var characterModels = {
 
-    skinner : new CharacterModel (50,100,{
+    skinner : new Character.Model (50,100,{
         wait : {
             right : [ ['sk1',0,0] ],
             left : [ ['sk2',4,0] ],
@@ -69,7 +70,7 @@ var characterModels = {
 
     },'left',{speechBubbleDown:.3, speechBubbleIn:.3}),
     
-    chalmers : new CharacterModel (50,100,{
+    chalmers : new Character.Model (50,100,{
         wait : {
             right : [ ['c1r',1,0] ],
             left : [ ['c1l',4,0] ],
@@ -93,7 +94,7 @@ var characterModels = {
         
     },'right',{speechBubbleDown:.3, speechBubbleIn:.25}),
 
-    invisible : new CharacterModel (1,1,{
+    invisible : new Character.Model (1,1,{
         wait : {
             right : [ ['c1r',0,0] ],
             left : [ ['c1r',6,0] ],

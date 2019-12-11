@@ -1,6 +1,7 @@
 
 import { RectZone, PolyZone } from "../modules/zone";
-import { Character, WorldItem, Room, EffectZone, Foreground, Verb, InventoryItem, Sprite, CharacterModel, WorldItemModel } from "../modules/constructors"
+import { WorldItem, Room, EffectZone, Foreground, InventoryItem, Sprite, WorldItemModel } from "../modules/constructors"
+import Character from "../modules/characterDataClass"
 
 var sprites = [
   new Sprite (0, require('./sprites/boy.png'), [4,4]),
@@ -23,7 +24,7 @@ var sprites = [
 
 
 var characterModels = {
-	mario : new CharacterModel (50,75,{
+	mario : new Character.Model (50,75,{
 		wait: {
 			right: [ ['m',0,0] ],
 			left : [ ['m',2,1] ],
@@ -35,7 +36,7 @@ var characterModels = {
 		dance: [ ['m',0,0],['m',1,0],['m',0,0],['m',1,0], ['m',2,1],['m',1,1]  ,['m',0,0],['m',1,0],['m',2,0]  ]
 	}),
 
-	billy : new CharacterModel (50,50, {
+	billy : new Character.Model (50,50, {
 			wait: [[0,0,0]],
 			waveFlag: [['bf',0,1],['bf',1,1],['bf',2,1]],
 			raiseFlag: [[0,0,0],['bfr',0,0],['bfr',0,0]],
@@ -49,7 +50,7 @@ var characterModels = {
 			}
 		}, 'down'),	
 
-	jane : new CharacterModel (50,75,{
+	jane : new Character.Model (50,75,{
 		wait : {
 			up 	  : [ ['w',0,0] ],
 			left  : [ ['w',0,1] ],
@@ -73,7 +74,7 @@ var characterModels = {
 			[ ['w-wave',0,0], ['w-wave',1,0],['w-wave',2,0],['w-wave',0,0], ['w-wave',1,0],['w-wave',2,0] ]
 		,
 	},'down'),
-	skinner : new CharacterModel (65,100,{
+	skinner : new Character.Model (65,100,{
 		wait : {
 			right : [ ['sk1',0,0] ],
 			left : [ ['sk2',11,0] ],
