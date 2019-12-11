@@ -1,6 +1,7 @@
 import { RectZone, PolyZone } from "../modules/zone";
-import { WorldItem, Room, EffectZone, Foreground, Sprite, WorldItemModel } from "../modules/constructors"
+import { Room, EffectZone, Foreground, Sprite } from "../modules/constructors"
 import Character from "../modules/characterDataClass"
+import WorldItem from "../modules/WorldItemDataClass"
 import InventoryItem from "../modules/InventoryItem"
 
 
@@ -112,13 +113,13 @@ var characterModels = {
 
 
 var worldItemModels = {
-    door: new WorldItemModel ({
+    door: new WorldItem.Model ({
         closed: [ ['door',4,0]  ],
         open:   [ ['door',3,0]  ],
         opening:   [ ['door',4,0],['door',0,0],['door',1,0],['door',2,0],['door',3,0]  ],
         closing:   [ ['door',3,0],['door',2,0],['door',1,0],['door',0,0],['door',4,0]  ],
     }),
-    kitchen_door: new WorldItemModel ({
+    kitchen_door: new WorldItem.Model ({
         closed: [ ['k-dr',3,2]  ],
         open:   [ ['k-dr',0,0]  ],
         closed_glowing: [ ['k-dr',3,0], ['k-dr',3,1]  ],
@@ -127,24 +128,24 @@ var worldItemModels = {
         opening_fire:   [ ['k-dr',1,2],['k-dr',2,2], ['k-dr',1,1] ,['k-dr',2,1], ['k-dr',1,0],['k-dr',2,0]   ],
         closing_fire:   [  ['k-dr',2,0], ['k-dr',1,0],['k-dr',2,1], ['k-dr',1,1],['k-dr',2,2], ['k-dr',1,2]    ]
     }),
-    front_fence: new WorldItemModel({
+    front_fence: new WorldItem.Model({
         neutral:[['front_fence',0,0]],
     }),
-    table: new WorldItemModel({
+    table: new WorldItem.Model({
         neutral:[['table',0,0]],
     }),
-    iceBucket: new WorldItemModel({
+    iceBucket: new WorldItem.Model({
         neutral:[['iceBucket',0,0]],
     }),
-    hamburgers: new WorldItemModel({
+    hamburgers: new WorldItem.Model({
         four:[['hamburgerPlatter',0,0]],
         three:[['hamburgerPlatter',0,1]],
         two:[['hamburgerPlatter',0,2]],
     }),
-    foil: new WorldItemModel({
+    foil: new WorldItem.Model({
         neutral:[['foil',0,0]],
     }),
-    oven: new WorldItemModel({
+    oven: new WorldItem.Model({
         closed:[['oven',0,0]],
         open:[['oven',1,0]],
         closed_ham_inside:[['oven',0,0]],
@@ -152,7 +153,7 @@ var worldItemModels = {
         smoking:[['oven',3,0],['oven',4,0],['oven',5,0],['oven',4,0]],
     }),
 
-    fireInWindow: new WorldItemModel({
+    fireInWindow: new WorldItem.Model({
         neutral:[['fire',0,0],['fire',1,0]],
     })
 
