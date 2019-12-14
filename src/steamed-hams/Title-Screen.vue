@@ -1,21 +1,28 @@
 <template>
     <main class="title-page">
+        <div class="title-page__frame">
 
-        <div class="title-page__text">
+
             <h1 class="title-page__title">
-                <span class="title-page__l">S</span>teamed 
-                <span class="title-page__l">H</span>ams
+                <p class="title-page__title-line title-page__title-line--1">
+                    <span class="title-page__title-line--large">S</span>kinner
+                </p>
+                <p class="title-page__title-line title-page__title-line--2">&amp; the</p>
+                <p class="title-page__title-line title-page__title-line--3">
+                    <span class="title-page__title-line--large">S</span>uperintendent
+                </p>
+                <p class="title-page__subtitle">Steamed Hams but it's a point and click adventure game</p>
             </h1>
-            <p class="title-page__subtitle">But it's a point and click adventure game</p>
+        </div>
+
+
+        <div class="title-page__loading">
+            <slot name="loading-bar"></slot>
         </div>
 
         <div class="title-page__button-set">
             <slot name="file-buttons"></slot>
             <button v-on:click="showAboutBlock = true">About</button>
-        </div>
-
-        <div class="title-page__loading">
-            <slot name="loading-bar"></slot>
         </div>
 
         <section v-show="showAboutBlock" class="about">
@@ -65,68 +72,96 @@ export default {
 @import "../modules/_layout.scss";
 @import "../modules/_material.scss";
 
+@import url('https://fonts.googleapis.com/css?family=Fredoka+One&display=swap');
+
 .title-page {
 
     @include fullscreen();
-    padding: 1rem;
+    padding: 5%;
 
-    background-image:
-    url(./title-skinner.png),
-    url(./title-chalmers.png),
-    linear-gradient(-15deg,tan 20%, darkgreen 80%,)
-    ;
+    background-image: url(./thatch.png);
 
-    background-size: auto 25%, auto 25%, cover;
+    &__frame {
+        width: 100%;
+        height: 100%;
 
-    @media(orientation: landscape) {
-        background-size: 20%, 20%, cover;
-    }
+        max-width: 37.5rem;
+        max-height: 30rem;
+        margin: auto;
 
-    background-repeat: no-repeat, no-repeat, repeat;
-    background-position: top left, bottom right, center;
-    background-origin: content-box, content-box, padding-box;
+        padding: 1rem;
+        box-sizing: border-box;
+        border: 15px ridge #bc6421;
+        border-style: ridge;
+        position: relative;
+        box-shadow: $drop-shadow2;
 
+        background-image:
+        url(./title-skinner.png),
+        url(./title-chalmers.png),
+    
+        ;
+        background-repeat: no-repeat, no-repeat;
+        background-position: top left, bottom right;
+        background-origin: content-box, content-box;
 
-    &__text {
-        @include placeAbsolute(50%,50%);
-        transform: translateX(-50%) translateY(-50%) rotate(-15deg);
+        background-color: #b19b83;
+        background-size: 25%, 25%;
+
+        @media (orientation: landscape) {
+            background-size: auto 50%, auto 50%;
+
+        }
+
     }
 
     &__title  {
        margin: 0;
-       color: purple;
-       font-family: cursive;
-
-        @media(min-width: 22rem) {
-            white-space: nowrap;
-        }
-
-        text-shadow: 0px .2vw black;
-        font-size: 6vw;
-        line-height: 6.5vw;
-
-        @media (orientation: portrait) {
-            text-shadow: 0px 1px black;
-            font-size: 2.5rem;
-            line-height: 3.25rem;
-        }
+        font-size: 30px;
+        @include placeAbsolute(50%,50%);
+        transform:  translateY(-50%) translateX(-50%) rotate(-15deg);
+        display: inline-flex;
+        flex-flow: column;
     }
 
-    &__l {
-        font-size: 200%;
-        font-family: inherit;
+    &__title-line {
+        margin: 0;
+        color: #431848;
+        font-family: 'Fredoka One', cursive;
+
+        font-size: 100%;
+        line-height: 1;
+        transform-origin: left;
+
+
+        &--1 {
+            margin-left: 1.5em;
+        }
+
+        &--2 {
+            margin-left: 4em;
+            font-size: 80%;
+            vertical-align: super;
+        }
+
+        &--3 {
+            margin-left: 0;
+            
+        }
+
+        &--large {
+            font-size: 250%;
+            line-height: .4;
+            vertical-align: text-top;
+        }
     }
 
     &__subtitle {
         font-family: monospace;
-        margin: 0;
+        margin: .5rem  0 0 0;
         font-weight: bold;
-        white-space: nowrap;
-        font-size: 2.5vw;
-
-        @media (orientation: portrait) {
-            font-size: 1.1rem;
-        }
+        font-size: .9rem;
+        text-align: justify;
     }
 
     &__button-set {
