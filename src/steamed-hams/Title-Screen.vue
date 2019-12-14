@@ -38,7 +38,7 @@
                 <p class="about__text">Many thanks to the awesome redditers of r/SteamedHams and r/adventuregames for playtesting and feedback.</p>
                 <h3 class="about__sub-heading">Amateurish Legalese Section</h3>
                 <p class="about__text">Don't rip this game off and try to sell it to someone. It's too short anyway.</p>
-                <p class="about__text">The Simpsons is copyrighted material, owned by 20th Century Fox. This game makes non-commercial use of that material. They haven't endorsed or licensed it.  I'd take it down if they asked me to. I thik that's reasonable fair use, like a big interactive meme. Everyone loves memes.</p>
+                <p class="about__text">The Simpsons is copyrighted material, owned by 20th Century Fox. This game makes non-commercial use of that material. They haven't endorsed or licensed it.  I'd take it down if they asked me to. I think that's reasonable fair use, like a big interactive meme. Everyone loves memes.</p>
 
                 <div class=about__twitter-bar>
                     <img class="about__logo" src='../icons/twitter-square.svg'/>
@@ -72,7 +72,7 @@ export default {
 @import "../modules/_layout.scss";
 @import "../modules/_material.scss";
 
-@import url('https://fonts.googleapis.com/css?family=Fredoka+One&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Knewave|Schoolbell&display=swap');
 
 .title-page {
 
@@ -85,8 +85,8 @@ export default {
         width: 100%;
         height: 100%;
 
-        max-width: 37.5rem;
-        max-height: 30rem;
+        max-width: 700px;
+        max-height: 480px;
         margin: auto;
 
         padding: 1rem;
@@ -99,8 +99,8 @@ export default {
         background-image:
         url(./title-skinner.png),
         url(./title-chalmers.png),
-    
         ;
+
         background-repeat: no-repeat, no-repeat;
         background-position: top left, bottom right;
         background-origin: content-box, content-box;
@@ -110,29 +110,44 @@ export default {
 
         @media (orientation: landscape) {
             background-size: auto 50%, auto 50%;
-
         }
 
     }
 
     &__title  {
        margin: 0;
-        font-size: 30px;
         @include placeAbsolute(50%,50%);
         transform:  translateY(-50%) translateX(-50%) rotate(-15deg);
         display: inline-flex;
         flex-flow: column;
+        font-size: 25px;
+
+        @media(min-width: 350) {
+            font-size: 30px;
+        }
+
+        @media(min-width: 400px) {
+            font-size: 35px;
+        }
+
+        @media(min-width: 500px) {
+            font-size: 40px;
+        }
+
+        @media(min-width: 600px) {
+            font-size: 45px;
+        }
     }
 
     &__title-line {
         margin: 0;
         color: #431848;
-        font-family: 'Fredoka One', cursive;
-
-        font-size: 100%;
+        font-family: 'Knewave', cursive;
+        font-weight: 400;
+        font-size: 1em;
         line-height: 1;
         transform-origin: left;
-
+        letter-spacing: 2px;
 
         &--1 {
             margin-left: 1.5em;
@@ -140,27 +155,28 @@ export default {
 
         &--2 {
             margin-left: 4em;
-            font-size: 80%;
+            font-size: .8em;
             vertical-align: super;
         }
 
         &--3 {
             margin-left: 0;
-            
         }
 
         &--large {
-            font-size: 250%;
+            font-size: 2.5em;
             line-height: .4;
             vertical-align: text-top;
+            font-family: 'Schoolbell', cursive;
+            font-weight: 700;
         }
     }
 
     &__subtitle {
         font-family: monospace;
-        margin: .5rem  0 0 0;
+        margin: .5em  0 0 0;
         font-weight: bold;
-        font-size: .9rem;
+        font-size: .5em;
         text-align: justify;
     }
 
