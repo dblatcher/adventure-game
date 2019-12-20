@@ -6,6 +6,7 @@
         v-bind:highlight="highlight"
         @clicked-thing="$emit('clicked-thing',$event)"
         @hover-event="$emit('hover-event',$event)"
+        @right-clicked-thing="$emit('right-clicked-thing',$event)"
         />
 
         <character v-if="type == 'C'"
@@ -16,6 +17,7 @@
         v-bind:highlight="highlight"
         @clicked-thing="$emit('clicked-thing',$event)"
         @hover-event="$emit('hover-event',$event)"
+        @right-clicked-thing="$emit('right-clicked-thing',$event)"
         />
     </div>
 </template>

@@ -1,6 +1,7 @@
 <template>
     <article 
     @click="clickHandler($event)" 
+    @contextmenu="rightClickHandler($event)" 
     v-on:mouseover="hoverHandler($event)"
     v-on:mouseout="hoverHandler($event)"
     v-bind:name="name" 
@@ -201,6 +202,13 @@ export default {
             if (this.ident === this.theApp.pcId) {return false}
             event.stopPropagation();
             this.$emit('clicked-thing', this.char);
+        },
+        rightClickHandler : function (event) {
+            console.log(event)
+            event.preventDefault();
+            event.stopPropagation();
+            if (this.char.unclickable) {return false}
+            this.$emit('right-clicked-thing', this.char);
         },
         hoverHandler : function (event) {
             if (this.ident === this.theApp.pcId) {return false}

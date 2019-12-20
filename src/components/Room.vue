@@ -1,7 +1,8 @@
 <template>
     <main class="room"
-    v-on:click="clickHandler($event)"
-    v-on:dblclick="doubleClickHandler($event)"
+    @click="clickHandler($event)"
+    @dblclick="doubleClickHandler($event)"
+    @contextmenu="rightClickHandler($event)"
     v-bind:style="styleObject">
         <slot></slot>
         <div v-for="fg in foregrounds" :key="fg.id"
@@ -22,6 +23,10 @@ export default {
     methods : {
         clickHandler : function (event) {
             this.$emit('clicked-room', event);
+        },
+        rightClickHandler : function (event) {
+            event.preventDefault();
+            this.$emit('right-clicked-room', event);
         },
         doubleClickHandler : function (event) {
             this.$emit('double-click', event);

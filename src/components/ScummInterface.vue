@@ -25,6 +25,7 @@
 
         <InventoryMenu 
         v-on:item-clicked="$emit('item-clicked',$event)"
+        v-on:item-right-clicked="$emit('item-right-clicked',$event)"
         v-on:hover-event="$emit('hover-event', $event)"
         v-bind:items="items" 
         v-bind:subject="subject"/>

@@ -39,6 +39,7 @@
           v-bind:highlight="highlightingThings"
           @dblclick="handleDoubleClick($event)"
           @clicked-thing="handleClickOnThing($event)"
+          @right-clicked-thing="handleRightClickOnThing($event)"
           @hover-event="handleHoverEvent($event[0],$event[1])"/>
  
       </Room>
@@ -62,6 +63,7 @@
     v-bind:conversation="conversation"
     v-on:verb-picked="pickVerb($event)"
     v-on:item-clicked="handleClickOnThing($event)"
+    v-on:item-right-clicked="handleRightClickOnThing($event)"
     v-on:hover-event="handleHoverEvent($event[0],$event[1])"
     />
 
@@ -108,6 +110,7 @@ import getComponentOrDataObject from "./getCompOrData";
 import removeThing from "./removeThing";
 import handleClickOnRoom from "./handleClickOnRoom";
 import handleClickOnThing from "./handleClickOnThing";
+import handleRightClickOnThing from "./handleRightClickOnThing";
 import handleHoverEvent from "./handleHoverEvent";
 
 
@@ -260,6 +263,7 @@ export default {
     handleDialogChoice,
     handleClickOnRoom,
     handleClickOnThing,
+    handleRightClickOnThing,
     handleHoverEvent,
     getInventoryItem,
     looseInventoryItem,

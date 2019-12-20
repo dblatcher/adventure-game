@@ -2,11 +2,13 @@
 	<section class="inventory-menu">
 
 		<div class="inventory-menu__holder">
-			<div @click="$emit('item-clicked', item)" 
+			<figure 
 			v-for="item, index in this.items" v-bind:key="index"
+			@click="$emit('item-clicked', item)" 
+			@contextmenu="rightClickHandler(item, $event)" 
 			v-on:mouseover="hoverHandler(item,$event)" 
 			v-on:mouseout="hoverHandler(item,$event)"
-			
+
 			class="inventory-menu__item"
 			v-bind:class= "{'inventory-menu__item--picked': isItemPicked(item)}" 
 			>
@@ -14,7 +16,7 @@
 				<img class="inventory-menu__pic" 
 				v-bind:src="findRightPicture(index)"
 				v-bind:name="item.name"/>
-			</div>
+			</figure>
 			
 		</div>
 
@@ -32,6 +34,10 @@ export default {
 	methods: {
 		hoverHandler : function (item, event) {
 			this.$emit('hover-event', [item, event]);
+		},
+		rightClickHandler: function(item, event) {
+			event.preventDefault();
+			this.$emit('item-right-clicked', item)
 		},
 		isItemPicked : function (item) {
 			return item === this.subject;
