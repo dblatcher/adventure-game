@@ -77,17 +77,20 @@ export default {
 .title-page {
 
     @include fullscreen();
-    padding: 5%;
+    padding: 3rem 2rem;
 
     background-image: url(./thatch.png);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     &__frame {
         width: 100%;
         height: 100%;
 
         max-width: 700px;
-        max-height: 480px;
-        margin: auto;
+        max-height: 500px;
 
         padding: 1rem;
         box-sizing: border-box;
@@ -109,7 +112,7 @@ export default {
         background-size: 25%, 25%;
 
         @media (orientation: landscape) {
-            background-size: auto 50%, auto 50%;
+            background-size: auto 45%, auto 45%;
         }
 
     }
@@ -127,15 +130,21 @@ export default {
         }
 
         @media(min-width: 400px) {
+        @media(min-height: 375px ) {
             font-size: 35px;
+        }
         }
 
         @media(min-width: 500px) {
+        @media(min-height: 400px ) {
             font-size: 40px;
         }
+        }
 
-        @media(min-width: 600px) {
+        @media(min-width: 600px ) {
+        @media(min-height: 500px ) {
             font-size: 45px;
+        }
         }
     }
 
@@ -183,11 +192,11 @@ export default {
     &__button-set {
         @include placeAbsolute(1rem, .5rem, true);
 
-        @media(orientation: landscape) {
+        
             display: flex;
             flex-flow: row wrap;
             justify-content: flex-end;
-        }
+        
 
         button {
             display:block;
