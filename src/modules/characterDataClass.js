@@ -31,6 +31,7 @@ export default class Character {
         this.behaviour_direction = this.validDirections[0];
 
         this.idleAnimations = config.idleAnimations || false;
+        this.recommendedVerb = config.recommendedVerb || null;
 
         this.initialState = Object.freeze(Object.assign({},this));
     }

@@ -16,6 +16,7 @@ export default class InventoryItem  {
 			}
 		}
 		
+		this.recommendedVerb = config.recommendedVerb || null;
 		this.background = config.bg;
 	
 		this.have=!!config.startWith;

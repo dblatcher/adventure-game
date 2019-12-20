@@ -137,7 +137,7 @@ export default {
         roomMeasure: {unit:'px',scale:1}, //only supporting px ?
         thingHoveredOn:null, 
         verb: gameData.verbList[0],
-        subject: null, needObject:false, object:null,
+        subject: null, object:null,
         lastCommand: {verb:undefined, subject:undefined, object:undefined, inProgress:false},
         highlightingThings : false,
         optionsMenuIsOpen: false,
@@ -154,8 +154,22 @@ export default {
   },
 
   computed : {
+    needObject: function() {
+      const {verb, subject, object, interactionMatrix} = this;
+      if (!verb || !subject || object) {return false}
+      if (verb.transitive) {
+        if (interactionMatrix[verb.id] && interactionMatrix[verb.id][subject.id]  && interactionMatrix[verb.id][subject.id].intransitive ) {  
+          return false; // transitive verb, but with an instransitive usage eg 'use lever'
+        } else {
+          return true; // transitive verb
+        }
+      } else {
+        return false; // intransitive verb
+      }
+    },
     haveCompleteCommand : function() {
-      return (this.subject && ! this.needObject) || (this.subject && this.object)
+      const {verb, subject, object, needObject} = this;
+      return (verb && subject && !needObject) || (verb && subject && object)
     },
     thingsInRoom : function() {
       var that = this, set = [];
@@ -202,6 +216,13 @@ export default {
         this.allCharacters.forEach (char => {
           result[char.id] = char;
         })
+      return result;
+    },
+    verbsAsObject: function(){
+      let result = {};
+      this.verbList.forEach (verb => {
+        result[verb.id] = verb;
+      })
       return result;
     },
     dialogChoices : function () {

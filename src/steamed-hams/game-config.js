@@ -1,9 +1,7 @@
 import { StandardOrder } from "../modules/StandardOrder";
 import { Verb } from "../modules/constructors";
 
-const config = {
 
-}
 
 var verbList = [
     new Verb('walk to','WALK'),
@@ -34,6 +32,10 @@ var defaultResponses = {
     "misc" : function(command) {
         return [new StandardOrder('pc','say',`I can't do that.`)  ]  
     } 
+}
+
+const config = {
+    defaultVerb: {WorldItem:"LOOK", InventoryItem:"USE", Character:"TALK"},
 }
 
 export { defaultResponses, verbList, config }

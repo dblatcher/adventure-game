@@ -265,7 +265,7 @@ var makeRooms = function(){ return [
             new WorldItem('bush_2','bush',[120,49,20,-15],60,70,undefined,null,{noZoneScaling:true}),
             new WorldItem('bush_3','bush',[370,44,-20,-10],55,80,undefined,null,{noZoneScaling:true}),
             new WorldItem('bush_4','bush',[445,44,-20,-10],70,50,undefined,null,{noZoneScaling:true}),
-            new WorldItem('front_door','door',[268,89,5,-10],123,160,'closed',worldItemModels.door, {noZoneScaling:true}),
+            new WorldItem('front_door','door',[268,89,5,-10],123,160,'closed',worldItemModels.door, {noZoneScaling:true, recommendedVerb:'OPEN'}),
             new WorldItem('window_fire','fire',[432,124],120,152,'neutral',worldItemModels.fireInWindow,{unclickable:true,removed:true, noZoneScaling:true,}),
         ],
 
@@ -276,14 +276,14 @@ var makeRooms = function(){ return [
 
 var makeInventoryItems = function() { return  [
     new InventoryItem('roast', 'raw roast', require('./items/roast.png'),{startWith:true, bg:{shape:'diamond', color:'pink'}}),
-    new InventoryItem('todo', 'to do list', require('./items/todo.png'),{startWith:true, bg:{shape:'circle', color:'lightgreen'}}),
+    new InventoryItem('todo', 'to do list', require('./items/todo.png'),{startWith:true,  recommendedVerb:'LOOK', bg:{shape:'circle', color:'lightgreen'}}),
     new InventoryItem('roast_glazed', 'glazed roast', require('./items/glazed-roast.png'),{bg:{color:'red',shape:'diamond'}}),
     new InventoryItem('bucket_foil', 'ice bucket', require('./items/bucket_foil.png')),
     new InventoryItem('bucket_sand', 'fire bucket', require('./items/bucket_sand.png')),
     new InventoryItem('bucket_empty', 'fire bucket', require('./items/bucket.png')),
     new InventoryItem('foil', 'aluminium foil', require('./items/foil.jpg')),
     new InventoryItem('bourbon','bourbon', require('./items/bourbon.png')),
-    new InventoryItem('hamburger_bag','hamburgers', require('./items/bag.png')),
+    new InventoryItem('hamburger_bag','hamburgers', require('./items/bag.png'),{bg:{color:'blue',shape:'diamond'}}),
     new InventoryItem('hamburger_platter','elegantly arranged hamburgers', require('./items/hamburgers_on_platter.png')),
     new InventoryItem('platter','platter', require('./items/platter.png')),
 

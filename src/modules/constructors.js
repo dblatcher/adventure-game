@@ -58,7 +58,7 @@ function Verb (description, id, preposition) {
 	this.preposition = preposition || '[NO PREPOSITION]';
 	this.transitive = !!(preposition);
 }
-
+Verb.prototype.isVerb = true;
 
 
 

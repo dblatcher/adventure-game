@@ -21,6 +21,7 @@
         <VerbMenu 
         v-on:verb-picked="$emit('verb-picked',$event)"
         v-bind:verb-list='verbList'
+        v-bind:thingHoveredOn='thingHoveredOn'
         v-bind:picked='currentVerb'/>
 
         <InventoryMenu 

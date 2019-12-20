@@ -12,6 +12,7 @@ class WorldItem {
         this.noZoneScaling = config.noZoneScaling || false;
         this.zAdjust = config.zAdjust || 0;
         this.removed = config.removed || false;
+        this.recommendedVerb = config.recommendedVerb || null;
         
         this.roomId = 'undefined';
 
