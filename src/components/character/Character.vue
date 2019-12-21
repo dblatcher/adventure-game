@@ -44,8 +44,8 @@ export default {
 
     props:['char','measure','roomWidth','roomHeight','highlight'],
 
-    data: function() {        
-        var spriteSet = [];        
+    data: function() {
+        var spriteSet = [];
         var fullSet = this.$parent.$parent.$parent.sprites;
         for (var i=0; i< fullSet.length; i++) {
             if (this.char.spritesUsed.includes(fullSet[i].id)) {spriteSet.push ( Object.assign({}, fullSet[i], {p:this} ) )    }
@@ -59,11 +59,12 @@ export default {
 
     computed :{
         theApp: function() {return this.$parent.$parent.$parent},
-
         name: function() {return this.char.name},
         x: function() {return this.char.x},
         y: function() {return this.char.y},
         ident: function() {return this.char.id},
+        dataType: function() {return 'Character'},
+        recommendedVerb: function() {return this.item.recommendedVerb},
         saying : {
             get: function() { return this.char.saying },
             set: function(v) { this.char.saying=v }

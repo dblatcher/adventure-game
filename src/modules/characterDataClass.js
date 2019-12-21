@@ -37,6 +37,7 @@ export default class Character {
     }
 
     get isDataObject(){return true}
+    get dataType() {return 'Character'}
 
     goTo (target, options={}, game) {
         if (typeof this.room !== 'number') {return false}    

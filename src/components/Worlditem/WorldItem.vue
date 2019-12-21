@@ -44,9 +44,11 @@ export default {
     },
     computed :{
         ident: function() {return this.item.id},
+        dataType: function() {return 'WorldItem'},
         gameInstance: function() {return this.$parent.$parent.$parent},
         x: function() {return this.item.x},
         y: function() {return this.item.y},
+        recommendedVerb: function() {return this.item.recommendedVerb},
         scale: function() {return this.item.scale},
         baseHeight: function() {return this.item.baseHeight},
         baseWidth: function() {return this.item.baseWidth},

@@ -27,6 +27,8 @@ export default class InventoryItem  {
 		}
 	}
 
+	get dataType() {return 'InventoryItem'}
+
 	returnState() {
 		return{
 			name : this.name,
