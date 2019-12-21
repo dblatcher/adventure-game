@@ -167,6 +167,31 @@ export default {
         return false; // intransitive verb
       }
     },
+    recommendedVerb : function() {
+      const {thingHoveredOn, verbsAsObject} = this;
+      const {defaultVerb} = this.config;
+
+      if (!thingHoveredOn ) {return null}
+      const {recommendedVerb, dataType, status} = thingHoveredOn;
+
+      let verbId;
+      if (typeof recommendedVerb === 'string' ) {
+        verbId = recommendedVerb
+      }
+      else if (typeof recommendedVerb === 'object') {
+        if (dataType === 'WorldItem' && recommendedVerb[status]){ verbId = recommendedVerb[status] }
+      }
+      else if (typeof defaultVerb === 'string') {
+        verbId = defaultVerb
+      }
+      else if (typeof defaultVerb === 'object') {
+        verbId = defaultVerb[dataType]
+      }
+
+      if (!verbId) {console.warn(`no recommended verb for ${thingHoveredOn.id || thingHoveredOn.ident} and default verb for ${dataType} set.`)}
+      if (!verbsAsObject[verbId]) { console.warn(`${verbId} was recommended verb for ${thingHoveredOn.id || thingHoveredOn.ident} or default verb for ${dataType}, but ${verbId} is not the id of a verb`) }
+      return verbsAsObject[verbId]
+    },
     haveCompleteCommand : function() {
       const {verb, subject, object, needObject} = this;
       return (verb && subject && !needObject) || (verb && subject && object)
@@ -179,7 +204,7 @@ export default {
       let wSet = this.rooms[this.roomNumber].worldItems.filter ( (item)=> {
         return !item.removed;
       });
-      
+
       set.push(...wSet, ...cSet);
       set.sort( function(a,b) { return (b.y + b.zAdjust) - (a.y + a.zAdjust)} )
       return set;

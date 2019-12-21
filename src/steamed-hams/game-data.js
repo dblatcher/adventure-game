@@ -265,7 +265,10 @@ var makeRooms = function(){ return [
             new WorldItem('bush_2','bush',[120,49,20,-15],60,70,undefined,null,{noZoneScaling:true}),
             new WorldItem('bush_3','bush',[370,44,-20,-10],55,80,undefined,null,{noZoneScaling:true}),
             new WorldItem('bush_4','bush',[445,44,-20,-10],70,50,undefined,null,{noZoneScaling:true}),
-            new WorldItem('front_door','door',[268,89,5,-10],123,160,'closed',worldItemModels.door, {noZoneScaling:true, recommendedVerb:'OPEN'}),
+            new WorldItem('front_door','door',[268,89,5,-10],123,160,'closed',worldItemModels.door, {
+                noZoneScaling:true,
+                recommendedVerb: {'closed':'OPEN', 'open':'SHUT'}
+            }),
             new WorldItem('window_fire','fire',[432,124],120,152,'neutral',worldItemModels.fireInWindow,{unclickable:true,removed:true, noZoneScaling:true,}),
         ],
 
