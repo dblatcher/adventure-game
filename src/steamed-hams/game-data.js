@@ -204,7 +204,8 @@ var makeRooms = function(){ return [
         worldItems: [
             new WorldItem('TABLE','table',[170,20,35,20],120,60,'neutral',worldItemModels.table),
             new WorldItem('DINING_KITCHENDOOR','door',[310,10,-30,0],68,150,'closed',worldItemModels.kitchen_door,{
-                zAdjust:500
+                zAdjust:500,
+                recommendedVerb: {'closed':'OPEN', 'open':'SHUT'}
             }),
             new WorldItem('DINING_WAYOUT','way out',[45,45,20,10],50,125,'neutral'),
             new WorldItem('ICE_BUCKET', 'ice bucket', [170,70],30,25,'neutral',worldItemModels.iceBucket,{
