@@ -180,7 +180,6 @@ export default {
         verbId = recommendedVerb
       }
       else if (recommendedVerb && typeof recommendedVerb === 'object') {
-        console.log(recommendedVerb)
         if (dataType === 'WorldItem' && recommendedVerb[status]){ verbId = recommendedVerb[status] }
       }
       else if (typeof defaultVerb === 'string') {
@@ -189,9 +188,6 @@ export default {
       else if (defaultVerb && typeof defaultVerb === 'object') {
         verbId = defaultVerb[dataType]
       }
-
-      if (!verbId) {console.warn(`no recommended verb for ${thingHoveredOn.id || thingHoveredOn.ident} and default verb for ${dataType} set.`)}
-      if (!verbsAsObject[verbId]) { console.warn(`${verbId} was recommended verb for ${thingHoveredOn.id || thingHoveredOn.ident} or default verb for ${dataType}, but ${verbId} is not the id of a verb`) }
       return verbsAsObject[verbId]
     },
     haveCompleteCommand : function() {

@@ -26,9 +26,9 @@ export default {
 @import '../modules/material';
 
 .verb-menu {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content:center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:center;
     box-sizing:border-box;
     flex-basis: 100%;
     flex-shrink:.7;
@@ -45,8 +45,13 @@ export default {
         display: block;
 
         &--recommended {
-            color: yellow;
-            text-shadow: 1px 1px black;
+
+            @media (pointer: fine) {
+                @media (hover: hover) {
+                    color: yellow;
+                    text-shadow: 1px 1px black;
+                }
+            }
         }
 
         &--on {
