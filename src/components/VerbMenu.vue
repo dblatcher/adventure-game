@@ -4,7 +4,10 @@
 
             <div class="verb-menu__box"
                 v-bind:for="'verb_'+verb.id"
-                v-bind:class="{'verb-menu__box--on' : (verb == picked)}"
+                v-bind:class="{
+                    'verb-menu__box--on' : (verb == picked),
+                    'verb-menu__box--recommended' : (verb == recommendedVerb),
+                }"
                 @click="$emit('verb-picked',verb.id)"
                 >{{verb.description}}</div>
 
@@ -40,6 +43,11 @@ export default {
     &__box {
         @include btn-outline(black); 
         display: block;
+
+        &--recommended {
+            color: yellow;
+            text-shadow: 1px 1px black;
+        }
 
         &--on {
             @include btn-solid(black); 
