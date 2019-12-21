@@ -61,6 +61,7 @@
     v-bind:thingHoveredOn="thingHoveredOn"
     v-bind:lastCommand="lastCommand"
     v-bind:conversation="conversation"
+    v-bind:recommendedVerb="recommendedVerb"
     v-on:verb-picked="pickVerb($event)"
     v-on:item-clicked="handleClickOnThing($event)"
     v-on:item-right-clicked="handleRightClickOnThing($event)"
@@ -178,13 +179,14 @@ export default {
       if (typeof recommendedVerb === 'string' ) {
         verbId = recommendedVerb
       }
-      else if (typeof recommendedVerb === 'object') {
+      else if (recommendedVerb && typeof recommendedVerb === 'object') {
+        console.log(recommendedVerb)
         if (dataType === 'WorldItem' && recommendedVerb[status]){ verbId = recommendedVerb[status] }
       }
       else if (typeof defaultVerb === 'string') {
         verbId = defaultVerb
       }
-      else if (typeof defaultVerb === 'object') {
+      else if (defaultVerb && typeof defaultVerb === 'object') {
         verbId = defaultVerb[dataType]
       }
 

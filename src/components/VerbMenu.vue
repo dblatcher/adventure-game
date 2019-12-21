@@ -15,7 +15,7 @@
 <script>
 export default {
     name: 'VerbMenu',
-    props:['picked','verbList','thingHoveredOn'],
+    props:['picked','verbList','thingHoveredOn','recommendedVerb'],
 }
 </script>
 

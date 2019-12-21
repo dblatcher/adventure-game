@@ -22,7 +22,8 @@
         v-on:verb-picked="$emit('verb-picked',$event)"
         v-bind:verb-list='verbList'
         v-bind:thingHoveredOn='thingHoveredOn'
-        v-bind:picked='currentVerb'/>
+        v-bind:picked='currentVerb'
+        v-bind:recommendedVerb="recommendedVerb"/>
 
         <InventoryMenu 
         v-on:item-clicked="$emit('item-clicked',$event)"
@@ -46,7 +47,7 @@ import CommandLine from "./CommandLine";
 export default {
     name: 'ScummInterface',
     components: {VerbMenu, InventoryMenu, CommandLine},
-    props: ['gameStatus', 'currentVerb','verbList', 'items', 'subject','object','thingHoveredOn','needObject', 'lastCommand', 'conversation'],
+    props: ['gameStatus', 'currentVerb','verbList', 'items', 'subject','object','thingHoveredOn','needObject', 'lastCommand', 'conversation','recommendedVerb'],
 }
 </script>
 
