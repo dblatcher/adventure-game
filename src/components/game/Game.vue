@@ -123,6 +123,14 @@ import ScummInterface from "../ScummInterface";
 import ControlButtons from "../ControlButtons";
 import NarrationMessage from "../NarrationMessage";
 
+function makeObjectFromList(list, keyname) {
+  let result = {}
+  list.forEach(item => {
+    result[item[keyname]] = item;
+  })
+  return result
+}
+
 export default {
   name: 'Game',
   components :{
@@ -225,6 +233,9 @@ export default {
         result[verb.id] = verb;
       })
       return result;
+    },
+    soundsAsObject: function() {
+      return makeObjectFromList(this.sounds, 'id')
     },
     dialogChoices : function () {
       if (!this.conversations[this.conversation]) return [];

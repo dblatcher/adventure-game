@@ -193,10 +193,22 @@ export default {
             //this.behaviour is just an object with convience copies of the this.char behaviour properties
             if (noActions) {this.char.behaviour_actFrame = order.actFrame}
 
+            let newFrame = Array.isArray(this.char.cycles[order.action]) ?
+                this.char.cycles[order.action][order.actFrame] :
+                this.char.cycles[order.action][order.direction][order.actFrame]
+
+            if (newFrame[3]) {
+                let sound = this.theApp.soundsAsObject[newFrame[3]]
+                this.playSound(sound)
+            }
+           
             if (onLastFrame && (!order.loop && !noActions )) {
                 this.char.actionQueue.shift();
                 this.$emit ('actionOrderDone', order)
             }
+        },
+        playSound(sound) {
+            console.log(`pretend playing ${sound.description}`)
         },    
         clickHandler : function (event) {
             if (this.ident === this.theApp.pcId) {return false}
