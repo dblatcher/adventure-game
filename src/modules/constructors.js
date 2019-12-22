@@ -60,10 +60,19 @@ function Verb (description, id, preposition) {
 }
 Verb.prototype.isVerb = true;
 
+class Sound {
 
+	constructor(description, id, path) {
+		this.description =description
+		this.id = id
+		this.path = path
+	}
+
+}
 
 export {
-	Sprite, 
+	Sprite,
+	Sound, 
 	Room,
 	EffectZone,
 	Foreground,

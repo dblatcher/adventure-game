@@ -1,5 +1,5 @@
 import { RectZone, PolyZone } from "../modules/zone";
-import { Room, EffectZone, Foreground, Sprite } from "../modules/constructors"
+import { Room, EffectZone, Foreground, Sprite, Sound } from "../modules/constructors"
 import Character from "../modules/characterDataClass"
 import WorldItem from "../modules/WorldItemDataClass"
 import InventoryItem from "../modules/InventoryItem"
@@ -42,6 +42,9 @@ var sprites = [
 
 ]
 
+var sounds = [
+    new Sound('foot step', 'fs', '/land.mps' )
+]
 
 var characterModels = {
 
@@ -51,8 +54,8 @@ var characterModels = {
             left : [ ['sk2',4,0] ],
         },
         walk : {
-            right : [ ['skw1',0,0],['skw1',1,0],['skw1',2,0],  ] ,
-            left : [ ['skw2',0,0],['skw2',1,0],['skw2',2,0], ] ,
+            right : [ ['skw1',0,0,'fs'],['skw1',1,0],['skw1',2,0],  ] ,
+            left : [ ['skw2',0,0,'fs'],['skw2',1,0],['skw2',2,0], ] ,
         },
         talk : {
             right : [ ['sk1',1,0],['sk1',2,0],['sk1',3,0],['sk1',4,0],['sk1',3,0] ],
@@ -297,4 +300,4 @@ var setGameVars = function ()  { return {
 	haveSeenBurningRoast: false,
 }};
 
-export { sprites, makeRooms, makeInventoryItems, makeCharacters, pcId, setGameVars }
+export { sprites, makeRooms, makeInventoryItems, makeCharacters, pcId, setGameVars, sounds }
