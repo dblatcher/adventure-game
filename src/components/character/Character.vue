@@ -25,12 +25,17 @@
             v-bind:pos="this.speechLinePositioning"
         ></SpeechLine>
         
+        <AudioTrack v-for="sound in this.theApp.sounds" :key="sound.id"
+            v-bind:data="sound"
+        />
+
     </article>
 </template>
 
 <script>
 import Sprite from "../Sprite";
 import SpeechLine from "./SpeechLine";
+import AudioTrack from "../AudioTrack"
 import {say, countDownSpeech} from "./sayFunction";
 import {goTo, turnTo } from "./goFunction";
 import doFunction from "./doFunction";
@@ -40,7 +45,7 @@ import { innerBorder } from "../../modules/styleGen";
 
 export default {
     name:'Character',
-    components:{Sprite, SpeechLine},
+    components:{Sprite, SpeechLine, AudioTrack},
 
     props:['char','measure','roomWidth','roomHeight','highlight'],
 
@@ -208,7 +213,12 @@ export default {
             }
         },
         playSound(sound) {
-            console.log(`pretend playing ${sound.description}`)
+            if (!sound) {
+                console.log('no sound passed', this.ident)
+                return false;
+            }
+            const audioElement = this.$el.querySelector(`audio[src="${sound.path}"]`)
+            audioElement.play()
         },    
         clickHandler : function (event) {
             if (this.ident === this.theApp.pcId) {return false}

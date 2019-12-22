@@ -43,7 +43,8 @@ var sprites = [
 ]
 
 var sounds = [
-    new Sound('foot step', 'fs', '/land.mps' )
+    new Sound('foot step', 'fs', '/land.mp3' ),
+    new Sound('bang','bg','/bang.mp3'),
 ]
 
 var characterModels = {
