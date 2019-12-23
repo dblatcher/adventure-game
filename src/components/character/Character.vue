@@ -25,9 +25,7 @@
             v-bind:pos="this.speechLinePositioning"
         ></SpeechLine>
         
-        <AudioTrack v-for="sound in this.theApp.sounds" :key="sound.id"
-            v-bind:data="sound"
-        />
+        <AudioRoot v-bind:sounds="theApp.sounds" v-bind:panValue="audioPosition" ref="audio"/>
 
     </article>
 </template>
@@ -35,7 +33,7 @@
 <script>
 import Sprite from "../Sprite";
 import SpeechLine from "./SpeechLine";
-import AudioTrack from "../AudioTrack"
+import AudioRoot from "../AudioRoot"
 import {say, countDownSpeech} from "./sayFunction";
 import {goTo, turnTo } from "./goFunction";
 import doFunction from "./doFunction";
@@ -45,7 +43,7 @@ import { innerBorder } from "../../modules/styleGen";
 
 export default {
     name:'Character',
-    components:{Sprite, SpeechLine, AudioTrack},
+    components:{Sprite, SpeechLine, AudioRoot},
 
     props:['char','measure','roomWidth','roomHeight','highlight'],
 
@@ -164,6 +162,9 @@ export default {
                 speechBubbleIn:this.char.speechBubbleIn,
             }
         },
+        audioPosition : function() {
+            return  Math.max (Math.min( (this.x - this.roomWidth/2) / (this.roomWidth/2),1), -1)
+        }
     },
     
     methods : {
@@ -203,23 +204,14 @@ export default {
                 this.char.cycles[order.action][order.direction][order.actFrame]
 
             if (newFrame[3]) {
-                let sound = this.theApp.soundsAsObject[newFrame[3]]
-                this.playSound(sound)
+                this.$refs.audio.play(newFrame[3])
             }
            
             if (onLastFrame && (!order.loop && !noActions )) {
                 this.char.actionQueue.shift();
                 this.$emit ('actionOrderDone', order)
             }
-        },
-        playSound(sound) {
-            if (!sound) {
-                console.log('no sound passed', this.ident)
-                return false;
-            }
-            const audioElement = this.$el.querySelector(`audio[src="${sound.path}"]`)
-            audioElement.play()
-        },    
+        },  
         clickHandler : function (event) {
             if (this.ident === this.theApp.pcId) {return false}
             event.stopPropagation();
