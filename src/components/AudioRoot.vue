@@ -1,54 +1,60 @@
 <template>
 
 <div>
-  <AudioTrack v-for="sound in sounds" v-bind:Key="sound.id"
-  v-bind:sound="sound" 
-  v-bind:audioContext="audioContext"
-  v-bind:panner="panner"
-  />
-<p>pan: {{panValue}}</p>
+    <p>{{$parent.ident}} pan: {{audioPosition.pan}},gain:{{audioPosition.gain}}</p>
 </div>
 
 </template>
 
 <script>
-import AudioTrack from './AudioTrack'
-
 
 
 export default {
     name: "AudioRoot",
-    components: {AudioTrack},
-    props: ['sounds', 'panValue'],
+    props: ['sounds', 'audioPosition'],
 
     data () {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         const audioContext = new AudioContext();
+        const gainNode = audioContext.createGain()
+        const panner = new StereoPannerNode(audioContext, {pan:0})
 
-        const panner = audioContext.createStereoPanner()
         return {
             audioContext: audioContext,
             panner: panner,
+            gainNode: gainNode,
         }
     },
 
     methods: {
+
         play(soundId) {
-            let index = this.sounds.map(s=>s.id).indexOf(soundId)
-            this.$children[index].play()
+            const sound = this.sounds.filter( i=> (i.id===soundId) )[0];
+            if (!sound) {return false}
+
+            const audioElement = document.createElement('audio')
+            audioElement.setAttribute('src', sound.path)
+
+            const track = this.audioContext.createMediaElementSource(audioElement);
+            
+            track.connect(this.gainNode).connect(this.panner).connect(this.audioContext.destination)
+
+            audioElement.play()
         }
     },
 
     watch: {
-        panValue: function (val) {
-            this.panner.pan.value = val
+        audioPosition: function (val) {
+            this.panner.pan.value = val.pan
+            this.gainNode.value = val.gain
         }
 
     },
 
     mounted()  {
-        console.log(this.panValue)
-        this.panner.pan.value = this.panValue
+        console.log(this.audioPosition)
+        this.panner.pan.value = this.audioPosition.pan
+        this.gainNode.value = this.audioPosition.gain
     }
     
 

@@ -45,6 +45,7 @@ var sprites = [
 var sounds = [
     new Sound('foot step', 'fs', '/land.mp3' ),
     new Sound('bang','bg','/bang.mp3'),
+    new Sound('voice','vc','/voice.wav'),
 ]
 
 var characterModels = {
@@ -55,7 +56,7 @@ var characterModels = {
             left : [ ['sk2',4,0] ],
         },
         walk : {
-            right : [ ['skw1',0,0,'fs'],['skw1',1,0],['skw1',2,0],  ] ,
+            right : [ ['skw1',0,0,'fs'],['skw1',1,0],['skw1',2,0,'fs'],  ] ,
             left : [ ['skw2',0,0,'fs'],['skw2',1,0],['skw2',2,0], ] ,
         },
         talk : {

@@ -25,7 +25,10 @@
             v-bind:pos="this.speechLinePositioning"
         ></SpeechLine>
         
-        <AudioRoot v-bind:sounds="theApp.sounds" v-bind:panValue="audioPosition" ref="audio"/>
+        <AudioRoot 
+        v-bind:sounds="theApp.sounds" 
+        v-bind:audioPosition="audioPosition" 
+        ref="audio"/>
 
     </article>
 </template>
@@ -163,7 +166,10 @@ export default {
             }
         },
         audioPosition : function() {
-            return  Math.max (Math.min( (this.x - this.roomWidth/2) / (this.roomWidth/2),1), -1)
+            return {
+                pan: Math.max (Math.min( (this.x - this.roomWidth/2) / (this.roomWidth/2),1), -1),
+                gain: 1
+            }
         }
     },
     
@@ -204,7 +210,7 @@ export default {
                 this.char.cycles[order.action][order.direction][order.actFrame]
 
             if (newFrame[3]) {
-                this.$refs.audio.play(newFrame[3])
+               this.playSound(newFrame[3])
             }
            
             if (onLastFrame && (!order.loop && !noActions )) {
@@ -242,7 +248,9 @@ export default {
                 this.timeSpentIdle = 0;
             }
         },
-        
+        playSound (soundId) {
+            return this.$refs.audio.play(soundId)
+        },
         onBeat(beat) {
             this.checkForIdleAnimation()
             if (beat.count % 2 === 0 ) {this.showNextFrame()}
