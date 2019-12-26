@@ -46,6 +46,8 @@ var sounds = [
     new Sound('foot step', 'fs', '/land.mp3' ),
     new Sound('bang','bg','/bang.mp3'),
     new Sound('voice','vc','/voice.wav'),
+    new Sound('openning door','open','/open.mp3'),
+    new Sound('closing door','close','/close.mp3'),
 ]
 
 var characterModels = {
@@ -121,8 +123,8 @@ var worldItemModels = {
     door: new WorldItem.Model ({
         closed: [ ['door',4,0]  ],
         open:   [ ['door',3,0]  ],
-        opening:   [ ['door',4,0],['door',0,0],['door',1,0],['door',2,0],['door',3,0]  ],
-        closing:   [ ['door',3,0],['door',2,0],['door',1,0],['door',0,0],['door',4,0]  ],
+        opening:   [ ['door',4,0],['door',0,0,'open'],['door',1,0],['door',2,0],['door',3,0]  ],
+        closing:   [ ['door',3,0],['door',2,0,'close'],['door',1,0],['door',0,0],['door',4,0]  ],
     }),
     kitchen_door: new WorldItem.Model ({
         closed: [ ['k-dr',3,2]  ],
