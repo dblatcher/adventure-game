@@ -151,7 +151,7 @@ export default {
         optionsMenuIsOpen: false,
         instantMode: false,
         narration: {contents:[], dismissable:true},
-        options: {textDelay: 100},
+        options: {textDelay: 100, masterVolume: .1},
         interactionMatrix: gameData.interactionMatrix,
         verbList : gameData.verbList,
         sprites : gameData.sprites,
@@ -279,6 +279,8 @@ export default {
 
     toggleOptionsMenu(event) {
       this.optionsMenuIsOpen = !this.optionsMenuIsOpen;
+      this.$parent.masterVolume = this.options.masterVolume
+
     },
 
     togglePaused() {
@@ -419,7 +421,6 @@ export default {
       }
     }
   },
-
 
   beforeMount: function () {
     window.vm = this;

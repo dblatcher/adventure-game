@@ -12,7 +12,12 @@
 
                 <p class="label">Text time: {{options.textDelay}}%</p>
                 <div class="slidecontainer">
-                    <input type="range" min="1" max="300" v-model.number="options.textDelay" class="slider" id="myRange">
+                    <input type="range" min="1" max="300" v-model.number="options.textDelay" class="slider">
+                </div>
+
+                <p class="label">SFX volume: {{options.masterVolume*1000}}%</p>
+                <div class="slidecontainer">
+                    <input type="range" min="0" max="0.2" step="0.001" v-model.number="options.masterVolume" class="slider">
                 </div>
 
             </form>
