@@ -17,6 +17,10 @@
                 v-bind:measure = "sprite.p.measure"
                 ></Sprite>
         </div>
+        <AudioRoot 
+        v-bind:sounds="gameInstance.sounds" 
+        v-bind:audioPosition="audioPosition" 
+        ref="audio"/>
     </article>
 </template>
 
@@ -25,10 +29,11 @@ import Sprite from "../Sprite";
 import setStatus from "./setStatus.js";
 import setRemoval from "./setRemoval.js";
 import { innerBorder } from "../../modules/styleGen";
+import AudioRoot from "../AudioRoot";
 
 export default {
     name:'WorldItem',
-    components: { Sprite },
+    components: { Sprite,AudioRoot },
     props:['item','measure','highlight'],
     data: function() {
         var spriteSet = [];
@@ -39,7 +44,7 @@ export default {
 
         return {
         spriteSet : spriteSet,
-        cycleFrame:0
+        cycleFrame:0,
         }
     },
     computed :{
@@ -98,6 +103,12 @@ export default {
             }
             return result;
         },
+        audioPosition : function() {
+            return {
+                pan: .1,
+                gain: .9
+            }
+        }
 
     },
     methods : {
@@ -133,7 +144,10 @@ export default {
             if (this.spriteSet.length > 0 && data.count % 5 === 0) {
                 this.showNextFrame()
             }
-        }
+        },
+        playSound (soundId) {
+            return this.$refs.audio.play(soundId)
+        },
 
     },
 

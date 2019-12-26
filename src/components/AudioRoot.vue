@@ -14,13 +14,12 @@ export default {
     props: ['sounds', 'audioPosition'],
 
     data () {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        const audioContext = new AudioContext();
-        const gainNode = audioContext.createGain()
-        const panner = new StereoPannerNode(audioContext, {pan:0})
+        const appAudioContext = this.$root.$children[0].appAudioContext
+        const gainNode = appAudioContext.createGain()
+        const panner = new StereoPannerNode(appAudioContext, {pan:0})
 
         return {
-            audioContext: audioContext,
+            audioContext: appAudioContext,
             panner: panner,
             gainNode: gainNode,
         }
@@ -31,6 +30,10 @@ export default {
         play(soundId) {
             const sound = this.sounds.filter( i=> (i.id===soundId) )[0];
             if (!sound) {return false}
+            
+            if (this.audioContext.state === 'suspended') {
+                this.audioContext.resume();
+            }
 
             const audioElement = document.createElement('audio')
             audioElement.setAttribute('src', sound.path)
@@ -39,7 +42,7 @@ export default {
             
             track.connect(this.gainNode).connect(this.panner).connect(this.audioContext.destination)
 
-            audioElement.play()
+            return audioElement.play()
         }
     },
 

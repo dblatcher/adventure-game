@@ -59,11 +59,15 @@ export default {
       savedGames.push( JSON.parse(jsonString) || {} );
     }
 
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const appAudioContext = new AudioContext();
+
     return {
       savedGames: savedGames,
       showTitleScreen: true,
       showEndingScreen: false,
       fileMenuIsOpen: false,
+      appAudioContext,
     }
   },
 
