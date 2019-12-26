@@ -105,8 +105,8 @@ export default {
         },
         audioPosition : function() {
             return {
-                pan: .1,
-                gain: .9
+                pan: 0,
+                gain: .1
             }
         }
 

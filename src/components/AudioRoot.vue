@@ -1,9 +1,13 @@
 <template>
 
-<audio/>
-<!-- <div>
-    <p>{{$parent.ident}} pan: {{this.panner.pan.value}},gain:{{this.gainNode.gain.value}}</p>
-</div> -->
+<div>
+    <audio ref="track"
+    v-for="sound in sounds" 
+    v-bind:key="sound.id"
+    v-bind:src="sound.path">
+
+    </audio>
+</div>
 
 </template>
 
@@ -31,25 +35,27 @@ export default {
     methods: {
 
         play(soundId, options = {}) {
-            const sound = this.sounds.filter( i=> (i.id===soundId) )[0];
+            // const sound = this.sounds.filter( i=> (i.id===soundId) )[0];
+            
+            let i, index, sound
+            for (i=0; i<this.sounds.length; i++) {
+                if (this.sounds[i].id === soundId) {
+                    index = i
+                    sound = this.sounds[i]
+                }
+            }
+
             if (!sound) {return false}          
             if (this.audioContext.state === 'suspended') {
                 this.audioContext.resume();
             }
-            const audioElement = document.createElement('audio')
-            audioElement.setAttribute('src', sound.path)
-            const track = this.audioContext.createMediaElementSource(audioElement);
-            track
-            .connect(this.masterGainNode)
-            .connect(this.gainNode)
-            .connect(this.panner)
-            .connect(this.audioContext.destination)
+            
+            const audioElement = this.$refs.track[index]
             audioElement.play()
 
             if (options.waitUntilFinish) {
                 return new Promise ( (resolve, reject)=>{
                     const confirmEnd = () => {
-                        console.log(`${sound.description} finished`)
                         resolve({
                             finished:true,
                             message:`${sound.description} finished`
@@ -73,15 +79,23 @@ export default {
             this.gainNode.gain.value = val.gain
             //this.$forceUpdate()
         }
-
     },
 
     mounted()  {
         this.panner.pan.value = this.audioPosition.pan
         this.gainNode.value = this.audioPosition.gain
-    }
-    
 
+        this.$refs.track.forEach(audioElement =>{
+
+            const track = this.audioContext.createMediaElementSource(audioElement);
+            track
+            .connect(this.masterGainNode)
+            .connect(this.gainNode)
+            .connect(this.panner)
+            .connect(this.audioContext.destination)
+        })
+
+    }
 }
 </script>
 

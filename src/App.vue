@@ -62,6 +62,7 @@ export default {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const appAudioContext = new AudioContext();
     const masterGainNode = appAudioContext.createGain()
+    masterGainNode.gain.value = .1;
 
     return {
       savedGames: savedGames,

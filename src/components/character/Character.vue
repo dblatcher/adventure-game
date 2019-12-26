@@ -168,7 +168,7 @@ export default {
         audioPosition : function() {
             return {
                 pan: Math.max (Math.min( (this.x - this.roomWidth/2) / (this.roomWidth/2),1), -1),
-                gain: 1
+                gain: .1
             }
         }
     },
