@@ -1,7 +1,7 @@
 <template>
 
 <div>
-    <p>{{$parent.ident}} pan: {{audioPosition.pan}},gain:{{audioPosition.gain}}</p>
+    <p>{{$parent.ident}} pan: {{this.panner.pan.value}},gain:{{this.gainNode.gain.value}}</p>
 </div>
 
 </template>
@@ -46,13 +46,13 @@ export default {
     watch: {
         audioPosition: function (val) {
             this.panner.pan.value = val.pan
-            this.gainNode.value = val.gain
+            this.gainNode.gain.value = val.gain
+            this.$forceUpdate()
         }
 
     },
 
     mounted()  {
-        console.log(this.audioPosition)
         this.panner.pan.value = this.audioPosition.pan
         this.gainNode.value = this.audioPosition.gain
     }
