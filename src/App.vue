@@ -61,13 +61,17 @@ export default {
 
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const appAudioContext = new AudioContext();
+    const masterGainNode = appAudioContext.createGain()
 
     return {
       savedGames: savedGames,
       showTitleScreen: true,
       showEndingScreen: false,
       fileMenuIsOpen: false,
-      appAudioContext,
+      audio : {
+        appAudioContext,
+        masterGainNode,
+      },
     }
   },
 
@@ -75,7 +79,13 @@ export default {
 
     showGame() {
       return (!this.showTitleScreen && !this.showEndingScreen)
-    }
+    },
+
+    masterVolume : {
+      get() {return this.audio.masterGainNode.gain.value},
+      set(value) {this.audio.masterGainNode.gain.value = value;
+      return this.audio.masterGainNode.gain.value} 
+    },
 
   },
 

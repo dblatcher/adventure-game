@@ -14,7 +14,8 @@ export default {
     props: ['sounds', 'audioPosition'],
 
     data () {
-        const appAudioContext = this.$root.$children[0].appAudioContext
+        const appAudioContext = this.$root.$children[0].audio.appAudioContext
+        const masterGainNode = this.$root.$children[0].audio.masterGainNode
         const gainNode = appAudioContext.createGain()
         const panner = new StereoPannerNode(appAudioContext, {pan:0})
 
@@ -22,6 +23,7 @@ export default {
             audioContext: appAudioContext,
             panner: panner,
             gainNode: gainNode,
+            masterGainNode,
         }
     },
 
@@ -40,7 +42,7 @@ export default {
 
             const track = this.audioContext.createMediaElementSource(audioElement);
             
-            track.connect(this.gainNode).connect(this.panner).connect(this.audioContext.destination)
+            track.connect(this.masterGainNode).connect(this.gainNode).connect(this.panner).connect(this.audioContext.destination)
 
             return audioElement.play()
         }
