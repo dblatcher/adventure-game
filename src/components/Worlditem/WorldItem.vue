@@ -152,6 +152,9 @@ export default {
         playSound (soundId, options={}) {
             return this.$refs.audio.play(soundId,options)
         },
+        stopSound (soundId, options={}) {
+            return this.$refs.audio.stop(soundId,options)
+        },
 
     },
 

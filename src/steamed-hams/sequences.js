@@ -28,7 +28,8 @@ const chalmersWalkingAlong = [
     new StandardOrder ('GAME', 'setGameStatus','CUTSCENE'),
     new StandardOrder ('[Teleport]CHALMERS_C,FRONT_R,14,15'),
     new StandardOrder ('GAME','changeRoom',['FRONT_R'], {pcNotMoving:true}),
-    new StandardOrder ('CHALMERS_C>>DOORBELL_W')
+    new StandardOrder ('CHALMERS_C>>DOORBELL_W'),
+    new StandardOrder ('DOORBELL_W','playSound','doorbell'),
 ];
 
 const chalmersAtDoor = [
@@ -136,6 +137,7 @@ const ending = [
     new StandardOrder ('CHALMERS_C::Well Seymour, you are an odd fellow, but I must admit...'),
     new StandardOrder ('CHALMERS_C::You steam a good ham.'),
     new StandardOrder ('PORCH_R.WINDOW_FIRE_W','setRemoval',false ),
+    new StandardOrder ('PORCH_R.WINDOW_FIRE_W','playSound','fire' ),
     new StandardOrder ('CHALMERS_C>>95,1'),
     [
     new StandardOrder ('AGNES_C::help!',{time:200}),

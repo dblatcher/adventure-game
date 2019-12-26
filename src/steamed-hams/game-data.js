@@ -48,6 +48,8 @@ var sounds = [
     new Sound('voice','vc','/voice.wav'),
     new Sound('openning door','open','/open.mp3'),
     new Sound('closing door','close','/close.mp3'),
+    new Sound('doorbell','doorbell','/doorbell.mp3'),
+    new Sound('fire','fire','/fire.mp3'),
 ]
 
 var characterModels = {
