@@ -133,9 +133,7 @@ export default {
             var onLastFrame = !(cycle.length > this.cycleFrame+1);
             this.cycleFrame = onLastFrame ? 0: this.cycleFrame + 1;
 
-            //console.log(cycle[this.cycleFrame])
             if (cycle[this.cycleFrame][3]){
-                console.log (cycle[this.cycleFrame][3])
                 this.playSound(cycle[this.cycleFrame][3])
             }
 
@@ -151,8 +149,8 @@ export default {
                 this.showNextFrame()
             }
         },
-        playSound (soundId) {
-            return this.$refs.audio.play(soundId)
+        playSound (soundId, options={}) {
+            return this.$refs.audio.play(soundId,options)
         },
 
     },

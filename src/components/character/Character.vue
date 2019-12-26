@@ -248,8 +248,8 @@ export default {
                 this.timeSpentIdle = 0;
             }
         },
-        playSound (soundId) {
-            return this.$refs.audio.play(soundId)
+        playSound (soundId, options={}) {
+            return this.$refs.audio.play(soundId,options)
         },
         onBeat(beat) {
             this.checkForIdleAnimation()

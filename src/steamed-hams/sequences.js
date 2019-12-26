@@ -151,9 +151,10 @@ const ending = [
 
 
 const test = [
-    new StandardOrder ('pc::talk test'),
-    new failableOrder ('pc>>100,30'),
-    new StandardOrder ('pc::If I say this, order passed'),
+    new StandardOrder ('pc::sound test'),
+    new StandardOrder ('pc','playSound','vc',{waitUntilFinish:true}),
+    new StandardOrder ('pc::sound test done'),
+
 ]
 
 
