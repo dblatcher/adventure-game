@@ -251,6 +251,9 @@ export default {
         playSound (soundId, options={}) {
             return this.$refs.audio.play(soundId,options)
         },
+        stopSound (soundId, options={}) {
+            return this.$refs.audio.stop(soundId,options)
+        },
         onBeat(beat) {
             this.checkForIdleAnimation()
             if (beat.count % 2 === 0 ) {this.showNextFrame()}
