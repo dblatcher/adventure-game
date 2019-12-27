@@ -99,7 +99,10 @@ const fire = [
     new StandardOrder ('CHALMERS_C', 'setDefaultWait','wait'),
     new StandardOrder ('CHALMERS_C', 'setDefaultTalk','talk'),
     new StandardOrder ('pc>>250,45'),
-    new StandardOrder ('DINING_KITCHENDOOR_W','setStatus',['opening_fire']),
+    [
+        new StandardOrder ('DINING_KITCHENDOOR_W','playSound','fire'),
+        new StandardOrder ('DINING_KITCHENDOOR_W','setStatus',['opening_fire']),
+    ],
     [
         new StandardOrder ('pc>>240,23'),
         new StandardOrder ('DINING_KITCHENDOOR_W','setStatus',['closing_fire','closed_glowing']),
@@ -137,7 +140,7 @@ const ending = [
     new StandardOrder ('CHALMERS_C::Well Seymour, you are an odd fellow, but I must admit...'),
     new StandardOrder ('CHALMERS_C::You steam a good ham.'),
     new StandardOrder ('PORCH_R.WINDOW_FIRE_W','setRemoval',false ),
-    new StandardOrder ('PORCH_R.WINDOW_FIRE_W','playSound','fire' ),
+    new StandardOrder ('PORCH_R.WINDOW_FIRE_W','playSound','fire',{loop:true} ),
     new StandardOrder ('CHALMERS_C>>95,1'),
     [
     new StandardOrder ('AGNES_C::help!',{time:200}),
@@ -148,6 +151,7 @@ const ending = [
     new StandardOrder ('AGNES_C::heeeelp!',{time:200}),
     new StandardOrder ('AGNES_C::heeeeelp!',{time:2000}),
     new StandardOrder ('pc##thumb_up'),
+    new StandardOrder ('PORCH_R.WINDOW_FIRE_W','stopSound','fire',{now:true} ),
     new StandardOrder ('[status]COMPLETE'),
 ]
 

@@ -50,6 +50,8 @@ var sounds = [
     new Sound('closing door','close','/close.mp3'),
     new Sound('doorbell','doorbell','/doorbell.mp3'),
     new Sound('fire','fire','/fire.mp3'),
+    new Sound('sand','sand','/sand.mp3'),
+
 ]
 
 var characterModels = {
@@ -73,7 +75,7 @@ var characterModels = {
             right: [ ['ser',0,0],['ser',1,0],['ser',2,0],['ser',3,0],['ser',4,0], ],
             left: [ ['ser-l',0,0],['ser-l',1,0],['ser-l',2,0],['ser-l',3,0],['ser-l',4,0],]
         },
-        pour_sand: [ ['pour',0,0],['pour',1,0],['pour',2,0],['pour',3,0],['pour',4,0], ],
+        pour_sand: [ ['pour',0,0,'sand'],['pour',1,0],['pour',2,0],['pour',3,0],['pour',4,0], ],
         thumb_up: [ ['thb',0,0],['thb',1,0],['thb',2,0],['thb',2,0],['thb',3,0],['thb',2,0],['thb',2,0],['thb',3,0],['thb',2,0],['thb',2,0],['thb',3,0],['thb',2,0],['thb',2,0],['thb',3,0],['thb',2,0],['thb',2,0],['thb',3,0], ],
         wrap_bucket: [['swb',0,0],['swb',1,0],['swb',2,0],['swb',2,0],['swb',2,0]],
 
@@ -132,8 +134,8 @@ var worldItemModels = {
         closed: [ ['k-dr',3,2]  ],
         open:   [ ['k-dr',0,0]  ],
         closed_glowing: [ ['k-dr',3,0], ['k-dr',3,1]  ],
-        opening:   [ ['k-dr',0,2],['k-dr',0,1],['k-dr',0,0]  ],
-        closing:   [ ['k-dr',0,1],['k-dr',0,2],['k-dr',3,2]  ],
+        opening:   [ ['k-dr',3,2,'open'], ['k-dr',0,2],['k-dr',0,1],['k-dr',0,0]  ],
+        closing:   [ ['k-dr',0,1],['k-dr',0,2,'close'],['k-dr',3,2]  ],
         opening_fire:   [ ['k-dr',1,2],['k-dr',2,2], ['k-dr',1,1] ,['k-dr',2,1], ['k-dr',1,0],['k-dr',2,0]   ],
         closing_fire:   [  ['k-dr',2,0], ['k-dr',1,0],['k-dr',2,1], ['k-dr',1,1],['k-dr',2,2], ['k-dr',1,2]    ]
     }),
