@@ -27,7 +27,8 @@
         
         <AudioRoot 
         v-bind:sounds="theApp.sounds" 
-        v-bind:audioPosition="audioPosition" 
+        v-bind:audioPosition="audioPosition"
+        v-bind:timer="theApp.$refs.heartBeat"  
         ref="audio"/>
 
     </article>

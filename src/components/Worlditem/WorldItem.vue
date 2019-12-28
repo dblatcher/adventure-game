@@ -19,7 +19,8 @@
         </div>
         <AudioRoot 
         v-bind:sounds="gameInstance.sounds" 
-        v-bind:audioPosition="audioPosition" 
+        v-bind:audioPosition="audioPosition"
+        v-bind:timer="gameInstance.$refs.heartBeat" 
         ref="audio"/>
     </article>
 </template>

@@ -11,7 +11,7 @@
 <script>
 export default {
     name: "AudioRoot",
-    props: ['sounds', 'audioPosition'],
+    props: ['sounds', 'audioPosition','timer'],
 
     data () {
         const appAudioContext = this.$root.$children[0].audio.appAudioContext
@@ -24,6 +24,7 @@ export default {
             panner: panner,
             gainNode: gainNode,
             masterGainNode,
+            tracksToResumeWhenGameUnpause:[],
         }
     },
 
@@ -106,7 +107,23 @@ export default {
                 message:`${sound.description} played`
             })  
 
-        }
+        },
+
+        handleGamePaused () {
+            this.$refs.track.forEach(element=> { 
+                if (element.paused === false) {
+                    this.tracksToResumeWhenGameUnpause.push(element)
+                    element.pause()
+                }
+            })
+        },
+
+        handleGameUnpaused () {
+            this.tracksToResumeWhenGameUnpause.forEach(element => {
+                element.play()
+            })
+            this.tracksToResumeWhenGameUnpause.splice(0, this.tracksToResumeWhenGameUnpause.length)
+        },
     },
 
     watch: {
@@ -116,7 +133,7 @@ export default {
         }
     },
 
-    mounted()  {
+    mounted()  { //TO DO - work out if I need to disconnect on unMount 
         this.panner.pan.value = this.audioPosition.pan
         this.gainNode.value = this.audioPosition.gain
 
@@ -131,6 +148,9 @@ export default {
             .connect(this.panner)
             .connect(this.audioContext.destination)
         })
+
+        this.timer.$on('timer-stop', this.handleGamePaused)
+        this.timer.$on('timer-start', this.handleGameUnpaused)
 
     }
 }

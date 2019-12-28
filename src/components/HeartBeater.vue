@@ -29,6 +29,12 @@ export default {
         },
     },
 
+    watch: {
+        timerIsStopped: function (value) {
+            this.$emit(value ? 'timer-stop': 'timer-start', {})
+        }
+    },
+
     mounted : function() {        
         var that = this;
         this.timer = setInterval (function(){that.beat()},that.delay);
