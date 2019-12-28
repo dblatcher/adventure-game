@@ -17,7 +17,7 @@
                 v-bind:measure = "sprite.p.measure"
                 ></Sprite>
         </div>
-        <AudioRoot 
+        <SfxPlayer 
         v-bind:sounds="gameInstance.sounds" 
         v-bind:audioPosition="audioPosition"
         v-bind:timer="gameInstance.$refs.heartBeat" 
@@ -30,11 +30,11 @@ import Sprite from "../Sprite";
 import setStatus from "./setStatus.js";
 import setRemoval from "./setRemoval.js";
 import { innerBorder } from "../../modules/styleGen";
-import AudioRoot from "../AudioRoot";
+import SfxPlayer from "../SfxPlayer";
 
 export default {
     name:'WorldItem',
-    components: { Sprite,AudioRoot },
+    components: { Sprite,SfxPlayer },
     props:['item','measure','highlight'],
     data: function() {
         var spriteSet = [];

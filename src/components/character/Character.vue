@@ -25,7 +25,7 @@
             v-bind:pos="this.speechLinePositioning"
         ></SpeechLine>
         
-        <AudioRoot 
+        <SfxPlayer 
         v-bind:sounds="theApp.sounds" 
         v-bind:audioPosition="audioPosition"
         v-bind:timer="theApp.$refs.heartBeat"  
@@ -37,7 +37,7 @@
 <script>
 import Sprite from "../Sprite";
 import SpeechLine from "./SpeechLine";
-import AudioRoot from "../AudioRoot"
+import SfxPlayer from "../SfxPlayer"
 import {say, countDownSpeech} from "./sayFunction";
 import {goTo, turnTo } from "./goFunction";
 import doFunction from "./doFunction";
@@ -47,7 +47,7 @@ import { innerBorder } from "../../modules/styleGen";
 
 export default {
     name:'Character',
-    components:{Sprite, SpeechLine, AudioRoot},
+    components:{Sprite, SpeechLine, SfxPlayer},
 
     props:['char','measure','roomWidth','roomHeight','highlight'],
 

@@ -10,7 +10,7 @@
 
 <script>
 export default {
-    name: "AudioRoot",
+    name: "SfxPlayer",
     props: ['sounds', 'audioPosition','timer'],
 
     data () {
