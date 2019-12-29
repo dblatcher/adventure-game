@@ -56,7 +56,7 @@ var sounds = [
 
 var characterModels = {
 
-    skinner : new Character.Model (50,100,{
+    skinner : new Character.Model ({
         wait : {
             right : [ ['sk1',0,0] ],
             left : [ ['sk2',4,0] ],
@@ -80,9 +80,9 @@ var characterModels = {
         wrap_bucket: [['swb',0,0],['swb',1,0],['swb',2,0],['swb',2,0],['swb',2,0]],
 
 
-    },'left',{speechBubbleDown:.3, speechBubbleIn:.3}),
+    },{defaultDirection: 'left', speechBubbleDown:.3, speechBubbleIn:.3}),
     
-    chalmers : new Character.Model (50,100,{
+    chalmers : new Character.Model ({
         wait : {
             right : [ ['c1r',1,0] ],
             left : [ ['c1l',4,0] ],
@@ -104,9 +104,9 @@ var characterModels = {
         wait_with_ham : 
         [ ['c2r',0,0] ],
         
-    },'right',{speechBubbleDown:.3, speechBubbleIn:.25}),
+    },{defaultDirection:'right', speechBubbleDown:.3, speechBubbleIn:.25}),
 
-    invisible : new Character.Model (1,1,{
+    invisible : new Character.Model ({
         wait : {
             right : [ ['c1r',0,0] ],
             left : [ ['c1r',6,0] ],
@@ -119,7 +119,7 @@ var characterModels = {
             right : [ ['c1r',0,0] ],
             left : [ ['c1r',6,0] ],
         },
-    },'right')
+    },{})
 }
 
 
@@ -172,14 +172,26 @@ var worldItemModels = {
 
 
 var makeCharacters = function() {return [
-    new Character ('skinner','Skinner',[270,5,0],'white',characterModels.skinner,{
-        idleAnimations: {delay: 100, chance:0.75, cycles:['eye_roll']}
+    new Character ('skinner','Skinner',[270,5,0],'white',characterModels.skinner,
+    {
+        idleAnimations: {delay: 100, chance:0.75, cycles:['eye_roll']},
+        baseWidth: 50,
+        baseHeight: 100
     }),
-    new Character ('chalmers','Superintendent Chalmers',[100,10,null],'red',characterModels.chalmers,{
-        idleAnimations: {delay: 50, chance:0.7, cycles:['blink']}
+    new Character ('chalmers','Superintendent Chalmers',[100,10,null],'red',characterModels.chalmers,
+    {
+        idleAnimations: {delay: 50, chance:0.7, cycles:['blink']},
+        baseWidth: 50,
+        baseHeight: 100
     }),
-    new Character ('server','sever',[230,100,2],'lime',characterModels.invisible),
-    new Character ('agnes','agnes',[400,260,3],'violet',characterModels.invisible),
+    new Character ('server','sever',[230,100,2],'lime',characterModels.invisible,{
+        baseWidth:1,
+        baseHeight:1,
+    }),
+    new Character ('agnes','agnes',[400,260,3],'violet',characterModels.invisible,{
+        baseWidth:1,
+        baseHeight:1,
+    }),
 ]}
 
 var pcId = 'SKINNER_C';
