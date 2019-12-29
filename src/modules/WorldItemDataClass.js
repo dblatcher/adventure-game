@@ -40,6 +40,7 @@ class WorldItem {
     }
 
     get isDataObject() {return true}
+    get dataType() {return 'WorldItem'}
 
     setRemoval (input) {
         this.removed =!!input

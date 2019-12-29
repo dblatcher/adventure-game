@@ -61,6 +61,7 @@
     v-bind:thingHoveredOn="thingHoveredOn"
     v-bind:lastCommand="lastCommand"
     v-bind:conversation="conversation"
+    v-bind:recommendedVerb="recommendedVerb"
     v-on:verb-picked="pickVerb($event)"
     v-on:item-clicked="handleClickOnThing($event)"
     v-on:item-right-clicked="handleRightClickOnThing($event)"
@@ -167,6 +168,28 @@ export default {
         return false; // intransitive verb
       }
     },
+    recommendedVerb : function() {
+      const {thingHoveredOn, verbsAsObject} = this;
+      const {defaultVerb} = this.config;
+
+      if (!thingHoveredOn ) {return null}
+      const {recommendedVerb, dataType, status} = thingHoveredOn;
+
+      let verbId;
+      if (typeof recommendedVerb === 'string' ) {
+        verbId = recommendedVerb
+      }
+      else if (recommendedVerb && typeof recommendedVerb === 'object') {
+        if (dataType === 'WorldItem' && recommendedVerb[status]){ verbId = recommendedVerb[status] }
+      }
+      else if (typeof defaultVerb === 'string') {
+        verbId = defaultVerb
+      }
+      else if (defaultVerb && typeof defaultVerb === 'object') {
+        verbId = defaultVerb[dataType]
+      }
+      return verbsAsObject[verbId]
+    },
     haveCompleteCommand : function() {
       const {verb, subject, object, needObject} = this;
       return (verb && subject && !needObject) || (verb && subject && object)
@@ -179,7 +202,7 @@ export default {
       let wSet = this.rooms[this.roomNumber].worldItems.filter ( (item)=> {
         return !item.removed;
       });
-      
+
       set.push(...wSet, ...cSet);
       set.sort( function(a,b) { return (b.y + b.zAdjust) - (a.y + a.zAdjust)} )
       return set;
