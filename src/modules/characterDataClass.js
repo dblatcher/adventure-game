@@ -1,5 +1,6 @@
 
 import {  setDefaultWait, setDefaultWalk, setDefaultTalk } from "./cycleFunctions";
+import {CharacterModel} from "./models"
 import resetObject from "./resetObject"
 
 export default class Character {
@@ -11,6 +12,10 @@ export default class Character {
         this.y = coords[1];
         this.room = coords[2];
         this.speechColor= speechColor;
+
+        this.baseWidth = config.baseWidth || 20
+        this.baseHeight = config.baseHeight ||20
+
         Object.assign(this,model);
 
         this.scale = config.scale || 1;
@@ -71,50 +76,13 @@ export default class Character {
         }
     }
     
-    static Model (baseWidth,baseHeight, cycles,defaultDirection=false, options={}) {
-        this.baseWidth=baseWidth;
-        this.baseHeight=baseHeight;
-        this.cycles=cycles;
-        
-        var cycleNames = Object.keys(cycles);
-        var cycle, cycleDirections, validDirections = [], spritesUsed=[];
-        if (defaultDirection) {validDirections.push(defaultDirection)}
-        
-        for (var i=0; i<cycleNames.length; i++) {
-            cycle = cycles[cycleNames[i]];	
-            if (Array.isArray(cycle)) {
-                for (var j=0; j<cycle.length; j++) {
-                    if (!spritesUsed.includes(cycle[j][0])) {
-                        spritesUsed.push(cycle[j][0])
-                    }
-                }
-            } else {
-                cycleDirections = Object.keys(cycle);
-                cycleDirections.forEach( (direction) => {
-                    if (!validDirections.includes(direction)) {
-                        validDirections.push(direction);
-                    }
-                    for (var j=0; j<cycle[direction].length; j++) {
-                        if (!spritesUsed.includes(cycle[direction][j][0])) {
-                            spritesUsed.push(cycle[direction][j][0]);
-                        }
-                    }
-                });
-            }
-        }
-        
-        this.spritesUsed = spritesUsed;
-        this.validDirections = validDirections;
-    
-        this.speechBubbleDown = options.speechBubbleDown || .2
-        this.speechBubbleIn = options.speechBubbleIn || .25
-    
-    }
 
 }
+
+
 
 Character.prototype.setDefaultTalk = setDefaultTalk;
 Character.prototype.setDefaultWalk = setDefaultWalk;
 Character.prototype.setDefaultWait = setDefaultWait;
 Character.prototype.reset = resetObject;
-
+Character.Model = CharacterModel

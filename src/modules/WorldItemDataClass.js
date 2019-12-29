@@ -1,5 +1,6 @@
 
 import resetObject from "./resetObject"
+import {Model} from "./models.js"
 
 class WorldItem {
     constructor (id, name, coords ,width,height,initialCycle, model,config={}) {
@@ -61,27 +62,10 @@ class WorldItem {
         }
     }
 
-    static Model( input ) {
-        var cycles = input;
-        this.cycles = cycles;
-        var cycleNames = Object.keys(cycles);
-        var spritesUsed = [];
-        var cycle;
-    
-        for (var i=0; i<cycleNames.length; i++) {
-            cycle = cycles[cycleNames[i]];	
-            for (var j=0; j<cycle.length; j++) {
-                if (!spritesUsed.includes(cycle[j][0])) {
-                    spritesUsed.push(cycle[j][0])
-                }
-            } 
-        }
-        this.spritesUsed = spritesUsed;
-    }
 }
 
 WorldItem.prototype.reset = resetObject;
-
+WorldItem.Model = Model
 
 
 
