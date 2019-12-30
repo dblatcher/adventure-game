@@ -5,7 +5,7 @@ export default function setStatus (input) {
     var orders = [], nextOrder;
     for (var i = 0; i < input.length; i++) {
         nextOrder = typeof input[i] === 'string' ? {cycle:input[i]} : input[i];
-        if (this.item.cycles[nextOrder.cycle]) { 
+        if (this.item.model.cycles[nextOrder.cycle]) { 
             orders.push(nextOrder);
         } else {
             // eslint-disable-next-line

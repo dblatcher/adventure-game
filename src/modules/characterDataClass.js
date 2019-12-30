@@ -6,7 +6,7 @@ import resetObject from "./resetObject"
 export default class Character {
 
     constructor (id,name,coords,speechColor,model,config={}) {
-        this.id = id.toLowerCase() === 'pc' ? 'pc' : id.toUpperCase()+"_C";
+        this.id = id.toUpperCase()+"_C";
         this.name = name;
         this.x = coords[0];
         this.y = coords[1];
@@ -16,7 +16,7 @@ export default class Character {
         this.baseWidth = config.baseWidth || 20
         this.baseHeight = config.baseHeight ||20
 
-        Object.assign(this,model);
+        this.model = model
 
         this.scale = config.scale || 1;
         this.zAdjust = config.zAdjust || 0;
@@ -33,7 +33,7 @@ export default class Character {
 
         this.behaviour_action = config.waitCycle || 'wait';
         this.behaviour_actFrame = '0';
-        this.behaviour_direction = this.validDirections[0];
+        this.behaviour_direction = this.model.validDirections[0];
 
         this.idleAnimations = config.idleAnimations || false;
         this.recommendedVerb = config.recommendedVerb || null;

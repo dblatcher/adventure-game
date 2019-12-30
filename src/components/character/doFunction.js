@@ -8,7 +8,7 @@ export default function (action, options = {} ) {
             message:'Action order skipped: non-string value for ' + this.name+'.'
         });
     }
-    if (!this.char.cycles[action]) {
+    if (!this.char.model.cycles[action]) {
         // eslint-disable-next-line
         console.warn ('Action order skipped: ' + action +' is not a cycle of' + this.name+'.')
         return Promise.resolve({
@@ -21,7 +21,7 @@ export default function (action, options = {} ) {
     if (!options.direction) {options.direction = this.currentDirection}            
     
     //ensure options.direction is a direction supported by the character model's cycle;
-    var availableDirections = Object.keys(this.char.cycles[action]);
+    var availableDirections = Object.keys(this.char.model.cycles[action]);
     if (!availableDirections.includes(options.direction)) {
         options.direction = availableDirections[0];
     }

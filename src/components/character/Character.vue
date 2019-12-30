@@ -48,7 +48,7 @@ export default {
         var spriteSet = [];
         var fullSet = this.$parent.$parent.$parent.sprites;
         for (var i=0; i< fullSet.length; i++) {
-            if (this.char.spritesUsed.includes(fullSet[i].id)) {spriteSet.push ( Object.assign({}, fullSet[i], {p:this} ) )    }
+            if (this.char.model.spritesUsed.includes(fullSet[i].id)) {spriteSet.push ( Object.assign({}, fullSet[i], {p:this} ) )    }
         }
 
         return {
@@ -64,7 +64,7 @@ export default {
         y: function() {return this.char.y},
         ident: function() {return this.char.id},
         dataType: function() {return 'Character'},
-        recommendedVerb: function() {return this.item.recommendedVerb},
+        recommendedVerb: function() {return this.char.recommendedVerb},
         saying : {
             get: function() { return this.char.saying },
             set: function(v) { this.char.saying=v }
@@ -92,23 +92,13 @@ export default {
                 this.char.actionQueue[0].direction : this.behaviour.direction;
         }, 
         frame : function() {
-            var v, directionToUse;
-            var currentOrder = this.char.actionQueue[0] || this.behaviour;
-            var directionNeeded = !Array.isArray(this.char.cycles[currentOrder.action]);
-
-            if (directionNeeded) {
-                if (this.char.cycles[currentOrder.action][currentOrder.direction]) {
-                    directionToUse = currentOrder.direction
-                } else {
-                    directionToUse = Object.keys( this.char.cycles[currentOrder.action] )[0] ;
-                    console.warn(`falling back to ${directionToUse}`)
-                }
-                v =  this.char.cycles[currentOrder.action][directionToUse][currentOrder.actFrame]
-            } else {
-                v = this.char.cycles[currentOrder.action][currentOrder.actFrame]
+            const frameData = this.char.model.getFrame(this.char.actionQueue[0] || this.behaviour)
+            return {
+                sprite: frameData[0],
+                fx:     frameData[1],
+                fy:     frameData[2],
+                sound:  frameData[3]
             }
-
-            return {sprite: v[0], fx:v[1], fy:v[2]}
         },
         walkToPoint: function() {
             return {x:this.x, y:this.y}
@@ -156,8 +146,8 @@ export default {
                 characterWidth:this.scaledWidth,
                 roomHeight:this.roomHeight,
                 roomWidth:this.roomWidth,
-                speechBubbleDown:this.char.speechBubbleDown,
-                speechBubbleIn:this.char.speechBubbleIn,
+                speechBubbleDown:this.char.model.speechBubbleDown,
+                speechBubbleIn:this.char.model.speechBubbleIn,
             }
         },
     },
@@ -175,23 +165,16 @@ export default {
             this.theApp.teleportCharacter ([this.char].concat(target), options)
         },
         showNextFrame : function () { //TO DO - move this method to the data Model?
-            var noActions = ( this.char.actionQueue[0] ) ? false:true; 
             var order = this.char.actionQueue[0] || this.behaviour;
+            this.char.model.correctOrder(order)
 
-            var directionNeeded = !Array.isArray(this.char.cycles[order.action]);
-            if (directionNeeded && !this.char.cycles[order.action][order.direction] ) {
-                console.warn (`Character model for  ${this.char.name} has no cycle for : ${order.action} ${order.direction}!`);
-                let firstKey = Object.keys( this.char.cycles[order.action] )[0] ;
-                order.direction = firstKey;
-            }
-
-            let cycle = directionNeeded ? 
-            this.char.cycles[order.action][order.direction] :
-            this.char.cycles[order.action] ;
-            var onLastFrame = !(cycle.length > order.actFrame+1);
-
+            const cycle = this.char.model.getCycle(order)
+            
+            const onLastFrame = !(cycle.length > order.actFrame+1);
             order.actFrame = onLastFrame ? 0 : order.actFrame + 1;
+
             //this.behaviour is just an object with convience copies of the this.char behaviour properties
+            const noActions = ( this.char.actionQueue[0] ) ? false:true; 
             if (noActions) {this.char.behaviour_actFrame = order.actFrame}
 
             if (onLastFrame && (!order.loop && !noActions )) {
@@ -205,7 +188,6 @@ export default {
             this.$emit('clicked-thing', this.char);
         },
         rightClickHandler : function (event) {
-            console.log(event)
             event.preventDefault();
             event.stopPropagation();
             if (this.char.unclickable) {return false}

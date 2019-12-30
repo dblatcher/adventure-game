@@ -34,7 +34,7 @@ export default {
         var spriteSet = [];
         var fullSet = this.$parent.$parent.$parent.sprites;
         for (var i=0; i< fullSet.length; i++) {
-            if (this.item.spritesUsed.includes(fullSet[i].id)) {spriteSet.push ( Object.assign({}, fullSet[i], {p:this} ) )    }
+            if (this.item.model.spritesUsed.includes(fullSet[i].id)) {spriteSet.push ( Object.assign({}, fullSet[i], {p:this} ) )    }
         }
 
         return {
@@ -55,11 +55,17 @@ export default {
         scaledHeight : function() {return this.scale * this.baseHeight*this.zoneEffects.scale();},
         scaledWidth : function() {return this.scale * this.baseWidth*this.zoneEffects.scale();},
         frame : function() {
-            let cycle = this.item.status;
-            //fix for issue where this.cycleFrame exceeds length? cause unknown, causes error
-            let frameNumber = this.cycleFrame >= this.item.cycles[cycle].length ? 0 : this.cycleFrame
-            var v= this.item.cycles[cycle][frameNumber];
-            return {sprite: v[0], fx:v[1], fy:v[2]}
+            const frameData = this.item.model.getFrame({
+                action: this.status,
+                direction: null,
+                actFrame: this.cycleFrame
+            })
+            return {
+                sprite: frameData[0],
+                fx:     frameData[1],
+                fy:     frameData[2], 
+                sound:  frameData[3]
+            }
         },
         status : function() {return this.item.status},
         name : {
@@ -120,7 +126,11 @@ export default {
         },
         setStatus, setRemoval,
         showNextFrame : function () {
-            var cycle = this.item.cycles[this.item.status] ;
+            
+            var cycle = this.item.model.getCycle({
+                action:this.item.status
+            })
+
             var onLastFrame = !(cycle.length > this.cycleFrame+1);
             this.cycleFrame = onLastFrame ? 0: this.cycleFrame + 1;
 
