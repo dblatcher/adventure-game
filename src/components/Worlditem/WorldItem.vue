@@ -30,6 +30,7 @@ export default {
     name:'WorldItem',
     components: { Sprite },
     props:['item','measure','highlight'],
+    
     data: function() {
         var spriteSet = [];
         var fullSet = this.$parent.$parent.$parent.sprites;
@@ -42,6 +43,7 @@ export default {
         cycleFrame:0
         }
     },
+
     computed :{
         ident: function() {return this.item.id},
         dataType: function() {return 'WorldItem'},
@@ -108,6 +110,7 @@ export default {
         },
 
     },
+
     methods : {
         clickHandler : function (event) {
             if (this.item.unclickable) {return false}

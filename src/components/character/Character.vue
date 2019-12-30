@@ -41,8 +41,8 @@ import { innerBorder } from "../../modules/styleGen";
 export default {
     name:'Character',
     components:{Sprite, SpeechLine},
-
     props:['char','measure','roomWidth','roomHeight','highlight'],
+
 
     data: function() {
         var spriteSet = [];
