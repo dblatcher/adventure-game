@@ -14,7 +14,7 @@ function skip() {
 export default function () {
     if (this.char.destinationQueue.length === 0) {return false}
     
-    if (this.theApp.instantMode) {
+    if (this.gameInstance.instantMode) {
         skip.apply(this,[])
         return false;
     }
@@ -49,7 +49,7 @@ export default function () {
     if (d.x < 0 ) {movement.x *= -1}
     if (d.y < 0 ) {movement.y *= -1}
             
-    var obstacles = this.theApp.obstacles;
+    var obstacles = this.gameInstance.obstacles;
     for (var i=0; i<obstacles.length; i++) {
         if (obstacles[i].containsPoint( this.x+movement.x, this.y+movement.y) ) {
             movement = {x:0, y:0};

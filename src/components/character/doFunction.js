@@ -28,7 +28,7 @@ export default function (action, options = {} ) {
     
     var currentOrder = Object.assign({action:action, actFrame:0},options);
     
-    if (this.theApp.instantMode) {
+    if (this.gameInstance.instantMode) {
          // eslint-disable-next-line
         console.log(`skipped - ${this.name} doing ${currentOrder.action}`);
         return Promise.resolve({

@@ -54,7 +54,7 @@ function findDirection (currentPoint, prevPoint, validDirections) {
 
 
 function turnTo (target, options = {}) {
-	let destination = standardiseDestination(target, this.theApp);
+	let destination = standardiseDestination(target, this.gameInstance);
 	if (destination === false ) {
 		return Promise.resolve( {finished: false, reason:'not valid destination'})
 	}
@@ -65,7 +65,7 @@ function turnTo (target, options = {}) {
 
 function goTo (target, options = {}) {
 
-	let destination = standardiseDestination(target, this.theApp);
+	let destination = standardiseDestination(target, this.gameInstance);
 	if (destination === false ) {
 		return Promise.resolve( {finished: false, reason:'not valid destination'})
 	}
@@ -73,7 +73,7 @@ function goTo (target, options = {}) {
 
 	if (typeof options.action === 'undefined' || !this.char.model.cycles[options.action]) {options.action = this.char.walkCycle}
 
-	var path = this.theApp.findPath(this,destination); 
+	var path = this.gameInstance.findPath(this,destination); 
 	if (path.length === 0 ) {
 		return Promise.resolve( {finished: false, reason:'no route',  message:`No route found to [${destination.x},${destination.y}]`})
 	}
@@ -81,7 +81,7 @@ function goTo (target, options = {}) {
 
 	// create list of orders
 	
-	if (this.theApp.instantMode) {
+	if (this.gameInstance.instantMode) {
 		var orders = skip.apply(this,[path]);
 	} else {
 		var orders = []; 
