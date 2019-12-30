@@ -8,7 +8,7 @@ function setDefaultCycle (type, cycleName) {
         default: return Promise.resolve(false);
     }
 
-    if ( !this.cycles[cycleName]) {
+    if ( !this.model.cycles[cycleName]) {
 
         console.warn ( `set default ${type} failed : ${this.ident} does not have a cycle called "${cycleName}".` ) 
 

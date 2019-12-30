@@ -1,8 +1,8 @@
 function executeSayOrder (order) {		
     this.saying = order.text;
-    this.sayingCountDown = order.time * (this.theApp.options.textDelay/100);
+    this.sayingCountDown = order.time * (this.gameInstance.options.textDelay/100);
     if (this.char.destinationQueue.length === 0) { //not moving
-        if (this.char.cycles[order.action]) { //and the character model has a cycle matching the action options 
+        if (this.char.model.cycles[order.action]) { //and the character model has a cycle matching the action options 
             this.char.behaviour_action = order.action;
             this.char.behaviour_actFrame = 0;
         }
@@ -15,7 +15,7 @@ function say (text, options = {} ) {
     if (typeof options.action !== 'string') {options.action = this.char.talkCycle}
     var currentOrder = Object.assign({text:text}, options);
     
-    if (this.theApp.instantMode) {
+    if (this.gameInstance.instantMode) {
         console.log(`skipped - ${this.name}: ${currentOrder.text}`)
         return Promise.resolve({
             finished:true,
@@ -49,7 +49,7 @@ function countDownSpeech (beat) {
 
     if (this.sayingCountDown || this.saying) { // to do - stop using this.saying - the test should be based on the queue
         this.sayingCountDown = this.sayingCountDown - beat.delay;
-        if (this.theApp.instantMode) { this.sayingCountDown = 0 }
+        if (this.gameInstance.instantMode) { this.sayingCountDown = 0 }
 
         if (this.sayingCountDown <= 0) {
             this.sayingCountDown = 0;

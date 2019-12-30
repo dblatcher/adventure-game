@@ -30,16 +30,16 @@ class WorldItem {
         this.queue = [];
         
         if (model) {
-            Object.assign(this, model);
+            this.model = model
         } else {
-            this.spritesUsed = [];
-            this.cycles = {neutral:[]};
+            this.model = {cycles: {neutral:[]}, spritesUsed:[] }
         }
         
         this.initialState = Object.freeze(Object.assign({model:model},this));
     }
 
     get isDataObject() {return true}
+    get dataType() {return 'WorldItem'}
 
     setRemoval (input) {
         this.removed =!!input
@@ -47,7 +47,7 @@ class WorldItem {
     }
 
     setStatus (input) {
-        if (this.cycles[input]) {this.status = input}
+        if (this.model.cycles[input]) {this.status = input}
         return this;
     }
 

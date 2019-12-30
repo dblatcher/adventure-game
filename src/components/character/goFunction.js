@@ -2,7 +2,7 @@ function skip (path) {
 	return [{
 		x: path[path.length-1].x,
 		y: path[path.length-1].y,
-		direction: findDirection(path[0], this, this.char.validDirections),
+		direction: findDirection(path[0], this, this.char.model.validDirections),
 		action:this.char.walkCycle
 	}];
 }
@@ -54,26 +54,26 @@ function findDirection (currentPoint, prevPoint, validDirections) {
 
 
 function turnTo (target, options = {}) {
-	let destination = standardiseDestination(target, this.theApp);
+	let destination = standardiseDestination(target, this.gameInstance);
 	if (destination === false ) {
 		return Promise.resolve( {finished: false, reason:'not valid destination'})
 	}
 	
-	this.char.behaviour_direction = findDirection (destination,this,this.char.validDirections)
+	this.char.behaviour_direction = findDirection (destination,this,this.char.model.validDirections)
 	return Promise.resolve( {finished: true})
 }
 
 function goTo (target, options = {}) {
 
-	let destination = standardiseDestination(target, this.theApp);
+	let destination = standardiseDestination(target, this.gameInstance);
 	if (destination === false ) {
 		return Promise.resolve( {finished: false, reason:'not valid destination'})
 	}
 
 
-	if (typeof options.action === 'undefined' || !this.char.cycles[options.action]) {options.action = this.char.walkCycle}
+	if (typeof options.action === 'undefined' || !this.char.model.cycles[options.action]) {options.action = this.char.walkCycle}
 
-	var path = this.theApp.findPath(this,destination); 
+	var path = this.gameInstance.findPath(this,destination); 
 	if (path.length === 0 ) {
 		return Promise.resolve( {finished: false, reason:'no route',  message:`No route found to [${destination.x},${destination.y}]`})
 	}
@@ -81,7 +81,7 @@ function goTo (target, options = {}) {
 
 	// create list of orders
 	
-	if (this.theApp.instantMode) {
+	if (this.gameInstance.instantMode) {
 		var orders = skip.apply(this,[path]);
 	} else {
 		var orders = []; 
@@ -89,7 +89,7 @@ function goTo (target, options = {}) {
 			orders.push({
 				x: path[i].x,
 				y: path[i].y,
-				direction: findDirection (path[i],  i > 0 ? path[i-1] : this, this.char.validDirections),
+				direction: findDirection (path[i],  i > 0 ? path[i-1] : this, this.char.model.validDirections),
 				action:options.action,
 				wasManual: options.wasManual,
 			});

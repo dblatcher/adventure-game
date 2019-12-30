@@ -4,7 +4,10 @@
 
             <div class="verb-menu__box"
                 v-bind:for="'verb_'+verb.id"
-                v-bind:class="{'verb-menu__box--on' : (verb == picked)}"
+                v-bind:class="{
+                    'verb-menu__box--on' : (verb == picked),
+                    'verb-menu__box--recommended' : (verb == recommendedVerb),
+                }"
                 @click="$emit('verb-picked',verb.id)"
                 >{{verb.description}}</div>
 
@@ -15,7 +18,7 @@
 <script>
 export default {
     name: 'VerbMenu',
-    props:['picked','verbList','thingHoveredOn'],
+    props:['picked','verbList','thingHoveredOn','recommendedVerb'],
 }
 </script>
 
@@ -23,9 +26,9 @@ export default {
 @import '../modules/material';
 
 .verb-menu {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content:center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:center;
     box-sizing:border-box;
     flex-basis: 100%;
     flex-shrink:.7;
@@ -40,6 +43,16 @@ export default {
     &__box {
         @include btn-outline(black); 
         display: block;
+
+        &--recommended {
+
+            @media (pointer: fine) {
+                @media (hover: hover) {
+                    color: yellow;
+                    text-shadow: 1px 1px black;
+                }
+            }
+        }
 
         &--on {
             @include btn-solid(black); 

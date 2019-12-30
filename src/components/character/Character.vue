@@ -26,9 +26,9 @@
         ></SpeechLine>
         
         <SfxPlayer 
-        v-bind:sounds="theApp.sounds" 
+        v-bind:sounds="gameInstance.sounds" 
         v-bind:audioPosition="audioPosition"
-        v-bind:timer="theApp.$refs.heartBeat"  
+        v-bind:timer="gameInstance.$refs.heartBeat"  
         ref="audio"/>
 
     </article>
@@ -48,14 +48,13 @@ import { innerBorder } from "../../modules/styleGen";
 export default {
     name:'Character',
     components:{Sprite, SpeechLine, SfxPlayer},
-
     props:['char','measure','roomWidth','roomHeight','highlight'],
 
-    data: function() {        
-        var spriteSet = [];        
+    data: function() {
+        var spriteSet = [];
         var fullSet = this.$parent.$parent.$parent.sprites;
         for (var i=0; i< fullSet.length; i++) {
-            if (this.char.spritesUsed.includes(fullSet[i].id)) {spriteSet.push ( Object.assign({}, fullSet[i], {p:this} ) )    }
+            if (this.char.model.spritesUsed.includes(fullSet[i].id)) {spriteSet.push ( Object.assign({}, fullSet[i], {p:this} ) )    }
         }
 
         return {
@@ -65,12 +64,13 @@ export default {
     },
 
     computed :{
-        theApp: function() {return this.$parent.$parent.$parent},
-
+        gameInstance: function() {return this.$parent.$parent.$parent},
         name: function() {return this.char.name},
         x: function() {return this.char.x},
         y: function() {return this.char.y},
         ident: function() {return this.char.id},
+        dataType: function() {return 'Character'},
+        recommendedVerb: function() {return this.char.recommendedVerb},
         saying : {
             get: function() { return this.char.saying },
             set: function(v) { this.char.saying=v }
@@ -98,23 +98,13 @@ export default {
                 this.char.actionQueue[0].direction : this.behaviour.direction;
         }, 
         frame : function() {
-            var v, directionToUse;
-            var currentOrder = this.char.actionQueue[0] || this.behaviour;
-            var directionNeeded = !Array.isArray(this.char.cycles[currentOrder.action]);
-
-            if (directionNeeded) {
-                if (this.char.cycles[currentOrder.action][currentOrder.direction]) {
-                    directionToUse = currentOrder.direction
-                } else {
-                    directionToUse = Object.keys( this.char.cycles[currentOrder.action] )[0] ;
-                    console.warn(`falling back to ${directionToUse}`)
-                }
-                v =  this.char.cycles[currentOrder.action][directionToUse][currentOrder.actFrame]
-            } else {
-                v = this.char.cycles[currentOrder.action][currentOrder.actFrame]
+            const frameData = this.char.model.getFrame(this.char.actionQueue[0] || this.behaviour)
+            return {
+                sprite: frameData[0],
+                fx:     frameData[1],
+                fy:     frameData[2],
+                sound:  frameData[3]
             }
-
-            return {sprite: v[0], fx:v[1], fy:v[2]}
         },
         walkToPoint: function() {
             return {x:this.x, y:this.y}
@@ -128,7 +118,7 @@ export default {
             transform: 'translateX(-50%)',
             backgroundColor: (this.highlight ? 'rgba(255,255,255,.5)' : 'unset' ),
             backgroundImage: (this.highlight ?  innerBorder('blue') : 'unset'),
-            pointerEvents: (this.ident === this.theApp.pcId ? 'none' : 'unset'),
+            pointerEvents: (this.ident === this.gameInstance.pcId ? 'none' : 'unset'),
             transition: 'background-color 1s',
             borderRadius: '5px',
             filter: this.zoneEffects.filter,
@@ -138,7 +128,7 @@ export default {
                 filter:"",
                 scale:function(){return 1},
             };
-            var effectZones = this.theApp.rooms[this.theApp.roomNumber].effectZones;
+            var effectZones = this.gameInstance.rooms[this.gameInstance.roomNumber].effectZones;
             for (var i=0; i<effectZones.length; i++) {
                 if (effectZones[i].zone.containsPoint(this)) {
                     if (effectZones[i].effect.filter) {
@@ -162,8 +152,8 @@ export default {
                 characterWidth:this.scaledWidth,
                 roomHeight:this.roomHeight,
                 roomWidth:this.roomWidth,
-                speechBubbleDown:this.char.speechBubbleDown,
-                speechBubbleIn:this.char.speechBubbleIn,
+                speechBubbleDown:this.char.model.speechBubbleDown,
+                speechBubbleIn:this.char.model.speechBubbleIn,
             }
         },
         audioPosition : function() {
@@ -184,32 +174,22 @@ export default {
         setDefaultTalk: function (type, cycleName){ return this.char.setDefaultTalk (type, cycleName) },
 
         goToRoom : function (target,options){
-            this.theApp.teleportCharacter ([this.char].concat(target), options)
+            this.gameInstance.teleportCharacter ([this.char].concat(target), options)
         },
         showNextFrame : function () { //TO DO - move this method to the data Model?
-            var noActions = ( this.char.actionQueue[0] ) ? false:true; 
             var order = this.char.actionQueue[0] || this.behaviour;
+            this.char.model.correctOrder(order)
 
-            var directionNeeded = !Array.isArray(this.char.cycles[order.action]);
-            if (directionNeeded && !this.char.cycles[order.action][order.direction] ) {
-                console.warn (`Character model for  ${this.char.name} has no cycle for : ${order.action} ${order.direction}!`);
-                let firstKey = Object.keys( this.char.cycles[order.action] )[0] ;
-                order.direction = firstKey;
-            }
-
-            let cycle = directionNeeded ? 
-            this.char.cycles[order.action][order.direction] :
-            this.char.cycles[order.action] ;
-            var onLastFrame = !(cycle.length > order.actFrame+1);
-
+            const cycle = this.char.model.getCycle(order)
+            
+            const onLastFrame = !(cycle.length > order.actFrame+1);
             order.actFrame = onLastFrame ? 0 : order.actFrame + 1;
+
             //this.behaviour is just an object with convience copies of the this.char behaviour properties
+            const noActions = ( this.char.actionQueue[0] ) ? false:true; 
             if (noActions) {this.char.behaviour_actFrame = order.actFrame}
 
-            let newFrame = Array.isArray(this.char.cycles[order.action]) ?
-                this.char.cycles[order.action][order.actFrame] :
-                this.char.cycles[order.action][order.direction][order.actFrame]
-
+            let newFrame = this.char.model.getFrame(order)
             if (newFrame[3]) {
                this.playSound(newFrame[3])
             }
@@ -220,19 +200,18 @@ export default {
             }
         },  
         clickHandler : function (event) {
-            if (this.ident === this.theApp.pcId) {return false}
+            if (this.ident === this.gameInstance.pcId) {return false}
             event.stopPropagation();
             this.$emit('clicked-thing', this.char);
         },
         rightClickHandler : function (event) {
-            console.log(event)
             event.preventDefault();
             event.stopPropagation();
             if (this.char.unclickable) {return false}
             this.$emit('right-clicked-thing', this.char);
         },
         hoverHandler : function (event) {
-            if (this.ident === this.theApp.pcId) {return false}
+            if (this.ident === this.gameInstance.pcId) {return false}
             this.$emit('hover-event', [this, event]);
         },
         checkForIdleAnimation : function () {
