@@ -51,7 +51,7 @@ var sounds = [
     new Sound('doorbell','doorbell','/doorbell.mp3'),
     new Sound('fire','fire','/fire.mp3'),
     new Sound('sand','sand','/sand.mp3'),
-    new Sound('burn','burn','/fire.mp3'),
+    new Sound('burn','burn','/burnLoop.mp3'),
 
 ]
 
@@ -81,7 +81,11 @@ var characterModels = {
         wrap_bucket: [['swb',0,0],['swb',1,0],['swb',2,0],['swb',2,0],['swb',2,0]],
 
 
-    },{defaultDirection: 'left', speechBubbleDown:.3, speechBubbleIn:.3}),
+    },{
+        defaultDirection: 'left',
+        speechBubbleDown:.3, speechBubbleIn:.3,
+        soundLoops:{'talk':false}
+    }),
     
     chalmers : new Character.Model ({
         wait : {
