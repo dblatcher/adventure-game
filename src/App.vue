@@ -51,7 +51,7 @@ export default {
     Game, TitleScreen, EndingScreen, FileMenu, LoadingBar
   },
 
-
+// comment for test commit
   data () {
     let i, jsonString, savedGames = [];
     for (i=0; i<5; i++) {
