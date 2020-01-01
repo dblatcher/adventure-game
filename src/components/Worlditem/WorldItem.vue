@@ -115,9 +115,11 @@ export default {
             return result;
         },
         audioPosition : function() {
+
             return {
                 pan: 0,
-                gain: .1
+                gain: .1,
+                loopSound: this.item.model.getCycleSoundLoop(this.item.status)
             }
         }
 
@@ -140,8 +142,8 @@ export default {
             this.$emit('hover-event', [this, event]);
         },
         setStatus, setRemoval,
+
         showNextFrame : function () {
-            
             var cycle = this.item.model.getCycle({
                 action:this.item.status
             })

@@ -26,11 +26,19 @@ export default {
             masterGainNode,
             tracksToResumeWhenGameUnpause:[],
             tracks: {},
+            currentLoopSound: null,
         }
     },
 
     methods: {
-
+        getTracksPlaying() {
+            let list = []
+            this.$refs.audio.forEach((audioElement, index) =>{
+                if (audioElement.paused === false) {list.push(this.sounds[index].id)}
+            })
+            return list
+        },
+        
         getSoundAndTrack(soundId) {
             let i, index, sound
             for (i=0; i<this.sounds.length; i++) {
@@ -71,6 +79,13 @@ export default {
         },
 
         play(soundId, options = {}) {       
+            if (options.doNotRestart && this.getTracksPlaying().includes(soundId)) {
+                return Promise.resolve({
+                    finished:true,
+                    message:`${sound.description} was already playing`
+                })  
+            }
+
             let soundAndTrack = this.getSoundAndTrack(soundId)
             if (!soundAndTrack) {return false}
             const {sound, audioElement} = soundAndTrack;
@@ -134,9 +149,16 @@ export default {
     },
 
     watch: {
-        audioPosition: function (val) {
-            this.panner.pan.value = val.pan
-            this.gainNode.gain.value = val.gain
+        audioPosition: function (newAudioPosition) {
+            this.panner.pan.value = newAudioPosition.pan
+            this.gainNode.gain.value = newAudioPosition.gain
+
+            if (newAudioPosition.loopSound !== this.currentLoopSound) {
+                if (this.currentLoopSound) {this.stop(this.currentLoopSound, {now:true})}
+                if (newAudioPosition.loopSound) {this.play(newAudioPosition.loopSound, {loop:true})}
+                this.currentLoopSound = newAudioPosition.loopSound
+            }
+
         }
     },
 
@@ -154,6 +176,10 @@ export default {
         this.timer.$on('timer-stop', this.handleGamePaused)
         this.timer.$on('timer-start', this.handleGameUnpaused)
 
+        if (this.audioPosition.loopSound) {
+            this.play(this.audioPosition.loopSound, {loop:true})
+            this.currentLoopSound = this.audioPosition.loopSound
+        }
     }
 }
 </script>

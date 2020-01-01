@@ -34,6 +34,8 @@ class Model {
         this.spritesUsed = spritesUsed;
         this.validDirections = validDirections;
 
+        this.soundLoops = config.soundLoops || {}
+
     }
 
     correctOrder(order) {
@@ -62,6 +64,10 @@ class Model {
                 return cycles[action][Object.keys(cycles[action])[0]]
             }
         }     
+    }
+
+    getCycleSoundLoop(cycleName) {
+        return this.soundLoops[cycleName]
     }
 
     getFrame (order) {

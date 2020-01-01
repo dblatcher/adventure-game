@@ -32,7 +32,7 @@ class WorldItem {
         if (model) {
             this.model = model
         } else {
-            this.model = {cycles: {neutral:[]}, spritesUsed:[] }
+            this.model = new Model({},{})
         }
         
         this.initialState = Object.freeze(Object.assign({model:model},this));
