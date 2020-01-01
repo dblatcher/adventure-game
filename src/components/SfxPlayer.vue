@@ -1,6 +1,6 @@
 <template>
 <div>
-    <audio ref="track"
+    <audio ref="audio"
     v-for="sound in sounds" 
     v-bind:key="sound.id"
     v-bind:src="sound.path">
@@ -25,6 +25,7 @@ export default {
             gainNode: gainNode,
             masterGainNode,
             tracksToResumeWhenGameUnpause:[],
+            tracks: {},
         }
     },
 
@@ -43,7 +44,7 @@ export default {
             
             return {
                 sound:sound,
-                audioElement:this.$refs.track[index]
+                audioElement:this.$refs.audio[index]
             }
         },
 
@@ -77,7 +78,13 @@ export default {
             if (this.audioContext.state === 'suspended') {
                 this.audioContext.resume();
             }
-            
+
+            this.tracks[soundId]
+            .connect(this.masterGainNode)
+            .connect(this.gainNode)
+            .connect(this.panner)
+            .connect(this.audioContext.destination)
+
             const play = audioElement.play()
 
             if (options.waitUntilFinish) {
@@ -110,7 +117,7 @@ export default {
         },
 
         handleGamePaused () {
-            this.$refs.track.forEach(element=> { 
+            this.$refs.audio.forEach(element=> { 
                 if (element.paused === false) {
                     this.tracksToResumeWhenGameUnpause.push(element)
                     element.pause()
@@ -137,16 +144,11 @@ export default {
         this.panner.pan.value = this.audioPosition.pan
         this.gainNode.value = this.audioPosition.gain
 
-        this.$refs.track.forEach(audioElement =>{
+        this.$refs.audio.forEach((audioElement, index) =>{
             audioElement.dataSet = {
                 loop: false
             }
-            const track = this.audioContext.createMediaElementSource(audioElement);
-            track
-            .connect(this.masterGainNode)
-            .connect(this.gainNode)
-            .connect(this.panner)
-            .connect(this.audioContext.destination)
+            this.tracks[this.sounds[index].id] = this.audioContext.createMediaElementSource(audioElement);
         })
 
         this.timer.$on('timer-stop', this.handleGamePaused)
