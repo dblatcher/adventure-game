@@ -51,6 +51,7 @@ var sounds = [
     new Sound('doorbell','doorbell','/doorbell.mp3'),
     new Sound('fire','fire','/fire.mp3'),
     new Sound('sand','sand','/sand.mp3'),
+    new Sound('burn','burn','/fire.mp3'),
 
 ]
 
@@ -162,6 +163,10 @@ var worldItemModels = {
         closed_ham_inside:[['oven',0,0]],
         open_ham_inside:[['oven',2,0]],
         smoking:[['oven',3,0],['oven',4,0],['oven',5,0],['oven',4,0]],
+    },{
+        soundLoops: {
+            'smoking': 'burn',
+        }
     }),
 
     fireInWindow: new WorldItem.Model({
