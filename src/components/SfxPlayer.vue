@@ -96,7 +96,8 @@ export default {
             .connect(this.panner)
             .connect(this.appAudio.appAudioContext.destination)
 
-            const play = audioElement.play()
+            const play = this.appAudio.appAudioContext.state === 'suspended' ?
+            null : audioElement.play()
 
             if (options.waitUntilFinish) {
                 audioElement.dataSet.waiting = true
@@ -107,6 +108,7 @@ export default {
                             audioElement.dataSet.waiting = false
                             resolve({
                                 finished:true,
+                                play:play,
                                 message:`delay representing ${sound.description} finished`
                             })
                         }
@@ -114,17 +116,32 @@ export default {
                     })
                 }
 
+
                 return new Promise ( (resolve)=>{
                     const confirmEnd = () => {
                         audioElement.dataSet.waiting = false
                         audioElement.removeEventListener('ended', confirmEnd)
+                        this.$root.$children[0].$off('audio-disabled', confirmEndBecauseSoundDisable)
                         resolve({
                             finished:true,
                             play:play,
                             message:`${sound.description} finished`
                         })
                     }
+                    const confirmEndBecauseSoundDisable = () => {
+                        audioElement.dataSet.waiting = false
+                        audioElement.removeEventListener('ended', confirmEnd)
+                        this.$root.$children[0].$off('audio-disabled', confirmEndBecauseSoundDisable)
+                        this.stop(sound.id,{now:true})
+// TO DO: should really delay for remaining time of track before resolving? 
+                        resolve({
+                            finished:true,
+                            play:play,
+                            message:`${sound.description} stopped because audio disabled`
+                        })
+                    }
                     audioElement.addEventListener('ended', confirmEnd)
+                    this.$root.$children[0].$on('audio-disabled', confirmEndBecauseSoundDisable)
                 })
             }
 

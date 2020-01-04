@@ -126,10 +126,16 @@ export default {
     toggleSound : function() {
       if (this.audio.appAudioContext.state === 'suspended') {
         this.audio.appAudioContext.resume()
-        .then( () => {this.audio.enabled = true})
+        .then( () => {
+          this.audio.enabled = true
+          this.$emit('audio-enabled')
+        })
       } else {
         this.audio.appAudioContext.suspend()
-        .then( () => {this.audio.enabled = false})
+        .then( () => {
+          this.audio.enabled = false
+          this.$emit('audio-disabled')
+        })
       }
     },
 
