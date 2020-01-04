@@ -4,10 +4,12 @@
         <main class="frame">
             
             <div class="row">
-            <h2 class="title">Options</h2>
-            <div class="close-button" @click="$emit('close',null)"><img src="../icons/window-close.svg"/></div>
-
+                <h2 class="title">Options</h2>
+                <div class="close-button" @click="$emit('close',null)">
+                    <img src="../icons/window-close.svg"/>
+                </div>
             </div>
+
             <form>
 
                 <p class="label">Text time: {{options.textDelay}}%</p>
@@ -19,6 +21,9 @@
                 <div class="slidecontainer">
                     <input type="range" min="0" max="0.2" step="0.001" v-model.number="options.masterVolume" class="slider">
                 </div>
+
+                <p class="label">SOUND:</p>
+                <input type="checkbox" v-model="options.soundEnabled"/>
 
             </form>
 
@@ -36,7 +41,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scroped>
+<style lang="scss">
 
 @import "../modules/_layout.scss";
 @import "../modules/_material.scss";
