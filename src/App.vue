@@ -13,6 +13,7 @@
       <template v-slot:file-buttons>
         <button @click="restartGame()">New Game</button>
         <button @click="function(){fileMenuIsOpen = true}">Restore</button>
+        <button @click="toggleSound">{{audio.enabled? 'disable sound' : 'enable sound'}}</button>
       </template>
 
       <template v-slot:loading-bar><LoadingBar /></template>
@@ -71,6 +72,7 @@ export default {
       audio : {
         appAudioContext,
         masterGainNode,
+        enabled: false,
       },
     }
   },
@@ -118,6 +120,16 @@ export default {
         case 'clear':
           this.deleteSavedGame(event[0]);
           break;
+      }
+    },
+
+    toggleSound : function() {
+      if (this.audio.appAudioContext.state === 'suspended') {
+        this.audio.appAudioContext.resume()
+        .then( () => {this.audio.enabled = true})
+      } else {
+        this.audio.appAudioContext.suspend()
+        .then( () => {this.audio.enabled = false})
       }
     },
 
