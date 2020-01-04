@@ -14,16 +14,15 @@ export default {
     props: ['sounds', 'audioPosition','timer'],
 
     data () {
-        const appAudioContext = this.$root.$children[0].audio.appAudioContext
-        const masterGainNode = this.$root.$children[0].audio.masterGainNode
+        const appAudio = this.$root.$children[0].audio
+        const {appAudioContext} = appAudio
         const gainNode = appAudioContext.createGain()
         const panner = new StereoPannerNode(appAudioContext, {pan:0})
 
         return {
-            audioContext: appAudioContext,
+            appAudio,
             panner: panner,
             gainNode: gainNode,
-            masterGainNode,
             tracksToResumeWhenGameUnpause:[],
             tracks: {},
             currentLoopSound: null,
@@ -38,7 +37,7 @@ export default {
             })
             return list
         },
-        
+
         getSoundAndTrack(soundId) {
             let i, index, sound
             for (i=0; i<this.sounds.length; i++) {
@@ -78,33 +77,44 @@ export default {
             })  
         },
 
-        play(soundId, options = {}) {       
+        play(soundId, options = {}) {
             if (options.doNotRestart && this.getTracksPlaying().includes(soundId)) {
                 return Promise.resolve({
                     finished:true,
                     message:`${sound.description} was already playing`
-                })  
+                })
             }
 
             let soundAndTrack = this.getSoundAndTrack(soundId)
             if (!soundAndTrack) {return false}
             const {sound, audioElement} = soundAndTrack;
 
-            if (this.audioContext.state === 'suspended') {
-                this.audioContext.resume();
-            }
 
             this.tracks[soundId]
-            .connect(this.masterGainNode)
+            .connect(this.appAudio.masterGainNode)
             .connect(this.gainNode)
             .connect(this.panner)
-            .connect(this.audioContext.destination)
+            .connect(this.appAudio.appAudioContext.destination)
 
             const play = audioElement.play()
 
             if (options.waitUntilFinish) {
                 audioElement.dataSet.waiting = true
-                return new Promise ( (resolve, reject)=>{
+
+                if(this.appAudio.appAudioContext.state === 'suspended') {
+                    return new Promise ( (resolve)=>{
+                        const confirmEnd = () => {
+                            audioElement.dataSet.waiting = false
+                            resolve({
+                                finished:true,
+                                message:`delay representing ${sound.description} finished`
+                            })
+                        }
+                        setTimeout(confirmEnd, audioElement.duration*1000)
+                    })
+                }
+
+                return new Promise ( (resolve)=>{
                     const confirmEnd = () => {
                         audioElement.dataSet.waiting = false
                         audioElement.removeEventListener('ended', confirmEnd)
@@ -170,7 +180,7 @@ export default {
             audioElement.dataSet = {
                 loop: false
             }
-            this.tracks[this.sounds[index].id] = this.audioContext.createMediaElementSource(audioElement);
+            this.tracks[this.sounds[index].id] = this.appAudio.appAudioContext.createMediaElementSource(audioElement);
         })
 
         this.timer.$on('timer-stop', this.handleGamePaused)
