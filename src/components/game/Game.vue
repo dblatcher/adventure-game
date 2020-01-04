@@ -152,7 +152,7 @@ export default {
         optionsMenuIsOpen: false,
         instantMode: false,
         narration: {contents:[], dismissable:true},
-        options: {textDelay: 100, masterVolume: .1},
+        options: {textDelay: 100, masterVolume: .1, soundEnabled:(this.$parent.audio.enabled)},
         interactionMatrix: gameData.interactionMatrix,
         verbList : gameData.verbList,
         sprites : gameData.sprites,
@@ -301,8 +301,20 @@ export default {
     },
 
     toggleOptionsMenu(event) {
+      const menuIsBeingClosing =  this.optionsMenuIsOpen
+
+      if (!menuIsBeingClosing) {
+        this.options.soundEnabled = this.$parent.audio.enabled
+      }
+
       this.optionsMenuIsOpen = !this.optionsMenuIsOpen;
-      this.$parent.masterVolume = this.options.masterVolume
+
+      if (menuIsBeingClosing) {
+        this.$parent.masterVolume = this.options.masterVolume
+        if(this.$parent.audio.enabled !== this.options.soundEnabled) {
+          this.$parent.toggleSound()
+        }
+      } 
 
     },
 
