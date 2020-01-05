@@ -20,9 +20,23 @@
             <slot name="loading-bar"></slot>
         </div>
 
+
+
         <div class="title-page__button-set">
             <slot name="file-buttons"></slot>
             <button v-on:click="showAboutBlock = true">About</button>
+        </div>
+
+        <div class="title-page__sound-control">
+            <slot name="sound-toggle"></slot>
+            <label 
+            class="title-page__sound-button-label"
+            v-bind:class="{'title-page__sound-button-label--on': soundEnabled}"
+            for="toggle-sound"
+            >
+                <img v-show="soundEnabled" class="title-page__sound-icon" src='../icons/volume-up.svg'/>
+                <img v-show="!soundEnabled" class="title-page__sound-icon" src='../icons/volume-mute.svg'/>
+            </label>
         </div>
 
         <section v-show="showAboutBlock" class="about">
@@ -57,6 +71,7 @@
 
 export default {
     name: "TitleScreen",
+    props: ["soundEnabled"],
 
     data: function() {
         return {
@@ -192,19 +207,56 @@ export default {
     &__button-set {
         @include placeAbsolute(1rem, .5rem, true);
 
-        
-            display: flex;
-            flex-flow: row wrap;
-            justify-content: flex-end;
-        
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: flex-end;
 
         button {
+            cursor: pointer;
             display:block;
             margin: .5rem;
             min-width: 8rem;
             font-family: monospace;
             font-size: 1.2rem;
         }
+    }
+
+    &__sound-control {
+
+        @include placeAbsolute(0, 0);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 5rem;
+        height: 5rem;
+
+        button {
+            display: none;
+        }
+    }
+
+    &__sound-button-label {
+        cursor: pointer;
+        display: inline-block;
+        box-sizing: border-box;
+        height: 2.5rem;
+        width: 2.5rem;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: $drop-shadow2;
+        background-color: $colour-red;
+
+        &--on {
+            background-color: $colour-green;
+        }
+    }
+
+    &__sound-icon { 
+        height: 1.5rem;
+        width: 1.5rem;
+        box-sizing: border-box;
     }
 
     &__loading {

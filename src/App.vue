@@ -8,12 +8,15 @@
       v-on:file-menu-click="handleFileMenuClick($event)"
     ></FileMenu>
 
-    <TitleScreen v-show="showTitleScreen">
+    <TitleScreen v-show="showTitleScreen" v-bind:soundEnabled="audio.enabled">
 
       <template v-slot:file-buttons>
-        <button @click="restartGame()">New Game</button>
-        <button @click="function(){fileMenuIsOpen = true}">Restore</button>
-        <button @click="toggleSound">{{audio.enabled? 'disable sound' : 'enable sound'}}</button>
+        <button id="new-game" @click="restartGame()">New Game</button>
+        <button id="restore" @click="function(){fileMenuIsOpen = true}">Restore</button>
+      </template>
+
+      <template v-slot:sound-toggle>
+        <button id="toggle-sound" @click="toggleSound">{{audio.enabled? 'disable sound' : 'enable sound'}}</button>
       </template>
 
       <template v-slot:loading-bar><LoadingBar /></template>
