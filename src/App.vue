@@ -60,8 +60,8 @@ export default {
     }
 
     const AudioContext = window.AudioContext || window.webkitAudioContext;
-    const appAudioContext = new AudioContext();
-    const masterGainNode = appAudioContext.createGain()
+    const audioContext = new AudioContext();
+    const masterGainNode = audioContext.createGain()
     masterGainNode.gain.value = .1;
 
     return {
@@ -70,7 +70,7 @@ export default {
       showEndingScreen: false,
       fileMenuIsOpen: false,
       audio : {
-        appAudioContext,
+        audioContext,
         masterGainNode,
         enabled: false,
       },
@@ -124,14 +124,14 @@ export default {
     },
 
     toggleSound : function() {
-      if (this.audio.appAudioContext.state === 'suspended') {
-        this.audio.appAudioContext.resume()
+      if (this.audio.audioContext.state === 'suspended') {
+        this.audio.audioContext.resume()
         .then( () => {
           this.audio.enabled = true
           this.$emit('audio-enabled')
         })
       } else {
-        this.audio.appAudioContext.suspend()
+        this.audio.audioContext.suspend()
         .then( () => {
           this.audio.enabled = false
           this.$emit('audio-disabled')

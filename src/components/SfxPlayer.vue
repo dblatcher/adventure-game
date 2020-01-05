@@ -11,16 +11,14 @@
 <script>
 export default {
     name: "SfxPlayer",
-    props: ['sounds', 'audioPosition','timer'],
+    props: ['sounds', 'audioPosition','timer','contextSource', 'audioContextStatusEmitter'],
 
     data () {
-        const appAudio = this.$root.$children[0].audio
-        const {appAudioContext} = appAudio
-        const gainNode = appAudioContext.createGain()
-        const panner = new StereoPannerNode(appAudioContext, {pan:0})
+        const {audioContext} = this.contextSource
+        const gainNode = audioContext.createGain()
+        const panner = new StereoPannerNode(audioContext, {pan:0})
 
         return {
-            appAudio,
             panner: panner,
             gainNode: gainNode,
             tracksToResumeWhenGameUnpause:[],
@@ -91,18 +89,18 @@ export default {
 
 
             this.tracks[soundId]
-            .connect(this.appAudio.masterGainNode)
+            .connect(this.contextSource.masterGainNode)
             .connect(this.gainNode)
             .connect(this.panner)
-            .connect(this.appAudio.appAudioContext.destination)
+            .connect(this.contextSource.audioContext.destination)
 
-            const play = this.appAudio.appAudioContext.state === 'suspended' ?
+            const play = this.contextSource.audioContext.state === 'suspended' ?
             null : audioElement.play()
 
             if (options.waitUntilFinish) {
                 audioElement.dataSet.waiting = true
 
-                if(this.appAudio.appAudioContext.state === 'suspended') {
+                if(this.contextSource.audioContext.state === 'suspended') {
                     return new Promise ( (resolve)=>{
                         const confirmEnd = () => {
                             audioElement.dataSet.waiting = false
@@ -121,7 +119,7 @@ export default {
                     const confirmEnd = () => {
                         audioElement.dataSet.waiting = false
                         audioElement.removeEventListener('ended', confirmEnd)
-                        this.$root.$children[0].$off('audio-disabled', confirmEndBecauseSoundDisable)
+                        this.audioContextStatusEmitter.$off('audio-disabled', confirmEndBecauseSoundDisable)
                         resolve({
                             finished:true,
                             play:play,
@@ -131,7 +129,7 @@ export default {
                     const confirmEndBecauseSoundDisable = () => {
                         audioElement.dataSet.waiting = false
                         audioElement.removeEventListener('ended', confirmEnd)
-                        this.$root.$children[0].$off('audio-disabled', confirmEndBecauseSoundDisable)
+                        this.audioContextStatusEmitter.$off('audio-disabled', confirmEndBecauseSoundDisable)
                         this.stop(sound.id,{now:true})
 // TO DO: should really delay for remaining time of track before resolving? 
                         resolve({
@@ -141,7 +139,7 @@ export default {
                         })
                     }
                     audioElement.addEventListener('ended', confirmEnd)
-                    this.$root.$children[0].$on('audio-disabled', confirmEndBecauseSoundDisable)
+                    this.audioContextStatusEmitter.$on('audio-disabled', confirmEndBecauseSoundDisable)
                 })
             }
 
@@ -197,7 +195,7 @@ export default {
             audioElement.dataSet = {
                 loop: false
             }
-            this.tracks[this.sounds[index].id] = this.appAudio.appAudioContext.createMediaElementSource(audioElement);
+            this.tracks[this.sounds[index].id] = this.contextSource.audioContext.createMediaElementSource(audioElement);
         })
 
         this.timer.$on('timer-stop', this.handleGamePaused)
