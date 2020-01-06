@@ -198,12 +198,21 @@ export default {
             this.tracks[this.sounds[index].id] = this.contextSource.audioContext.createMediaElementSource(audioElement);
         })
 
-        this.timer.$on('timer-stop', this.handleGamePaused)
-        this.timer.$on('timer-start', this.handleGameUnpaused)
+        if (this.timer) {
+            this.timer.$on('timer-stop', this.handleGamePaused)
+            this.timer.$on('timer-start', this.handleGameUnpaused)
+        }
 
         if (this.audioPosition.loopSound) {
             this.play(this.audioPosition.loopSound, {loop:true})
             this.currentLoopSound = this.audioPosition.loopSound
+        }
+    },
+
+    beforeDestroy() {
+        if (this.timer) {
+            this.timer.$off('timer-stop', this.handleGamePaused)
+            this.timer.$off('timer-start', this.handleGameUnpaused)
         }
     }
 }
