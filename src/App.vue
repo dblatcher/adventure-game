@@ -36,7 +36,7 @@
       overflow: showGame ? 'unset': 'hidden',
       visibility: showGame ? 'unset': 'hidden',
     }">
-      <Game ref="game"/> 
+      <Game ref="game" v-bind:running="showGame"/> 
     </div>
 
   </div>
@@ -65,7 +65,7 @@ export default {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const audioContext = new AudioContext();
     const masterGainNode = audioContext.createGain()
-    masterGainNode.gain.value = .1;
+    masterGainNode.gain.value = 0; // initial gain value is 0 because enabled is false 
 
     return {
       savedGames: savedGames,
@@ -76,6 +76,7 @@ export default {
         audioContext,
         masterGainNode,
         enabled: false,
+        masterVolume: 1,
       },
     }
   },
@@ -88,8 +89,9 @@ export default {
 
     masterVolume : {
       get() {return this.audio.masterGainNode.gain.value},
-      set(value) {this.audio.masterGainNode.gain.value = value;
-      return this.audio.masterGainNode.gain.value} 
+      set(value) {
+        this.audio.masterGainNode.gain.value = value;
+        return this.audio.masterGainNode.gain.value} 
     },
 
   },
@@ -126,20 +128,23 @@ export default {
       }
     },
 
+   respondToGameOptionsUpdate: function(newOptions) {
+    this.audio.enabled = newOptions.soundEnabled
+    if (typeof newOptions.masterVolume === 'number' ) {
+      this.audio.masterVolume = newOptions.masterVolume
+    }
+    this.audio.masterGainNode.gain.value = this.audio.enabled ? this.audio.masterVolume : 0;
+
+    if ( this.audio.enabled && this.audio.audioContext.state === 'suspended') {
+      this.audio.audioContext.resume()
+      .then( () => {
+        this.$emit('audio-enabled')
+      })
+    }
+   },
+
     toggleSound : function() {
-      if (this.audio.audioContext.state === 'suspended') {
-        this.audio.audioContext.resume()
-        .then( () => {
-          this.audio.enabled = true
-          this.$emit('audio-enabled')
-        })
-      } else {
-        this.audio.audioContext.suspend()
-        .then( () => {
-          this.audio.enabled = false
-          this.$emit('audio-disabled')
-        })
-      }
+      this.respondToGameOptionsUpdate({soundEnabled: !this.audio.enabled})
     },
 
     quitGame : function() {

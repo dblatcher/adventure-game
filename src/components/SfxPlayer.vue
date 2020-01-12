@@ -21,14 +21,14 @@ export default {
         return {
             panner: panner,
             gainNode: gainNode,
-            tracksToResumeWhenGameUnpause:[],
+            audioElementsToResumeWhenGameUnpause:[],
             tracks: {},
             currentLoopSound: null,
         }
     },
 
     methods: {
-        getTracksPlaying() {
+        getSoundsPlaying() {
             let list = []
             this.$refs.audio.forEach((audioElement, index) =>{
                 if (audioElement.paused === false) {list.push(this.sounds[index].id)}
@@ -36,7 +36,7 @@ export default {
             return list
         },
 
-        getSoundAndTrack(soundId) {
+        getSoundAndAudioElement(soundId) {
             let i, index, sound
             for (i=0; i<this.sounds.length; i++) {
                 if (this.sounds[i].id === soundId) {
@@ -54,7 +54,7 @@ export default {
         },
 
         stop(soundId, options = {}) {
-            let soundAndTrack = this.getSoundAndTrack(soundId)
+            let soundAndTrack = this.getSoundAndAudioElement(soundId)
             if (!soundAndTrack) {return false}
             const {sound, audioElement} = soundAndTrack;
 
@@ -76,14 +76,14 @@ export default {
         },
 
         play(soundId, options = {}) {
-            if (options.doNotRestart && this.getTracksPlaying().includes(soundId)) {
+            if (options.doNotRestart && this.getSoundsPlaying().includes(soundId)) {
                 return Promise.resolve({
                     finished:true,
                     message:`${sound.description} was already playing`
                 })
             }
 
-            let soundAndTrack = this.getSoundAndTrack(soundId)
+            let soundAndTrack = this.getSoundAndAudioElement(soundId)
             if (!soundAndTrack) {return false}
             const {sound, audioElement} = soundAndTrack;
 
@@ -159,18 +159,33 @@ export default {
         handleGamePaused () {
             this.$refs.audio.forEach(element=> { 
                 if (element.paused === false) {
-                    this.tracksToResumeWhenGameUnpause.push(element)
+                    this.audioElementsToResumeWhenGameUnpause.push(element)
                     element.pause()
                 }
             })
         },
 
         handleGameUnpaused () {
-            this.tracksToResumeWhenGameUnpause.forEach(element => {
+            this.audioElementsToResumeWhenGameUnpause.forEach(element => {
                 element.play()
             })
-            this.tracksToResumeWhenGameUnpause.splice(0, this.tracksToResumeWhenGameUnpause.length)
+            this.audioElementsToResumeWhenGameUnpause.splice(0, this.audioElementsToResumeWhenGameUnpause.length)
         },
+
+        handleAudioContextEnabled () {
+            console.log(this.$parent.ident, 'knows audio enabled')
+            console.log(this.timer)
+            if (this.audioPosition.loopSound) {
+
+                if (this.timer.timerIsStopped) {
+                    this.audioElementsToResumeWhenGameUnpause.push( this.getSoundAndAudioElement(this.audioPosition.loopSound).audioElement)
+                } else {
+                    this.play(this.audioPosition.loopSound, {loop:true})
+                    this.currentLoopSound = this.audioPosition.loopSound
+                }
+
+            }
+        }
     },
 
     watch: {
@@ -198,6 +213,8 @@ export default {
             this.tracks[this.sounds[index].id] = this.contextSource.audioContext.createMediaElementSource(audioElement);
         })
 
+        this.audioContextStatusEmitter.$on('audio-enabled', this.handleAudioContextEnabled)
+
         if (this.timer) {
             this.timer.$on('timer-stop', this.handleGamePaused)
             this.timer.$on('timer-start', this.handleGameUnpaused)
@@ -210,6 +227,7 @@ export default {
     },
 
     beforeDestroy() {
+        this.audioContextStatusEmitter.$off('audio-enabled', this.handleAudioContextEnabled)
         if (this.timer) {
             this.timer.$off('timer-stop', this.handleGamePaused)
             this.timer.$off('timer-start', this.handleGameUnpaused)

@@ -134,6 +134,7 @@ function makeObjectFromList(list, keyname) {
 
 export default {
   name: 'Game',
+  props: ['running'],
   components :{
     DialogMenu, Room, ThingInRoom, OptionsMenu, 
     HeartBeater, ScummInterface, ControlButtons, NarrationMessage
@@ -282,7 +283,7 @@ export default {
       return this.$parent.fileMenuIsOpen;
     },
     timerIsStopped () {
-      return (this.gameStatus === 'PAUSED' || this.$parent.fileMenuIsOpen || this.optionsMenuIsOpen);
+      return (this.gameStatus === 'PAUSED' || this.$parent.fileMenuIsOpen || this.optionsMenuIsOpen || !this.running);
     },
     hideControls () {
       return !(this.gameStatus === 'LIVE')
@@ -305,15 +306,13 @@ export default {
 
       if (!menuIsBeingClosing) {
         this.options.soundEnabled = this.$parent.audio.enabled
+        this.options.masterVolume = this.$parent.audio.masterVolume
       }
 
       this.optionsMenuIsOpen = !this.optionsMenuIsOpen;
 
       if (menuIsBeingClosing) {
-        this.$parent.masterVolume = this.options.masterVolume
-        if(this.$parent.audio.enabled !== this.options.soundEnabled) {
-          this.$parent.toggleSound()
-        }
+        this.$parent.respondToGameOptionsUpdate(this.options)
       } 
 
     },
