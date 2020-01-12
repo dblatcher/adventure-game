@@ -173,11 +173,9 @@ export default {
         },
 
         handleAudioContextEnabled () {
-            console.log(this.$parent.ident, 'knows audio enabled')
-            console.log(this.timer)
             if (this.audioPosition.loopSound) {
 
-                if (this.timer.timerIsStopped) {
+                if (this.timer && this.timer.timerIsStopped) {
                     this.audioElementsToResumeWhenGameUnpause.push( this.getSoundAndAudioElement(this.audioPosition.loopSound).audioElement)
                 } else {
                     this.play(this.audioPosition.loopSound, {loop:true})

@@ -23,6 +23,13 @@
 
     </TitleScreen>
 
+        <SfxPlayer 
+        v-bind:sounds="sounds" 
+        v-bind:audioPosition="titleMusicPosition"
+        v-bind:contextSource="audio"
+        v-bind:audioContextStatusEmitter="self"   
+        ref="audio"/>
+
     <EndingScreen v-show="showEndingScreen">
       <template v-slot:file-buttons>
         <button @click="quitGame()">Restart</button>
@@ -48,11 +55,15 @@ import Game from "./components/game/Game";
 import LoadingBar from "./components/LoadingBar";
 import FileMenu from "./components/fileMenu";
 import {TitleScreen, EndingScreen} from "./gameIndex"
+import SfxPlayer from "./components/SfxPlayer"
+
+import { /* webpackPreload: true */ gameData } from "./gameIndex";
+
 
 export default {
   name: 'App',
   components :{
-    Game, TitleScreen, EndingScreen, FileMenu, LoadingBar
+    Game, TitleScreen, EndingScreen, FileMenu, LoadingBar, SfxPlayer,
   },
 
   data () {
@@ -77,11 +88,24 @@ export default {
         masterGainNode,
         enabled: false,
         masterVolume: 1,
+        titleMusicVolume: .5,
       },
     }
   },
 
   computed : {
+
+    self() {return this},
+    sounds() { return gameData.sounds},
+
+    titleMusicPosition() {
+      return {
+          pan: 0,
+          gain: this.audio.titleMusicVolume,
+          loopSound: this.showTitleScreen? 'music' : null
+      }
+    },
+
 
     showGame() {
       return (!this.showTitleScreen && !this.showEndingScreen)
