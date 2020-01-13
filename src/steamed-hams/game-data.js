@@ -28,13 +28,9 @@ var sprites = [
   new Sprite('pour', require('./sprites/pour.png'),[5,1]),
   new Sprite('thb', require('./sprites/thumbup.png'),[4,1],[1.1,1,-17]),
 
-  new Sprite ('ch1l',  require('./sprites/Chalmers-w-l.png'),[7,1],[1, .9]),
-  new Sprite ('ch1r',  require('./sprites/Chalmers-w-r.png'),[7,1],[1, .9]),
 
-    new Sprite ('c1r', require('./sprites/chal-1-r.png'),[6,1]),
-    new Sprite ('c1l', require('./sprites/chal-1-l.png'),[6,1]),
-    new Sprite ('c2r', require('./sprites/chal-2-r.png'),[5,1]),
-    new Sprite ('c2l', require('./sprites/chal-2-l.png'),[5,1]),
+    new Sprite ('ch-l', require('./sprites/Chalmers-sheet-l-small.png'),[6,3]),
+    new Sprite ('ch-r', require('./sprites/Chalmers-sheet-r-small.png'),[6,3]),
 
   new Sprite ('fire',  require('./sprites/window_fire.png'),[2,1]),
 
@@ -73,40 +69,40 @@ var characterModels = {
     
     chalmers : new Character.Model ({
         wait : {
-            right : [ ['c1r',1,0] ],
-            left : [ ['c1l',4,0] ],
+            right : [ ['ch-r',3,0] ],
+            left : [ ['ch-l',2,0] ],
         },
         walk : {
-            right : [ ['ch1r',1,0],['ch1r',2,0],['ch1r',3,0],['ch1r',4,0], ['ch1r',5,0]  ] ,
-            left : [ ['ch1l',1,0],['ch1l',2,0],['ch1l',3,0],['ch1l',4,0], ['ch1l',5,0]  ] ,
+            right : [ ['ch-r',0,2],['ch-r',1,2],['ch-r',2,2],['ch-r',3,2], ['ch-r',4,2]  ] ,
+            left : [ ['ch-l',1,2],['ch-l',5,2],['ch-l',4,2],['ch-l',3,2], ['ch-l',2,2]  ] ,
         },
         talk : {
-            right : [ ['c1r',4,0],['c1r',2,0],['c1r',3,0],['c1r',4,0],['c1r',5,0] ],
-            left :  [ ['c1l',1,0],['c1l',3,0],['c1l',2,0],['c1l',1,0],['c1l',0,0], ],
+            right : [ ['ch-r',2,1],['ch-r',3,1],['ch-r',4,1],['ch-r',5,1],['ch-r',4,1] ],
+            left :  [ ['ch-l',0,1],['ch-l',1,1],['ch-l',2,1],['ch-l',3,1],['ch-l',1,1], ],
         },
         blink : {
-            right : [ ['c1r',1,0],['c1r',0,0],['c1r',1,0] ],
-            left :  [ ['c1l',4,0],['c1l',5,0],['c1l',4,0] ],
+            right : [ ['ch-r',3,0],['ch-r',0,0],['ch-r',3,0] ],
+            left :  [ ['ch-l',2,0],['ch-l',5,0],['ch-l',2,0] ],
         },
         talk_with_ham : 
-        [ ['c2r',0,2],['c2r',1,0],['c2r',2,0],['c2r',3,0],['c2r',4,0] ],
+        [ ['ch-r',4,0],['ch-r',5,0],['ch-r',0,1],['ch-r',1,1],['ch-r',0,1] ],
         wait_with_ham : 
-        [ ['c2r',0,0] ],
+        [ ['ch-r',2,0] ],
         
     },{defaultDirection:'right', speechBubbleDown:.3, speechBubbleIn:.25}),
 
     invisible : new Character.Model ({
         wait : {
-            right : [ ['c1r',0,0] ],
-            left : [ ['c1r',6,0] ],
+            right : [ ['ch-r',0,0] ],
+            left : [ ['ch-r',6,0] ],
         },
         walk : {
-            right : [ ['c1r',0,0] ],
-            left : [ ['c1r',6,0] ],
+            right : [ ['ch-r',0,0] ],
+            left : [ ['ch-r',6,0] ],
         },
         talk : {
-            right : [ ['c1r',0,0] ],
-            left : [ ['c1r',6,0] ],
+            right : [ ['ch-r',0,0] ],
+            left : [ ['ch-r',6,0] ],
         },
     },{})
 }
