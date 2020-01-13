@@ -88,7 +88,7 @@ export default {
         masterGainNode,
         enabled: false,
         masterVolume: 1,
-        titleMusicVolume: .5,
+        titleMusicVolume: .25,
       },
     }
   },
