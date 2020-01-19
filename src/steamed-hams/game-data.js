@@ -159,13 +159,17 @@ var worldItemModels = {
 var makeCharacters = function() {return [
     new Character ('skinner','Skinner',[270,5,0],'white',characterModels.skinner,
     {
-        idleAnimations: {delay: 100, chance:0.75, cycles:['eye_roll']},
+        idleAnimations: {
+            wait: {delay: 100, chance:0.75, cycles:['eye_roll']}
+        },
         baseWidth: 50,
         baseHeight: 100
     }),
     new Character ('chalmers','Superintendent Chalmers',[100,10,null],'red',characterModels.chalmers,
     {
-        idleAnimations: {delay: 50, chance:0.7, cycles:['blink']},
+        idleAnimations:{
+            "wait": {delay: 50, chance:0.7, cycles:['blink']}
+        },
         baseWidth: 50,
         baseHeight: 100
     }),

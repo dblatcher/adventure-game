@@ -1,10 +1,15 @@
 function checkForIdleAnimation () {
+
+    const {idleAnimations, behaviour_action} = this.char
+    const idleConfig = idleAnimations[behaviour_action]
+
+
     if ( this.isIdle ) {
         this.timeSpentIdle++
-        if (this.char.idleAnimations && this.timeSpentIdle >= this.char.idleAnimations.delay) {
-            if (Math.random() < this.char.idleAnimations.chance) {
-                let randomChoice = Math.ceil( Math.random()*this.char.idleAnimations.cycles.length )-1;
-                this.doAction( this.char.idleAnimations.cycles[randomChoice] )
+        if (idleConfig && this.timeSpentIdle >= idleConfig.delay) {
+            if (Math.random() < idleConfig.chance) {
+                let randomChoice = Math.ceil( Math.random()*idleConfig.cycles.length )-1;
+                this.doAction( idleConfig.cycles[randomChoice] )
             }
             this.timeSpentIdle = 0;
         }
