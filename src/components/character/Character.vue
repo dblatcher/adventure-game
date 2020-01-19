@@ -32,6 +32,7 @@
 import Sprite from "../Sprite";
 import SpeechLine from "./SpeechLine";
 import {say, countDownSpeech} from "./sayFunction";
+import { checkForIdleAnimation } from "./idleAnimations";
 import {goTo, turnTo } from "./goFunction";
 import doFunction from "./doFunction";
 import moveFunction from "./moveFunction";
@@ -167,6 +168,7 @@ export default {
         goTo, turnTo,
         say, countDownSpeech,
         move : moveFunction,
+        checkForIdleAnimation, 
         setDefaultWait: function (type, cycleName){ return this.char.setDefaultWait (type, cycleName) },
         setDefaultWalk: function (type, cycleName){ return this.char.setDefaultWalk (type, cycleName) },
         setDefaultTalk: function (type, cycleName){ return this.char.setDefaultTalk (type, cycleName) },
@@ -215,23 +217,9 @@ export default {
             if (this.ident === this.theApp.pcId) {return false}
             this.$emit('hover-event', [this, event]);
         },
-        checkForIdleAnimation : function () {
-            if ( this.isIdle ) {
-                this.timeSpentIdle++
-                if (this.char.idleAnimations && this.timeSpentIdle >= this.char.idleAnimations.delay) {
-                    if (Math.random() < this.char.idleAnimations.chance) {
-                        let randomChoice = Math.ceil( Math.random()*this.char.idleAnimations.cycles.length )-1;
-                        this.doAction( this.char.idleAnimations.cycles[randomChoice] )
-                    }
-                    this.timeSpentIdle = 0;
-                }
-            } else if (this.timeSpentIdle) {
-                this.timeSpentIdle = 0;
-            }
-        },
         
         onBeat(beat) {
-            this.checkForIdleAnimation()
+           this.checkForIdleAnimation()
             if (beat.count % 2 === 0 ) {this.showNextFrame()}
             this.move();
             this.countDownSpeech(beat);
