@@ -16,5 +16,6 @@ const gameData = {
 export {
     TitleScreen,
     EndingScreen, 
-    gameData
+    gameData,
+    config
 }

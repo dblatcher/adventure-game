@@ -45,6 +45,8 @@ import LoadingBar from "./components/LoadingBar";
 import FileMenu from "./components/fileMenu";
 import {TitleScreen, EndingScreen} from "./gameIndex"
 
+import {config} from "./gameIndex"
+
 export default {
   name: 'App',
   components :{
@@ -55,7 +57,7 @@ export default {
   data () {
     let i, jsonString, savedGames = [];
     for (i=0; i<5; i++) {
-      jsonString = window.localStorage.getItem('savedGame_'+i);
+      jsonString = window.localStorage.getItem(config.title+'_savedGame_'+i);
       savedGames.push( JSON.parse(jsonString) || {} );
     }
 
@@ -133,7 +135,7 @@ export default {
     saveGame : function (slotNumber) {
       let state = this.$refs.game.returnCurrentState();
       let dataString = JSON.stringify(state);
-      window.localStorage.setItem('savedGame_'+slotNumber, dataString)
+      window.localStorage.setItem(config.title+'_savedGame_'+slotNumber, dataString)
 
       let app = this;
       Object.keys(state).forEach ( (key) => {
@@ -143,7 +145,7 @@ export default {
     },
 
     deleteSavedGame : function (slotNumber) {
-      window.localStorage.removeItem('savedGame_'+slotNumber);
+      window.localStorage.removeItem(config.title+'_savedGame_'+slotNumber);
       this.$set( this.savedGames, slotNumber, {} );
     },
 
