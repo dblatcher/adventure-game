@@ -59,9 +59,11 @@ export default function (command) {
     if (execution.then) {
       execution.then ( r => {
         this.lastCommand.inProgress = false
+        this.$emit('auto-save')
       } ) 
     } else {
       this.lastCommand.inProgress = false
+      this.$emit('auto-save')
     }
 
     this.subject = null; 

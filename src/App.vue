@@ -13,6 +13,7 @@
       <template v-slot:file-buttons>
         <button @click="restartGame()">New Game</button>
         <button @click="function(){fileMenuIsOpen = true}">Restore</button>
+        <button v-show="autoSaveSlotisUsed" @click="continueGame">Continue</button>
       </template>
 
       <template v-slot:loading-bar><LoadingBar /></template>
@@ -32,7 +33,8 @@
       overflow: showGame ? 'unset': 'hidden',
       visibility: showGame ? 'unset': 'hidden',
     }">
-      <Game ref="game"/> 
+      <Game ref="game"
+      v-on:auto-save="autoSave"/> 
     </div>
 
   </div>
@@ -73,6 +75,10 @@ export default {
 
     showGame() {
       return (!this.showTitleScreen && !this.showEndingScreen)
+    },
+
+    autoSaveSlotisUsed() {
+      return !!this.savedGames[0].gameStatus
     }
 
   },
@@ -109,6 +115,10 @@ export default {
       }
     },
 
+    autoSave: function() {
+      this.saveGame(0);
+    },
+
     quitGame : function() {
       this.showTitleScreen = true;
       this.showEndingScreen = false;
@@ -130,6 +140,12 @@ export default {
       this.showTitleScreen = false;
       this.showEndingScreen = false;
       this.$refs.game.restart();
+    },
+
+    continueGame : function () {
+      this.showTitleScreen = false;
+      this.showEndingScreen = false;
+      this.$refs.game.loadSaveGame(this.savedGames[0]);
     },
 
     saveGame : function (slotNumber) {
