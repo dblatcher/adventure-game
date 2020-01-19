@@ -65,7 +65,7 @@ export default {
         y: function() {return this.char.y},
         ident: function() {return this.char.id},
         dataType: function() {return 'Character'},
-        recommendedVerb: function() {return this.item.recommendedVerb},
+        recommendedVerb: function() {return this.char.recommendedVerb},
         saying : {
             get: function() { return this.char.saying },
             set: function(v) { this.char.saying=v }
@@ -207,7 +207,6 @@ export default {
             this.$emit('clicked-thing', this.char);
         },
         rightClickHandler : function (event) {
-            console.log(event)
             event.preventDefault();
             event.stopPropagation();
             if (this.char.unclickable) {return false}
