@@ -5,13 +5,13 @@ import resetObject from "./resetObject"
 
 export default class Character {
 
-    constructor (id,name,coords,speechColor,model,config={}) {
+    constructor (id,name,coords,model,config={}) {
         this.id = id.toLowerCase() === 'pc' ? 'pc' : id.toUpperCase()+"_C";
         this.name = name;
         this.x = coords[0];
         this.y = coords[1];
         this.room = coords[2];
-        this.speechColor= speechColor;
+        this.speechColor= config.speechColor || 'white';
 
         this.baseWidth = config.baseWidth || 20
         this.baseHeight = config.baseHeight ||20

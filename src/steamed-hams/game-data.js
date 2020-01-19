@@ -157,29 +157,33 @@ var worldItemModels = {
 
 
 var makeCharacters = function() {return [
-    new Character ('skinner','Skinner',[270,5,0],'white',characterModels.skinner,
+    new Character ('skinner','Skinner',[270,5,0],characterModels.skinner,
     {
         idleAnimations: {
             wait: {delay: 100, chance:0.75, cycles:['eye_roll']}
         },
         baseWidth: 50,
-        baseHeight: 100
+        baseHeight: 100,
+        speechColor: 'white',
     }),
-    new Character ('chalmers','Superintendent Chalmers',[100,10,null],'red',characterModels.chalmers,
+    new Character ('chalmers','Superintendent Chalmers',[100,10,null],characterModels.chalmers,
     {
         idleAnimations:{
             "wait": {delay: 50, chance:0.7, cycles:['blink']}
         },
         baseWidth: 50,
-        baseHeight: 100
+        baseHeight: 100,
+        speechColor: 'red',
     }),
-    new Character ('server','sever',[230,100,2],'lime',characterModels.invisible,{
+    new Character ('server','sever',[230,100,2],characterModels.invisible,{
         baseWidth:1,
         baseHeight:1,
+        speechColor: 'lime',
     }),
-    new Character ('agnes','agnes',[400,260,3],'violet',characterModels.invisible,{
+    new Character ('agnes','agnes',[400,260,3],characterModels.invisible,{
         baseWidth:1,
         baseHeight:1,
+        speechColor: 'violet',
     }),
 ]}
 
