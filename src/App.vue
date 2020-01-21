@@ -13,6 +13,7 @@
       <template v-slot:file-buttons>
         <button id="new-game" @click="restartGame()">New Game</button>
         <button id="restore" @click="function(){fileMenuIsOpen = true}">Restore</button>
+        <button v-show="autoSaveSlotisUsed" @click="continueGame">Continue</button>
       </template>
 
       <template v-slot:sound-toggle>
@@ -43,7 +44,9 @@
       overflow: showGame ? 'unset': 'hidden',
       visibility: showGame ? 'unset': 'hidden',
     }">
-      <Game ref="game" v-bind:running="showGame"/> 
+      <Game ref="game" 
+      v-bind:running="showGame"
+      v-on:auto-save="autoSave"/> 
     </div>
 
   </div>
@@ -60,6 +63,8 @@ import SfxPlayer from "./components/SfxPlayer"
 import { /* webpackPreload: true */ gameData } from "./gameIndex";
 
 
+import {config} from "./gameIndex"
+
 export default {
   name: 'App',
   components :{
@@ -69,7 +74,7 @@ export default {
   data () {
     let i, jsonString, savedGames = [];
     for (i=0; i<5; i++) {
-      jsonString = window.localStorage.getItem('savedGame_'+i);
+      jsonString = window.localStorage.getItem(config.title+'_savedGame_'+i);
       savedGames.push( JSON.parse(jsonString) || {} );
     }
 
@@ -116,6 +121,10 @@ export default {
       set(value) {
         this.audio.masterGainNode.gain.value = value;
         return this.audio.masterGainNode.gain.value} 
+    },
+
+    autoSaveSlotisUsed() {
+      return !!this.savedGames[0].gameStatus
     },
 
   },
@@ -171,6 +180,10 @@ export default {
       this.respondToGameOptionsUpdate({soundEnabled: !this.audio.enabled})
     },
 
+    autoSave: function() {
+      this.saveGame(0);
+    },
+
     quitGame : function() {
       this.showTitleScreen = true;
       this.showEndingScreen = false;
@@ -194,10 +207,16 @@ export default {
       this.$refs.game.restart();
     },
 
+    continueGame : function () {
+      this.showTitleScreen = false;
+      this.showEndingScreen = false;
+      this.$refs.game.loadSaveGame(this.savedGames[0]);
+    },
+
     saveGame : function (slotNumber) {
       let state = this.$refs.game.returnCurrentState();
       let dataString = JSON.stringify(state);
-      window.localStorage.setItem('savedGame_'+slotNumber, dataString)
+      window.localStorage.setItem(config.title+'_savedGame_'+slotNumber, dataString)
 
       let app = this;
       Object.keys(state).forEach ( (key) => {
@@ -207,7 +226,7 @@ export default {
     },
 
     deleteSavedGame : function (slotNumber) {
-      window.localStorage.removeItem('savedGame_'+slotNumber);
+      window.localStorage.removeItem(config.title+'_savedGame_'+slotNumber);
       this.$set( this.savedGames, slotNumber, {} );
     },
 

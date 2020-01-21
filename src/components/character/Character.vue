@@ -41,6 +41,7 @@ import Sprite from "../Sprite";
 import SpeechLine from "./SpeechLine";
 import SfxPlayer from "../SfxPlayer"
 import {say, countDownSpeech} from "./sayFunction";
+import { checkForIdleAnimation } from "./idleAnimations";
 import {goTo, turnTo } from "./goFunction";
 import doFunction from "./doFunction";
 import moveFunction from "./moveFunction";
@@ -172,6 +173,7 @@ export default {
         goTo, turnTo,
         say, countDownSpeech,
         move : moveFunction,
+        checkForIdleAnimation, 
         setDefaultWait: function (type, cycleName){ return this.char.setDefaultWait (type, cycleName) },
         setDefaultWalk: function (type, cycleName){ return this.char.setDefaultWalk (type, cycleName) },
         setDefaultTalk: function (type, cycleName){ return this.char.setDefaultTalk (type, cycleName) },
@@ -231,14 +233,17 @@ export default {
                 this.timeSpentIdle = 0;
             }
         },
+
         playSound (soundId, options={}) {
             return this.$refs.audio.play(soundId,options)
         },
+
         stopSound (soundId, options={}) {
             return this.$refs.audio.stop(soundId,options)
         },
+
         onBeat(beat) {
-            this.checkForIdleAnimation()
+           this.checkForIdleAnimation()
             if (beat.count % 2 === 0 ) {this.showNextFrame()}
             this.move();
             this.countDownSpeech(beat);

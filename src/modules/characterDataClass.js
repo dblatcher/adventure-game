@@ -5,14 +5,14 @@ import resetObject from "./resetObject"
 
 export default class Character {
 
-    constructor (id,name,coords,speechColor,model,config={}) {
+    constructor (id,coords,model,config={}) {
         this.id = id.toUpperCase()+"_C";
-        this.name = name;
         this.x = coords[0];
         this.y = coords[1];
         this.room = coords[2];
-        this.speechColor= speechColor;
-
+        this.speechColor= config.speechColor || 'white';
+        
+        this.name = config.name || id;
         this.baseWidth = config.baseWidth || 20
         this.baseHeight = config.baseHeight ||20
 
@@ -35,7 +35,7 @@ export default class Character {
         this.behaviour_actFrame = '0';
         this.behaviour_direction = this.model.validDirections[0];
 
-        this.idleAnimations = config.idleAnimations || false;
+        this.idleAnimations = config.idleAnimations || {};
         this.recommendedVerb = config.recommendedVerb || null;
 
         this.initialState = Object.freeze(Object.assign({},this));

@@ -48,6 +48,7 @@ var defaultResponses = {
 }
 
 const config = {
+    title: 'Steamed Hams',
     defaultVerb: {WorldItem:"LOOK", InventoryItem:"USE", Character:"TALK"},
 }
 

@@ -15,31 +15,17 @@ var sprites = [
   new Sprite ('foil',  require('./sprites/foil.png'), [1,1]),
   new Sprite ('oven', require('./sprites/oven.png'), [6,1]),
 
-  new Sprite ('sk1',  require('./sprites/skinner-talk-r.png'), [5,1]),
-  new Sprite ('sk2',  require('./sprites/skinner-talk-l.png'), [5,1]),
-  new Sprite ('skw1',  require('./sprites/skinner-walk-r.png'), [3,1]),
-  new Sprite ('skw2',  require('./sprites/skinner-walk-l.png'), [3,1]),
-  new Sprite('ser', require('./sprites/eyeroll.png'),[5,1],[1,1,1,-.5]),
-  new Sprite('ser-l', require('./sprites/eyeroll-l.png'),[5,1],[1,1,-1,-.5]),
-
-  new Sprite ('swb', require('./sprites/wrap.png'),[3,1]),
 
   new Sprite ('skw',  require('./sprites/skinner-w-1.png'), [3,1]),
   new Sprite('pour', require('./sprites/pour.png'),[5,1]),
   new Sprite('thb', require('./sprites/thumbup.png'),[4,1],[1.1,1,-17]),
+  new Sprite('skin', require('./sprites/skinner_main.png'),[6,5]),
 
-  new Sprite ('ch1l',  require('./sprites/Chalmers-w-l.png'),[7,1],[1, .9]),
-  new Sprite ('ch1r',  require('./sprites/Chalmers-w-r.png'),[7,1],[1, .9]),
-
-    new Sprite ('c1r', require('./sprites/chal-1-r.png'),[6,1]),
-    new Sprite ('c1l', require('./sprites/chal-1-l.png'),[6,1]),
-    new Sprite ('c2r', require('./sprites/chal-2-r.png'),[5,1]),
-    new Sprite ('c2l', require('./sprites/chal-2-l.png'),[5,1]),
+  new Sprite ('ch-l', require('./sprites/Chalmers-sheet-l-small.png'),[6,3]),
+  new Sprite ('ch-r', require('./sprites/Chalmers-sheet-r-small.png'),[6,3]),
 
   new Sprite ('fire',  require('./sprites/window_fire.png'),[2,1]),
-
   new Sprite ('k-dr', require('./sprites/kitchen-door.png'),[4,3]),
-
 ]
 
 var sounds = [
@@ -60,26 +46,26 @@ var characterModels = {
 
     skinner : new Character.Model ({
         wait : {
-            right : [ ['sk1',0,0] ],
-            left : [ ['sk2',4,0] ],
+            right : [ ['skin',4,1] ],
+            left : [ ['skin',3,1] ],
         },
         walk : {
-            right : [ ['skw1',0,0,'fs'],['skw1',1,0],['skw1',2,0],  ] ,
-            left : [ ['skw2',0,0,'fs'],['skw2',1,0],['skw2',2,0], ] ,
+            right : [ ['skin',2,3,'fs'],['skin',4,3],['skin',0,4],  ] ,
+            left : [ ['skin',1,3,'fs'],['skin',3,3],['skin',5,3], ] ,
         },
         talk : {
-            right : [ ['sk1',1,0],['sk1',2,0],['sk1',3,0],['sk1',4,0],['sk1',3,0] ],
-            left : [ ['sk2',3,0],['sk2',3,0],['sk2',1,0],['sk2',0,0],['sk2',1,0]],
+            right : [ ['skin',0,2],['skin',2,2],['skin',4,2],['skin',0,3],['skin',4,2]],
+            left : [ ['skin',5,1],['skin',1,2],['skin',3,2],['skin',5,2],['skin',3,2]],
         },
         window_talk : [ ['skw',0,0],['skw',1,0],['skw',2,0] ],
         window_wait : [ ['skw',1,0] ],
         eye_roll: {
-            right: [ ['ser',0,0],['ser',1,0],['ser',2,0],['ser',3,0],['ser',4,0], ],
-            left: [ ['ser-l',0,0],['ser-l',1,0],['ser-l',2,0],['ser-l',3,0],['ser-l',4,0],]
+            right: [ ['skin',4,0],['skin',0,1],['skin',2,1],['skin',4,1], ],
+            left: [ ['skin',3,0],['skin',5,0],['skin',1,1],['skin',3,1], ],
         },
         pour_sand: [ ['pour',0,0,'sand'],['pour',1,0],['pour',2,0],['pour',3,0],['pour',4,0], ],
         thumb_up: [ ['thb',0,0],['thb',1,0],['thb',2,0],['thb',2,0],['thb',3,0],['thb',2,0],['thb',2,0],['thb',3,0],['thb',2,0],['thb',2,0],['thb',3,0],['thb',2,0],['thb',2,0],['thb',3,0],['thb',2,0],['thb',2,0],['thb',3,0], ],
-        wrap_bucket: [['swb',0,0],['swb',1,0],['swb',2,0],['swb',2,0],['swb',2,0]],
+        wrap_bucket: [['skin',4,1],['skin',1,4],['skin',2,4],['skin',3,4],['skin',3,4]],
 
 
     },{
@@ -90,40 +76,40 @@ var characterModels = {
     
     chalmers : new Character.Model ({
         wait : {
-            right : [ ['c1r',1,0] ],
-            left : [ ['c1l',4,0] ],
+            right : [ ['ch-r',3,0] ],
+            left : [ ['ch-l',2,0] ],
         },
         walk : {
-            right : [ ['ch1r',1,0],['ch1r',2,0],['ch1r',3,0],['ch1r',4,0], ['ch1r',5,0]  ] ,
-            left : [ ['ch1l',1,0],['ch1l',2,0],['ch1l',3,0],['ch1l',4,0], ['ch1l',5,0]  ] ,
+            right : [ ['ch-r',0,2],['ch-r',1,2],['ch-r',2,2],['ch-r',3,2], ['ch-r',4,2]  ] ,
+            left : [ ['ch-l',1,2],['ch-l',5,2],['ch-l',4,2],['ch-l',3,2], ['ch-l',2,2]  ] ,
         },
         talk : {
-            right : [ ['c1r',4,0],['c1r',2,0],['c1r',3,0],['c1r',4,0],['c1r',5,0] ],
-            left :  [ ['c1l',1,0],['c1l',3,0],['c1l',2,0],['c1l',1,0],['c1l',0,0], ],
+            right : [ ['ch-r',2,1],['ch-r',3,1],['ch-r',4,1],['ch-r',5,1],['ch-r',4,1] ],
+            left :  [ ['ch-l',0,1],['ch-l',1,1],['ch-l',2,1],['ch-l',3,1],['ch-l',1,1], ],
         },
         blink : {
-            right : [ ['c1r',1,0],['c1r',0,0],['c1r',1,0] ],
-            left :  [ ['c1l',4,0],['c1l',5,0],['c1l',4,0] ],
+            right : [ ['ch-r',3,0],['ch-r',0,0],['ch-r',3,0] ],
+            left :  [ ['ch-l',2,0],['ch-l',5,0],['ch-l',2,0] ],
         },
         talk_with_ham : 
-        [ ['c2r',0,2],['c2r',1,0],['c2r',2,0],['c2r',3,0],['c2r',4,0] ],
+        [ ['ch-r',4,0],['ch-r',5,0],['ch-r',0,1],['ch-r',1,1],['ch-r',0,1] ],
         wait_with_ham : 
-        [ ['c2r',0,0] ],
+        [ ['ch-r',2,0] ],
         
     },{defaultDirection:'right', speechBubbleDown:.3, speechBubbleIn:.25}),
 
     invisible : new Character.Model ({
         wait : {
-            right : [ ['c1r',0,0] ],
-            left : [ ['c1r',6,0] ],
+            right : [ ['ch-r',0,0] ],
+            left : [ ['ch-r',6,0] ],
         },
         walk : {
-            right : [ ['c1r',0,0] ],
-            left : [ ['c1r',6,0] ],
+            right : [ ['ch-r',0,0] ],
+            left : [ ['ch-r',6,0] ],
         },
         talk : {
-            right : [ ['c1r',0,0] ],
-            left : [ ['c1r',6,0] ],
+            right : [ ['ch-r',0,0] ],
+            left : [ ['ch-r',6,0] ],
         },
     },{})
 }
@@ -185,25 +171,34 @@ var worldItemModels = {
 
 
 var makeCharacters = function() {return [
-    new Character ('skinner','Skinner',[270,5,0],'white',characterModels.skinner,
+    new Character ('Skinner',[270,5,0],characterModels.skinner,
     {
-        idleAnimations: {delay: 100, chance:0.75, cycles:['eye_roll']},
+        idleAnimations: {
+            wait: {delay: 100, chance:0.75, cycles:['eye_roll']}
+        },
         baseWidth: 50,
-        baseHeight: 100
+        baseHeight: 100,
+        speechColor: 'white',
     }),
-    new Character ('chalmers','Superintendent Chalmers',[100,10,null],'red',characterModels.chalmers,
+    new Character ('chalmers',[100,10,null],characterModels.chalmers,
     {
-        idleAnimations: {delay: 50, chance:0.7, cycles:['blink']},
+        idleAnimations:{
+            "wait": {delay: 50, chance:0.7, cycles:['blink']}
+        },
         baseWidth: 50,
-        baseHeight: 100
+        baseHeight: 100,
+        speechColor: 'red',
+        name: 'Superintendent Chalmers'
     }),
-    new Character ('server','sever',[230,100,2],'lime',characterModels.invisible,{
+    new Character ('server',[230,100,2],characterModels.invisible,{
         baseWidth:1,
         baseHeight:1,
+        speechColor: 'lime',
     }),
-    new Character ('agnes','agnes',[400,260,3],'violet',characterModels.invisible,{
+    new Character ('Agnes',[400,260,3],characterModels.invisible,{
         baseWidth:1,
         baseHeight:1,
+        speechColor: 'violet',
     }),
 ]}
 

@@ -10,20 +10,20 @@
             @click="clickEmit([null,'close'])"><img src="../icons/window-close.svg"/></div>
         </div>
         
-        <div v-for="(savedGame, index) in data" v-bind:key="index"
+        <div v-for="(savedGame, index) in savedGamesExcludingZero" v-bind:key="index+1"
         class="slot">
-            <span class="file-name">{{label[index]}}</span>
+            <span class="file-name">{{label[index+1]}}</span>
 
             <div class="row">   
                 <div class="btn-outline-black btn-inline"
                     v-if="!atTitle" 
-                    @click="clickEmit([index,'save'])">save</div>
+                    @click="clickEmit([index+1,'save'])">save</div>
                 <div class="btn-outline-black btn-inline"
-                    v-if="!slotIsEmpty[index]" 
-                    @click="clickEmit([index,'load'])">load</div>
+                    v-if="!slotIsEmpty[index+1]" 
+                    @click="clickEmit([index+1,'load'])">load</div>
                 <div class="btn-solid-red btn-inline"
-                    v-if="!slotIsEmpty[index]"
-                    @click="clickEmit([index,'clear'])">clear
+                    v-if="!slotIsEmpty[index+1]"
+                    @click="clickEmit([index+1,'clear'])">clear
                 </div>
             </div>
         </div>
@@ -66,7 +66,12 @@ export default {
             });
 
             return labels;
+        },
+
+        savedGamesExcludingZero: function () {
+            return [].concat(this.data).splice(1)
         }
+
     },
 
     methods : {
