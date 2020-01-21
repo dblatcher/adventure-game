@@ -24,8 +24,8 @@
 
     </TitleScreen>
 
-        <SfxPlayer 
-        v-bind:sounds="sounds" 
+        <MusicPlayer
+        v-bind:song="music.title" 
         v-bind:audioPosition="titleMusicPosition"
         v-bind:contextSource="audio"
         v-bind:audioContextStatusEmitter="self"   
@@ -58,7 +58,7 @@ import Game from "./components/game/Game";
 import LoadingBar from "./components/LoadingBar";
 import FileMenu from "./components/fileMenu";
 import {TitleScreen, EndingScreen} from "./gameIndex"
-import SfxPlayer from "./components/SfxPlayer"
+import MusicPlayer from "./components/MusicPlayer"
 
 import { /* webpackPreload: true */ gameData } from "./gameIndex";
 
@@ -68,7 +68,7 @@ import {config} from "./gameIndex"
 export default {
   name: 'App',
   components :{
-    Game, TitleScreen, EndingScreen, FileMenu, LoadingBar, SfxPlayer,
+    Game, TitleScreen, EndingScreen, FileMenu, LoadingBar, MusicPlayer,
   },
 
   data () {
@@ -102,12 +102,12 @@ export default {
 
     self() {return this},
     sounds() { return gameData.sounds},
+    music() { return gameData.music},
 
     titleMusicPosition() {
       return {
-          pan: 0,
-          gain: this.audio.titleMusicVolume,
-          loopSound: this.showTitleScreen? 'music' : null
+          playing: this.showTitleScreen && this.audio.enabled,
+          noFade: !this.audio.enabled,
       }
     },
 

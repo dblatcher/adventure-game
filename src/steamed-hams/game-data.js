@@ -39,8 +39,11 @@ var sounds = [
     new Sound('sand','sand','/sand.mp3'),
     new Sound('burn','burn','/burnLoop.mp3'),
     new Sound('title music','music','/music.mp3')
-
 ]
+
+var music = {
+    title:  new Sound('title music','music','/music.mp3')
+}
 
 var characterModels = {
 
@@ -332,4 +335,4 @@ var setGameVars = function ()  { return {
 	haveSeenBurningRoast: false,
 }};
 
-export { sprites, makeRooms, makeInventoryItems, makeCharacters, pcId, setGameVars, sounds }
+export { sprites, makeRooms, makeInventoryItems, makeCharacters, pcId, setGameVars, sounds, music }
