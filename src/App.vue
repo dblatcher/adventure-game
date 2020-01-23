@@ -94,7 +94,6 @@ export default {
         masterGainNode,
         enabled: false,
         masterVolume: 1,
-        titleMusicVolume: .25,
       },
     }
   },
@@ -109,6 +108,7 @@ export default {
       return {
           playing: this.showTitleScreen && this.audio.enabled && this.music[this.song],
           noFade: !this.audio.enabled,
+          volume: .25,
       }
     },
 

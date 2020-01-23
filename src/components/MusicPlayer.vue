@@ -1,7 +1,7 @@
 <template>
 <div>
     <audio ref="audioElement" loop="true"
-    v-bind:src="song ? song.path : ''">
+    v-bind:src="dataSong ? dataSong.path : ''">
     </audio>
 </div>
 </template>
@@ -20,6 +20,7 @@ export default {
             audioElementsToResumeWhenGameUnpause:[],
             track: undefined,
             shouldBePlaying: false,
+            dataSong: this.song
         }
     },
 
@@ -41,7 +42,7 @@ export default {
             const {audioElement} = this.$refs
             const {audioContext} = this.contextSource
 
-            this.fader.gain.setValueAtTime(.25, audioContext.currentTime)
+            this.fader.gain.setValueAtTime(this.audioPosition.volume, audioContext.currentTime)
             audioElement.currentTime = 0
 
             this.track
@@ -83,15 +84,35 @@ export default {
         },
 
         song: function (newSong) {
-            if (this.shouldBePlaying && newSong) {
-               setTimeout(this.play, 500)
-            }
+
+            if (newSong !== this.dataSong) {
+
+                if (!newSong) {
+                    this.stop()
+                    this.dataSong = null
+                    this.$forceUpdate()
+                } else if (this.shouldBePlaying) {
+                    this.stop()
+                    this.dataSong = newSong
+                    this.$forceUpdate()
+                    setTimeout(this.play, 500)
+                } else {
+                    this.dataSong = newSong
+                    this.$forceUpdate()
+                }
+
+
+            } 
+
         }
     },
 
     mounted()  {
         this.track = this.contextSource.audioContext.createMediaElementSource(this.$refs.audioElement);
-        this.audioContextStatusEmitter.$on('audio-enabled', this.handleAudioContextEnabled)
+        
+        if (this.audioContextStatusEmitter) {
+            this.audioContextStatusEmitter.$on('audio-enabled', this.handleAudioContextEnabled)
+        }
 
         if (this.timer) {
             this.timer.$on('timer-stop', this.handleGamePaused)
@@ -104,7 +125,9 @@ export default {
     },
 
     beforeDestroy() {
-        this.audioContextStatusEmitter.$off('audio-enabled', this.handleAudioContextEnabled)
+        if (this.audioContextStatusEmitter) {
+            this.audioContextStatusEmitter.$off('audio-enabled', this.handleAudioContextEnabled)
+        }
         if (this.timer) {
             this.timer.$off('timer-stop', this.handleGamePaused)
             this.timer.$off('timer-start', this.handleGameUnpaused)
