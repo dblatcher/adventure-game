@@ -57,18 +57,18 @@ export default {
             this.$refs.audioElement.pause()
         },
 
-        fadeOut() {
+        fadeOut(fadeTime = 2) {
             this.shouldBePlaying = false
             const {audioElement} = this.$refs
             const {audioContext} = this.contextSource
             const {fader,stop} = this
 
-            fader.gain.linearRampToValueAtTime(0.0, audioContext.currentTime + 3)
+            fader.gain.linearRampToValueAtTime(0.0, audioContext.currentTime + fadeTime)
 
             const that = this;
             setTimeout(function() {
                 if (!that.shouldBePlaying) {that.stop}
-            }, 3000)
+            }, fadeTime*1000)
 
         }
 
