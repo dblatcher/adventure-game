@@ -1,8 +1,7 @@
 <template>
 <div>
     <audio ref="audioElement" loop="true"
-    v-bind:key="song.id"
-    v-bind:src="song.path">
+    v-bind:src="song ? song.path : ''">
     </audio>
 </div>
 </template>
@@ -84,7 +83,7 @@ export default {
         },
 
         song: function (newSong) {
-            if (this.shouldBePlaying) {
+            if (this.shouldBePlaying && newSong) {
                setTimeout(this.play, 500)
             }
         }

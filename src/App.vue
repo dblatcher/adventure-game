@@ -90,7 +90,7 @@ export default {
       fileMenuIsOpen: false,
       song:'title',
       audio : {
-        audioContext,
+        audioContext, 
         masterGainNode,
         enabled: false,
         masterVolume: 1,
@@ -107,7 +107,7 @@ export default {
 
     titleMusicPosition() {
       return {
-          playing: this.showTitleScreen && this.audio.enabled,
+          playing: this.showTitleScreen && this.audio.enabled && this.music[this.song],
           noFade: !this.audio.enabled,
       }
     },
