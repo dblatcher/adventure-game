@@ -42,7 +42,8 @@ var sounds = [
 ]
 
 var music = {
-    title:  new Sound('title music','music','/music.mp3')
+    title:  new Sound('title music','music','/music.mp3'),
+    background:  new Sound('bgm','bgm','/plink plonk.mp3'),
 }
 
 var characterModels = {

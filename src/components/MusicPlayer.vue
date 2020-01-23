@@ -76,13 +76,17 @@ export default {
 
     watch: {
         audioPosition: function (newAudioPosition) {
-
             if (newAudioPosition.playing !== this.shouldBePlaying) {
                 if (newAudioPosition.playing) {this.play()}
                 else if (newAudioPosition.noFade) {this.stop()}
                 else {this.fadeOut()}
             }
+        },
 
+        song: function (newSong) {
+            if (this.shouldBePlaying) {
+               setTimeout(this.play, 500)
+            }
         }
     },
 

@@ -25,7 +25,7 @@
     </TitleScreen>
 
         <MusicPlayer
-        v-bind:song="music.title" 
+        v-bind:song="music[this.song]" 
         v-bind:audioPosition="titleMusicPosition"
         v-bind:contextSource="audio"
         v-bind:audioContextStatusEmitter="self"   
@@ -88,6 +88,7 @@ export default {
       showTitleScreen: true,
       showEndingScreen: false,
       fileMenuIsOpen: false,
+      song:'title',
       audio : {
         audioContext,
         masterGainNode,
