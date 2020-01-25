@@ -153,7 +153,7 @@ export default {
         optionsMenuIsOpen: false,
         instantMode: false,
         narration: {contents:[], dismissable:true},
-        options: {textDelay: 100, masterVolume: .1, soundEnabled:(this.$parent.audio.enabled)},
+        options: {textDelay: 100, sfxVolume: .1, soundEnabled:(this.$parent.audio.enabled)},
         interactionMatrix: gameData.interactionMatrix,
         verbList : gameData.verbList,
         sprites : gameData.sprites,
@@ -306,7 +306,7 @@ export default {
 
       if (!menuIsBeingClosing) {
         this.options.soundEnabled = this.$parent.audio.enabled
-        this.options.masterVolume = this.$parent.audio.masterVolume
+        this.options.sfxVolume = this.$parent.audio.sfxVolume
       }
 
       this.optionsMenuIsOpen = !this.optionsMenuIsOpen;

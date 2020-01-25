@@ -24,12 +24,12 @@
 
     </TitleScreen>
 
-        <MusicPlayer
-        v-bind:song="music[this.song]" 
-        v-bind:audioPosition="titleMusicPosition"
-        v-bind:contextSource="audio"
-        v-bind:audioContextStatusEmitter="self"   
-        ref="audio"/>
+      <MusicPlayer
+      v-bind:song="music[this.song]" 
+      v-bind:audioPosition="titleMusicPosition"
+      v-bind:contextSource="audio"
+      v-bind:audioContextStatusEmitter="self"   
+      ref="audio"/>
 
     <EndingScreen v-show="showEndingScreen">
       <template v-slot:file-buttons>
@@ -93,7 +93,8 @@ export default {
         audioContext, 
         masterGainNode,
         enabled: false,
-        masterVolume: 1,
+        sfxVolume: 1,
+        musicVolume: .25,
       },
     }
   },
@@ -106,9 +107,9 @@ export default {
 
     titleMusicPosition() {
       return {
-          playing: this.showTitleScreen && this.audio.enabled && this.music[this.song],
+          playing: this.showTitleScreen && this.audio.enabled && !!this.music[this.song],
           noFade: !this.audio.enabled,
-          volume: .25,
+          volume: this.audio.musicVolume,
       }
     },
 
@@ -117,7 +118,7 @@ export default {
       return (!this.showTitleScreen && !this.showEndingScreen)
     },
 
-    masterVolume : {
+    sfxVolume : {
       get() {return this.audio.masterGainNode.gain.value},
       set(value) {
         this.audio.masterGainNode.gain.value = value;
@@ -164,10 +165,10 @@ export default {
 
    respondToGameOptionsUpdate: function(newOptions) {
     this.audio.enabled = newOptions.soundEnabled
-    if (typeof newOptions.masterVolume === 'number' ) {
-      this.audio.masterVolume = newOptions.masterVolume
+    if (typeof newOptions.sfxVolume === 'number' ) {
+      this.audio.sfxVolume = newOptions.sfxVolume
     }
-    this.audio.masterGainNode.gain.value = this.audio.enabled ? this.audio.masterVolume : 0;
+    this.audio.masterGainNode.gain.value = this.audio.enabled ? this.audio.sfxVolume : 0;
 
     if ( this.audio.enabled && this.audio.audioContext.state === 'suspended') {
       this.audio.audioContext.resume()

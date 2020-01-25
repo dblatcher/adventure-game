@@ -13,14 +13,14 @@ export default {
 
     data () {
         const {audioContext} = this.contextSource
-        const fader = audioContext.createGain()
 
         return {
-            fader: fader,
+            gainNode: audioContext.createGain(),
             audioElementsToResumeWhenGameUnpause:[],
             track: undefined,
             shouldBePlaying: false,
-            dataSong: this.song
+            dataSong: this.song,
+            fading: false,
         }
     },
 
@@ -39,14 +39,15 @@ export default {
 
         play() {
             this.shouldBePlaying = true
+            this.fading = false
             const {audioElement} = this.$refs
             const {audioContext} = this.contextSource
 
-            this.fader.gain.setValueAtTime(this.audioPosition.volume, audioContext.currentTime)
+            this.gainNode.gain.setValueAtTime(this.audioPosition.volume, audioContext.currentTime)
             audioElement.currentTime = 0
 
             this.track
-            .connect(this.fader)
+            .connect(this.gainNode)
             .connect(audioContext.destination)
 
             audioElement.play()
@@ -54,16 +55,18 @@ export default {
 
         stop() {
             this.shouldBePlaying = false
+            this.fading = false
             this.$refs.audioElement.pause()
         },
 
         fadeOut(fadeTime = 2) {
             this.shouldBePlaying = false
+            this.fading = true
             const {audioElement} = this.$refs
             const {audioContext} = this.contextSource
-            const {fader,stop} = this
+            const {gainNode,stop} = this
 
-            fader.gain.linearRampToValueAtTime(0.0, audioContext.currentTime + fadeTime)
+            gainNode.gain.linearRampToValueAtTime(0.0, audioContext.currentTime + fadeTime)
 
             const that = this;
             setTimeout(function() {
@@ -76,17 +79,22 @@ export default {
 
     watch: {
         audioPosition: function (newAudioPosition) {
-            if (newAudioPosition.playing !== this.shouldBePlaying) {
-                if (newAudioPosition.playing) {this.play()}
-                else if (newAudioPosition.noFade) {this.stop()}
+            const {audioContext} = this.contextSource
+            const {playing, volume, noFade} = newAudioPosition
+
+            if (playing !== this.shouldBePlaying) {
+                if (playing) {this.play()}
+                else if (noFade) {this.stop()}
                 else {this.fadeOut()}
+            }
+
+            if (!this.fading) {
+                this.gainNode.gain.setValueAtTime(this.audioPosition.volume, audioContext.currentTime)
             }
         },
 
         song: function (newSong) {
-
             if (newSong !== this.dataSong) {
-
                 if (!newSong) {
                     this.stop()
                     this.dataSong = null
@@ -100,10 +108,7 @@ export default {
                     this.dataSong = newSong
                     this.$forceUpdate()
                 }
-
-
             } 
-
         }
     },
 
