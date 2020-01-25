@@ -18,6 +18,7 @@ var sprites = [
   new Sprite('pour', require('./sprites/pour.png'),[5,1]),
   new Sprite('skin', require('./sprites/skinner_main.png'),[6,5]),
   new Sprite('skinW', require('./sprites/skinner_wide.png'),[4,3],[1.33,1,33]),
+  new Sprite('skinW2', require('./sprites/skinner_wide.png'),[4,3],[1.33,1,-12,-.5]),
 
   new Sprite ('ch-l', require('./sprites/Chalmers-sheet-l-small.png'),[6,3]),
   new Sprite ('ch-r', require('./sprites/Chalmers-sheet-r-small.png'),[6,3]),
@@ -53,8 +54,9 @@ var characterModels = {
             left: [ ['skin',3,0],['skin',5,0],['skin',1,1],['skin',3,1], ],
         },
         pour_sand: [ ['pour',0,0],['pour',1,0],['pour',2,0],['pour',3,0],['pour',4,0], ],
-        thumb_up: [ ['skinW',0,2],['skinW',1,2],['skinW',2,2],['skinW',2,2],['skinW',3,2],['skinW',2,2],['skinW',2,2],['skinW',3,2],['skinW',2,2],['skinW',2,2],['skinW',3,2],['skinW',2,2],['skinW',2,2],['skinW',3,2],['skinW',2,2],['skinW',2,2],['skinW',3,2], ],
+        thumb_up: [ ['skinW2',0,2],['skinW2',1,2],['skinW2',2,2],['skinW2',2,2],['skinW2',3,2],['skinW2',2,2],['skinW2',2,2],['skinW2',3,2],['skinW2',2,2],['skinW2',2,2],['skinW2',3,2],['skinW2',2,2],['skinW2',2,2],['skinW2',3,2],['skinW2',2,2],['skinW2',2,2],['skinW2',3,2], ],
         wrap_bucket: [['skin',4,1],['skin',1,4],['skin',2,4],['skin',3,4],['skin',3,4]],
+        reach:  [ ['skinW2',2,1],['skinW2',3,1] ],
 
 
     },{defaultDirection: 'left', speechBubbleDown:.3, speechBubbleIn:.3}),
