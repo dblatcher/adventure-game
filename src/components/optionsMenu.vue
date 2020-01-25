@@ -22,6 +22,11 @@
                     <input type="range" min="0" max="2" step=".01" v-model.number="options.sfxVolume" class="slider">
                 </div>
 
+                <p class="label">Music volume: {{Math.round(options.musicVolume*500)}}%</p>
+                <div class="slidecontainer">
+                    <input type="range" min="0" max=".4" step=".01" v-model.number="options.musicVolume" class="slider">
+                </div>
+
                 <p class="label">SOUND:</p>
                 <input type="checkbox" v-model="options.soundEnabled"/>
 

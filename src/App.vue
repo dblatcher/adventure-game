@@ -94,7 +94,7 @@ export default {
         masterGainNode,
         enabled: false,
         sfxVolume: 1,
-        musicVolume: .25,
+        musicVolume: .2,
       },
     }
   },
@@ -167,6 +167,9 @@ export default {
     this.audio.enabled = newOptions.soundEnabled
     if (typeof newOptions.sfxVolume === 'number' ) {
       this.audio.sfxVolume = newOptions.sfxVolume
+    }
+    if (typeof newOptions.musicVolume === 'number' ) {
+      this.audio.musicVolume = newOptions.musicVolume
     }
     this.audio.masterGainNode.gain.value = this.audio.enabled ? this.audio.sfxVolume : 0;
 

@@ -153,7 +153,7 @@ export default {
         optionsMenuIsOpen: false,
         instantMode: false,
         narration: {contents:[], dismissable:true},
-        options: {textDelay: 100, sfxVolume: .1, soundEnabled:(this.$parent.audio.enabled)},
+        options: {textDelay: 100, sfxVolume: .1, musicVolume: .2, soundEnabled:(this.$parent.audio.enabled)},
         interactionMatrix: gameData.interactionMatrix,
         verbList : gameData.verbList,
         sprites : gameData.sprites,
