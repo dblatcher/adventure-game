@@ -77,6 +77,8 @@ const goToKrustyBurger = [
     new StandardOrder('pc::It\'s steam.'),
     new StandardOrder('pc::Steam from the steamed clams we\'re having.'),
     new StandardOrder('pc::Mmm, steamed clams.'),
+    new StandardOrder ('pc', 'setDefaultWait','window_wait2'),
+    new StandardOrder ('CHALMERS_C>>60,-100'),
     new StandardOrder ('pc', 'setDefaultWait','wait'),
     new StandardOrder ('pc', 'setDefaultTalk','talk'),
     new StandardOrder ('CHALMERS_C','goToRoom',['DINING_R',100,10]),
