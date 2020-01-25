@@ -25,9 +25,8 @@
     </TitleScreen>
 
       <MusicPlayer
-      v-bind:song="music[this.song]" 
-      v-bind:audioPosition="titleMusicPosition"
-      v-bind:contextSource="audio"
+      v-bind:orders="musicOrders"
+      v-bind:audioContext="audio.audioContext"
       v-bind:audioContextStatusEmitter="self"   
       ref="audio"/>
 
@@ -105,11 +104,12 @@ export default {
     sounds() { return gameData.sounds},
     music() { return gameData.music},
 
-    titleMusicPosition() {
+    musicOrders() {
       return {
           playing: this.showTitleScreen && this.audio.enabled && !!this.music[this.song],
           noFade: !this.audio.enabled,
           volume: this.audio.musicVolume,
+          song: this.music[this.song],
       }
     },
 

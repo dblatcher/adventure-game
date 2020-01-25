@@ -1,7 +1,7 @@
 <template>
 <div>
     <audio ref="audioElement" loop="true"
-    v-bind:src="dataSong ? dataSong.path : ''">
+    v-bind:src="currentSong ? currentSong.path : ''">
     </audio>
 </div>
 </template>
@@ -9,27 +9,26 @@
 <script>
 export default {
     name: "MusicPlayer",
-    props: ['song','audioPosition','contextSource','timer', 'audioContextStatusEmitter'],
+    props: ['orders','audioContext','timer', 'audioContextStatusEmitter'],
 
     data () {
-        const {audioContext} = this.contextSource
-
         return {
-            gainNode: audioContext.createGain(),
+            gainNode: this.audioContext.createGain(),
             audioElementsToResumeWhenGameUnpause:[],
             track: undefined,
             shouldBePlaying: false,
-            dataSong: this.song,
+            currentSong: this.orders.song,
             fading: false,
         }
     },
 
     methods: {
         handleAudioContextEnabled() {
-            if (this.audioPosition.playing) {
+            if (this.orders.playing) {
                 this.play()
             }
         },
+
         handleGamePaused() {
 
         },
@@ -41,13 +40,13 @@ export default {
             this.shouldBePlaying = true
             this.fading = false
             const {audioElement} = this.$refs
-            const {audioContext} = this.contextSource
+            const {audioContext, gainNode, track, orders} = this
 
-            this.gainNode.gain.setValueAtTime(this.audioPosition.volume, audioContext.currentTime)
+            gainNode.gain.setValueAtTime(orders.volume, audioContext.currentTime)
             audioElement.currentTime = 0
 
-            this.track
-            .connect(this.gainNode)
+            track
+            .connect(gainNode)
             .connect(audioContext.destination)
 
             audioElement.play()
@@ -63,8 +62,7 @@ export default {
             this.shouldBePlaying = false
             this.fading = true
             const {audioElement} = this.$refs
-            const {audioContext} = this.contextSource
-            const {gainNode,stop} = this
+            const {audioContext,gainNode,stop} = this
 
             gainNode.gain.linearRampToValueAtTime(0.0, audioContext.currentTime + fadeTime)
 
@@ -78,9 +76,9 @@ export default {
     },
 
     watch: {
-        audioPosition: function (newAudioPosition) {
-            const {audioContext} = this.contextSource
-            const {playing, volume, noFade} = newAudioPosition
+        orders: function (newOrders) {
+            const {audioContext,gainNode} = this
+            const {playing, volume, noFade, song} = newOrders
 
             if (playing !== this.shouldBePlaying) {
                 if (playing) {this.play()}
@@ -89,31 +87,30 @@ export default {
             }
 
             if (!this.fading) {
-                this.gainNode.gain.setValueAtTime(this.audioPosition.volume, audioContext.currentTime)
+                gainNode.gain.setValueAtTime(this.orders.volume, audioContext.currentTime)
             }
-        },
 
-        song: function (newSong) {
-            if (newSong !== this.dataSong) {
-                if (!newSong) {
+            if (song !== this.currentSong) {
+                if (!song) {
                     this.stop()
-                    this.dataSong = null
+                    this.currentSong = null
                     this.$forceUpdate()
                 } else if (this.shouldBePlaying) {
                     this.stop()
-                    this.dataSong = newSong
+                    this.currentSong = song
                     this.$forceUpdate()
                     setTimeout(this.play, 500)
                 } else {
-                    this.dataSong = newSong
+                    this.currentSong = song
                     this.$forceUpdate()
                 }
             } 
         }
+
     },
 
     mounted()  {
-        this.track = this.contextSource.audioContext.createMediaElementSource(this.$refs.audioElement);
+        this.track = this.audioContext.createMediaElementSource(this.$refs.audioElement);
         
         if (this.audioContextStatusEmitter) {
             this.audioContextStatusEmitter.$on('audio-enabled', this.handleAudioContextEnabled)
@@ -124,7 +121,7 @@ export default {
             this.timer.$on('timer-start', this.handleGameUnpaused)
         }
 
-        if (this.contextSource.audioContext.state !== 'suspended' && this.audioPosition.playing) {
+        if (this.audioContext.state !== 'suspended' && this.orders.playing) {
             this.play()
         }
     },
