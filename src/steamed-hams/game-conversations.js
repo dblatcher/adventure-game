@@ -106,16 +106,26 @@ function makeConversations() {
 	conversations.iWasJust.addBranch(new DialogBranch('start',[
 		new DialogChoice('just stretching my calves on the windowsill.',
 		['pc::Isometric exercise. Care to join me?',
+		'pc##isometric_exercise',
+		'pc##isometric_exercise',
+		'[wait]100',
 		'[sequence]goToKrustyBurger'],
 		),
 		
 		new DialogChoice('just examining these new italian loafers for signs of wear.',
 		['pc::A principal must always be wary of his shoes!',
+		'pc##isometric_exercise',
+		'pc##isometric_exercise',
+		'[wait]100',
 		'[sequence]goToKrustyBurger'],
 		),
 
 		new DialogChoice('stomping on a troublesome termite.',
-		['pc::take that!',
+		[
+		'[wait]100',
+		'pc##stomp',
+		'pc::take that!',
+		'[wait]100',
 		'[sequence]goToKrustyBurger'],
 		),
 	]))

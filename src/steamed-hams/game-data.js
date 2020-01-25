@@ -15,11 +15,9 @@ var sprites = [
   new Sprite ('foil',  require('./sprites/foil.png'), [1,1]),
   new Sprite ('oven', require('./sprites/oven.png'), [6,1]),
 
-
-  new Sprite ('skw',  require('./sprites/skinner-w-1.png'), [3,1]),
   new Sprite('pour', require('./sprites/pour.png'),[5,1]),
-  new Sprite('thb', require('./sprites/thumbup.png'),[4,1],[1.1,1,-17]),
   new Sprite('skin', require('./sprites/skinner_main.png'),[6,5]),
+  new Sprite('skinW', require('./sprites/skinner_wide.png'),[4,3],[1.33,1,33]),
 
   new Sprite ('ch-l', require('./sprites/Chalmers-sheet-l-small.png'),[6,3]),
   new Sprite ('ch-r', require('./sprites/Chalmers-sheet-r-small.png'),[6,3]),
@@ -44,14 +42,18 @@ var characterModels = {
             right : [ ['skin',0,2],['skin',2,2],['skin',4,2],['skin',0,3],['skin',4,2]],
             left : [ ['skin',5,1],['skin',1,2],['skin',3,2],['skin',5,2],['skin',3,2]],
         },
-        window_talk : [ ['skw',0,0],['skw',1,0],['skw',2,0] ],
-        window_wait : [ ['skw',1,0] ],
+        climb: [ ['skin',4,1],['skinW',0,0],['skinW',0,0],['skinW',0,1],['skinW',0,1] ],
+        window_talk : [ ['skinW',1,1],['skinW',3,0],['skinW',1,1],['skinW',1,0] ],
+        window_wait : [ ['skinW',1,0] ],
+        window_wait2 : [ ['skinW',0,1] ],
+        isometric_exercise : [ ['skinW',3,0],['skinW',3,0],['skinW',1,0], ['skinW',1,0],['skinW',3,0],['skinW',3,0], ['skinW',1,0], ['skinW',1,1],['skinW',1,1] ],
+        stomp:  [ ['skinW',0,0],['skinW',0,0],['skinW',1,0],['skinW',3,0] ],
         eye_roll: {
             right: [ ['skin',4,0],['skin',0,1],['skin',2,1],['skin',4,1], ],
             left: [ ['skin',3,0],['skin',5,0],['skin',1,1],['skin',3,1], ],
         },
         pour_sand: [ ['pour',0,0],['pour',1,0],['pour',2,0],['pour',3,0],['pour',4,0], ],
-        thumb_up: [ ['thb',0,0],['thb',1,0],['thb',2,0],['thb',2,0],['thb',3,0],['thb',2,0],['thb',2,0],['thb',3,0],['thb',2,0],['thb',2,0],['thb',3,0],['thb',2,0],['thb',2,0],['thb',3,0],['thb',2,0],['thb',2,0],['thb',3,0], ],
+        thumb_up: [ ['skinW',0,2],['skinW',1,2],['skinW',2,2],['skinW',2,2],['skinW',3,2],['skinW',2,2],['skinW',2,2],['skinW',3,2],['skinW',2,2],['skinW',2,2],['skinW',3,2],['skinW',2,2],['skinW',2,2],['skinW',3,2],['skinW',2,2],['skinW',2,2],['skinW',3,2], ],
         wrap_bucket: [['skin',4,1],['skin',1,4],['skin',2,4],['skin',3,4],['skin',3,4]],
 
 
@@ -236,7 +238,7 @@ var makeRooms = function(){ return [
     new Room ('KITCHEN', 'kitchen', require('./rooms/kitchen.png'),290,180,{
         worldItems : [    
             new WorldItem('OVEN','oven', [145,35,30,-10],70,100,'closed',worldItemModels.oven),
-            new WorldItem('KRUSTYBURGER','Krusty Burger',[210,70,10,-40],50,40,'neutral',null,{noZoneScaling:true}),
+            new WorldItem('KRUSTYBURGER','Krusty Burger',[210,70,-15,-30],50,40,'neutral',null,{noZoneScaling:true}),
             new WorldItem('KITCHEN_DININGDOOR','way back to dining room',[145,0],290,12),
             new WorldItem('cupboard','cupboard',[90,39,0,-5],50,130),
             new WorldItem('foil','foil',[270,70,-30,-35],50,15,'neutral',worldItemModels.foil),
