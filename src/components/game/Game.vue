@@ -86,7 +86,15 @@
       <span>{{message}}</span>
       <span ref="coordinateDisplay"></span>
     </p>
+
+    <MusicPlayer
+    v-bind:orders="musicOrders"
+    v-bind:audioContext="$parent.audio.audioContext"
+    v-bind:audioContextStatusEmitter="$parent"
+    ref="audio"/>
   </main>
+
+
 </template>
 
 <script>
@@ -123,6 +131,7 @@ import HeartBeater from "../HeartBeater";
 import ScummInterface from "../ScummInterface";
 import ControlButtons from "../ControlButtons";
 import NarrationMessage from "../NarrationMessage";
+import MusicPlayer from "../MusicPlayer"
 
 function makeObjectFromList(list, keyname) {
   let result = {}
@@ -137,7 +146,8 @@ export default {
   props: ['running'],
   components :{
     DialogMenu, Room, ThingInRoom, OptionsMenu, 
-    HeartBeater, ScummInterface, ControlButtons, NarrationMessage
+    HeartBeater, ScummInterface, ControlButtons, NarrationMessage,
+    MusicPlayer
   },
 
   data () {
@@ -158,6 +168,7 @@ export default {
         verbList : gameData.verbList,
         sprites : gameData.sprites,
         sounds  : gameData.sounds, 
+        music : gameData.music,
         defaultResponses:gameData.defaultResponses,
         sequences: gameData.sequences,
         config: gameData.config,
@@ -287,6 +298,15 @@ export default {
     },
     hideControls () {
       return !(this.gameStatus === 'LIVE')
+    },
+    musicOrders () {
+      return {
+          playing: this.running && this.$parent.audio.enabled && !!this.music['background'],
+          noFade: !this.$parent.audio.enabled,
+          volume: this.$parent.audio.musicVolume,
+          song: this.music['background'],
+          pause: this.timerIsStopped,
+      }
     }
   },
   

@@ -9,14 +9,15 @@
 <script>
 export default {
     name: "MusicPlayer",
-    props: ['orders','audioContext','timer', 'audioContextStatusEmitter'],
+    props: ['orders','audioContext', 'audioContextStatusEmitter'],
 
     data () {
         return {
             gainNode: this.audioContext.createGain(),
             audioElementsToResumeWhenGameUnpause:[],
             track: undefined,
-            shouldBePlaying: false,
+            currentlyPlaying: false,
+            currentlyPaused: false,
             currentSong: this.orders.song,
             fading: false,
         }
@@ -29,21 +30,13 @@ export default {
             }
         },
 
-        handleGamePaused() {
-
-        },
-        handleGameUnpaused() {
-
-        },
-
         play() {
-            this.shouldBePlaying = true
+            this.currentlyPlaying = true
             this.fading = false
             const {audioElement} = this.$refs
             const {audioContext, gainNode, track, orders} = this
 
             gainNode.gain.setValueAtTime(orders.volume, audioContext.currentTime)
-            audioElement.currentTime = 0
 
             track
             .connect(gainNode)
@@ -53,13 +46,26 @@ export default {
         },
 
         stop() {
-            this.shouldBePlaying = false
+            this.currentlyPlaying = false
             this.fading = false
+            this.$refs.audioElement.pause()
+            this.$refs.audioElement.currentTime = 0
+        },
+
+        pause() {
+            this.currentlyPaused = true
             this.$refs.audioElement.pause()
         },
 
+        unpause() {
+            this.currentlyPaused = false
+            if (this.orders.playing && ! this.fading) {
+                this.play()
+            }
+        },
+
         fadeOut(fadeTime = 2) {
-            this.shouldBePlaying = false
+            this.currentlyPlaying = false
             this.fading = true
             const {audioElement} = this.$refs
             const {audioContext,gainNode,stop} = this
@@ -68,7 +74,7 @@ export default {
 
             const that = this;
             setTimeout(function() {
-                if (!that.shouldBePlaying) {that.stop}
+                if (!that.currentlyPlaying) {that.stop}
             }, fadeTime*1000)
 
         }
@@ -78,33 +84,34 @@ export default {
     watch: {
         orders: function (newOrders) {
             const {audioContext,gainNode} = this
-            const {playing, volume, noFade, song} = newOrders
-
-            if (playing !== this.shouldBePlaying) {
-                if (playing) {this.play()}
-                else if (noFade) {this.stop()}
-                else {this.fadeOut()}
-            }
+            const {playing, volume, noFade, song, pause} = newOrders
 
             if (!this.fading) {
                 gainNode.gain.setValueAtTime(this.orders.volume, audioContext.currentTime)
             }
 
+            if (playing !== this.currentlyPlaying) {
+                if (playing) {this.play()}
+                else if (noFade) {this.stop()}
+                else {this.fadeOut()}
+            }
+
             if (song !== this.currentSong) {
-                if (!song) {
-                    this.stop()
-                    this.currentSong = null
-                    this.$forceUpdate()
-                } else if (this.shouldBePlaying) {
-                    this.stop()
-                    this.currentSong = song
-                    this.$forceUpdate()
+                let wasPlayingBeforeChange = this.currentlyPlaying
+                this.stop()
+                this.currentSong = song || null
+                this.$forceUpdate()
+                if (wasPlayingBeforeChange) {
                     setTimeout(this.play, 500)
-                } else {
-                    this.currentSong = song
-                    this.$forceUpdate()
                 }
-            } 
+            }
+
+            if (pause) {
+                this.pause()
+            } else {
+                this.unpause()
+            }
+
         }
 
     },
@@ -116,11 +123,6 @@ export default {
             this.audioContextStatusEmitter.$on('audio-enabled', this.handleAudioContextEnabled)
         }
 
-        if (this.timer) {
-            this.timer.$on('timer-stop', this.handleGamePaused)
-            this.timer.$on('timer-start', this.handleGameUnpaused)
-        }
-
         if (this.audioContext.state !== 'suspended' && this.orders.playing) {
             this.play()
         }
@@ -129,10 +131,6 @@ export default {
     beforeDestroy() {
         if (this.audioContextStatusEmitter) {
             this.audioContextStatusEmitter.$off('audio-enabled', this.handleAudioContextEnabled)
-        }
-        if (this.timer) {
-            this.timer.$off('timer-stop', this.handleGamePaused)
-            this.timer.$off('timer-start', this.handleGameUnpaused)
         }
     }
 }

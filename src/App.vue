@@ -24,11 +24,11 @@
 
     </TitleScreen>
 
-      <MusicPlayer
-      v-bind:orders="musicOrders"
-      v-bind:audioContext="audio.audioContext"
-      v-bind:audioContextStatusEmitter="self"   
-      ref="audio"/>
+    <MusicPlayer
+    v-bind:orders="musicOrders"
+    v-bind:audioContext="audio.audioContext"
+    v-bind:audioContextStatusEmitter="self"   
+    ref="audio"/>
 
     <EndingScreen v-show="showEndingScreen">
       <template v-slot:file-buttons>
@@ -108,6 +108,7 @@ export default {
       return {
           playing: this.showTitleScreen && this.audio.enabled && !!this.music[this.song],
           noFade: !this.audio.enabled,
+          pause: false,
           volume: this.audio.musicVolume,
           song: this.music[this.song],
       }
