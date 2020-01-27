@@ -263,7 +263,7 @@ var makeRooms = function(){ return [
             new PolyZone ([ [110,20],[230,20],[230,30],[110,30] ]),
         ]
     },{
-        bgm: 'background'
+        bgm: null
     }),
 
 
@@ -314,6 +314,8 @@ var makeRooms = function(){ return [
             new WorldItem('window_fire','fire',[432,124],120,152,'neutral',worldItemModels.fireInWindow,{unclickable:true,removed:true, noZoneScaling:true,}),
         ],
 
+    },{
+        bgm:null
     } )
 
 ]}

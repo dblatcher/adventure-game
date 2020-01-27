@@ -26,13 +26,12 @@ export default {
     methods: {
         handleAudioContextEnabled() {
             if (this.orders.playing) {
-                console.log(this.play() )
+               this.play()
             }
         },
 
         play() {
             this.currentlyPlaying = true
-            this.fading = false
             const {audioElement} = this.$refs
             const {audioContext, gainNode, track, orders} = this
 
@@ -48,7 +47,6 @@ export default {
 
         stop() {
             this.currentlyPlaying = false
-            this.fading = false
             this.$refs.audioElement.pause()
             this.$refs.audioElement.currentTime = 0
         },
@@ -74,10 +72,22 @@ export default {
             gainNode.gain.linearRampToValueAtTime(0.0, audioContext.currentTime + fadeTime)
 
             const that = this;
-            setTimeout(function() {
-                if (!that.currentlyPlaying) {that.stop}
-            }, fadeTime*1000)
+            return new Promise ((resolve)=>{
+                setTimeout(function() {
+                    this.fading = false
+                    resolve(true)
+                }, fadeTime*1000)
+            })
+        },
 
+        changeSong(newSong, wasPlayingBeforeChange) {
+            const {audioElement} = this.$refs
+            this.stop()
+            this.currentSong = newSong || null
+
+            if (wasPlayingBeforeChange) {
+                audioElement.addEventListener('canplay',this.play, {once:true})
+            }
         }
 
     },
@@ -86,7 +96,7 @@ export default {
         orders: function (newOrders) {
             const {audioContext,gainNode} = this
             const {playing, volume, noFade, song, pause} = newOrders
-            const {audioElement} = this.$refs
+
 
             if (!this.fading) {
                 gainNode.gain.setValueAtTime(this.orders.volume, audioContext.currentTime)
@@ -95,16 +105,19 @@ export default {
             if (playing !== this.currentlyPlaying) {
                 if (playing) {this.play()}
                 else if (noFade) {this.stop()}
-                else {this.fadeOut()}
+                else {this.fadeOut().then( ()=>{ this.stop() })}
             }
 
             if (song !== this.currentSong) {
                 let wasPlayingBeforeChange = this.currentlyPlaying
-                this.stop()
-                this.currentSong = song || null
-
-                if (wasPlayingBeforeChange) {
-                    audioElement.addEventListener('canplay',this.play, {once:true})
+                
+                if (noFade || !this.currentSong) {
+                    this.changeSong(song, wasPlayingBeforeChange)
+                } else {
+                    this.fadeOut()
+                    .then( ()=>{
+                        this.changeSong(song, wasPlayingBeforeChange)
+                    } )
                 }
 
             }
