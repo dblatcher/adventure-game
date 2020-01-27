@@ -302,10 +302,11 @@ var interactions = [
         new StandardOrder('[status]CUTSCENE'),
         new StandardOrder('GAME','changeRoom',['DINING_R',300,50]),
         new StandardOrder('DINING_KITCHENDOOR_W','setStatus',['closing','closed']),
-        new StandardOrder('pc>>220,45'),
+        new StandardOrder('pc>>195,45'),
         new StandardOrder('DINING_R.HAMBURGERS_W','setRemoval',false),
         new StandardOrder('CHALMERS_C^^pc'),
-        new StandardOrder('pc>>214,12'),
+        new StandardOrder('pc>>225,35'),
+        new StandardOrder('pc^^CHALMERS_C'),
         new StandardOrder('[status]CONVERSATION', 'hamburgers'),
     ]
     ),

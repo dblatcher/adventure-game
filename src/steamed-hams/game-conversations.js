@@ -30,8 +30,12 @@ function makeConversations() {
 		'pc::Yes. It\'s a regional dialect!',
 		'CHALMERS_C::Uh-huh..',
 		'CHALMERS_C::What region?',
+		[
+			{order:['CHALMERS_C','doAction','take_ham']},
+			{order:['CHALMERS_C','setDefaultWait','wait_with_ham']}
+		],
 		{order:['HAMBURGERS_W','setStatus','three']},
-		{order:['CHALMERS_C','setDefaultWait','wait_with_ham']},
+		
 		{order:['CHALMERS_C','setDefaultTalk','talk_with_ham']},
 		],
 		{changesBranch:'dialects',}
