@@ -118,7 +118,9 @@ const fire = [
     new StandardOrder( 'CHALMERS_C>>165,14'),
     new StandardOrder( 'pc::Yes.'),
     new StandardOrder( 'CHALMERS_C::May I see it?') ,
+    new StandardOrder( '[wait]500') ,
     new StandardOrder( 'pc::No.') ,
+    new StandardOrder( '[wait]500') ,
     [
         new StandardOrder( 'CHALMERS_C>>DINING_WAYOUT_W'),
         new StandardOrder( 'pc>>75,45'),
