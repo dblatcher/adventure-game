@@ -26,7 +26,7 @@ export default {
     methods: {
         handleAudioContextEnabled() {
             if (this.orders.playing) {
-                this.play()
+                console.log(this.play() )
             }
         },
 
@@ -42,7 +42,8 @@ export default {
             .connect(gainNode)
             .connect(audioContext.destination)
 
-            audioElement.play()
+            const playAudioCall = audioElement.play()
+            if (playAudioCall.catch) {playAudioCall.catch(error=>{})}
         },
 
         stop() {
@@ -85,6 +86,7 @@ export default {
         orders: function (newOrders) {
             const {audioContext,gainNode} = this
             const {playing, volume, noFade, song, pause} = newOrders
+            const {audioElement} = this.$refs
 
             if (!this.fading) {
                 gainNode.gain.setValueAtTime(this.orders.volume, audioContext.currentTime)
@@ -100,10 +102,11 @@ export default {
                 let wasPlayingBeforeChange = this.currentlyPlaying
                 this.stop()
                 this.currentSong = song || null
-                this.$forceUpdate()
+
                 if (wasPlayingBeforeChange) {
-                    setTimeout(this.play, 500)
+                    audioElement.addEventListener('canplay',this.play, {once:true})
                 }
+
             }
 
             if (pause) {
@@ -126,6 +129,7 @@ export default {
         if (this.audioContext.state !== 'suspended' && this.orders.playing) {
             this.play()
         }
+
     },
 
     beforeDestroy() {
