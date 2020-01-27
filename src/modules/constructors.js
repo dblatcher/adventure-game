@@ -15,7 +15,7 @@ function Sprite (id, url, dims, frameSize ) {
 
 
 
-function Room (id, name, url, width,height, contents) {
+function Room (id, name, url, width,height, contents, config={}) {
 	this.id = this.id = id.toUpperCase()+"_R";
 	this.name = name;
 	this.url= url;
@@ -27,6 +27,8 @@ function Room (id, name, url, width,height, contents) {
 	this.foregrounds = contents.foregrounds || [];
 
 	this.worldItems.forEach(item => {item.roomId = this.id});
+
+	this.bgm = config.bgm || null
 }
 Room.prototype.returnState = function () {
 	let state = {name:this.name, worldItems:[]};

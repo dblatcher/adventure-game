@@ -300,11 +300,14 @@ export default {
       return !(this.gameStatus === 'LIVE')
     },
     musicOrders () {
+
+      let song = this.rooms[this.roomNumber].bgm
+
       return {
-          playing: this.running && this.$parent.audio.enabled && !!this.music['background'],
+          playing: this.running && this.$parent.audio.enabled && !!this.music[song],
           noFade: !this.$parent.audio.enabled,
           volume: this.$parent.audio.musicVolume,
-          song: this.music['background'],
+          song: this.music[song],
           pause: this.timerIsStopped,
       }
     }

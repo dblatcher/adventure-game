@@ -262,6 +262,8 @@ var makeRooms = function(){ return [
             new PolyZone ([ [270,220],[270,81],[350,0],[350,220] ]),
             new PolyZone ([ [110,20],[230,20],[230,30],[110,30] ]),
         ]
+    },{
+        bgm: 'background'
     }),
 
 
