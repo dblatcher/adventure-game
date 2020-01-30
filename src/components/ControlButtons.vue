@@ -44,11 +44,11 @@ export default {
 
 .control-button {
     @include btn-toggle ($colour-blue);
-    @include navButton(true);
+    @include navButtonLarge(true);
 
     &--active {
         @include btn-solid ($colour-blue);
-        @include navButton(true);
+        @include navButtonLarge(true);
     }
 
     &--disabled {
@@ -62,7 +62,7 @@ export default {
     }
 
     &--options {
-        right: 3.2rem;
+        right: 4.2rem;
     }
 
     &--skip {
@@ -71,12 +71,12 @@ export default {
     }
 
     &--highlighting {
-        right: 6.2rem;
+        right: 8.2rem;
         z-index: 300;
     }
 
     &--pause {
-        right: 9.2rem;
+        right: 12.2rem;
     }
 }
 

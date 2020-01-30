@@ -54,3 +54,26 @@
         vertical-align: middle;
     }
 }
+
+
+@mixin navButtonLarge($fixedTop) {
+
+    @if($fixedTop) {
+        position: fixed;
+        top: .2rem;
+    }
+
+    height: 3rem;
+    width: 3rem;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+
+    img {
+        width: 1.75rem;
+        vertical-align: middle;
+    }
+}

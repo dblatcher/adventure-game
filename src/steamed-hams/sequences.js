@@ -54,7 +54,7 @@ const greetChalmers = [
 const chalmersComesIn = [
     new StandardOrder ('GAME', 'setGameStatus','CUTSCENE'),
     new StandardOrder ('CHALMERS_C>>FRONT_DOOR_W'),
-    new StandardOrder ('CHALMERS_C}}DINING_R,100,10'),
+    new StandardOrder ('CHALMERS_C}}DINING_R,115,30'),
     new StandardOrder ('SKINNER_C', 'say','phew...'),
     new StandardOrder ('pc>>FRONT_DOOR_W'),
     new StandardOrder ('KITCHEN_R.OVEN_W', 'setStatus',"smoking"),
@@ -81,7 +81,7 @@ const goToKrustyBurger = [
     new StandardOrder ('CHALMERS_C>>60,-100'),
     new StandardOrder ('pc', 'setDefaultWait','wait'),
     new StandardOrder ('pc', 'setDefaultTalk','talk'),
-    new StandardOrder ('CHALMERS_C','goToRoom',['DINING_R',100,10]),
+    new StandardOrder ('CHALMERS_C','goToRoom',['DINING_R',115,30]),
     new StandardOrder ('GAME','teleportCharacter',['SKINNER_C','KITCHEN_R',200,75]),
     new StandardOrder ('SKINNER_C','goTo',{x:220, y:90}),
     new StandardOrder ('SKINNER_C','say','Four hamburgers, quickly!'),
@@ -122,7 +122,9 @@ const fire = [
     new StandardOrder( 'CHALMERS_C>>165,14'),
     new StandardOrder( 'pc::Yes.'),
     new StandardOrder( 'CHALMERS_C::May I see it?') ,
+    new StandardOrder( '[wait]500') ,
     new StandardOrder( 'pc::No.') ,
+    new StandardOrder( '[wait]500') ,
     [
         new StandardOrder( 'CHALMERS_C>>DINING_WAYOUT_W'),
         new StandardOrder( 'pc>>75,45'),

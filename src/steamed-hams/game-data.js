@@ -99,6 +99,10 @@ var characterModels = {
             right : [ ['ch-r',3,0],['ch-r',0,0],['ch-r',3,0] ],
             left :  [ ['ch-l',2,0],['ch-l',5,0],['ch-l',2,0] ],
         },
+        take_ham :
+        [['ch-r',1,0],['ch-r',1,0],['ch-r',2,0],['ch-r',5,2],['ch-r',5,2],['ch-r',2,0]],
+        bite :
+        [['ch-r',2,0],['ch-r',1,1],['ch-r',5,2],['ch-r',5,2],['ch-r',2,0]],
         talk_with_ham : 
         [ ['ch-r',4,0],['ch-r',5,0],['ch-r',0,1],['ch-r',1,1],['ch-r',0,1] ],
         wait_with_ham : 
@@ -191,7 +195,8 @@ var makeCharacters = function() {return [
     new Character ('chalmers',[100,10,null],characterModels.chalmers,
     {
         idleAnimations:{
-            "wait": {delay: 50, chance:0.7, cycles:['blink']}
+            "wait": {delay: 50, chance:0.7, cycles:['blink']},
+            "wait_with_ham": {delay: 100, chance:0.9, cycles:['bite']}
         },
         baseWidth: 50,
         baseHeight: 100,
