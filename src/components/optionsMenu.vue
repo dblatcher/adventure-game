@@ -17,6 +17,13 @@
                     <input type="range" min="1" max="300" v-model.number="options.textDelay" class="slider">
                 </div>
 
+
+                <label class="row" for="options-menu-sound-toggle">
+                    <p>Sound enabled:</p>
+                    <input id="options-menu-sound-toggle" type="checkbox" v-model="options.soundEnabled"/>
+                </label>
+
+
                 <p class="label">SFX volume: {{Math.round(options.sfxVolume*100)}}%</p>
                 <div class="slidecontainer">
                     <input type="range" min="0" max="2" step=".01" v-model.number="options.sfxVolume" class="slider">
@@ -27,8 +34,6 @@
                     <input type="range" min="0" max=".4" step=".01" v-model.number="options.musicVolume" class="slider">
                 </div>
 
-                <p class="label">SOUND:</p>
-                <input type="checkbox" v-model="options.soundEnabled"/>
 
             </form>
 
