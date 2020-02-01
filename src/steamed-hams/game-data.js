@@ -17,8 +17,14 @@ var sprites = [
 
   new Sprite('pour', require('./sprites/pour.png'),[5,1]),
   new Sprite('skin', require('./sprites/skinner_main.png'),[6,5]),
-  new Sprite('skinW', require('./sprites/skinner_wide.png'),[4,3],[1.33,1,33]),
-  new Sprite('skinW2', require('./sprites/skinner_wide.png'),[4,3],[1.33,1,-12,-.5]),
+  new Sprite('skinW', require('./sprites/skinner_wide.png'),[4,3],{
+      frameSize: [1.33,1],
+      offset: [33],
+    }),
+  new Sprite('skinW2', require('./sprites/skinner_wide.png'),[4,3],{
+      frameSize: [1.33,1],
+      offset: [-12,-.5],
+    }),
 
   new Sprite ('ch-l', require('./sprites/Chalmers-sheet-l-small.png'),[6,3]),
   new Sprite ('ch-r', require('./sprites/Chalmers-sheet-r-small.png'),[6,3]),

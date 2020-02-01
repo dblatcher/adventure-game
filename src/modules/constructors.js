@@ -1,18 +1,22 @@
 
-function Sprite (id, url, dims, frameSize ) {
-	if (!dims) {dims = [1,1]}
-	if (!frameSize) {frameSize = [1,1,0,0]}
+class Sprite {
+	constructor (id, url, dims, config = {} ) {
+		if (!dims) {dims = [1,1]}
+		const frameSize = config.frameSize || [1,1]
+		const offset = config.offset || [0,0]
 
-	this.id = id;
-	this.url=url
-	this.col = dims[0];
-	this.row = dims[1];
-	this.relativeWidth  = frameSize[0];
-	this.relativeHeight = frameSize[1];	
-	this.xOffset = frameSize[2] || 0;
-	this.yOffset = frameSize[3] || 0;
+		this.id  = id;
+		this.url = url
+		this.col = dims[0];
+		this.row = dims[1];
+		this.relativeWidth  = frameSize[0] || 1;
+		this.relativeHeight = frameSize[1] || 1;	
+		this.xOffset = offset[0] || 0;
+		this.yOffset = offset[1] || 0;
+	}
+
+
 }
-
 
 
 function Room (id, name, url, width,height, contents, config={}) {
