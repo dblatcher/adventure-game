@@ -87,13 +87,6 @@ export default {
             if (!soundAndTrack) {return false}
             const {sound, audioElement} = soundAndTrack;
 
-
-            this.tracks[soundId]
-            .connect(this.contextSource.masterGainNode)
-            .connect(this.gainNode)
-            .connect(this.panner)
-            .connect(this.contextSource.audioContext.destination)
-
             const play = this.contextSource.audioContext.state === 'suspended' ?
             null : audioElement.play()
 
@@ -209,6 +202,11 @@ export default {
                 loop: false
             }
             this.tracks[this.sounds[index].id] = this.contextSource.audioContext.createMediaElementSource(audioElement);
+            this.tracks[this.sounds[index].id]
+            .connect(this.panner)
+            .connect(this.gainNode)
+            .connect(this.contextSource.masterGainNode)
+            .connect(this.contextSource.audioContext.destination)
         })
 
         this.audioContextStatusEmitter.$on('audio-enabled', this.handleAudioContextEnabled)
