@@ -29,20 +29,16 @@ var sprites = [
 
 var sounds = [
     new Sound('foot step', 'fs', '/step.mp3' ),
-    new Sound('bang','bg','/bang.mp3'),
-    new Sound('voice','vc','/voice.wav'),
     new Sound('openning door','open','/open.mp3'),
     new Sound('closing door','close','/close.mp3'),
     new Sound('doorbell','doorbell','/doorbell.mp3'),
     new Sound('fire','fire','/fire.mp3'),
     new Sound('sand','sand','/sand.mp3'),
     new Sound('burn','burn','/burnLoop.mp3'),
-    new Sound('title music','music','/music.mp3')
 ]
 
 var music = {
-    title:  new Sound('title music','music','/music.mp3'),
-    background:  new Sound('bgm','bgm','/plink plonk.mp3'),
+    title: new Sound('title music','music','/title.mp3'),
 }
 
 var characterModels = {
@@ -177,6 +173,10 @@ var worldItemModels = {
 
     fireInWindow: new WorldItem.Model({
         neutral:[['fire',0,0],['fire',1,0]],
+    },{
+        soundLoops: {
+            'neutral': 'burn',
+        }
     })
 
 };
