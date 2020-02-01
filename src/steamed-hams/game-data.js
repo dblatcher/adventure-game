@@ -39,6 +39,7 @@ var sounds = [
 
 var music = {
     title: new Sound('title music','music','/title.mp3'),
+    outside: new Sound('outdoor sound','outside','/outside.mp3'),
 }
 
 var characterModels = {
@@ -242,6 +243,8 @@ var makeRooms = function(){ return [
         foregrounds: [
             new Foreground(require("./rooms/tree_front.png"),[200,0],[80,160]),
         ],
+    },{
+        bgm:'outside'
     }),
 
     new Room ('DINING','dining room', require('./rooms/dining_room2.png'),350,220,{
@@ -320,7 +323,7 @@ var makeRooms = function(){ return [
         ],
 
     },{
-        bgm:null
+        bgm:'outside'
     } )
 
 ]}

@@ -29,7 +29,7 @@ const chalmersWalkingAlong = [
     new StandardOrder ('[Teleport]CHALMERS_C,FRONT_R,14,15'),
     new StandardOrder ('GAME','changeRoom',['FRONT_R'], {pcNotMoving:true}),
     new StandardOrder ('CHALMERS_C>>DOORBELL_W'),
-    new StandardOrder ('DOORBELL_W','playSound','doorbell'),
+    new StandardOrder ('DOORBELL_W','playSound','doorbell',{waitUntilFinish:true}),
 ];
 
 const chalmersAtDoor = [
