@@ -33,14 +33,9 @@ export default {
         play() {
             this.currentlyPlaying = true
             const {audioElement} = this.$refs
-            const {audioContext, gainNode, track, orders} = this
+            const {audioContext, gainNode, orders} = this
 
             gainNode.gain.setValueAtTime(orders.volume, audioContext.currentTime)
-
-            track
-            .connect(gainNode)
-            .connect(audioContext.destination)
-
             const playAudioCall = audioElement.play()
             if (playAudioCall.catch) {playAudioCall.catch(error=>{})}
         },
@@ -133,8 +128,11 @@ export default {
     },
 
     mounted()  {
-        this.track = this.audioContext.createMediaElementSource(this.$refs.audioElement);
-        
+        this.track = this.audioContext.createMediaElementSource(this.$refs.audioElement);   
+        this.track
+            .connect(this.gainNode)
+            .connect(this.audioContext.destination)
+
         if (this.audioContextStatusEmitter) {
             this.audioContextStatusEmitter.$on('audio-enabled', this.handleAudioContextEnabled)
         }
