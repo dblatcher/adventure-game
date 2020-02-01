@@ -9,12 +9,12 @@
         <div v-bind:style="styleObject">
             <Sprite v-for="sprite in this.spriteSet" :key="sprite.id"
                 v-bind:sprite="sprite"
-                v-bind:fx="sprite.p.frame.fx" 
-                v-bind:fy="sprite.p.frame.fy"
-                v-bind:height="sprite.p.scaledHeight"
-                v-bind:width="sprite.p.scaledWidth"
-                v-bind:index="sprite.p.frame.sprite"
-                v-bind:measure = "sprite.p.measure"
+                v-bind:fx="frame.fx" 
+                v-bind:fy="frame.fy"
+                v-bind:height="scaledHeight"
+                v-bind:width="scaledWidth"
+                v-bind:index="frame.sprite"
+                v-bind:measure="measure"
                 ></Sprite>
         </div>
         <SfxPlayer 
@@ -29,10 +29,11 @@
 
 <script>
 import Sprite from "../Sprite";
+import SfxPlayer from "../SfxPlayer";
 import setStatus from "./setStatus.js";
 import setRemoval from "./setRemoval.js";
 import { innerBorder } from "../../modules/styleGen";
-import SfxPlayer from "../SfxPlayer";
+import {sprites} from "../../gameIndex"
 
 export default {
     name:'WorldItem',
@@ -40,14 +41,8 @@ export default {
     props:['item','measure','highlight'],
     
     data: function() {
-        var spriteSet = [];
-        var fullSet = this.$parent.$parent.$parent.sprites;
-        for (var i=0; i< fullSet.length; i++) {
-            if (this.item.model.spritesUsed.includes(fullSet[i].id)) {spriteSet.push ( Object.assign({}, fullSet[i], {p:this} ) )    }
-        }
-
         return {
-        spriteSet : spriteSet,
+        spriteSet : sprites.filter( sprite=> this.item.model.spritesUsed.includes(sprite.id) ),
         cycleFrame:0,
         }
     },

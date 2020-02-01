@@ -9,12 +9,12 @@
         <div v-bind:style="styleObject">
             <Sprite v-for="sprite in this.spriteSet" :key="sprite.id"
                 v-bind:sprite="sprite"
-                v-bind:fx="sprite.p.frame.fx" 
-                v-bind:fy="sprite.p.frame.fy"
-                v-bind:height="sprite.p.scaledHeight"
-                v-bind:width="sprite.p.scaledWidth"
-                v-bind:index="sprite.p.frame.sprite"
-                v-bind:measure="sprite.p.measure"
+                v-bind:fx="frame.fx" 
+                v-bind:fy="frame.fy"
+                v-bind:height="scaledHeight"
+                v-bind:width="scaledWidth"
+                v-bind:index="frame.sprite"
+                v-bind:measure="measure"
                 ></Sprite>
         </div>
         
@@ -47,6 +47,7 @@ import doFunction from "./doFunction";
 import moveFunction from "./moveFunction";
 
 import { innerBorder } from "../../modules/styleGen";
+import {sprites} from "../../gameIndex"
 
 export default {
     name:'Character',
@@ -54,14 +55,8 @@ export default {
     props:['char','measure','roomWidth','roomHeight','highlight'],
 
     data: function() {
-        var spriteSet = [];
-        var fullSet = this.$parent.$parent.$parent.sprites;
-        for (var i=0; i< fullSet.length; i++) {
-            if (this.char.model.spritesUsed.includes(fullSet[i].id)) {spriteSet.push ( Object.assign({}, fullSet[i], {p:this} ) )    }
-        }
-
         return {
-            spriteSet : spriteSet,
+            spriteSet : sprites.filter( sprite=> this.char.model.spritesUsed.includes(sprite.id) ),
             timeSpentIdle : 0
         }
     },
@@ -101,7 +96,9 @@ export default {
                 this.char.actionQueue[0].direction : this.behaviour.direction;
         }, 
         frame : function() {
-            const frameData = this.char.model.getFrame(this.char.actionQueue[0] || this.behaviour)
+            const frameData = this.char.model.getFrame(
+                this.char.actionQueue[0] || this.behaviour
+            )
             return {
                 sprite: frameData[0],
                 fx:     frameData[1],
@@ -118,12 +115,12 @@ export default {
             width:  (this.scaledWidth  * this.measure.scale) + this.measure.unit,
             bottom: (this.y  * this.measure.scale) + this.measure.unit,
             left:   (this.x  * this.measure.scale) + this.measure.unit,
-            transform: 'translateX(-50%)',
             backgroundColor: (this.highlight ? 'rgba(255,255,255,.5)' : 'unset' ),
             backgroundImage: (this.highlight ?  innerBorder('blue') : 'unset'),
             pointerEvents: (this.ident === this.gameInstance.pcId ? 'none' : 'unset'),
             transition: 'background-color 1s',
             borderRadius: '5px',
+            transform: 'translateX(-50%)',
             filter: this.zoneEffects.filter,
         }},
         zoneEffects : function() {

@@ -13,9 +13,12 @@ const gameData = { ...gameDataImport, ...gameConfigImport,
 
 const config = {gameConfigImport}
 
+const {sprites} = gameDataImport 
+
 export {
     TitleScreen,
     EndingScreen, 
     gameData,
     config,
+    sprites,
 }
