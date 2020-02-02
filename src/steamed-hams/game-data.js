@@ -23,8 +23,9 @@ var sprites = [
   new Sprite ('ch-l', require('./sprites/Chalmers-sheet-l-small.png'),[6,3]),
   new Sprite ('ch-r', require('./sprites/Chalmers-sheet-r-small.png'),[6,3]),
 
-  new Sprite ('fire',  require('./sprites/window_fire.png'),[2,1]),
   new Sprite ('k-dr', require('./sprites/kitchen-door.png'),[4,3]),
+
+  new Sprite('window', require('./sprites/windows.png'),[4,1]),
 ]
 
 var sounds = [
@@ -173,10 +174,11 @@ var worldItemModels = {
     }),
 
     fireInWindow: new WorldItem.Model({
-        neutral:[['fire',0,0],['fire',1,0]],
+        burning:[['window',1,0],['window',2,0],['window',3,0]],
+        neutral:[['window',0,0]],
     },{
         soundLoops: {
-            'neutral': 'burn',
+            'burning': 'burn',
         }
     })
 
@@ -319,7 +321,7 @@ var makeRooms = function(){ return [
                 noZoneScaling:true,
                 recommendedVerb: {'closed':'OPEN', 'open':'SHUT'}
             }),
-            new WorldItem('window_fire','fire',[432,124],120,152,'neutral',worldItemModels.fireInWindow,{unclickable:true,removed:true, noZoneScaling:true,}),
+            new WorldItem('window_fire','window',[440,138],200,130,'burning',worldItemModels.fireInWindow,{unclickable:true,removed:true, noZoneScaling:true,}),
         ],
 
     },{
