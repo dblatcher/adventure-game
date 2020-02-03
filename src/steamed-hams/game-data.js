@@ -29,26 +29,24 @@ var sprites = [
   new Sprite ('ch-l', require('./sprites/Chalmers-sheet-l-small.png'),[6,3]),
   new Sprite ('ch-r', require('./sprites/Chalmers-sheet-r-small.png'),[6,3]),
 
-  new Sprite ('fire',  require('./sprites/window_fire.png'),[2,1]),
   new Sprite ('k-dr', require('./sprites/kitchen-door.png'),[4,3]),
+
+  new Sprite('window', require('./sprites/windows.png'),[4,1]),
 ]
 
 var sounds = [
     new Sound('foot step', 'fs', '/step.mp3' ),
-    new Sound('bang','bg','/bang.mp3'),
-    new Sound('voice','vc','/voice.wav'),
     new Sound('openning door','open','/open.mp3'),
     new Sound('closing door','close','/close.mp3'),
     new Sound('doorbell','doorbell','/doorbell.mp3'),
     new Sound('fire','fire','/fire.mp3'),
     new Sound('sand','sand','/sand.mp3'),
     new Sound('burn','burn','/burnLoop.mp3'),
-    new Sound('title music','music','/music.mp3')
 ]
 
 var music = {
-    title:  new Sound('title music','music','/music.mp3'),
-    background:  new Sound('bgm','bgm','/plink plonk.mp3'),
+    title: new Sound('title music','music','/title.mp3'),
+    outside: new Sound('outdoor sound','outside','/outside.mp3'),
 }
 
 var characterModels = {
@@ -182,7 +180,12 @@ var worldItemModels = {
     }),
 
     fireInWindow: new WorldItem.Model({
-        neutral:[['fire',0,0],['fire',1,0]],
+        burning:[['window',1,0],['window',2,0],['window',3,0]],
+        neutral:[['window',0,0]],
+    },{
+        soundLoops: {
+            'burning': 'burn',
+        }
     })
 
 };
@@ -248,6 +251,8 @@ var makeRooms = function(){ return [
         foregrounds: [
             new Foreground(require("./rooms/tree_front.png"),[200,0],[80,160]),
         ],
+    },{
+        bgm:'outside'
     }),
 
     new Room ('DINING','dining room', require('./rooms/dining_room2.png'),350,220,{
@@ -322,11 +327,11 @@ var makeRooms = function(){ return [
                 noZoneScaling:true,
                 recommendedVerb: {'closed':'OPEN', 'open':'SHUT'}
             }),
-            new WorldItem('window_fire','fire',[432,124],120,152,'neutral',worldItemModels.fireInWindow,{unclickable:true,removed:true, noZoneScaling:true,}),
+            new WorldItem('window_fire','window',[440,138],200,130,'burning',worldItemModels.fireInWindow,{unclickable:true,removed:true, noZoneScaling:true,}),
         ],
 
     },{
-        bgm:null
+        bgm:'outside'
     } )
 
 ]}
