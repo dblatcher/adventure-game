@@ -327,7 +327,7 @@ var makeRooms = function(){ return [
                 noZoneScaling:true,
                 recommendedVerb: {'closed':'OPEN', 'open':'SHUT'}
             }),
-            new WorldItem('window_fire','window',[440,138],200,130,'burning',worldItemModels.fireInWindow,{unclickable:true,removed:true, noZoneScaling:true,}),
+            new WorldItem('window_fire','window',[440,138],200,130,'neutral',worldItemModels.fireInWindow,{unclickable:true, noZoneScaling:true,}),
         ],
 
     },{
