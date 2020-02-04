@@ -5,9 +5,8 @@ function makeConversations() {
 
 	var conversations = {};
 
-	conversations.hamburgers = new Conversation('hamburgers','CHALMERS_C','start');
-
-	conversations.hamburgers.addBranch(new DialogBranch('start',[
+	conversations.hamburgers = new Conversation('hamburgers','CHALMERS_C','start')
+	.addBranch(new DialogBranch('start',[
 		new DialogChoice('Sorry, to keep you waiting...',
 		['CHALMERS_C::hmm.'],
 		{canOnlySayOnce: true}),
@@ -16,9 +15,8 @@ function makeConversations() {
 			'CHALMERS_C:: I thought we were having steamed clams.',
 		],
 		{changesBranch:'iThought'}),
-	]));
-	
-	conversations.hamburgers.addBranch(new DialogBranch('iThought',[
+	]))
+	.addBranch(new DialogBranch('iThought',[
 		new DialogChoice('Clams? What makes you think that?',
 		['CHALMERS_C::You did, Skinner.',
 		'CHALMERS_C::not five minutes ago, in that kitchen, you said we were having steamed clams.'],
@@ -41,9 +39,8 @@ function makeConversations() {
 		{changesBranch:'dialects',}
 		),
 
-	]));
-	
-	conversations.hamburgers.addBranch(new DialogBranch('dialects',[
+	]))
+	.addBranch(new DialogBranch('dialects',[
 		new DialogChoice('Upstate New York.',
 			[
 			'CHALMERS_C:: Really? Well, I\'m from Utica, and I\'ve never heard anyone use the phrase \"steamed hams.\"',
@@ -73,9 +70,8 @@ function makeConversations() {
 			],
 			{changesBranch:'similar'}
 		),
-	]));
-
-	conversations.hamburgers.addBranch(new DialogBranch('similar',[
+	]))
+	.addBranch(new DialogBranch('similar',[
 		new DialogChoice('Oh no, patented skinnerburgers.',
 			['pc:: old family recipe',
 			'CHALMERS_C:: for steamed-hams.',
@@ -107,9 +103,8 @@ function makeConversations() {
 	]));
 
 
-	conversations.arrival = new Conversation('arival', 'CHALMERS_C','start');
-
-	conversations.arrival.addBranch(new DialogBranch('start', [
+	conversations.arrival = new Conversation('arival', 'CHALMERS_C','start')
+	.addBranch(new DialogBranch('start', [
 		new DialogChoice('I hope you\'re prepared for an unforgettable luncheon.',
 			['CHALMERS_C::hmmm'],
 			{canOnlySayOnce:true,}
@@ -124,9 +119,8 @@ function makeConversations() {
 
 	]));
 
-	conversations.iWasJust = new Conversation('iWasJust','CHALMERS_C','start');
-
-	conversations.iWasJust.addBranch(new DialogBranch('start',[
+	conversations.iWasJust = new Conversation('iWasJust','CHALMERS_C','start')
+	.addBranch(new DialogBranch('start',[
 		new DialogChoice('just stretching my calves on the windowsill.',
 		['pc::Isometric exercise. Care to join me?',
 		'pc##isometric_exercise',
@@ -153,22 +147,18 @@ function makeConversations() {
 		),
 	]))
 
-
-	 conversations.houseIsOnFire = new Conversation ('houseIsOnFire','CHALMERS_C','start');
-
-	 conversations.houseIsOnFire.addBranch(new DialogBranch('start',[
-
-		new DialogChoice('No, mother, it\'s just the Northern Lights.',
-		['[sequence]ending'],
-		),
-		new DialogChoice('No, mother, it\'s just hot stuff coming through.',
-		['[sequence]ending'],
-		),
-		new DialogChoice('Be there in a minute,mother!',
-		['[sequence]ending'],
-		),
-
-	 ]))
+	conversations.houseIsOnFire = new Conversation ('houseIsOnFire','CHALMERS_C','start')
+	.addBranch(new DialogBranch('start',[
+	new DialogChoice('No, mother, it\'s just the Northern Lights.',
+	['[sequence]ending'],
+	),
+	new DialogChoice('No, mother, it\'s just hot stuff coming through.',
+	['[sequence]ending'],
+	),
+	new DialogChoice('Be there in a minute,mother!',
+	['[sequence]ending'],
+	),
+	]))
 
 
 	return conversations

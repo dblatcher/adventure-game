@@ -59,6 +59,7 @@ function Conversation (label,npc, firstBranch) {
 Conversation.prototype.addBranch = function (dialogBranch) {
 	this.branches[dialogBranch.label] = dialogBranch;
 	dialogBranch.conversationLabel = this.label;
+	return this
 }
 Conversation.prototype.getOptions = function () {
 	return this.branches[this.currentBranch].choices;
