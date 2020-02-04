@@ -85,6 +85,25 @@ function makeConversations() {
 			'CHALMERS_C:: Of course.',
 			{order:['GAME','runSequence','fire']}]
 		),
+		new DialogChoice('I based it off a Martha Stewart recipe.',
+			['pc:: maybe they saw the same one as this \'Krusty Burger\' place.',
+			'CHALMERS_C:: A Martha Stewart recipe...',
+			['CHALMERS_C:: ...for steamed-hams.', 'pc:: Yes.',],
+			'CHALMERS_C:: ...and you call them "steamed hams" despite the fact they are obviously grilled.',
+			'pc:: Ye- hey- you know, the- one thing I should- excuse me for one second.',
+			'CHALMERS_C:: Of course.',
+			{order:['GAME','runSequence','fire']}]
+		),
+		new DialogChoice('I\'m not suprised.',
+			['pc:: I image they have excellent chefs at such establishments.',
+			'pc:: And great minds think alike!',
+			'CHALMERS_C:: ...when it comes to steamed-hams.',
+			'pc:: Yes.',
+			'CHALMERS_C:: Yeah, so you call them "steamed hams" despite the fact they are obviously grilled.',
+			'pc:: Ye- hey- you know, the- one thing I should- excuse me for one second.',
+			'CHALMERS_C:: Of course.',
+			{order:['GAME','runSequence','fire']}]
+		),
 	]));
 
 
@@ -140,6 +159,12 @@ function makeConversations() {
 	 conversations.houseIsOnFire.addBranch(new DialogBranch('start',[
 
 		new DialogChoice('No, mother, it\'s just the Northern Lights.',
+		['[sequence]ending'],
+		),
+		new DialogChoice('No, mother, it\'s just hot stuff coming through.',
+		['[sequence]ending'],
+		),
+		new DialogChoice('Be there in a minute,mother!',
 		['[sequence]ending'],
 		),
 

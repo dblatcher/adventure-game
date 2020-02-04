@@ -102,7 +102,7 @@ const fire = [
     new StandardOrder ('CHALMERS_C', 'setDefaultTalk','talk'),
     new StandardOrder ('pc>>250,45'),
     [
-        new StandardOrder ('DINING_KITCHENDOOR_W','playSound','fire'),
+        new StandardOrder ('DINING_KITCHENDOOR_W','playSound','burn'),
         new StandardOrder ('DINING_KITCHENDOOR_W','setStatus',['opening_fire']),
     ],
     [
@@ -160,7 +160,7 @@ const ending = [
 
 const test = [
     new StandardOrder ('pc::sound test'),
-    new StandardOrder ('pc','playSound','vc',{waitUntilFinish:true}),
+    new StandardOrder ('pc','playSound','doorbell',{waitUntilFinish:true}),
     new StandardOrder ('pc::sound test done'),
 
 ]
