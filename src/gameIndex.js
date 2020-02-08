@@ -11,8 +11,7 @@ import sequences from "./steamed-hams/sequences";
 const gameData = { ...gameDataImport, ...gameConfigImport,
     sequences, interactionMatrix, makeConversations,}
 
-const config = {gameConfigImport}
-
+const {config} = gameConfigImport
 const {sprites} = gameDataImport 
 
 export {

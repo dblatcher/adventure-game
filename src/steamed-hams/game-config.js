@@ -49,6 +49,7 @@ var defaultResponses = {
 
 const config = {
     title: 'Steamed Hams',
+    titlePicture: require('./title-skinner.png'),
     defaultVerb: {WorldItem:"LOOK", InventoryItem:"USE", Character:"TALK"},
 }
 
