@@ -1,19 +1,21 @@
 <template>
     <main class="title-page">
-        <div class="title-page__frame">
-            <h1 class="title-page__title">{{title}}</h1>
+        
+        <h1 class="title-page__title">{{title}}</h1>
 
-            <div class="title-page__button-set">
-                <slot name="file-buttons"></slot>
-            </div>
+        <img v-if="picture" class="title-page__image"
+        v-bind:src="picture"/>
 
-            <img v-if="picture"
-            v-bind:src="picture"/>
-
-            <p class="title-page__text">This should have a picture of something</p>
-            <slot name="sound-toggle"></slot>
-            <slot name="loading-bar"></slot>
+        <div class="title-page__button-set">
+            <slot name="file-buttons"></slot>
         </div>
+
+        <p class="title-page__text" v-if="subtitle">{{subtitle}}</p>
+
+        <slot name="sound-toggle"></slot>
+        
+        <slot name="loading-bar" class='foo-bar'></slot>
+        
     </main>
 </template>
 
@@ -26,14 +28,15 @@ export default {
 
     data() {
         return {
-            title:config.title,
+            title:config.title || "untitled game",
+            subtitle:config.subtitle,
             picture:config.titlePicture,
         }
     } 
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
 
 @import "../modules/_layout.scss";
 @import "../modules/_material.scss";
@@ -43,31 +46,25 @@ export default {
     @include fullscreen;
     @include font;
 
-    background-image: linear-gradient(45deg, black, transparent);
-    padding: 2rem;
+    background-image: linear-gradient(180deg, gray, transparent);
+    padding: 0 2rem;
 
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
 
-    &__frame {
-        padding: 1rem;
-        background-color: black;
-        border: 5px outset red;
-
-        display: flex;
-        flex-flow: column nowrap;
-        justify-content: space-around;
-
-        color:red;
-
-    }
 
     &__title {
+        align-self: center;
+        margin: 1rem 0 0 0;
+    }
+
+    &__image {
         align-self: center;
     }
 
     &__button-set {
+        margin-top: 1rem;
         display: flex;
         justify-content: space-around;
 
@@ -78,9 +75,16 @@ export default {
 
 }
 
+#toggle-sound {
+    align-self: flex-end;
+}
+
+#loadingBarSection {
+    width: 100%;
+}
+
 #loadingBarCaption {
     margin: 0;
-    color: gray;
 }
 
 #loadingBarHolder {

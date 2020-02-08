@@ -1,5 +1,5 @@
 <template>
-<div>
+<section id="loadingBarSection">
 
   <figure id="loadingBarHolder">
     <div id="loadingBar"
@@ -26,7 +26,7 @@
   v-bind:src="item.picture[1]"
   style="display:none" />
 
-</div>
+</section>
 </template>
 
 <script>
