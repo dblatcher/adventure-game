@@ -1,16 +1,16 @@
 <template>
-    <main class="title-page">
+    <main class="title-page" v-bind:style="pageStyle">
         
         <h1 class="title-page__title">{{title}}</h1>
 
         <img v-if="picture" class="title-page__image"
         v-bind:src="picture"/>
+        <p class="title-page__text" v-if="subtitle">{{subtitle}}</p>
 
         <div class="title-page__button-set">
             <slot name="file-buttons"></slot>
         </div>
 
-        <p class="title-page__text" v-if="subtitle">{{subtitle}}</p>
 
         <slot name="sound-toggle"></slot>
         
@@ -28,9 +28,10 @@ export default {
 
     data() {
         return {
-            title:config.title || "untitled game",
-            subtitle:config.subtitle,
-            picture:config.titlePicture,
+            title: config.titleScreen.title || config.title || "untitled game",
+            subtitle:config.titleScreen.subtitle,
+            picture:config.titleScreen.picture,
+            pageStyle: config.titleScreen.pageStyle || {},
         }
     } 
 }
@@ -45,8 +46,6 @@ export default {
 
     @include fullscreen;
     @include font;
-
-    background-image: linear-gradient(180deg, gray, transparent);
     padding: 0 2rem;
 
     display: flex;
@@ -54,8 +53,9 @@ export default {
     justify-content: space-between;
 
 
-    &__title {
+    &__title, &__text {
         align-self: center;
+        text-align: center;
         margin: 1rem 0 0 0;
     }
 
