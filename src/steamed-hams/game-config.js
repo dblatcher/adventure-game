@@ -58,6 +58,9 @@ const config = {
             fontSize: '150%',
         }
     },
+    endingScreen : {
+
+    },
     defaultVerb: {WorldItem:"LOOK", InventoryItem:"USE", Character:"TALK"},
 }
 

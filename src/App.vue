@@ -56,13 +56,15 @@
 import Game from "./components/game/Game";
 import LoadingBar from "./components/LoadingBar";
 import FileMenu from "./components/fileMenu";
-import {TitleScreen as CustomTitleScreen, EndingScreen} from "./gameIndex"
 import MusicPlayer from "./components/MusicPlayer"
 import DefaultTitleScreen from "./components/DefaultTitleScreen"
+import DefaultEndingScreen from "./components/DefaultEndingScreen"
+import {TitleScreen as CustomTitleScreen, EndingScreen as CustomEndingScreen} from "./gameIndex"
 
 import { /* webpackPreload: true */ gameData } from "./gameIndex";
 
 const TitleScreen = CustomTitleScreen || DefaultTitleScreen
+const EndingScreen = CustomEndingScreen || DefaultEndingScreen
 import {config} from "./gameIndex"
 
 export default {

@@ -1,13 +1,13 @@
 <template>
-    <main class="title-page" v-bind:style="pageStyle">
+    <main class="default-title-page" v-bind:style="pageStyle">
         
-        <h1 class="title-page__title">{{title}}</h1>
+        <h1 class="default-title-page__title">{{title}}</h1>
 
-        <img v-if="picture" class="title-page__image"
+        <img v-if="picture" class="default-title-page__image"
         v-bind:src="picture"/>
-        <p class="title-page__text" v-if="subtitle">{{subtitle}}</p>
+        <p class="default-title-page__text" v-if="subtitle">{{subtitle}}</p>
 
-        <div class="title-page__button-set">
+        <div class="default-title-page__button-set">
             <slot name="file-buttons"></slot>
         </div>
 
@@ -27,11 +27,12 @@ export default {
     name: "TitleScreen",
 
     data() {
+        const settings = config.titleScreen || {}
         return {
-            title: config.titleScreen.title || config.title || "untitled game",
-            subtitle:config.titleScreen.subtitle,
-            picture:config.titleScreen.picture,
-            pageStyle: config.titleScreen.pageStyle || {},
+            title: settings.title || config.title || "untitled game",
+            subtitle:settings.subtitle,
+            picture:settings.picture,
+            pageStyle: settings.pageStyle || {},
         }
     } 
 }
@@ -42,7 +43,7 @@ export default {
 @import "../modules/_layout.scss";
 @import "../modules/_material.scss";
 
-.title-page {
+.default-title-page {
 
     @include fullscreen;
     @include font;
