@@ -6,7 +6,7 @@ import { Verb } from "../modules/constructors";
 var verbList = [
     new Verb('walk to','WALK'),
     new Verb('pick up','TAKE'),
-    new Verb('look at','LOOK'),
+    new Verb('look at','LOOK',null, {icon: require('../components/_icons/eye.svg')}),
     new Verb('give','GIVE', 'to'),
     new Verb('use','USE', 'with'),
     new Verb('talk to','TALK'),
@@ -49,6 +49,7 @@ var defaultResponses = {
 
 const config = {
     title: 'Steamed Hams',
+    interface: 'Sierra',
     titleScreen: {
         picture: require('./title-skinner.png'),
         title: 'Skinner and the Superintendent',

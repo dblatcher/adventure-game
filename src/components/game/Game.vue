@@ -50,7 +50,7 @@
     </div>
 
 
-    <ScummInterface
+    <Interface
     v-bind:gameStatus="gameStatus"
     v-bind:verbList="verbList"
     v-bind:items="inventory"
@@ -129,6 +129,7 @@ import ThingInRoom from "../ThingInRoom";
 import OptionsMenu from "../optionsMenu";
 import HeartBeater from "../HeartBeater";
 import ScummInterface from "../ScummInterface";
+import SierraInterface from "../SierraInterface"
 import ControlButtons from "../ControlButtons";
 import NarrationMessage from "../NarrationMessage";
 import MusicPlayer from "../MusicPlayer"
@@ -141,12 +142,14 @@ function makeObjectFromList(list, keyname) {
   return result
 }
 
+const Interface = gameData.config.interface === 'Sierra' ? SierraInterface : ScummInterface
+
 export default {
   name: 'Game',
   props: ['running'],
   components :{
     DialogMenu, Room, ThingInRoom, OptionsMenu, 
-    HeartBeater, ScummInterface, ControlButtons, NarrationMessage,
+    HeartBeater, Interface, ControlButtons, NarrationMessage,
     MusicPlayer
   },
 
