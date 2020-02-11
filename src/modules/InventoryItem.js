@@ -29,6 +29,25 @@ export default class InventoryItem  {
 
 	get dataType() {return 'InventoryItem'}
 
+	get rightPicture() {
+		
+		if(!this.quantified) {return this.picture[1]}
+
+		let numberToUse = this.quantity;
+		let keyList = Object.keys(this.picture).map(item => Number(item) );
+
+		if (!keyList.includes(numberToUse)) {
+			for (let index = keyList.length; index > 0; index--) {
+				if (numberToUse > keyList[index] ) {
+					numberToUse = keyList[index];
+					break;
+				}
+			}
+		}
+
+		return this.picture[numberToUse];
+	}
+
 	returnState() {
 		return{
 			name : this.name,

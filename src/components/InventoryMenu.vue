@@ -14,7 +14,7 @@
 			>
 				<div class="inventory-menu__pic-background" v-bind:style="makeItemBackground(item)"></div>
 				<img class="inventory-menu__pic" 
-				v-bind:src="findRightPicture(index)"
+				v-bind:src="item.rightPicture"
 				v-bind:name="item.name"/>
 			</figure>
 			
@@ -68,24 +68,6 @@ export default {
 			}
 
 		},
-		findRightPicture : function (index) {
-			let item = this.items[index];
-			if(!item.quantified) {return item.picture[1]}
-
-			let numberToUse = item.quantity;
-			let keyList = Object.keys(this.items[index].picture).map(item => Number(item) );
-
-			if (!keyList.includes(numberToUse)) {
-				for (let index = keyList.length; index > 0; index--) {
-					if (numberToUse > keyList[index] ) {
-						numberToUse = keyList[index];
-						break;
-					}
-				}
-			}
-
-			return this.items[index].picture[numberToUse];
-		}
 	},
 
 
