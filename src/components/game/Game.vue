@@ -185,10 +185,15 @@ export default {
       if (verb.transitive) {
         if (interactionMatrix[verb.id] && interactionMatrix[verb.id][subject.id]  && interactionMatrix[verb.id][subject.id].intransitive ) {  
           return false; // transitive verb, but with an instransitive usage eg 'use lever'
-        } else {
+        } 
+        else if (subject && !subject.id.endsWith('I')) {
+          return false // transitive verb, but not on Inventoryitem
+        }
+        else {
           return true; // transitive verb
         }
-      } else {
+      } 
+      else {
         return false; // intransitive verb
       }
     },

@@ -58,11 +58,11 @@ function Foreground (url, coords, size, style) {
 	this.style = style || {};
 }
 
-function Verb (description, id, preposition, config={}) {
+function Verb (description, id, config={}) {
 	this.description = description;
 	this.id = id;
-	this.preposition = preposition || '[NO PREPOSITION]';
-	this.transitive = !!(preposition);
+	this.preposition = config.preposition || '[NO PREPOSITION]';
+	this.transitive = !!(config.preposition);
 
 	this.icon = config.icon
 }

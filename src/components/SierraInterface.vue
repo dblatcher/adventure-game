@@ -1,8 +1,8 @@
 <template>
 
-<aside class="Sierra">  
+<aside class="sierra">  
 
-    <div class="Sierra__menu-wrapper"
+    <div class="sierra__menu-wrapper"
     v-bind:class="{
         disabled:(gameStatus !== 'LIVE'),
     }">
@@ -10,12 +10,8 @@
         <VerbTile v-bind:currentVerb='currentVerb'
         v-on:tile-click="changeToNextVerb"/>
 
-        <VerbMenu 
-        v-on:verb-picked="$emit('verb-picked',$event)"
-        v-bind:verb-list='verbList'
-        v-bind:thingHoveredOn='thingHoveredOn'
-        v-bind:picked='currentVerb'
-        v-bind:recommendedVerb="recommendedVerb"/>
+        <ItemTile v-bind:currentItem='currentItem'
+        v-on:tile-click="$emit('item-clicked',$event)"/>
 
         <InventoryMenu 
         v-on:item-clicked="$emit('item-clicked',$event)"
@@ -31,16 +27,24 @@
 </template>
 
 <script>
-import VerbMenu from "./VerbMenu";
+
 import VerbTile from "./VerbTile";
+import ItemTile from "./ItemTile";
 import InventoryMenu from "./InventoryMenu";
 
 
 
 export default {
     name: 'SierraInterface',
-    components: {VerbMenu, InventoryMenu, VerbTile},
+    components: {InventoryMenu, VerbTile, ItemTile},
     props: ['gameStatus', 'currentVerb','verbList', 'items', 'subject','object','thingHoveredOn','needObject', 'lastCommand', 'conversation','recommendedVerb'],
+    
+    data : function () {
+        return {
+            currentItem: this.items[0],
+        }
+    },
+
     methods :{
         changeToNextVerb() {
             const {currentVerb, verbList} = this;
@@ -54,22 +58,14 @@ export default {
 
 <style lang="scss">
 
-    .Sierra {
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        flex-shrink: 0;
-        margin-top: .25rem;
+    .sierra {
+
 
         &__menu-wrapper {
             display: flex;	
             justify-content:center;
-            flex-wrap: nowrap;
             align-items: flex-start;
 
-            @media (orientation: portrait) {
-                flex-wrap: wrap;
-            }
         }
     }
 
