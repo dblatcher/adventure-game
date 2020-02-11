@@ -129,7 +129,7 @@ import ThingInRoom from "../ThingInRoom";
 import OptionsMenu from "../optionsMenu";
 import HeartBeater from "../HeartBeater";
 import ScummInterface from "../ScummInterface";
-import SierraInterface from "../SierraInterface"
+import SierraInterface from "../sierra/SierraInterface"
 import ControlButtons from "../ControlButtons";
 import NarrationMessage from "../NarrationMessage";
 import MusicPlayer from "../MusicPlayer"
