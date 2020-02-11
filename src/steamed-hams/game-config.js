@@ -5,23 +5,23 @@ import { Verb } from "../modules/constructors";
 
 var verbList = [
     new Verb('walk to','WALK',{
-        icon: require('./icons/walking.svg'),
+        icon: require('../icons/walking.svg'),
     }),
     // new Verb('pick up','TAKE',{
-    //     icon: require('./icons/hand-paper.svg')
+    //     icon: require('../icons/hand-paper.svg')
     // }),
     new Verb('look at','LOOK', {
-        icon: require('./icons/eye.svg'),
+        icon: require('../icons/eye.svg'),
     }),
     // new Verb('give','GIVE', {
     //     preposition:'to'
     // }),
     new Verb('use','USE', {
         preposition:'with',
-        icon: require('./icons/hand-paper.svg'),
+        icon: require('../icons/hand-paper.svg'),
     }),
     new Verb('talk to','TALK',{
-        icon: require('./icons/comment.svg')
+        icon: require('../icons/comment.svg')
     }),
     // new Verb('open','OPEN'),
     // new Verb('close','SHUT')
