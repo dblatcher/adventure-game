@@ -437,6 +437,7 @@ var interactions = [
     [
         new StandardCondition('KITCHEN_R.OVEN_W','status','===','smoking'),
         new StandardCondition('KITCHEN_R.HAMBURGER_PLATTER_I','have','false'),
+        new StandardCondition('KITCHEN_R.HAMBURGER_BAG_I','have','false'),
     ],
     [
         new StandardOrder ('GAME', 'setGameStatus','CUTSCENE'),
