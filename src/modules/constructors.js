@@ -65,6 +65,8 @@ function Verb (description, id, config={}) {
 	this.transitive = !!(config.preposition);
 
 	this.icon = config.icon
+	this.showOnInventoryBox = config.showOnInventoryBox
+	this.onlyWithItem = config.onlyWithItem
 }
 Verb.prototype.isVerb = true;
 

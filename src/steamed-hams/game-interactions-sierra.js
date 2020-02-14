@@ -162,7 +162,7 @@ var interactions = [
         new StandardOrder('[sequence]pourSandInBush')
     ]),
 
-    new Interaction(['USE','FRONT_DOOR_W'],
+    new Interaction(['ACTIVATE','FRONT_DOOR_W'],
     [new StandardCondition('FRONT_DOOR_W','status','===','closed')],
     [
         new failableOrder('pc>>FRONT_DOOR_W'),
@@ -180,7 +180,7 @@ var interactions = [
     ]
     ),
 
-    new Interaction(['USE','FRONT_DOOR_W'],
+    new Interaction(['ACTIVATE','FRONT_DOOR_W'],
     [
         new StandardCondition('FRONT_DOOR_W','status','===','open')
     ],
@@ -235,7 +235,7 @@ var interactions = [
     ]),
 
 
-    new Interaction(['USE','DINING_KITCHENDOOR_W'],
+    new Interaction(['ACTIVATE','DINING_KITCHENDOOR_W'],
     [new StandardCondition('DINING_KITCHENDOOR_W','status','===','closed')],
     [
         new failableOrder('PC>>DINING_KITCHENDOOR_W'),
@@ -268,7 +268,7 @@ var interactions = [
     ]),
                
 
-    new Interaction(['USE','DINING_KITCHENDOOR_W'],
+    new Interaction(['ACTIVATE','DINING_KITCHENDOOR_W'],
     [new StandardCondition('DINING_KITCHENDOOR_W','status','===','open')],   
     [
         new failableOrder('PC>>DINING_KITCHENDOOR_W'),
@@ -323,7 +323,7 @@ var interactions = [
     ],
     ),
 
-    new Interaction(['USE','OVEN_W'],
+    new Interaction(['ACTIVATE','OVEN_W'],
     [
         new StandardCondition('OVEN_W','status','===','closed')
     ],
@@ -332,7 +332,7 @@ var interactions = [
         new StandardOrder('OVEN_W','setStatus','open'),
     ]),
 
-    new Interaction(['USE','OVEN_W'],
+    new Interaction(['ACTIVATE','OVEN_W'],
     [
         new StandardCondition('OVEN_W','status','===','open')
     ],
@@ -371,7 +371,7 @@ var interactions = [
     ]),
 
 
-    new Interaction(['USE','OVEN_W'],
+    new Interaction(['ACTIVATE','OVEN_W'],
     [
         new StandardCondition('KITCHEN_R.OVEN_W','status','===','open_ham_inside'),
         new StandardCondition('var','iceBucketIsOnTable', 'true') 
@@ -387,7 +387,7 @@ var interactions = [
         new StandardOrder('[sequence]chalmersAtDoor')
     ]),
 
-    new Interaction(['USE','OVEN_W'],
+    new Interaction(['ACTIVATE','OVEN_W'],
     [new StandardCondition('KITCHEN_R.OVEN_W','status','===','open_ham_inside')],
     [
         new StandardOrder('[status]CUTSCENE'),
@@ -401,12 +401,12 @@ var interactions = [
 
 
 
-    new Interaction(['USE','OVEN_W'],
+    new Interaction(['ACTIVATE','OVEN_W'],
     [new StandardCondition('KITCHEN_R.OVEN_W','status','===','closed_ham_inside')],
     [new StandardOrder('pc::No, I\'d better leave it to get as cooked as possible.')]),
 
 
-    new Interaction(['USE','FOIL_W'],[],
+    new Interaction(['ACTIVATE','FOIL_W'],[],
     [
         new failableOrder('pc>>FOIL_W'),
         new StandardOrder('FOIL_W','setRemoval',true),
@@ -414,7 +414,7 @@ var interactions = [
     ]
     ), 
 
-    new Interaction(['USE','CUPBOARD_W'],
+    new Interaction(['ACTIVATE','CUPBOARD_W'],
     [new StandardCondition('var','cupboardEmpty', 'false')],
     [new StandardOrder('GAME','setGameStatus','CUTSCENE'),
     new StandardOrder('[var]',{cupboardEmpty:true}),
@@ -429,7 +429,7 @@ var interactions = [
     new StandardOrder('GAME','setGameStatus','LIVE'),]
     ),
 
-    new Interaction(['USE','CUPBOARD_W'],[],
+    new Interaction(['ACTIVATE','CUPBOARD_W'],[],
     [new StandardOrder('pc::There was nothing else in there.')]),
 
 

@@ -12,13 +12,19 @@ var verbList = [
     // }),
     new Verb('look at','LOOK', {
         icon: require('../icons/eye.svg'),
+        showOnInventoryBox: true,
     }),
     // new Verb('give','GIVE', {
     //     preposition:'to'
     // }),
+    new Verb('activate','ACTIVATE', {
+        icon: require('../icons/hand-paper.svg'),
+    }),
     new Verb('use','USE', {
         preposition:'with',
-        icon: require('../icons/hand-paper.svg'),
+        showOnInventoryBox: true,
+        onlyWithItem: true,
+        icon: require('../icons/window-close.svg'),
     }),
     new Verb('talk to','TALK',{
         icon: require('../icons/comment.svg')
