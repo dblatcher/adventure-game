@@ -1,7 +1,9 @@
 
 <template>
 
-  <figure @click="$emit('tile-click')"  v-bind:style="tileStyle">
+  <figure @click="$emit('tile-click')"  
+  v-bind:style="tileStyle" 
+  v-bind:class="{active: active, static:static}">
     <div class="background" v-bind:style="backgroundStyle"></div>
     <img v-if="icon" v-bind:src="icon">
   </figure>
@@ -11,7 +13,7 @@
 <script>
 export default {
     name: 'Tile',
-    props: ['icon', 'background', 'size'],
+    props: ['icon', 'background', 'size', 'active', 'static'],
 
     computed : {
         tileStyle() {
@@ -65,6 +67,22 @@ figure {
   padding: .1rem;
   margin:.25rem;
   flex-shrink: 0;
+  transition: box-shadow .4s, transform .3s; 
+  box-shadow: 2px 2px black;
+  transform: translateX(-2px) translateY(-2px);
+  box-sizing: border-box;
+  background-color: rgba($color: #000000, $alpha: .1)
+}
+
+
+.static {
+    box-shadow: 0 0 black;
+    transform: translateX(0) translateY(0);
+}
+
+.active {
+    box-shadow: -1px -1px black;
+    transform: translateX(1px) translateY(1px);
 }
 
 img {
@@ -76,8 +94,8 @@ img {
 .background {
     @include centerPoint;
     @include placeAbsolute(50%, 50%);
-    width: 90%;
-    height: 90%;
+    width: 80%;
+    height: 80%;
     box-sizing: border-box;
 }
 

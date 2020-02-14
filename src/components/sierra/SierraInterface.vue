@@ -9,21 +9,26 @@
 
         <Tile v-bind:icon='verbIcon'
         v-bind:background="verbBackground"
+        v-bind:static="true"
         v-on:tile-click="changeToNextVerb"/>
 
         <Tile v-bind:icon='boxIcon'
+        v-bind:active="inventoryIsOpen"
         v-on:tile-click="toggleInventory"/>
 
-
-        <InventoryMenu 
+        <InventoryBox 
         v-show="inventoryIsOpen"
-        v-on:item-clicked="$emit('item-clicked',$event)"
-        v-on:item-right-clicked="$emit('item-right-clicked',$event)"
-        v-on:hover-event="$emit('hover-event', $event)"
+
+        v-on:verb-clicked="handleInventoryBoxVerbClick($event)"
+        v-on:item-clicked="handleInventoryBoxItemClick($event)"
+        v-on:close-clicked="toggleInventory()"
+
+        v-bind:currentItem="currentItem"
+        v-bind:currentVerb="currentVerb"
+        v-bind:actions="inventoryVerbs"
         v-bind:items="items" 
         v-bind:subject="subject"/>
 
-        <p>{{currentVerb.description}} {{subject ? subject.id : '-'}} {{object ? object.id : '-'}}</p>
 
     </div>
 
@@ -35,6 +40,7 @@
 
 
 import Tile from './Tile'
+import InventoryBox from './InventoryBox'
 import InventoryMenu from "../InventoryMenu";
 import boxIcon from "../../icons/box-open.svg"
 
@@ -42,12 +48,11 @@ console.log(boxIcon)
 
 export default {
     name: 'SierraInterface',
-    components: {InventoryMenu, Tile},
+    components: {InventoryMenu,InventoryBox, Tile},
     props: ['gameStatus', 'currentVerb','verbList', 'items', 'subject','object','thingHoveredOn','needObject', 'lastCommand', 'conversation','recommendedVerb'],
     
     data : function () {
         return {
-            currentItem: this.items[0],
             inventoryIsOpen: false,
             boxIcon,
         }
@@ -65,6 +70,14 @@ export default {
             if (subject && subject.dataType == 'InventoryItem' && needObject) {return subject.background}
             return false
         },
+        inventoryVerbs(){
+            return this.verbList.filter(verb=> verb.id==='LOOK' || verb.id==="USE")
+        },
+        currentItem(){
+            const { subject, needObject} = this
+            if (subject && subject.dataType == 'InventoryItem' && needObject) {return subject}
+            return null
+        }
     },
 
     methods :{
@@ -76,7 +89,20 @@ export default {
         },
         toggleInventory() {
             this.inventoryIsOpen = !this.inventoryIsOpen;
+        },
+        handleInventoryBoxVerbClick(verb) {
+            this.$emit('verb-picked',verb.id)
+        },
+        handleInventoryBoxItemClick(item) {
+            // if (this.currentVerb.id === 'USE') {
+            //     this.currentItem = item
+            //     console.log('!!')
+            //     console.log(this.currentItem)
+            // }
+            this.$emit('item-clicked',item)
         }
+
+
     }
 }
 </script>
@@ -87,7 +113,8 @@ export default {
 
 
         &__menu-wrapper {
-            display: flex;	
+            display: flex;
+            justify-content: flex-end;	
             align-items: flex-start;
 
         }
