@@ -67,9 +67,9 @@ figure {
   padding: .1rem;
   margin:.25rem;
   flex-shrink: 0;
-  transition: box-shadow .4s, transform .3s; 
-  box-shadow: 2px 2px black;
-  transform: translateX(-2px) translateY(-2px);
+  transition: box-shadow .4s, transform .4s; 
+  box-shadow: 3px 3px 2px black;
+  transform: translateX(-3px) translateY(-3px);
   box-sizing: border-box;
   background-color: rgba($color: #000000, $alpha: .1)
 }
@@ -81,8 +81,8 @@ figure {
 }
 
 .active {
-    box-shadow: -1px -1px black;
-    transform: translateX(1px) translateY(1px);
+    box-shadow: inset 2px 2px 1px black;
+    transform: translateX(0px) translateY(0px);
 }
 
 img {
