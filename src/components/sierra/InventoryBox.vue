@@ -12,6 +12,8 @@
         v-bind:icon="verb.icon"/>
       </div>
 
+      <p>{{caption || "&nbsp;"}}</p>
+
       <div class="item-holder">
         <Tile v-for="item in items"
         @tile-click="$emit('item-clicked', item)" 
@@ -21,7 +23,7 @@
         v-bind:background="item.background"/>
       </div>
 
-      <p>{{caption || "&nbsp;"}}</p>
+      
 
     </section>
 </template>
@@ -88,6 +90,7 @@ section {
 
 .actions {
     display: flex;
+    justify-content: space-around;
 }
 
 .item-holder {
