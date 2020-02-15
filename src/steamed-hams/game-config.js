@@ -7,30 +7,22 @@ var verbList = [
     new Verb('walk to','WALK',{
         icon: require('../icons/walking.svg'),
     }),
-    // new Verb('pick up','TAKE',{
-    //     icon: require('../icons/hand-paper.svg')
-    // }),
     new Verb('look at','LOOK', {
         icon: require('../icons/eye.svg'),
         showOnInventoryBox: true,
     }),
-    // new Verb('give','GIVE', {
-    //     preposition:'to'
-    // }),
     new Verb('activate','ACTIVATE', {
         icon: require('../icons/hand-paper.svg'),
     }),
     new Verb('use','USE', {
         preposition:'with',
         showOnInventoryBox: true,
-        onlyWithItem: true,
-        icon: require('../icons/window-close.svg'),
+        usesSelectedItem: true,
+        icon: require('../icons/hand-pointer.svg'),
     }),
     new Verb('talk to','TALK',{
         icon: require('../icons/comment.svg')
     }),
-    // new Verb('open','OPEN'),
-    // new Verb('close','SHUT')
 ]
 
 

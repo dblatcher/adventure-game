@@ -66,7 +66,7 @@ function Verb (description, id, config={}) {
 
 	this.icon = config.icon
 	this.showOnInventoryBox = config.showOnInventoryBox
-	this.onlyWithItem = config.onlyWithItem
+	this.usesSelectedItem = config.usesSelectedItem
 }
 Verb.prototype.isVerb = true;
 

@@ -23,7 +23,7 @@
         v-on:item-clicked="handleInventoryBoxItemClick($event)"
         v-on:close-clicked="toggleInventory()"
 
-        v-bind:currentItem="currentItem"
+        v-bind:currentItem="selectedInventoryItem"
         v-bind:currentVerb="currentVerb"
         v-bind:actions="inventoryVerbs"
         v-bind:items="items" 
@@ -31,7 +31,7 @@
 
 
     </div>
-
+    <!-- <p>selectedInventoryItem:{{selectedInventoryItem ? selectedInventoryItem.id : 'none'}}, subject:{{subject ? subject.id : 'none'}}</p> -->
 </aside>
 
 </template>
@@ -44,61 +44,70 @@ import InventoryBox from './InventoryBox'
 import InventoryMenu from "../InventoryMenu";
 import boxIcon from "../../icons/box-open.svg"
 
-console.log(boxIcon)
-
 export default {
     name: 'SierraInterface',
     components: {InventoryMenu,InventoryBox, Tile},
-    props: ['gameStatus', 'currentVerb','verbList', 'items', 'subject','object','thingHoveredOn','needObject', 'lastCommand', 'conversation','recommendedVerb'],
+    props: ['gameStatus', 
+    'currentVerb','verbList',
+    'items', 
+    'subject','object','thingHoveredOn','needObject', 'lastCommand', 
+    'conversation','recommendedVerb','selectedInventoryItem'],
     
     data : function () {
         return {
             inventoryIsOpen: false,
-            boxIcon,
+            boxIcon
         }
     },
 
     computed: {
         verbIcon() {
-            const {currentVerb, subject, needObject} = this
+            const {currentVerb, selectedInventoryItem} = this
             if (!currentVerb) return null
-            if (subject && subject.dataType == 'InventoryItem' && needObject) {return subject.rightPicture}
+            if (selectedInventoryItem && currentVerb.usesSelectedItem) {return selectedInventoryItem.rightPicture}
             return currentVerb.icon
         },
         verbBackground() {
-            const {currentVerb, subject, needObject} = this
-            if (subject && subject.dataType == 'InventoryItem' && needObject) {return subject.background}
+            const {currentVerb, selectedInventoryItem} = this
+            if (selectedInventoryItem && currentVerb.usesSelectedItem) {return selectedInventoryItem.background}
             return false
         },
         inventoryVerbs(){
-            return this.verbList.filter(verb=> verb.id==='LOOK' || verb.id==="USE")
+            return this.verbList.filter(verb=> verb.showOnInventoryBox)
         },
-        currentItem(){
-            const { subject, needObject} = this
-            if (subject && subject.dataType == 'InventoryItem' && needObject) {return subject}
-            return null
-        }
     },
 
     methods :{
         changeToNextVerb() {
-            const {currentVerb, verbList} = this;
-            let indexOfNextVerb = verbList.indexOf(currentVerb) + 1
-            if (indexOfNextVerb >= verbList.length) {indexOfNextVerb = 0}
+            const {currentVerb, verbList, subject,selectedInventoryItem, $emit} = this;
+
+            function tryNext(index) {
+                let nextIndex = index +1 < verbList.length ? index+1 : 0
+                if (verbList[nextIndex].usesSelectedItem) {
+                    if (!selectedInventoryItem) { return tryNext(nextIndex)}
+                }
+                return nextIndex  
+            }
+
+            let indexOfNextVerb = tryNext (verbList.indexOf(currentVerb) )
+            
             this.$emit('verb-picked', verbList[indexOfNextVerb].id)
         },
         toggleInventory() {
             this.inventoryIsOpen = !this.inventoryIsOpen;
+            if (this.inventoryIsOpen) {
+                this.$emit('verb-picked',this.inventoryVerbs[0].id)    
+            } 
+            else {
+                if (this.currentVerb.usesSelectedItem && ! this.selectedInventoryItem) {
+                    this.changeToNextVerb()
+                }
+            }
         },
         handleInventoryBoxVerbClick(verb) {
             this.$emit('verb-picked',verb.id)
         },
         handleInventoryBoxItemClick(item) {
-            // if (this.currentVerb.id === 'USE') {
-            //     this.currentItem = item
-            //     console.log('!!')
-            //     console.log(this.currentItem)
-            // }
             this.$emit('item-clicked',item)
         }
 

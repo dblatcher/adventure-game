@@ -1,7 +1,21 @@
+function setInputsOptionsAfterCommand () {
+  
+  if (this.selectedInventoryItem && !this.selectedInventoryItem.have) {
+    this.selectedInventoryItem = null
+  }
+
+  this.subject = null;
+  this.object = null;
+  this.verb = this.verbList[0];
+}
+
 export default function (command) {
     if (!command) {command = {verb: this.verb, subject: this.subject, object: this.object};}
+    //console.log(Object.keys(command).map(key=> command[key]?command[key].id:'-'))
+    this.$emit('command-start',command)
+
     let failedCondition = false, condition, passed, response=null, execution=null;
-    
+
     //find array of interactions  matching the command from the InteractionMatrix
     var thirdParam = command.object? command.object.id : 'intransitive';
     var matchingList = [];
@@ -59,14 +73,13 @@ export default function (command) {
     if (execution.then) {
       execution.then ( r => {
         this.lastCommand.inProgress = false
+        setInputsOptionsAfterCommand.apply(this,[])
         this.$emit('auto-save')
       } ) 
     } else {
       this.lastCommand.inProgress = false
+      setInputsOptionsAfterCommand.apply(this,[])
       this.$emit('auto-save')
     }
 
-    this.subject = null; 
-    this.object = null;
-   // this.verb = this.verbList[0];
   }

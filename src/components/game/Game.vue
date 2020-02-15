@@ -62,6 +62,7 @@
     v-bind:lastCommand="lastCommand"
     v-bind:conversation="conversation"
     v-bind:recommendedVerb="recommendedVerb"
+    v-bind:selectedInventoryItem="selectedInventoryItem"
     v-on:verb-picked="pickVerb($event)"
     v-on:item-clicked="handleClickOnThing($event)"
     v-on:item-right-clicked="handleRightClickOnThing($event)"
@@ -160,6 +161,7 @@ export default {
         roomMeasure: {unit:'px',scale:1}, //only supporting px ?
         thingHoveredOn:null, 
         verb: gameData.verbList[0],
+        selectedInventoryItem:null,
         subject: null, object:null,
         lastCommand: {verb:undefined, subject:undefined, object:undefined, inProgress:false},
         highlightingThings : false,
@@ -458,6 +460,7 @@ export default {
       for (var i=0; i<this.verbList.length; i++) {
         if (this.verbList[i].id === verbID ) {
           this.verb = this.verbList[i];
+          if (this.verb.usesSelectedItem) {this.subject = this.selectedInventoryItem}
           return;
         }
       }
