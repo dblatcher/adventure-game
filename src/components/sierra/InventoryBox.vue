@@ -21,7 +21,9 @@
         v-bind:background="item.background"/>
       </div>
 
-  </section>
+      <p>{{caption || "&nbsp;"}}</p>
+
+    </section>
 </template>
 
 <script>
@@ -41,6 +43,22 @@ export default {
     computed : {
         inventory() {
             return this.items.filter(item=>item.have)
+        },
+        caption() {
+            const{currentVerb, currentItem} = this;
+
+            if (!currentVerb ) {return null}
+            if (!currentVerb.usesSelectedItem) {
+                return `${currentVerb.description}...`
+            }
+            if (currentVerb.usesSelectedItem && !currentItem) {
+                return `${currentVerb.description}...`
+            }
+            if (currentVerb.usesSelectedItem && currentItem) {
+                return `${currentVerb.description} ${currentItem.name} ${currentVerb.preposition}...`
+            }
+
+
         }
     },
     methods : {
