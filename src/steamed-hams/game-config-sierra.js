@@ -5,22 +5,23 @@ import { Verb } from "../modules/constructors";
 
 var verbList = [
     new Verb('walk to','WALK',{
+        icon: require('../icons/walking.svg'),
     }),
     new Verb('look at','LOOK', {
+        icon: require('../icons/eye.svg'),
+        showOnInventoryBox: true,
+    }),
+    new Verb('activate','ACTIVATE', {
+        icon: require('../icons/hand-paper.svg'),
     }),
     new Verb('use','USE', {
         preposition:'with',
+        showOnInventoryBox: true,
+        usesSelectedItem: true,
+        icon: require('../icons/hand-pointer.svg'),
     }),
     new Verb('talk to','TALK',{
-    }),
-    new Verb('give','GIVE', {
-        preposition:'to',
-    }),
-    new Verb('pick up','TAKE',{
-    }),
-    new Verb('open','OPEN',{
-    }),
-    new Verb('close','SHUT',{
+        icon: require('../icons/comment.svg')
     }),
 ]
 
@@ -84,9 +85,9 @@ var defaultResponses = {
 
 const config = {
     title: 'Steamed Hams',
-    interface: 'Scumm',
-    alwaysWalkWhenClickOnRoom: true,
-    resetVerbAfterEachCommand: true,
+    interface: 'Sierra',
+    alwaysWalkWhenClickOnRoom: false,
+    resetVerbAfterEachCommand: false,
     titleScreen: {
         picture: require('./title-skinner.png'),
         title: 'Skinner and the Superintendent',

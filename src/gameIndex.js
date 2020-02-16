@@ -5,13 +5,33 @@ import * as SierraMatrix from './steamed-hams/game-interactions-sierra'
 
 import { makeConversations } from "./steamed-hams/game-conversations";
 import * as gameDataImport from "./steamed-hams/game-data";
-import * as gameConfigImport from './steamed-hams/game-config'
+
+import * as gameConfigImportSierra from './steamed-hams/game-config-sierra'
+import * as gameConfigImportScumm from './steamed-hams/game-config'
 
 import sequences from "./steamed-hams/sequences";
 
-//console.log(window.location)
+function readParam (param) {
+    let params = window.location.search
+    if (params.indexOf(param) === -1) {return undefined}
+    let answer =''
+    let startIndex =  params.indexOf(param) + 1 + param.length
 
-const {interactionMatrix} = true ? SierraMatrix : ScummMatrix
+    function addCharacter(index) {
+        let nextChar = params.charAt(index)
+        if (['','&','='].includes(nextChar) ) {return}
+        answer += nextChar
+        addCharacter(index+1)
+    }
+    addCharacter(startIndex)
+    return answer
+}
+
+let mode = readParam('mode') || 'sierra'
+
+const gameConfigImport    = mode === 'sierra' ? gameConfigImportSierra : gameConfigImportScumm
+const {interactionMatrix} = mode === 'sierra' ? SierraMatrix : ScummMatrix
+
 
 const gameData = { ...gameDataImport, ...gameConfigImport,
     sequences, interactionMatrix, makeConversations,}
