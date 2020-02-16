@@ -1,7 +1,9 @@
 <template>
   <section>
 
-      <button @click="$emit('close-clicked')">close</button>
+      <img class= "close-icon"
+      v-bind:src="closeIcon" 
+      @click="$emit('close-clicked')"/>
 
       <div class="actions">
         <Tile v-for="verb in actions" 
@@ -30,7 +32,7 @@
 
 <script>
 import Tile from './Tile'
-import boxIcon from "../../icons/box-open.svg"
+import closeIcon from "../../icons/window-close.svg"
 
 export default {
 
@@ -39,7 +41,7 @@ export default {
     props: ['items', 'currentItem', 'actions','currentVerb'],
     data() {
         return {
-            icon: boxIcon
+            closeIcon
         }
     },
     computed : {
@@ -83,7 +85,8 @@ section {
     @include placeAbsolute(50%, 50%);
     position: fixed;
     padding: 1rem;
-
+    display: flex;
+    flex-flow: column nowrap;
 
     box-shadow: $drop-shadow2;
     background-image: linear-gradient(gray, white)
@@ -92,6 +95,13 @@ section {
 .actions {
     display: flex;
     justify-content: space-around;
+}
+
+.close-icon {
+    width: 2rem;
+    height: 2rem;
+    align-self: flex-end;
+    cursor: pointer;
 }
 
 .item-holder {

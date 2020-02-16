@@ -40,6 +40,7 @@ export default {
 
 figure {
   border: 1px solid black;
+  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
