@@ -20,9 +20,9 @@ var verbList = [
         usesSelectedItem: true,
         icon: require('../icons/hand-pointer.svg'),
     }),
-    new Verb('talk to','TALK',{
-        icon: require('../icons/comment.svg')
-    }),
+    // new Verb('talk to','TALK',{
+    //     icon: require('../icons/comment.svg')
+    // }),
 ]
 
 

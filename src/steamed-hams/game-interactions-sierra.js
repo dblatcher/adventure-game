@@ -9,7 +9,7 @@ var interactions = [
 
     //CHARACTER
     new Interaction(
-        ['TALK','CHALMERS_C'],
+        ['ACTIVATE','CHALMERS_C'],
         [new StandardCondition('GAME', 'currentRoom', '===', 'PORCH_R')],
         'greetChalmers'
     ),
