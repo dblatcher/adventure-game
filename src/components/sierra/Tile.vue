@@ -4,50 +4,31 @@
   <figure @click="$emit('tile-click')"  
   v-bind:style="tileStyle" 
   v-bind:class="{active: active, static:static}">
-    <div class="background" v-bind:style="backgroundStyle"></div>
+    <div class="shape" v-bind:style="shapeStyle"></div>
     <img v-if="icon" v-bind:src="icon">
   </figure>
 
 </template>
 
 <script>
+import {backingShape} from '../../modules/styleGen'
+
 export default {
     name: 'Tile',
-    props: ['icon', 'background', 'size', 'active', 'static'],
+    props: ['icon', 'background', 'size', 'active', 'static', 'backgroundColor'],
 
     computed : {
         tileStyle() {
             let size = this.size || 4
+            let backgroundColor = this.backgroundColor || 'unset'
             return {
                 height: `${size}rem`,
                 width: `${size}rem`,
+                backgroundColor: backgroundColor,
             }
         },
-        backgroundStyle () {
-            let bg= this.background
-            if (!bg || typeof bg !== 'object'){return {display:'none'}}
-
-            switch (bg.shape) {
-                case 'circle': return {
-                    borderRadius: '50%',
-                    backgroundColor : bg.color,
-                    boxShadow: '2px 2px black',
-                }
-                break;
-                case 'square': return {
-                    backgroundColor : bg.color,
-                    boxShadow: '2px 2px black',
-                }
-                break;
-                case 'diamond': return {
-                    transform: 'translateX(-50%) translateY(-50%) rotate(45deg) scale(.75,.75)',
-                    backgroundColor : bg.color,
-                    boxShadow: '3px 1px black',
-                }
-                break;
-                default: return {}
-            }
-
+        shapeStyle () {
+            return backingShape (this.background)
         },
     }
 }
@@ -68,10 +49,9 @@ figure {
   margin:.25rem;
   flex-shrink: 0;
   transition: box-shadow .4s, transform .4s; 
-  box-shadow: 3px 3px 2px black;
-  transform: translateX(-3px) translateY(-3px);
+  box-shadow: 4px 4px 2px black;
+  transform: translateX(-4px) translateY(-4px);
   box-sizing: border-box;
-  background-color: rgba($color: #000000, $alpha: .1)
 }
 
 
@@ -81,8 +61,8 @@ figure {
 }
 
 .active {
-    box-shadow: inset 2px 2px 1px black;
-    transform: translateX(0px) translateY(0px);
+    box-shadow: 1px 1px 1px black;
+    transform: translateX(1px) translateY(1px);
 }
 
 img {
@@ -91,11 +71,11 @@ img {
   z-index: 5;
 }
 
-.background {
+.shape {
     @include centerPoint;
     @include placeAbsolute(50%, 50%);
-    width: 80%;
-    height: 80%;
+    width: 75%;
+    height: 75%;
     box-sizing: border-box;
 }
 

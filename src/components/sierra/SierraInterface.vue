@@ -9,11 +9,13 @@
 
         <Tile v-bind:icon='verbIcon'
         v-bind:background="verbBackground"
+        backgroundColor="white"
         v-bind:static="true"
         v-show="!inventoryIsOpen"
         v-on:tile-click="changeToNextVerb"/>
 
         <Tile v-bind:icon='boxIcon'
+        backgroundColor="white"
         v-bind:static="true"
         v-show="!inventoryIsOpen"
         v-on:tile-click="toggleInventory"/>
@@ -33,7 +35,6 @@
 
 
     </div>
-    <!-- <p>selectedInventoryItem:{{selectedInventoryItem ? selectedInventoryItem.id : 'none'}}, subject:{{subject ? subject.id : 'none'}}</p> -->
 </aside>
 
 </template>
