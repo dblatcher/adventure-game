@@ -113,8 +113,15 @@ export default {
         handleInventoryBoxItemClick(item) {
             this.$emit('item-clicked',item)
         }
+    },
 
-
+    mounted () {
+        window.addEventListener('contextmenu',this.changeToNextVerb)
+        this.$parent.$on('unhandled-right-click-on-thing', this.changeToNextVerb)
+    },
+    beforeDestroy() {
+        window.removeEventListener('contextmenu',this.changeToNextVerb)
+        this.$parent.$off('unhandled-right-click-on-thing', this.changeToNextVerb)
     }
 }
 </script>

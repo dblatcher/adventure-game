@@ -87,6 +87,7 @@ const config = {
     interface: 'Scumm',
     alwaysWalkWhenClickOnRoom: true,
     resetVerbAfterEachCommand: true,
+    rightClickForRecommendedVerb:true,
     titleScreen: {
         picture: require('./title-skinner.png'),
         title: 'Skinner and the Superintendent',
