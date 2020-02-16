@@ -10,10 +10,12 @@
         <Tile v-bind:icon='verbIcon'
         v-bind:background="verbBackground"
         v-bind:static="true"
+        v-show="!inventoryIsOpen"
         v-on:tile-click="changeToNextVerb"/>
 
         <Tile v-bind:icon='boxIcon'
-        v-bind:active="inventoryIsOpen"
+        v-bind:static="true"
+        v-show="!inventoryIsOpen"
         v-on:tile-click="toggleInventory"/>
 
         <InventoryBox 
@@ -120,8 +122,10 @@ export default {
 
     .sierra {
 
-
         &__menu-wrapper {
+            position: fixed;
+            bottom: 0;
+            right: 0;
             display: flex;
             justify-content: flex-end;	
             align-items: flex-start;

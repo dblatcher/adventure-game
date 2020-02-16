@@ -47,9 +47,10 @@ export default {
             return this.items.filter(item=>item.have)
         },
         caption() {
-            const{currentVerb, currentItem} = this;
+            const{currentVerb, currentItem,actions} = this;
 
             if (!currentVerb ) {return null}
+            if (!actions.includes(currentVerb) ) {return null}
             if (!currentVerb.usesSelectedItem) {
                 return `${currentVerb.description}...`
             }

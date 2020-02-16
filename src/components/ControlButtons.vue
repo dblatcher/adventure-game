@@ -44,7 +44,9 @@ export default {
 @import '../modules/layout';
 
 .control-bar {
-    position: absolute;
+    position: fixed;
+    z-index: 1;
+    top:0;
     right: 0;
     margin: 0;
     padding-top: .2rem;
