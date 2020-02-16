@@ -87,6 +87,7 @@ const config = {
     title: 'Steamed Hams',
     interface: 'Sierra',
     alwaysWalkWhenClickOnRoom: false,
+    resetVerbAfterEachCommand: false,
     titleScreen: {
         picture: require('./title-skinner.png'),
         title: 'Skinner and the Superintendent',

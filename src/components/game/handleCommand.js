@@ -4,9 +4,25 @@ function setInputsOptionsAfterCommand () {
     this.selectedInventoryItem = null
   }
 
-  this.subject = null;
-  this.object = null;
-  this.verb = this.verbList[0];
+  if (this.config.resetVerbAfterEachCommand) {
+    this.subject = null;
+    this.object = null;
+    this.verb = this.verbList[0];
+  } else {
+    this.object = null;
+
+    if (this.verb.usesSelectedItem && !this.selectedInventoryItem) {
+      this.verb = this.verbList[0]
+      this.subject = null
+    } 
+    else if (this.verb.usesSelectedItem && this.selectedInventoryItem) {
+    } 
+    else {
+      this.subject = null
+    }
+    
+  }
+
 }
 
 export default function (command) {
