@@ -107,6 +107,13 @@ export default {
                 }
             }
         },
+        closeInventory(){
+            console.log('closing inventory')
+            this.inventoryIsOpen = false;
+            if (this.currentVerb.usesSelectedItem && ! this.selectedInventoryItem) {
+                this.changeToNextVerb()
+            }
+        },
         handleInventoryBoxVerbClick(verb) {
             this.$emit('verb-picked',verb.id)
         },
@@ -118,10 +125,14 @@ export default {
     mounted () {
         window.addEventListener('contextmenu',this.changeToNextVerb)
         this.$parent.$on('unhandled-right-click-on-thing', this.changeToNextVerb)
+        this.$parent.$on('interaction-start', this.closeInventory)
+        this.$parent.$on('default-response-start', this.closeInventory)
     },
     beforeDestroy() {
         window.removeEventListener('contextmenu',this.changeToNextVerb)
         this.$parent.$off('unhandled-right-click-on-thing', this.changeToNextVerb)
+        this.$parent.$off('interaction-start', this.closeInventory)
+        this.$parent.$off('default-response-start', this.closeInventory)
     }
 }
 </script>

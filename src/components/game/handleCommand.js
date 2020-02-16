@@ -28,7 +28,6 @@ function setInputsOptionsAfterCommand () {
 export default function (command) {
     if (!command) {command = {verb: this.verb, subject: this.subject, object: this.object};}
     //console.log(Object.keys(command).map(key=> command[key]?command[key].id:'-'))
-    this.$emit('command-start',command)
 
     let failedCondition = false, condition, passed, response=null, execution=null;
 
@@ -57,6 +56,7 @@ export default function (command) {
       //if all the condtions pass, record the response for the interaction and end the loop 
       if (!failedCondition) {
         response = matchingList[i].response;
+        this.$emit('interaction-start',command)
         break;
       }
     }
@@ -67,6 +67,7 @@ export default function (command) {
       || this.defaultResponses["misc"] 
       || function(){ return []}
       response = defaultResponseFunction(command)
+      this.$emit('default-response-start',command)
     }
 
 
