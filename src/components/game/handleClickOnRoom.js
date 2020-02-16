@@ -17,5 +17,9 @@ export default function (event){
     };
 
     this.$refs.coordinateDisplay.innerText = `[${Math.round(clickCoord.x)} , ${Math.round(clickCoord.y)}]`
-    this.getThings('pc').goTo ( {x:clickCoord.x, y:clickCoord.y}, {wasManual: true});
+    
+    if (this.config.alwaysWalkWhenClickOnRoom || this.verb.id === 'WALK') {
+      this.getThings('pc').goTo ( {x:clickCoord.x, y:clickCoord.y}, {wasManual: true});
+    }
+
   }
