@@ -49,7 +49,8 @@
                 <p class="about__text"><i>Steamed Hams but it's a point and click adventure game</i> is a point and click adventure game based on the Simpsons scene commonly known as 'Steamed Hams'. With me so far?</p>
                 <h3 class="about__sub-heading">Acknowledgments</h3>
                 <p class="about__text">I used the truely awesome <a href="https://frinkiac.com/">frinkiac.com</a> as a source of images.</p>
-                <p class="about__text">Many thanks to the awesome redditers of r/SteamedHams and r/adventuregames for playtesting and feedback.</p>
+                <p class="about__text">Many thanks to the redditers of r/SteamedHams and r/adventuregames for playtesting and feedback.</p>
+                <p class="about__text">Sound effects obtained from <a href="https://www.zapsplat.com">https://www.zapsplat.com</a>.</p>
                 <h3 class="about__sub-heading">Amateurish Legalese Section</h3>
                 <p class="about__text">Don't rip this game off and try to sell it to someone. It's too short anyway.</p>
                 <p class="about__text">The Simpsons is copyrighted material, owned by 20th Century Fox. This game makes non-commercial use of that material. They haven't endorsed or licensed it.  I'd take it down if they asked me to. I think that's reasonable fair use, like a big interactive meme. Everyone loves memes.</p>

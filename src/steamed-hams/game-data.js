@@ -35,13 +35,16 @@ var sprites = [
 ]
 
 var sounds = [
-    new Sound('foot step', 'fs', '/step.mp3' ),
-    new Sound('openning door','open','/open.mp3'),
-    new Sound('closing door','close','/close.mp3'),
-    new Sound('doorbell','doorbell','/doorbell.mp3'),
-    new Sound('fire','fire','/fire.mp3'),
-    new Sound('sand','sand','/sand.mp3'),
-    new Sound('burn','burn','/burnLoop.mp3'),
+    new Sound('foot step', 'fs', '/zapsplat_foley_footstep_single_shoe_soft_girls_carpet_007_36951.mp3' ),
+    new Sound('foot step', 'fs2', '/zapsplat_foley_footstep_single_shoe_soft_girls_carpet_015_36959.mp3' ),
+    new Sound('openning door','open','/zapsplat_household_door_wooden_modern_internal_close_007_36801.mp3'),
+    new Sound('closing door','close','/zapsplat_household_door_cabin_wood_front_close_002_44909.mp3'),
+    new Sound('doorbell','doorbell','/zapsplat_household_doorbell_ring_chime_002_42804.mp3'),
+    new Sound('sand','sand','/zapsplat_foley_sand_handful_drop_ground_002_43847.mp3'),
+    new Sound('burn','burn','/audio_hero_Fire_DIGIVJ2_19_355-extract1.mp3'),
+    new Sound('bite','bite','/zapsplat_human_eat_bite_crunch_crispbread_slice_001_16895.mp3'),
+    new Sound('oven open','oven_open','/glitched_tones_Oven Door Open.mp3'),
+    new Sound('oven shut','oven_shut','/glitched_tones_Oven Door Close.mp3'),
 ]
 
 var music = {
@@ -57,8 +60,8 @@ var characterModels = {
             left : [ ['skin',3,1] ],
         },
         walk : {
-            right : [ ['skin',2,3,'fs'],['skin',4,3],['skin',0,4],  ] ,
-            left : [ ['skin',1,3,'fs'],['skin',3,3],['skin',5,3], ] ,
+            right : [ ['skin',2,3,'fs'],['skin',0,4],['skin',4,3,'fs2'],['skin',0,4],  ] ,
+            left : [ ['skin',1,3,'fs'],['skin',5,3],['skin',3,3,'fs2'],['skin',5,3], ] ,
         },
         talk : {
             right : [ ['skin',0,2],['skin',2,2],['skin',4,2],['skin',0,3],['skin',4,2]],
@@ -92,8 +95,8 @@ var characterModels = {
             left : [ ['ch-l',2,0] ],
         },
         walk : {
-            right : [ ['ch-r',0,2],['ch-r',1,2],['ch-r',2,2],['ch-r',3,2], ['ch-r',4,2]  ] ,
-            left : [ ['ch-l',1,2],['ch-l',5,2],['ch-l',4,2],['ch-l',3,2], ['ch-l',2,2]  ] ,
+            right : [ ['ch-r',0,2],['ch-r',1,2,'fs'],['ch-r',2,2],['ch-r',3,2,'fs2'], ['ch-r',4,2]  ] ,
+            left : [ ['ch-l',1,2],['ch-l',5,2,'fs'],['ch-l',4,2],['ch-l',3,2,'fs2'], ['ch-l',2,2]  ] ,
         },
         talk : {
             right : [ ['ch-r',2,1],['ch-r',3,1],['ch-r',4,1],['ch-r',5,1],['ch-r',4,1] ],
@@ -104,9 +107,9 @@ var characterModels = {
             left :  [ ['ch-l',2,0],['ch-l',5,0],['ch-l',2,0] ],
         },
         take_ham :
-        [['ch-r',1,0],['ch-r',1,0],['ch-r',2,0],['ch-r',5,2],['ch-r',5,2],['ch-r',2,0]],
+        [['ch-r',1,0],['ch-r',1,0],['ch-r',2,0],['ch-r',5,2],['ch-r',5,2,'bite'],['ch-r',2,0]],
         bite :
-        [['ch-r',2,0],['ch-r',1,1],['ch-r',5,2],['ch-r',5,2],['ch-r',2,0]],
+        [['ch-r',2,0],['ch-r',1,1],['ch-r',5,2,'bite'],['ch-r',5,2],['ch-r',2,0]],
         talk_with_ham : 
         [ ['ch-r',4,0],['ch-r',5,0],['ch-r',0,1],['ch-r',1,1],['ch-r',0,1] ],
         wait_with_ham : 

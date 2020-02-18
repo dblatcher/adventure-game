@@ -342,6 +342,7 @@ var interactions = [
     [
         new StandardOrder('pc>>OVEN_W'),
         new StandardOrder('OVEN_W','setStatus','open'),
+        new StandardOrder('OVEN_W','playSound','oven_open'),
     ]),
 
     new Interaction(['SHUT','OVEN_W'],
@@ -351,6 +352,7 @@ var interactions = [
     [
         new StandardOrder('pc>>OVEN_W'),
         new StandardOrder('OVEN_W','setStatus','closed'),
+        new StandardOrder('OVEN_W','playSound','oven_shut'),
     ]),
 
     new Interaction(['USE','ROAST_I','OVEN_W'],[],
@@ -377,6 +379,7 @@ var interactions = [
         new StandardOrder('[status]CUTSCENE'),
         new StandardOrder('pc>>OVEN_W'),
         new StandardOrder('OVEN_W', 'setStatus', 'open'),
+        new StandardOrder('OVEN_W','playSound','oven_open'),
         new StandardOrder('OVEN_W', 'setStatus', 'open_ham_inside'),
         new StandardOrder('[loose]ROAST_GLAZED_I'),
         new StandardOrder('[status]LIVE'),
@@ -392,6 +395,7 @@ var interactions = [
         new StandardOrder('[status]CUTSCENE'),
         new StandardOrder('pc>>OVEN_W'),
         new StandardOrder('OVEN_W','setStatus','closed_ham_inside'),
+        new StandardOrder('OVEN_W','playSound','oven_shut'),
         new StandardOrder('pc::I\'ll just turn this on...'),
         new StandardOrder('[var]',{roastIsInOven:true}),
         new StandardOrder('[sequence]chalmersWalkingAlong'),
@@ -405,6 +409,7 @@ var interactions = [
         new StandardOrder('[status]CUTSCENE'),
         new StandardOrder('pc>>OVEN_W'),
         new StandardOrder('OVEN_W','setStatus','closed_ham_inside'),
+        new StandardOrder('OVEN_W','playSound','oven_shut'),
         new StandardOrder('pc::I\'ll just turn this on...'),
         new StandardOrder('[var]',{roastIsInOven:true}),
         new StandardOrder('[status]LIVE'),
