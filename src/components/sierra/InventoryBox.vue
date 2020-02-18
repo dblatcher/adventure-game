@@ -14,7 +14,7 @@
         v-bind:icon="verb.icon"/>
       </div>
 
-      <p>{{caption || "&nbsp;"}}</p>
+      <p class="caption">{{caption || "&nbsp;"}}</p>
 
       <div class="item-holder">
         <Tile v-for="item in items"
@@ -84,17 +84,21 @@ section {
     @include centerPoint;
     @include placeAbsolute(50%, 50%);
     position: fixed;
-    padding: 1rem;
+    margin: 1rem;
+    max-height: 100%;
+    box-sizing: border-box;
+    padding: .5rem;
     display: flex;
     flex-flow: column nowrap;
 
     box-shadow: $drop-shadow2;
-    background-image: linear-gradient(gray, white)
+    background-image: linear-gradient(gray, white);
 }
 
 .actions {
     display: flex;
     justify-content: space-around;
+    padding: 0 2.5rem;
 }
 
 .close-icon {
@@ -102,6 +106,13 @@ section {
     height: 2rem;
     align-self: flex-end;
     cursor: pointer;
+    position: absolute;
+    right:.25rem;
+    top:.25rem;
+}
+
+.caption {
+    margin:0;
 }
 
 .item-holder {
@@ -111,7 +122,7 @@ section {
     padding: .5rem;
     border: 1px solid black;
     min-width: 18rem;
-    min-height: 9rem;
+    min-height: 3rem;
     box-sizing: content-box; 
 }
 
