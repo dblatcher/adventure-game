@@ -108,7 +108,6 @@ export default {
             }
         },
         closeInventory(){
-            console.log('closing inventory')
             this.inventoryIsOpen = false;
             if (this.currentVerb.usesSelectedItem && ! this.selectedInventoryItem) {
                 this.changeToNextVerb()
