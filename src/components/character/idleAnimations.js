@@ -3,7 +3,6 @@ function checkForIdleAnimation () {
     const {idleAnimations, behaviour_action} = this.char
     const idleConfig = idleAnimations[behaviour_action]
 
-
     if ( this.isIdle ) {
         this.timeSpentIdle++
         if (idleConfig && this.timeSpentIdle >= idleConfig.delay) {

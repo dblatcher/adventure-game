@@ -216,20 +216,7 @@ export default {
             if (this.ident === this.gameInstance.pcId) {return false}
             this.$emit('hover-event', [this, event]);
         },
-        checkForIdleAnimation : function () {
-            if ( this.isIdle ) {
-                this.timeSpentIdle++
-                if (this.char.idleAnimations && this.timeSpentIdle >= this.char.idleAnimations.delay) {
-                    if (Math.random() < this.char.idleAnimations.chance) {
-                        let randomChoice = Math.ceil( Math.random()*this.char.idleAnimations.cycles.length )-1;
-                        this.doAction( this.char.idleAnimations.cycles[randomChoice] )
-                    }
-                    this.timeSpentIdle = 0;
-                }
-            } else if (this.timeSpentIdle) {
-                this.timeSpentIdle = 0;
-            }
-        },
+        
 
         playSound (soundId, options={}) {
             return this.$refs.audio.play(soundId,options)
