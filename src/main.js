@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
-import * as gameIndex from './gameIndex';
+import * as gameIndex from './steamed-hams/gameIndex';
 
 Vue.config.productionTip = false
 

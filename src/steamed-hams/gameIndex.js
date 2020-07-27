@@ -1,15 +1,15 @@
-import TitleScreen from './steamed-hams/Title-Screen'
-import EndingScreen from './steamed-hams/Ending-Screen'
-import * as ScummMatrix from './steamed-hams/game-interactions'
-import * as SierraMatrix from './steamed-hams/game-interactions-sierra'
+import TitleScreen from './Title-Screen'
+import EndingScreen from './Ending-Screen'
+import * as ScummMatrix from './game-interactions'
+import * as SierraMatrix from './game-interactions-sierra'
 
-import { makeConversations } from "./steamed-hams/game-conversations";
-import * as gameDataImport from "./steamed-hams/game-data";
+import { makeConversations } from "./game-conversations";
+import * as gameDataImport from "./game-data";
 
-import * as gameConfigImportSierra from './steamed-hams/game-config-sierra'
-import * as gameConfigImportScumm from './steamed-hams/game-config'
+import * as gameConfigImportSierra from './game-config-sierra'
+import * as gameConfigImportScumm from './game-config'
 
-import sequences from "./steamed-hams/sequences";
+import sequences from "./sequences";
 
 function readParam (param) {
     let params = window.location.search
