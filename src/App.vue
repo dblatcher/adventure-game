@@ -8,7 +8,7 @@
       v-on:file-menu-click="handleFileMenuClick($event)"
     ></FileMenu>
 
-    <TitleScreen v-show="showTitleScreen" v-bind:soundEnabled="audio.enabled">
+    <TitleScreen v-show="showTitleScreen" v-bind:soundEnabled="audio.enabled" v-bind:config="rootProps.gameIndex.config">
 
       <template v-slot:file-buttons>
         <button id="new-game" @click="restartGame()">New Game</button>
@@ -20,7 +20,7 @@
         <button id="toggle-sound" @click="toggleSound">{{audio.enabled? 'disable sound' : 'enable sound'}}</button>
       </template>
 
-      <template v-slot:loading-bar><LoadingBar /></template>
+      <template v-slot:loading-bar><LoadingBar v-bind:gameData="rootProps.gameIndex.gameData" /></template>
 
     </TitleScreen>
 
@@ -30,7 +30,7 @@
     v-bind:audioContextStatusEmitter="self"   
     ref="audio"/>
 
-    <EndingScreen v-show="showEndingScreen">
+    <EndingScreen v-show="showEndingScreen" v-bind:config="rootProps.gameIndex.config">
       <template v-slot:file-buttons>
         <button @click="quitGame()">Restart</button>
         <button @click="function(){fileMenuIsOpen = true}">Restore</button>
@@ -43,7 +43,8 @@
       overflow: showGame ? 'unset': 'hidden',
       visibility: showGame ? 'unset': 'hidden',
     }">
-      <Game ref="game" 
+      <Game ref="game"
+      v-bind:gameData="rootProps.gameIndex.gameData" 
       v-bind:running="showGame"
       v-on:auto-save="autoSave"/> 
     </div>
@@ -59,16 +60,17 @@ import FileMenu from "./components/fileMenu";
 import MusicPlayer from "./components/MusicPlayer"
 import DefaultTitleScreen from "./components/DefaultTitleScreen"
 import DefaultEndingScreen from "./components/DefaultEndingScreen"
-import {TitleScreen as CustomTitleScreen, EndingScreen as CustomEndingScreen} from "./gameIndex"
+//import {TitleScreen as CustomTitleScreen, EndingScreen as CustomEndingScreen} from "./gameIndex"
 
-import { /* webpackPreload: true */ gameData } from "./gameIndex";
 
-const TitleScreen = CustomTitleScreen || DefaultTitleScreen
-const EndingScreen = CustomEndingScreen || DefaultEndingScreen
-import {config} from "./gameIndex"
+// const TitleScreen = CustomTitleScreen || DefaultTitleScreen
+// const EndingScreen = CustomEndingScreen || DefaultEndingScreen
+const TitleScreen =  DefaultTitleScreen
+const EndingScreen =  DefaultEndingScreen
 
 export default {
   name: 'App',
+  props: ['rootProps'],
   components :{
     Game, TitleScreen, EndingScreen, FileMenu, LoadingBar, MusicPlayer,
   },
@@ -76,7 +78,7 @@ export default {
   data () {
     let i, jsonString, savedGames = [];
     for (i=0; i<5; i++) {
-      jsonString = window.localStorage.getItem(config.title+'_savedGame_'+i);
+      jsonString = window.localStorage.getItem(this.rootProps.gameIndex.config.title+'_savedGame_'+i);
       savedGames.push( JSON.parse(jsonString) || {} );
     }
 
@@ -104,8 +106,8 @@ export default {
   computed : {
 
     self() {return this},
-    sounds() { return gameData.sounds},
-    music() { return gameData.music},
+    sounds() { return this.rootProps.gameIndex.gameData.sounds},
+    music() { return this.rootProps.gameIndex.gameData.music},
 
     musicOrders() {
       return {
@@ -225,7 +227,7 @@ export default {
     saveGame : function (slotNumber) {
       let state = this.$refs.game.returnCurrentState();
       let dataString = JSON.stringify(state);
-      window.localStorage.setItem(config.title+'_savedGame_'+slotNumber, dataString)
+      window.localStorage.setItem(this.rootProps.gameIndex.config.title+'_savedGame_'+slotNumber, dataString)
 
       let app = this;
       Object.keys(state).forEach ( (key) => {
@@ -235,7 +237,7 @@ export default {
     },
 
     deleteSavedGame : function (slotNumber) {
-      window.localStorage.removeItem(config.title+'_savedGame_'+slotNumber);
+      window.localStorage.removeItem(this.rootProps.gameIndex.config.title+'_savedGame_'+slotNumber);
       this.$set( this.savedGames, slotNumber, {} );
     },
 

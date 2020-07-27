@@ -1,8 +1,23 @@
 import Vue from 'vue'
 import App from './App.vue'
+import * as gameIndex from './gameIndex';
 
 Vue.config.productionTip = false
 
-new Vue({
-  render: h => h(App),
-}).$mount('#app')
+function launchApp(selector, rootProps) {
+
+  return new Vue({
+      el: selector,
+      data() {
+          return {rootProps}
+      },
+      render(h) { 
+          return h(App, {props: {rootProps:this.rootProps}})
+      },
+  });
+}
+
+launchApp('#app',{
+  gameName: 'steamed-hams',
+  gameIndex,
+})

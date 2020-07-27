@@ -47,21 +47,20 @@ import doFunction from "./doFunction";
 import moveFunction from "./moveFunction";
 
 import { innerBorder } from "../../modules/styleGen";
-import {sprites} from "../../gameIndex"
 
 export default {
     name:'Character',
     components:{Sprite, SpeechLine, SfxPlayer},
-    props:['char','measure','roomWidth','roomHeight','highlight'],
+    props:['char','measure','roomWidth','roomHeight','highlight', 'sprites'],
 
     data: function() {
         return {
-            spriteSet : sprites.filter( sprite=> this.char.model.spritesUsed.includes(sprite.id) ),
             timeSpentIdle : 0
         }
     },
 
     computed :{
+        spriteSet: function() {return this.sprites.filter( sprite=> this.char.model.spritesUsed.includes(sprite.id) )},
         gameInstance: function() {return this.$parent.$parent.$parent},
         name: function() {return this.char.name},
         x: function() {return this.char.x},

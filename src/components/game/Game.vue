@@ -37,6 +37,7 @@
           v-bind:roomWidth="rooms[roomNumber].width"
           v-bind:roomHeight="rooms[roomNumber].height"
           v-bind:highlight="highlightingThings"
+          v-bind:sprites="gameData.sprites"
           @dblclick="handleDoubleClick($event)"
           @clicked-thing="handleClickOnThing($event)"
           @right-clicked-thing="handleRightClickOnThing($event)"
@@ -50,7 +51,25 @@
     </div>
 
 
-    <Interface
+    <SierraInterface v-if="gameData.config.interface === 'Sierra'"
+    v-bind:gameStatus="gameStatus"
+    v-bind:verbList="verbList"
+    v-bind:items="inventory"
+    v-bind:currentVerb="verb"
+    v-bind:subject="subject"
+    v-bind:object="object"
+    v-bind:needObject="needObject"
+    v-bind:thingHoveredOn="thingHoveredOn"
+    v-bind:lastCommand="lastCommand"
+    v-bind:conversation="conversation"
+    v-bind:recommendedVerb="recommendedVerb"
+    v-bind:selectedInventoryItem="selectedInventoryItem"
+    v-on:verb-picked="pickVerb($event)"
+    v-on:item-clicked="handleClickOnThing($event)"
+    v-on:item-right-clicked="handleRightClickOnThing($event)"
+    v-on:hover-event="handleHoverEvent($event[0],$event[1])"
+    />
+    <ScummInterface v-if="gameData.config.interface !== 'Sierra'"
     v-bind:gameStatus="gameStatus"
     v-bind:verbList="verbList"
     v-bind:items="inventory"
@@ -100,9 +119,6 @@
 
 <script>
 
-import { /* webpackPreload: true */ gameData } from "../../gameIndex";
-
-
 import state from "../../modules/savedStates";
 import * as pathFinding from "./pathFinding";
 
@@ -143,14 +159,15 @@ function makeObjectFromList(list, keyname) {
   return result
 }
 
-const Interface = gameData.config.interface === 'Sierra' ? SierraInterface : ScummInterface
+// const Interface = gameData.config.interface === 'Sierra' ? SierraInterface : ScummInterface
 
 export default {
   name: 'Game',
-  props: ['running'],
+  props: ['running', 'gameData'],
   components :{
     DialogMenu, Room, ThingInRoom, OptionsMenu, 
-    HeartBeater, Interface, ControlButtons, NarrationMessage,
+    HeartBeater, ControlButtons, NarrationMessage,
+    SierraInterface, ScummInterface,
     MusicPlayer
   },
 
@@ -160,7 +177,7 @@ export default {
       message: 'blank message',
         roomMeasure: {unit:'px',scale:1}, //only supporting px ?
         thingHoveredOn:null, 
-        verb: gameData.verbList[0],
+        verb: this.gameData.verbList[0],
         selectedInventoryItem:null,
         subject: null, object:null,
         lastCommand: {verb:undefined, subject:undefined, object:undefined, inProgress:false},
@@ -169,18 +186,19 @@ export default {
         instantMode: false,
         narration: {contents:[], dismissable:true},
         options: {textDelay: 100, sfxVolume: .1, musicVolume: .2, soundEnabled:(this.$parent.audio.enabled)},
-        interactionMatrix: gameData.interactionMatrix,
-        verbList : gameData.verbList,
-        sprites : gameData.sprites,
-        sounds  : gameData.sounds, 
-        music : gameData.music,
-        defaultResponses:gameData.defaultResponses,
-        sequences: gameData.sequences,
-        config: gameData.config,
-    }, state.create(this.loadData) );
+    }, state.create(this.loadData, this.gameData) );
   },
 
   computed : {
+    config: function(){return this.gameData.config},
+    sequences: function(){return this.gameData.sequences},
+    interactionMatrix: function(){return this.gameData.interactionMatrix},
+    verbList : function(){return this.gameData.verbList},
+    sprites : function(){return this.gameData.sprites},
+    sounds  : function(){return this.gameData.sounds}, 
+    music : function(){return this.gameData.music},
+    defaultResponses: function(){return this.gameData.defaultResponses},
+
     needObject: function() {
       const {verb, subject, object, interactionMatrix} = this;
       if (!verb || !subject || object) {return false}
@@ -479,7 +497,7 @@ export default {
       });
     },
     restart () {
-      state.modify(this.$data, state.create());
+      state.modify(this.$data, state.create(false, this.gameData));
       this.$nextTick(function(){
         this.$refs.room.resize();
       });

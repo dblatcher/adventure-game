@@ -31,20 +31,18 @@
 
 <script>
 
-import {gameData} from "../gameIndex"
-
 export default {
     name: 'LoadingBar',
-
+    props: ['gameData'],
 
 
     data: function() {
 
       return {
         loadedCount: 0,
-        roomData:gameData.makeRooms(),
-        spriteData:gameData.sprites,
-        itemData:gameData.makeInventoryItems(),
+        roomData: this.gameData.makeRooms(),
+        spriteData: this.gameData.sprites,
+        itemData: this.gameData.makeInventoryItems(),
       }
     },
 

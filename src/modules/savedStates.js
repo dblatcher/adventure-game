@@ -1,7 +1,6 @@
 
 
-import { gameData } from "../gameIndex";
-import { WorldItem } from "./constructors";
+
 
 function getCurrentGameData (gameInstance) {
     let currentState = {
@@ -36,7 +35,7 @@ function getCurrentGameData (gameInstance) {
     return currentState;
 }
 
-function createGameData(savedGame) {
+function createGameData(savedGame, gameData) {
 
     let state = {
         gameStatus : 'LIVE',

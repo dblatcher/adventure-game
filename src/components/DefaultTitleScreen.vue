@@ -21,15 +21,14 @@
 
 <script>
 
-import { config } from "../gameIndex.js";
 
 export default {
     name: "TitleScreen",
-
+    props: ["config"],
     data() {
-        const settings = config.titleScreen || {}
+        const settings = this.config.titleScreen || {}
         return {
-            title: settings.title || config.title || "untitled game",
+            title: settings.title || this.config.title || "untitled game",
             subtitle:settings.subtitle,
             picture:settings.picture,
             pageStyle: settings.pageStyle || {},

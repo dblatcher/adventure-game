@@ -16,14 +16,14 @@
 
 <script>
 
-import { config } from "../gameIndex.js";
 
 export default {
     name: "EndingScreen",
+    props: ["config"],
 
     data() {
 
-        const settings = config.endingScreen || {}
+        const settings = this.config.endingScreen || {}
 
         return {
             title: settings.title ||  "Game Over",

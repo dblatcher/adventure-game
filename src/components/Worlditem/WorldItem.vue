@@ -33,16 +33,15 @@ import SfxPlayer from "../SfxPlayer";
 import setStatus from "./setStatus.js";
 import setRemoval from "./setRemoval.js";
 import { innerBorder } from "../../modules/styleGen";
-import {sprites} from "../../gameIndex"
 
 export default {
     name:'WorldItem',
     components: { Sprite,SfxPlayer },
-    props:['item','measure','highlight'],
+    props:['item','measure','highlight','sprites'],
     
     data: function() {
         return {
-        spriteSet : sprites.filter( sprite=> this.item.model.spritesUsed.includes(sprite.id) ),
+        spriteSet : this.sprites.filter( sprite=> this.item.model.spritesUsed.includes(sprite.id) ),
         cycleFrame:0,
         }
     },
