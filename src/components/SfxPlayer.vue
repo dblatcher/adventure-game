@@ -29,6 +29,7 @@ export default {
 
     methods: {
         getSoundsPlaying() {
+            if (!this.$refs.audio) {return false}
             let list = []
             this.$refs.audio.forEach((audioElement, index) =>{
                 if (audioElement.paused === false) {list.push(this.sounds[index].id)}
@@ -150,6 +151,7 @@ export default {
         },
 
         handleGamePaused () {
+            if (!this.$refs.audio) {return false}
             this.$refs.audio.forEach(element=> { 
                 if (element.paused === false) {
                     this.audioElementsToResumeWhenGameUnpause.push(element)
@@ -197,17 +199,19 @@ export default {
         this.panner.pan.value = this.audioPosition.pan
         this.gainNode.value = this.audioPosition.gain
 
-        this.$refs.audio.forEach((audioElement, index) =>{
-            audioElement.dataSet = {
-                loop: false
-            }
-            this.tracks[this.sounds[index].id] = this.contextSource.audioContext.createMediaElementSource(audioElement);
-            this.tracks[this.sounds[index].id]
-            .connect(this.panner)
-            .connect(this.gainNode)
-            .connect(this.contextSource.masterGainNode)
-            .connect(this.contextSource.audioContext.destination)
-        })
+        if (this.$refs.audio) {
+            this.$refs.audio.forEach((audioElement, index) =>{
+                audioElement.dataSet = {
+                    loop: false
+                }
+                this.tracks[this.sounds[index].id] = this.contextSource.audioContext.createMediaElementSource(audioElement);
+                this.tracks[this.sounds[index].id]
+                .connect(this.panner)
+                .connect(this.gainNode)
+                .connect(this.contextSource.masterGainNode)
+                .connect(this.contextSource.audioContext.destination)
+            })
+        }
 
         this.audioContextStatusEmitter.$on('audio-enabled', this.handleAudioContextEnabled)
 
