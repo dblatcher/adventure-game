@@ -23,9 +23,16 @@ var sprites = [
   new Sprite ('sk2',  require('./sprites/skinner-1-l.png'), [12,1]),
 ]
 
+var sounds = [
+
+]
+
+var music = {
+
+}
 
 var characterModels = {
-	mario : new Character.Model (50,75,{
+	mario : new Character.Model ({
 		wait: {
 			right: [ ['m',0,0] ],
 			left : [ ['m',2,1] ],
@@ -35,9 +42,11 @@ var characterModels = {
 			left: [ ['m',2,1],['m',1,1],['m',0,1]  ]
 		},
 		dance: [ ['m',0,0],['m',1,0],['m',0,0],['m',1,0], ['m',2,1],['m',1,1]  ,['m',0,0],['m',1,0],['m',2,0]  ]
+	},{
+
 	}),
 
-	billy : new Character.Model (50,50, {
+	billy : new Character.Model ({
 			wait: [[0,0,0]],
 			waveFlag: [['bf',0,1],['bf',1,1],['bf',2,1]],
 			raiseFlag: [[0,0,0],['bfr',0,0],['bfr',0,0]],
@@ -49,9 +58,11 @@ var characterModels = {
 				left  : [[0,0,2],[0,1,2],[0,2,2],[0,3,2]  ],
 				right : [[0,0,3],[0,1,3],[0,2,3],[0,3,3]  ],
 			}
-		}, 'down'),	
+	},{
 
-	jane : new Character.Model (50,75,{
+	}),	
+
+	jane : new Character.Model ({
 		wait : {
 			up 	  : [ ['w',0,0] ],
 			left  : [ ['w',0,1] ],
@@ -74,8 +85,11 @@ var characterModels = {
 		wave : 
 			[ ['w-wave',0,0], ['w-wave',1,0],['w-wave',2,0],['w-wave',0,0], ['w-wave',1,0],['w-wave',2,0] ]
 		,
-	},'down'),
-	skinner : new Character.Model (65,100,{
+	},{
+
+	}),
+
+	skinner : new Character.Model ({
 		wait : {
 			right : [ ['sk1',0,0] ],
 			left : [ ['sk2',11,0] ],
@@ -96,42 +110,49 @@ var characterModels = {
 			right : [ ['sk1',9,0],['sk1',8,0],['sk1',9,0] ],
 			left : [ ['sk2',2,0],['sk2',3,0],['sk2',2,0] ],
 		},
-	},'left'),
+	},{
+
+	}),
 	
 }
 
 
 var worldItemModels = {
-	door: new WorldItemModel ({
+	door: new WorldItem.Model ({
 		closed: [ ['door',0,0]  ],
 		open:   [ ['door',2,0]  ],
 		opening:   [ ['door',0,0],['door',1,0],['door',2,0]  ],
 		closing:   [ ['door',2,0],['door',1,0],['door',0,0]  ]
 	}),
-	bucket:  new WorldItemModel ({
+	bucket:  new WorldItem.Model ({
 		neutral: [ ['bucket',0,0]  ],
 	}),
-	stairs: new WorldItemModel ({   
+	stairs: new WorldItem.Model ({   
 		neutral: [ ['stairs',0,0]  ],
 	}),
-	tube: new WorldItemModel ({   
+	tube: new WorldItem.Model ({   
 		neutral: [ ['tube',0,0]  ],
 	}),
-	fire: new WorldItemModel ({
+	fire: new WorldItem.Model ({
 		burning: [ ['fire',0,0],['fire',1,0],['fire',2,0],['fire',3,0],  ],
 		extinguishing: [ ['fire',0,1],['fire',1,1],['fire',2,1],['fire',3,1],['fire',2,1],['fire',3,1],['fire',2,1],['fire',3,1],  ],
 		out: [ ['fire',2,1],  ],
 	}),
-	platform: new WorldItemModel ({
+	platform: new WorldItem.Model ({
 		neutral: [ ['platform',0,0]  ],
 	}),
 };
 
 
 var makeCharacters = function() {return [
-	new Character ('jane','Jane Smith',[375,10,3],'white',characterModels.jane),
-	new Character ('billy','billy',[200,10,0],'red',characterModels.billy),
-	new Character ('luigi','Luigi',[125,10,1],'lightgreen',characterModels.mario),
+	new Character ('jane',[375,10,3],characterModels.jane,
+	{
+		baseWidth: 50,
+        baseHeight: 80,
+        speechColor: 'white',
+	}),
+	new Character ('billy',[200,10,0],characterModels.billy),
+	new Character ('luigi',[125,10,1],characterModels.mario),
 ]}
 
 var pcId = 'JANE_C';
@@ -209,30 +230,19 @@ var makeRooms = function(){ return [
 ]}
 
 
-var verbList = [
-	new Verb('walk to','WALK'),
-	new Verb('pick up','TAKE'),
-	new Verb('look at','LOOK'),
-	new Verb('give','GIVE', 'to'),
-	new Verb('use','USE', 'with'),
-	new Verb('talk to','TALK'),
-	new Verb('open','OPEN'),
-	new Verb('close','SHUT')
-];
-
 var makeInventoryItems = function() { return  [
-	new InventoryItem('bucket', 'bucket', require('./items/bucket.png')),
-	new InventoryItem('sock', 'sock', require('./items/sock.png'),true),
+	new InventoryItem('bucket', 'bucket', require('./items/bucket.png'),{} ),
+	new InventoryItem('sock', 'sock', require('./items/sock.png'),{startWith: true}),
 	new InventoryItem('nail', 'nail', {
 		1: require('./items/nail.png'),
 		2: require('./items/twonails.png'),
 		3: require('./items/threenails.png'),
 		4: require('./items/manynails.jpg')
 	},true, {quantity: 2, pluralName: 'nails'}),
-	new InventoryItem('stick','lolly stick', require('./items/stick.jpg'),true),
-	new InventoryItem('stick2','lolly stick', require('./items/stick.jpg'),true),
-	new InventoryItem('stick3','lolly stick', require('./items/stick.jpg'),true),
-	new InventoryItem('shoe','red shoe', require('./items/shoe.jpg'),true),
+	new InventoryItem('stick','lolly stick', require('./items/stick.jpg'),{startsWith: true}),
+	new InventoryItem('stick2','lolly stick', require('./items/stick.jpg'),{startsWith: true}),
+	new InventoryItem('stick3','lolly stick', require('./items/stick.jpg'),{startsWith: true}),
+	new InventoryItem('shoe','red shoe', require('./items/shoe.jpg'),{startsWith: true}),
 	new InventoryItem('hammer','hammer', require('./items/hammer.jpg')),
 ]};
 
@@ -241,4 +251,4 @@ var setGameVars = function ()  { return {
 	numberOfSomething: 5,
 }};
 
-export { sprites, makeRooms, verbList, makeInventoryItems, makeCharacters, pcId, setGameVars }
+export { sprites, makeRooms, makeInventoryItems, makeCharacters, pcId, setGameVars, sounds, music }
