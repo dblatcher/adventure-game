@@ -1,6 +1,8 @@
 .DS_Store
 node_modules
 /dist
+/games/*
+!/games/note.md
 
 # local env files
 .env.local
