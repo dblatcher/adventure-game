@@ -87,7 +87,7 @@ export default function (command) {
     this.lastCommand.object = this.object;
     this.lastCommand.inProgress = true
 
-    if (execution.then) {
+    if (execution && execution.then) {
       execution.then ( r => {
         this.lastCommand.inProgress = false
         setInputsOptionsAfterCommand.apply(this,[])
