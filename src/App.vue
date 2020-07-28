@@ -8,7 +8,8 @@
       v-on:file-menu-click="handleFileMenuClick($event)"
     ></FileMenu>
 
-    <TitleScreen v-show="showTitleScreen" v-bind:soundEnabled="audio.enabled" v-bind:config="rootProps.gameIndex.config">
+
+<component v-bind:is="TitleScreen" v-show="showTitleScreen" v-bind:soundEnabled="audio.enabled" v-bind:config="rootProps.gameIndex.config">
 
       <template v-slot:file-buttons>
         <button id="new-game" @click="restartGame()">New Game</button>
@@ -22,7 +23,7 @@
 
       <template v-slot:loading-bar><LoadingBar v-bind:gameData="rootProps.gameIndex.gameData" /></template>
 
-    </TitleScreen>
+</component>
 
     <MusicPlayer
     v-bind:orders="musicOrders"
@@ -30,12 +31,12 @@
     v-bind:audioContextStatusEmitter="self"   
     ref="audio"/>
 
-    <EndingScreen v-show="showEndingScreen" v-bind:config="rootProps.gameIndex.config">
+    <component v-bind:is="EndingScreen" v-show="showEndingScreen" v-bind:config="rootProps.gameIndex.config">
       <template v-slot:file-buttons>
         <button @click="quitGame()">Restart</button>
         <button @click="function(){fileMenuIsOpen = true}">Restore</button>
       </template>
-    </EndingScreen>
+    </component>
 
     <div v-bind:style="{
       maxHeight: showGame ? 'unset': '0',
@@ -60,19 +61,14 @@ import FileMenu from "./components/fileMenu";
 import MusicPlayer from "./components/MusicPlayer"
 import DefaultTitleScreen from "./components/DefaultTitleScreen"
 import DefaultEndingScreen from "./components/DefaultEndingScreen"
-//import {TitleScreen as CustomTitleScreen, EndingScreen as CustomEndingScreen} from "./gameIndex"
 
 
-// const TitleScreen = CustomTitleScreen || DefaultTitleScreen
-// const EndingScreen = CustomEndingScreen || DefaultEndingScreen
-const TitleScreen =  DefaultTitleScreen
-const EndingScreen =  DefaultEndingScreen
 
 export default {
   name: 'App',
   props: ['rootProps'],
   components :{
-    Game, TitleScreen, EndingScreen, FileMenu, LoadingBar, MusicPlayer,
+    Game, FileMenu, LoadingBar, MusicPlayer,
   },
 
   data () {
@@ -104,6 +100,8 @@ export default {
   },
 
   computed : {
+    TitleScreen() { return this.rootProps.gameIndex.TitleScreen || DefaultTitleScreen},
+    EndingScreen() { return this.rootProps.gameIndex.EndingScreen || DefaultEndingScreen},
 
     self() {return this},
     sounds() { return this.rootProps.gameIndex.gameData.sounds},
