@@ -56,7 +56,7 @@ function createGameData(savedGame, gameData) {
     })
 
     //check for duplicate worldItem.id
-    let wiids = [], duplicateFound=false;;
+    let wiids = [], duplicateFound=false;
     state.rooms.forEach (room =>{
         room.worldItems.forEach (item => {
             if ( wiids.includes(item.id) ) {

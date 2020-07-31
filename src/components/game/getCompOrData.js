@@ -40,7 +40,7 @@ export default function getComponentOrDataObject (input) {
             return this.allInventoryItemsAsObject[id]
             break;
 
-    };
+    }
 
     return false;
 

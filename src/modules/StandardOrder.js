@@ -49,7 +49,7 @@ class StandardOrder {
 			let actorType, actorId,action,target;
 
 			Object.keys(actionCodes.GAME).forEach((key)=>{
-				if (action) {return};
+				if (action) {return}
 				let code = actionCodes.GAME[key].code
 				if (oString.substring(0,code.length).toLowerCase() === code) {
 					actorType = 'GAME';
@@ -61,7 +61,7 @@ class StandardOrder {
 			
 			if (!actorType) {
 				Object.keys(actionCodes.CHARACTER).forEach((key)=>{
-					if (action) {return};
+					if (action) {return}
 					let code = actionCodes.CHARACTER[key].code
 					let codePos = oString.indexOf(code) 
 					if (codePos !== -1) {
@@ -75,7 +75,7 @@ class StandardOrder {
 
 			if (!actorType) {
 				Object.keys(actionCodes.INVENTORYITEM).forEach((key)=>{
-					if (action) {return};
+					if (action) {return}
 					let code = actionCodes.INVENTORYITEM[key].code
 					let codePos = oString.indexOf(code) 
 					if (codePos !== -1) {

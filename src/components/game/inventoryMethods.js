@@ -14,7 +14,7 @@ function looseInventoryItem (id, options={}) {
     if(!item) {
       console.warn(`no inventory item with id ${id}`);
       return false;
-    };
+    }
 
     return item.loose(null, options)
 }

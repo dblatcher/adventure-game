@@ -78,20 +78,20 @@ export default class InventoryItem  {
 		let quantity = options.quantity;
 		if (!quantity) {quantity = 1}
 
-		if (this.have === false) {return false};
+		if (this.have === false) {return false}
 	
 		if (!this.quantified) {
 			this.have = false;
 			return true;
-		};
+		}
 	
 		if (quantity === 'all') {
 			this.quantity = 0;
 			this.have = false;
-		};
+		}
 	
 		this.quantity -= quantity;
-		if (this.quantity <= 0) {this.have = false};
+		if (this.quantity <= 0) {this.have = false}
 		return this.quantity;
 	}
 }

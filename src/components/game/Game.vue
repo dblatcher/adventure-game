@@ -404,7 +404,7 @@ export default {
       else {
         this.instantMode = true
         this.$emit('instant-mode',{})
-      };
+      }
 
     },
 
@@ -427,11 +427,11 @@ export default {
         this.conversation = null;
         this.instantMode = false;
         return this.gameStatus;
-      };
+      }
 
       if (statusName === 'CONVERSATION' ) {
         this.gameStatus = statusName;
-        if (parameter) {this.conversation = parameter};
+        if (parameter) {this.conversation = parameter}
         this.instantMode = false;
         return this.gameStatus;
       }
