@@ -48,7 +48,7 @@ class StandardCondition {
                 return (actor[property].indexOf(comparitor) === 0)
         }
 
-        console.warn ('condition invalid',condition)
+        console.warn ('condition invalid',this)
         return true
     }
 
