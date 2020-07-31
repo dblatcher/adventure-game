@@ -22,8 +22,8 @@ export default {
 
 <style lang="scss">
 
-@import "../modules/_layout.scss";
-@import "../modules/_material.scss";
+@import "../../src/modules/_layout.scss";
+@import "../../src/modules/_material.scss";
 
 .title-page {
 

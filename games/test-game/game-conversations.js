@@ -1,4 +1,4 @@
-import {Conversation, DialogBranch, DialogChoice} from '../modules/conversation-constructors';
+import {Conversation, DialogBranch, DialogChoice} from '../../src/modules/conversation-constructors';
 
 
 function makeConversations() {

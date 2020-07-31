@@ -1,5 +1,5 @@
-import { Interaction, doorFunction } from "../modules/interaction-constructor";
-import { StandardOrder } from "../modules/StandardOrder";
+import { Interaction, doorFunction } from "../../src/modules/interaction-constructor";
+import { StandardOrder } from "../../src/modules/StandardOrder";
 
 function pcSays(text,time) {
 	return function() { this.getThings('pc').say(text,{time:time});}	

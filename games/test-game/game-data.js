@@ -1,8 +1,8 @@
-import { RectZone, PolyZone } from "../modules/zone";
-import { Room, EffectZone, Foreground, Sprite } from "../modules/constructors"
-import Character from "../modules/characterDataClass"
-import WorldItem from "../modules/WorldItemDataClass"
-import InventoryItem from "../modules/InventoryItem"
+import { RectZone, PolyZone } from "../../src/modules/zone";
+import { Room, EffectZone, Foreground, Sprite } from "../../src/modules/constructors"
+import Character from "../../src/modules/characterDataClass"
+import WorldItem from "../../src/modules/WorldItemDataClass"
+import InventoryItem from "../../src/modules/InventoryItem"
 
 var sprites = [
   new Sprite (0, require('./sprites/boy.png'), [4,4]),

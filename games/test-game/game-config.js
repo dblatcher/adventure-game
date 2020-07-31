@@ -1,5 +1,5 @@
-import { StandardOrder } from "../modules/StandardOrder";
-import { Verb } from "../modules/constructors";
+import { StandardOrder } from "../../src/modules/StandardOrder";
+import { Verb } from "../../src/modules/constructors";
 
 
 

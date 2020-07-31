@@ -3,6 +3,7 @@ node_modules
 /dist
 /games/*
 !/games/note.md
+!/games/test-game
 
 # local env files
 .env.local

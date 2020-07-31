@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
-import * as gameIndex from './steamed-hams/gameIndex';
+
+const gameIndex = require(`../games/${process.env.VUE_APP_GAME_NAME}/gameIndex`)
 
 Vue.config.productionTip = false
 

@@ -1,6 +1,6 @@
-import { StandardOrder } from "../modules/StandardOrder";
-import { ConditionalOrder } from "../modules/ConditionalOrder";
-import { StandardCondition } from "../modules/StandardCondition";
+import { StandardOrder } from "../../src/modules/StandardOrder";
+import { ConditionalOrder } from "../../src/modules/ConditionalOrder";
+import { StandardCondition } from "../../src/modules/StandardCondition";
 
 
 const starting = [
