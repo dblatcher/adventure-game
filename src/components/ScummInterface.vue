@@ -8,7 +8,7 @@
     v-bind:object='object' 
     v-bind:thingHoveredOn='thingHoveredOn'
     v-bind:lastCommand='lastCommand'
-    v-bind:disabled="(conversation !== null)"
+    v-bind:disabled="(conversation !== null || gameStatus !== 'LIVE')"
 
     v-bind:needObject="needObject"
     ></CommandLine>
