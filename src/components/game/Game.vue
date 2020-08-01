@@ -12,10 +12,7 @@
     @close="toggleOptionsMenu()"/>
 
    <ControlButtons
-    v-bind:gameStatus="gameStatus"
-    v-bind:highlightingThings="highlightingThings"
-    v-bind:fileMenuIsOpen="fileMenuIsOpen"
-    v-bind:optionsMenuIsOpen="optionsMenuIsOpen"
+    v-bind="{ gameStatus, highlightingThings,fileMenuIsOpen,optionsMenuIsOpen }"
     @pause-button="togglePaused"
     @options-button="toggleOptionsMenu"
     @file-button="openFileMenu"
@@ -51,37 +48,12 @@
     </div>
 
 
-    <SierraInterface v-if="gameData.config.interface === 'Sierra'"
-    v-bind:gameStatus="gameStatus"
-    v-bind:verbList="verbList"
-    v-bind:items="inventory"
-    v-bind:currentVerb="verb"
-    v-bind:subject="subject"
-    v-bind:object="object"
-    v-bind:needObject="needObject"
-    v-bind:thingHoveredOn="thingHoveredOn"
-    v-bind:lastCommand="lastCommand"
-    v-bind:conversation="conversation"
-    v-bind:recommendedVerb="recommendedVerb"
-    v-bind:selectedInventoryItem="selectedInventoryItem"
-    v-on:verb-picked="pickVerb($event)"
-    v-on:item-clicked="handleClickOnThing($event)"
-    v-on:item-right-clicked="handleRightClickOnThing($event)"
-    v-on:hover-event="handleHoverEvent($event[0],$event[1])"
-    />
-    <ScummInterface v-if="gameData.config.interface !== 'Sierra'"
-    v-bind:gameStatus="gameStatus"
-    v-bind:verbList="verbList"
-    v-bind:items="inventory"
-    v-bind:currentVerb="verb"
-    v-bind:subject="subject"
-    v-bind:object="object"
-    v-bind:needObject="needObject"
-    v-bind:thingHoveredOn="thingHoveredOn"
-    v-bind:lastCommand="lastCommand"
-    v-bind:conversation="conversation"
-    v-bind:recommendedVerb="recommendedVerb"
-    v-bind:selectedInventoryItem="selectedInventoryItem"
+    <component v-bind:is="interfaceComponent"
+    v-bind="{
+      gameStatus,verbList, subject, object, needObject, thingHoveredOn, lastCommand,conversation,recommendedVerb, selectedInventoryItem,
+      items: inventory,
+      currentVerb: verb,
+    }"
     v-on:verb-picked="pickVerb($event)"
     v-on:item-clicked="handleClickOnThing($event)"
     v-on:item-right-clicked="handleRightClickOnThing($event)"
@@ -159,8 +131,6 @@ function makeObjectFromList(list, keyname) {
   return result
 }
 
-// const Interface = gameData.config.interface === 'Sierra' ? SierraInterface : ScummInterface
-
 export default {
   name: 'Game',
   props: ['running', 'gameData'],
@@ -190,6 +160,14 @@ export default {
   },
 
   computed : {
+
+    interfaceComponent(){
+      switch (this.gameData.config.interface) {
+        case 'Sierra': return SierraInterface;
+        default: return ScummInterface;
+     }
+    },
+
     config: function(){return this.gameData.config},
     sequences: function(){return this.gameData.sequences},
     interactionMatrix: function(){return this.gameData.interactionMatrix},
