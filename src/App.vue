@@ -9,7 +9,7 @@
     ></FileMenu>
 
 
-<component v-bind:is="TitleScreen" v-show="showTitleScreen" v-bind:soundEnabled="audio.enabled" v-bind:config="rootProps.gameIndex.config">
+    <component v-bind:is="TitleScreen" v-show="showTitleScreen" v-bind:soundEnabled="audio.enabled" v-bind:config="gameData.config">
 
       <template v-slot:file-buttons>
         <button id="new-game" @click="restartGame()">New Game</button>
@@ -21,9 +21,9 @@
         <button id="toggle-sound" @click="toggleSound">{{audio.enabled? 'disable sound' : 'enable sound'}}</button>
       </template>
 
-      <template v-slot:loading-bar><LoadingBar v-bind:gameData="rootProps.gameIndex.gameData" /></template>
+      <template v-slot:loading-bar><LoadingBar v-bind:gameData="gameData" /></template>
 
-</component>
+    </component>
 
     <MusicPlayer
     v-bind:orders="musicOrders"
@@ -31,7 +31,7 @@
     v-bind:audioContextStatusEmitter="self"   
     ref="audio"/>
 
-    <component v-bind:is="EndingScreen" v-show="showEndingScreen" v-bind:config="rootProps.gameIndex.config">
+    <component v-bind:is="EndingScreen" v-show="showEndingScreen" v-bind:config="gameData.config">
       <template v-slot:file-buttons>
         <button @click="quitGame()">Restart</button>
         <button @click="function(){fileMenuIsOpen = true}">Restore</button>
@@ -45,7 +45,7 @@
       visibility: showGame ? 'unset': 'hidden',
     }">
       <Game ref="game"
-      v-bind:gameData="rootProps.gameIndex.gameData" 
+      v-bind:gameData="gameData" 
       v-bind:running="showGame"
       v-on:auto-save="autoSave"/> 
     </div>
@@ -66,7 +66,7 @@ import DefaultEndingScreen from "./components/DefaultEndingScreen"
 
 export default {
   name: 'App',
-  props: ['rootProps'],
+  props: ['gameData', 'CustomTitleScreen', 'CustomEndingScreen'],
   components :{
     Game, FileMenu, LoadingBar, MusicPlayer,
   },
@@ -74,7 +74,7 @@ export default {
   data () {
     let i, jsonString, savedGames = [];
     for (i=0; i<5; i++) {
-      jsonString = window.localStorage.getItem(this.rootProps.gameIndex.config.title+'_savedGame_'+i);
+      jsonString = window.localStorage.getItem(this.gameData.config.title+'_savedGame_'+i);
       savedGames.push( JSON.parse(jsonString) || {} );
     }
 
@@ -100,20 +100,18 @@ export default {
   },
 
   computed : {
-    TitleScreen() { return this.rootProps.gameIndex.TitleScreen || DefaultTitleScreen},
-    EndingScreen() { return this.rootProps.gameIndex.EndingScreen || DefaultEndingScreen},
+    TitleScreen() { return this.CustomTitleScreen || DefaultTitleScreen},
+    EndingScreen() { return this.CustomEndingScreen || DefaultEndingScreen},
 
     self() {return this},
-    sounds() { return this.rootProps.gameIndex.gameData.sounds},
-    music() { return this.rootProps.gameIndex.gameData.music},
 
     musicOrders() {
       return {
-          playing: this.showTitleScreen && this.audio.enabled && !!this.music[this.song],
+          playing: this.showTitleScreen && this.audio.enabled && !!this.gameData.music[this.song],
           noFade: !this.audio.enabled,
           pause: false,
           volume: this.audio.musicVolume,
-          song: this.music[this.song],
+          song: this.gameData.music[this.song],
       }
     },
 
@@ -225,7 +223,7 @@ export default {
     saveGame : function (slotNumber) {
       let state = this.$refs.game.returnCurrentState();
       let dataString = JSON.stringify(state);
-      window.localStorage.setItem(this.rootProps.gameIndex.config.title+'_savedGame_'+slotNumber, dataString)
+      window.localStorage.setItem(this.gameData.config.title+'_savedGame_'+slotNumber, dataString)
 
       let app = this;
       Object.keys(state).forEach ( (key) => {
@@ -235,7 +233,7 @@ export default {
     },
 
     deleteSavedGame : function (slotNumber) {
-      window.localStorage.removeItem(this.rootProps.gameIndex.config.title+'_savedGame_'+slotNumber);
+      window.localStorage.removeItem(this.gameData.config.title+'_savedGame_'+slotNumber);
       this.$set( this.savedGames, slotNumber, {} );
     },
 

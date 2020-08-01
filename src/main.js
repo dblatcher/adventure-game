@@ -9,16 +9,15 @@ function launchApp(selector, rootProps) {
 
   return new Vue({
       el: selector,
-      data() {
-          return {rootProps}
-      },
+      data() {return {rootProps}},
       render(h) { 
-          return h(App, {props: {rootProps:this.rootProps}})
+          return h(App, {props: {
+            gameData: this.rootProps.gameIndex.gameData,
+            CustomTitleScreen: this.rootProps.gameIndex.TitleScreen,
+            CustomEndingScreen: this.rootProps.gameIndex.EndingScreen,
+          }})
       },
   });
 }
 
-launchApp('#app',{
-  gameName: 'steamed-hams',
-  gameIndex,
-})
+launchApp('#app',{gameIndex})
