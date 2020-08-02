@@ -41,7 +41,6 @@ article {
 }
     
 .line {
-    @include font;
     text-align: center;
     margin: 0 0 .5rem 0;
 }

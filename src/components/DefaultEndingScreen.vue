@@ -43,7 +43,6 @@ export default {
 .default-end-page {
 
     @include fullscreen;
-    @include font;
     padding: 0 2rem;
 
     display: flex;

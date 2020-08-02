@@ -15,13 +15,13 @@
             <span class="file-name">{{label[index+1]}}</span>
 
             <div class="row">   
-                <div class="btn-outline-black btn-inline"
+                <div class="file-menu__button file-menu__button--outline"
                     v-if="!atTitle" 
                     @click="clickEmit([index+1,'save'])">save</div>
-                <div class="btn-outline-black btn-inline"
+                <div class="file-menu__button file-menu__button--outline"
                     v-if="!slotIsEmpty[index+1]" 
                     @click="clickEmit([index+1,'load'])">load</div>
-                <div class="btn-solid-red btn-inline"
+                <div class="file-menu__button file-menu__button--delete"
                     v-if="!slotIsEmpty[index+1]"
                     @click="clickEmit([index+1,'clear'])">clear
                 </div>
@@ -29,10 +29,10 @@
         </div>
 
         <div class="bottom-row" v-if="!atTitle">
-            <div class="btn-solid-black btn-inline"
+            <div class="file-menu__button file-menu__button--solid"
             @click="clickEmit([null,'quit'])">Quit to Title</div>
             
-            <div class="btn-outline-black btn-inline"
+            <div class="file-menu__button file-menu__button--outline"
             @click="clickEmit([null,'restart'])">restart</div>
         </div>
             
@@ -87,6 +87,7 @@ export default {
 @import "../modules/_material.scss";
 @import "../modules/_layout.scss";
 
+
 .fullscreen-modal {
     position: fixed;
     margin: 0;
@@ -98,7 +99,6 @@ export default {
 }
 
 .file-menu {
-    @include font;
     position: fixed;
     left:50%;
     top:50%;
@@ -113,7 +113,23 @@ export default {
 
     box-shadow: $drop-shadow2;
 
-    
+    &__button {
+        margin: 0 4px;
+        display: inline-block;
+        min-width: 64px;
+
+        &--outline {
+            @include btn-outline (black);
+        }
+
+        &--solid {
+            @include btn-solid (black);
+        }
+
+        &--delete {
+            @include btn-solid ($colour-red);
+        }
+    }
 }
 
 @mixin row {
@@ -128,8 +144,6 @@ export default {
 
 .top-row {
     @include row;
-
-
 }
 
 .bottom-row {
@@ -141,7 +155,7 @@ export default {
 .slot {
     border-bottom: 1px solid black;
     padding: 0 0 .2rem .0;
-    
+
     .file-name {
         margin: 0 auto;
         text-align: center;
@@ -160,7 +174,6 @@ export default {
     @include navButton(false);
     display: inline-flex;
 }
-
 
 </style>
 

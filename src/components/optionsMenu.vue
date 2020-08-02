@@ -65,7 +65,6 @@ export default {
 .frame {
     @include centerPoint;
     @include placeAbsolute(50%,50%);
-    @include font;
     min-width: 12rem;
 
     padding: .75rem;

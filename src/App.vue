@@ -249,12 +249,11 @@ export default {
 <style lang="scss">
   @import "./modules/_material.scss";
   @import "./modules/layout.scss";
-  * {
-    @include font;
-  }
+
 
   body {
     margin: 0;
+    @include font;
   }
 
 </style>

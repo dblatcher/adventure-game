@@ -55,7 +55,6 @@ export default {
 <style lang="scss" scoped>
 	p {
 		position: absolute;
-		font-family: monospace;
 		font-weight: 100;
 		background-color: rgba(0,0,0,.6);
 		z-index: 200;
@@ -71,7 +70,6 @@ export default {
 		border-bottom: 1rem solid  rgba(0,0,0,.6);
 		width: 0rem;
 		transform: translateY(-1rem);
-
 	}
 </style>
 

@@ -5,16 +5,12 @@
 .game {
 
     @include fullscreen;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
-    
     padding-bottom: .25rem;
     box-sizing: border-box;
-
     z-index: -10;
-    background-image: radial-gradient( black, transparent);
 
     &__room-wrapper {
         display: flex;

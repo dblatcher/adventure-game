@@ -45,7 +45,6 @@ export default {
 .default-title-page {
 
     @include fullscreen;
-    @include font;
     padding: 0 2rem;
 
     display: flex;

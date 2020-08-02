@@ -22,7 +22,6 @@ export default {
 .ending-page {
 
     @include fullscreen;
-    @include font;
 
     background-image: linear-gradient(45deg, black, transparent);
     padding: 2rem;
