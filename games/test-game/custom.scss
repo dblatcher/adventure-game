@@ -1,6 +1,11 @@
 .game {
-    background-color: brown;
-    font-family: cursive;
+    background-color: darkgoldenrod;
+    background-image: repeating-radial-gradient(transparent, black);
+    font-family: fantasy;
+}
+
+.file-menu {
+    font-family: fantasy;
 }
 
 .command-line {
@@ -28,6 +33,19 @@
 
     &--recommended {
         background-color: lightblue;
+    }
+}
+
+.inventory-menu__holder {
+    border-color: white
+}
+
+.speech-line {
+    background-color: rgba($color: red, $alpha: 0.25);
+    filter: drop-shadow(4px 2px 2px black);
+
+    &__tail {
+        border-bottom-color: rgba($color: red, $alpha: 0.25);
     }
 }
 

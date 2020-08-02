@@ -74,7 +74,7 @@ export default {
 }
 </script>
 
-<style scoped="true" lang="scss">
+<style lang="scss">
 
 @import '../modules/material';
 @import '../modules/layout';
