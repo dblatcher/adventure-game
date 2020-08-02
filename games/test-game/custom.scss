@@ -1,0 +1,33 @@
+.game {
+    background-color: brown;
+    font-family: cursive;
+}
+
+.command-line {
+    background-color: blue;
+    font-family: monospace;
+}
+
+.verb-menu__box {
+    border-radius: .25rem;
+    border-color: white;
+    color: white;
+
+    &:hover, &:focus {
+        background-color: blue;
+        border: 1px solid blue;
+    }
+
+    &--on {
+        background-color: blue;
+        &:hover, &:focus {
+            background-color: blue;
+            border: 1px solid blue;
+        }
+    }
+
+    &--recommended {
+        background-color: lightblue;
+    }
+}
+
