@@ -11,7 +11,7 @@
 <script>
 export default {
     name: "SfxPlayer",
-    props: ['sounds', 'audioPosition','timer','contextSource', 'audioContextStatusEmitter'],
+    props: ['audioPosition','timer','contextSource', 'audioContextStatusEmitter'],
 
     data () {
         const {audioContext} = this.contextSource
@@ -25,6 +25,10 @@ export default {
             tracks: {},
             currentLoopSound: null,
         }
+    },
+
+    computed: {
+        sounds() { return this.$store.state.gameData.sounds}
     },
 
     methods: {
@@ -46,8 +50,8 @@ export default {
                     break
                 }
             }
-            if (!sound) {return false}          
-            
+            if (!sound) {return false}
+
             return {
                 sound:sound,
                 audioElement:this.$refs.audio[index]
@@ -125,7 +129,7 @@ export default {
                         audioElement.removeEventListener('ended', confirmEnd)
                         this.audioContextStatusEmitter.$off('audio-disabled', confirmEndBecauseSoundDisable)
                         this.stop(sound.id,{now:true})
-// TO DO: should really delay for remaining time of track before resolving? 
+                        // TO DO: should really delay for remaining time of track before resolving? 
                         resolve({
                             finished:true,
                             play:play,

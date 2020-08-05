@@ -173,7 +173,6 @@ export default {
     interactionMatrix: function(){return this.gameData.interactionMatrix},
     verbList : function(){return this.gameData.verbList},
     sprites : function(){return this.gameData.sprites},
-    sounds  : function(){return this.gameData.sounds}, 
     music : function(){return this.gameData.music},
     defaultResponses: function(){return this.gameData.defaultResponses},
 
@@ -274,9 +273,6 @@ export default {
         result[verb.id] = verb;
       })
       return result;
-    },
-    soundsAsObject: function() {
-      return makeObjectFromList(this.sounds, 'id')
     },
     dialogChoices : function () {
       if (!this.conversations[this.conversation]) return [];

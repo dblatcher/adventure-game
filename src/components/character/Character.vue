@@ -26,7 +26,6 @@
         ></SpeechLine>
         
         <SfxPlayer 
-        v-bind:sounds="gameInstance.sounds" 
         v-bind:audioPosition="audioPosition"
         v-bind:timer="gameInstance.$refs.heartBeat"
         v-bind:contextSource="gameInstance.$parent.audio"   
