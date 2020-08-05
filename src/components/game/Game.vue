@@ -34,7 +34,6 @@
           v-bind:roomWidth="rooms[roomNumber].width"
           v-bind:roomHeight="rooms[roomNumber].height"
           v-bind:highlight="highlightingThings"
-          v-bind:sprites="gameData.sprites"
           @dblclick="handleDoubleClick($event)"
           @clicked-thing="handleClickOnThing($event)"
           @right-clicked-thing="handleRightClickOnThing($event)"
@@ -172,7 +171,6 @@ export default {
     sequences: function(){return this.gameData.sequences},
     interactionMatrix: function(){return this.gameData.interactionMatrix},
     verbList : function(){return this.gameData.verbList},
-    sprites : function(){return this.gameData.sprites},
     music : function(){return this.gameData.music},
     defaultResponses: function(){return this.gameData.defaultResponses},
 

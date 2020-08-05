@@ -4,7 +4,6 @@
         v-bind:measure="measure"
         v-bind:item="data"
         v-bind:highlight="highlight"
-        v-bind:sprites="sprites"
         @clicked-thing="$emit('clicked-thing',$event)"
         @hover-event="$emit('hover-event',$event)"
         @right-clicked-thing="$emit('right-clicked-thing',$event)"
@@ -16,7 +15,6 @@
         v-bind:roomWidth="roomWidth"
         v-bind:roomHeight="roomHeight"
         v-bind:highlight="highlight"
-        v-bind:sprites="sprites"
         @clicked-thing="$emit('clicked-thing',$event)"
         @hover-event="$emit('hover-event',$event)"
         @right-clicked-thing="$emit('right-clicked-thing',$event)"
@@ -32,7 +30,7 @@ import Character from "./character/Character";
 export default {
     name:'ThingInRoom',
     components: { WorldItem, Character },
-    props:['data','measure','roomWidth','roomHeight','highlight','sprites'],
+    props:['data','measure','roomWidth','roomHeight','highlight'],
 
     methods : {
         onBeat(data) {this.$children[0].onBeat(data) }

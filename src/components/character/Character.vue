@@ -50,7 +50,7 @@ import { innerBorder } from "../../modules/styleGen";
 export default {
     name:'Character',
     components:{Sprite, SpeechLine, SfxPlayer},
-    props:['char','measure','roomWidth','roomHeight','highlight', 'sprites'],
+    props:['char','measure','roomWidth','roomHeight','highlight'],
 
     data: function() {
         return {
@@ -59,7 +59,7 @@ export default {
     },
 
     computed :{
-        spriteSet: function() {return this.sprites.filter( sprite=> this.char.model.spritesUsed.includes(sprite.id) )},
+        spriteSet: function() {return this.$store.state.gameData.sprites.filter(sprite => this.char.model.spritesUsed.includes(sprite.id) )},
         gameInstance: function() {return this.$parent.$parent.$parent},
         name: function() {return this.char.name},
         x: function() {return this.char.x},
