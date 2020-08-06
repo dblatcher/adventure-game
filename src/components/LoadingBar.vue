@@ -33,16 +33,14 @@
 
 export default {
     name: 'LoadingBar',
-    props: ['gameData'],
-
+    props: [],
 
     data: function() {
-
       return {
         loadedCount: 0,
-        roomData: this.gameData.makeRooms(),
-        spriteData: this.gameData.sprites,
-        itemData: this.gameData.makeInventoryItems(),
+        roomData: this.$store.state.gameData.makeRooms(),
+        spriteData: this.$store.state.gameData.sprites,
+        itemData: this.$store.state.gameData.makeInventoryItems(),
       }
     },
 

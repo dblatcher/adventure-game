@@ -21,7 +21,7 @@
         <button id="toggle-sound" @click="toggleSound">{{audio.enabled? 'disable sound' : 'enable sound'}}</button>
       </template>
 
-      <template v-slot:loading-bar><LoadingBar v-bind:gameData="gameData" /></template>
+      <template v-slot:loading-bar><LoadingBar/></template>
 
     </component>
 
@@ -45,7 +45,6 @@
       visibility: showGame ? 'unset': 'hidden',
     }">
       <Game ref="game"
-      v-bind:gameData="gameData" 
       v-bind:running="showGame"
       v-on:auto-save="autoSave"/> 
     </div>
@@ -66,7 +65,7 @@ import DefaultEndingScreen from "./components/DefaultEndingScreen"
 
 export default {
   name: 'App',
-  props: ['gameData', 'CustomTitleScreen', 'CustomEndingScreen'],
+  props: ['CustomTitleScreen', 'CustomEndingScreen'],
   components :{
     Game, FileMenu, LoadingBar, MusicPlayer,
   },
@@ -74,7 +73,7 @@ export default {
   data () {
     let i, jsonString, savedGames = [];
     for (i=0; i<5; i++) {
-      jsonString = window.localStorage.getItem(this.gameData.config.title+'_savedGame_'+i);
+      jsonString = window.localStorage.getItem(this.$store.state.gameData.config.title+'_savedGame_'+i);
       savedGames.push( JSON.parse(jsonString) || {} );
     }
 
@@ -100,6 +99,7 @@ export default {
   },
 
   computed : {
+    gameData() {return this.$store.state.gameData},
     TitleScreen() { return this.CustomTitleScreen || DefaultTitleScreen},
     EndingScreen() { return this.CustomEndingScreen || DefaultEndingScreen},
 

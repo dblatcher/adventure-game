@@ -29,7 +29,7 @@ function resolveDestination (target) {
 function runSequence(input, options){
 
     let sequence = typeof input === "string" ?
-    this.sequences[input] : input;
+    this.gameData.sequences[input] : input;
 
     if (typeof sequence === "function") {
         return sequence.apply(this, [options]);

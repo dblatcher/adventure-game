@@ -132,7 +132,7 @@ function makeObjectFromList(list, keyname) {
 
 export default {
   name: 'Game',
-  props: ['running', 'gameData'],
+  props: ['running'],
   components :{
     DialogMenu, Room, ThingInRoom, OptionsMenu, 
     HeartBeater, ControlButtons, NarrationMessage,
@@ -142,11 +142,13 @@ export default {
 
   data () {
 
+    const {gameData} = this.$store.state;
+
     return Object.assign({
       message: 'blank message',
         roomMeasure: {unit:'px',scale:1}, //only supporting px ?
         thingHoveredOn:null, 
-        verb: this.gameData.verbList[0],
+        verb: gameData.verbList[0],
         selectedInventoryItem:null,
         subject: null, object:null,
         lastCommand: {verb:undefined, subject:undefined, object:undefined, inProgress:false},
@@ -155,11 +157,12 @@ export default {
         instantMode: false,
         narration: {contents:[], dismissable:true},
         options: {textDelay: 100, sfxVolume: .1, musicVolume: .2, soundEnabled:(this.$parent.audio.enabled)},
-    }, state.create(this.loadData, this.gameData) );
+    }, state.create(this.loadData, gameData) );
   },
 
   computed : {
 
+    gameData() {return this.$store.state.gameData},
     interfaceComponent(){
       switch (this.gameData.config.interface) {
         case 'Sierra': return SierraInterface;
@@ -168,7 +171,6 @@ export default {
     },
 
     config: function(){return this.gameData.config},
-    sequences: function(){return this.gameData.sequences},
     interactionMatrix: function(){return this.gameData.interactionMatrix},
     verbList : function(){return this.gameData.verbList},
     music : function(){return this.gameData.music},
@@ -474,7 +476,7 @@ export default {
         this.$refs.room.resize();
       });
 
-      if (this.sequences.starting) {
+      if (this.gameData.sequences.starting) {
         this.runSequence('starting');
       }
     }

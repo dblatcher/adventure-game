@@ -29,7 +29,6 @@ function launchApp(selector, rootProps) {
       data() {return {rootProps}},
       render(h) { 
           return h(App, {props: {
-            gameData: this.rootProps.gameIndex.gameData,
             CustomTitleScreen: this.rootProps.gameIndex.TitleScreen,
             CustomEndingScreen: this.rootProps.gameIndex.EndingScreen,
           }})

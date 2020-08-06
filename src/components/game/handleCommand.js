@@ -76,8 +76,8 @@ export default function (command) {
       execution = response.apply(this,[]);
     } else if ( Array.isArray(response)) {
       execution= this.runSequence(response) 
-    } else if (typeof response === 'string' && this.sequences[response]) {
-      execution =  this.runSequence( this.sequences[response] )
+    } else if (typeof response === 'string' && this.gameData.sequences[response]) {
+      execution =  this.runSequence( this.gameData.sequences[response] )
     } else {
       console.warn('bad response, neither function, array, nor name of sequence', response)
     }
