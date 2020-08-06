@@ -170,8 +170,6 @@ export default {
      }
     },
 
-    music : function(){return this.gameData.music},
-
     needObject: function() {
       const {verb, subject, object} = this;
       const {interactionMatrix} = this.$store.state.gameData;
@@ -303,10 +301,10 @@ export default {
       let song = this.rooms[this.roomNumber].bgm
 
       return {
-          playing: this.running && this.$parent.audio.enabled && !!this.music[song],
+          playing: this.running && this.$parent.audio.enabled && !!this.gameData.music[song],
           noFade: !this.$parent.audio.enabled,
           volume: this.$parent.audio.musicVolume,
-          song: this.music[song],
+          song: this.gameData.music[song],
           pause: this.timerIsStopped,
       }
     }
