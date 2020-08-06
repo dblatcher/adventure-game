@@ -1,7 +1,9 @@
 export default function (event){
-    if (this.gameStatus !== 'LIVE') {return false}
+  if (this.gameStatus !== 'LIVE') {return false}
+
+    const {config} = this.$store.state.gameData
     var pc = this.getThings('pc');
-    var room = this.$refs.room;		
+    var room = this.$refs.room;
     var clickCoordinPx = {x: (event.offsetX),y: (room.$el.offsetHeight - event.offsetY)};
 
     if (event.target !== room.$el ) {
@@ -18,7 +20,7 @@ export default function (event){
 
     this.$refs.coordinateDisplay.innerText = `[${Math.round(clickCoord.x)} , ${Math.round(clickCoord.y)}]`
     
-    if (this.config.alwaysWalkWhenClickOnRoom || this.verb.id === 'WALK') {
+    if (config.alwaysWalkWhenClickOnRoom || this.verb.id === 'WALK') {
       this.getThings('pc').goTo ( {x:clickCoord.x, y:clickCoord.y}, {wasManual: true});
     }
 

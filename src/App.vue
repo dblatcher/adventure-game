@@ -9,7 +9,7 @@
     ></FileMenu>
 
 
-    <component v-bind:is="TitleScreen" v-show="showTitleScreen" v-bind:soundEnabled="audio.enabled" v-bind:config="gameData.config">
+    <component v-bind:is="TitleScreen" v-show="showTitleScreen" v-bind:soundEnabled="audio.enabled">
 
       <template v-slot:file-buttons>
         <button id="new-game" @click="restartGame()">New Game</button>
@@ -31,7 +31,7 @@
     v-bind:audioContextStatusEmitter="self"   
     ref="audio"/>
 
-    <component v-bind:is="EndingScreen" v-show="showEndingScreen" v-bind:config="gameData.config">
+    <component v-bind:is="EndingScreen" v-show="showEndingScreen">
       <template v-slot:file-buttons>
         <button @click="quitGame()">Restart</button>
         <button @click="function(){fileMenuIsOpen = true}">Restore</button>

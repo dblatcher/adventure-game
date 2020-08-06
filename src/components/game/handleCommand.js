@@ -1,11 +1,11 @@
 function setInputsOptionsAfterCommand () {
-  const {verbList} = this.$store.state.gameData
+  const {verbList, config} = this.$store.state.gameData
 
   if (this.selectedInventoryItem && !this.selectedInventoryItem.have) {
     this.selectedInventoryItem = null
   }
 
-  if (this.config.resetVerbAfterEachCommand) {
+  if (config.resetVerbAfterEachCommand) {
     this.subject = null;
     this.object = null;
     this.verb = verbList[0];

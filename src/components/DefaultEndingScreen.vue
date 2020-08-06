@@ -10,7 +10,7 @@
         <div class="default-end-page__button-set">
             <slot name="file-buttons"></slot>
         </div>
-        
+
     </main>
 </template>
 
@@ -19,11 +19,10 @@
 
 export default {
     name: "EndingScreen",
-    props: ["config"],
 
     data() {
 
-        const settings = this.config.endingScreen || {}
+        const settings = this.$store.state.gameData.config.endingScreen || {}
 
         return {
             title: settings.title ||  "Game Over",

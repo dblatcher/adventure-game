@@ -16,8 +16,9 @@ function interactWithRecommendedVerb(thing) {
 
 export default function(thing) {
   if (this.gameStatus !== 'LIVE') {return false}
-    
-  if (this.config.rightClickForRecommendedVerb) {
+  const {config} = this.$store.state.gameData
+
+  if (config.rightClickForRecommendedVerb) {
     interactWithRecommendedVerb.apply(this,[thing])
     return
   }

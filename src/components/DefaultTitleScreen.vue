@@ -24,11 +24,13 @@
 
 export default {
     name: "TitleScreen",
-    props: ["config"],
+
     data() {
-        const settings = this.config.titleScreen || {}
+        const settings = this.$store.state.gameData.config.titleScreen || {}
+        const title = this.$store.state.gameData.config.title;
+
         return {
-            title: settings.title || this.config.title || "untitled game",
+            title: settings.title || title || "untitled game",
             subtitle:settings.subtitle,
             picture:settings.picture,
             pageStyle: settings.pageStyle || {},

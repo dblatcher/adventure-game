@@ -170,7 +170,6 @@ export default {
      }
     },
 
-    config: function(){return this.gameData.config},
     music : function(){return this.gameData.music},
 
     needObject: function() {
@@ -194,7 +193,7 @@ export default {
     },
     recommendedVerb : function() {
       const {thingHoveredOn, verbsAsObject} = this;
-      const {defaultVerb} = this.config;
+      const {defaultVerb} = this.gameData.config;
 
       if (!thingHoveredOn ) {return null}
       const {recommendedVerb, dataType, status} = thingHoveredOn;
