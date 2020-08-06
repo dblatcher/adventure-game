@@ -49,7 +49,7 @@
 
     <component v-bind:is="interfaceComponent"
     v-bind="{
-      gameStatus,verbList, subject, object, needObject, thingHoveredOn, lastCommand,conversation,recommendedVerb, selectedInventoryItem,
+      gameStatus, subject, object, needObject, thingHoveredOn, lastCommand,conversation,recommendedVerb, selectedInventoryItem,
       items: inventory,
       currentVerb: verb,
     }"
@@ -171,13 +171,11 @@ export default {
     },
 
     config: function(){return this.gameData.config},
-    interactionMatrix: function(){return this.gameData.interactionMatrix},
-    verbList : function(){return this.gameData.verbList},
     music : function(){return this.gameData.music},
-    defaultResponses: function(){return this.gameData.defaultResponses},
 
     needObject: function() {
-      const {verb, subject, object, interactionMatrix} = this;
+      const {verb, subject, object} = this;
+      const {interactionMatrix} = this.$store.state.gameData;
       if (!verb || !subject || object) {return false}
       if (verb.transitive) {
         if (interactionMatrix[verb.id] && interactionMatrix[verb.id][subject.id]  && interactionMatrix[verb.id][subject.id].intransitive ) {  
@@ -269,7 +267,7 @@ export default {
     },
     verbsAsObject: function(){
       let result = {};
-      this.verbList.forEach (verb => {
+      this.gameData.verbList.forEach (verb => {
         result[verb.id] = verb;
       })
       return result;
@@ -448,10 +446,11 @@ export default {
     },
 
     pickVerb: function(verbID) {
+      const {verbList} = this.gameData;
       this.subject = null;
-      for (var i=0; i<this.verbList.length; i++) {
-        if (this.verbList[i].id === verbID ) {
-          this.verb = this.verbList[i];
+      for (var i=0; i < verbList.length; i++) {
+        if ( verbList[i].id === verbID ) {
+          this.verb = verbList[i];
           if (this.verb.usesSelectedItem) {this.subject = this.selectedInventoryItem}
           return;
         }

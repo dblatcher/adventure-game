@@ -1,5 +1,6 @@
 function setInputsOptionsAfterCommand () {
-  
+  const {verbList} = this.$store.state.gameData
+
   if (this.selectedInventoryItem && !this.selectedInventoryItem.have) {
     this.selectedInventoryItem = null
   }
@@ -7,12 +8,12 @@ function setInputsOptionsAfterCommand () {
   if (this.config.resetVerbAfterEachCommand) {
     this.subject = null;
     this.object = null;
-    this.verb = this.verbList[0];
+    this.verb = verbList[0];
   } else {
     this.object = null;
 
     if (this.verb.usesSelectedItem && !this.selectedInventoryItem) {
-      this.verb = this.verbList[0]
+      this.verb = verbList[0]
       this.subject = null
     } 
     else if (this.verb.usesSelectedItem && this.selectedInventoryItem) {
@@ -26,16 +27,15 @@ function setInputsOptionsAfterCommand () {
 }
 
 export default function (command) {
+    const {interactionMatrix, defaultResponses} = this.$store.state.gameData
     if (!command) {command = {verb: this.verb, subject: this.subject, object: this.object};}
-    //console.log(Object.keys(command).map(key=> command[key]?command[key].id:'-'))
-
     let failedCondition = false, condition, passed, response=null, execution=null;
 
     //find array of interactions  matching the command from the InteractionMatrix
     var thirdParam = command.object? command.object.id : 'intransitive';
     var matchingList = [];
-    if (this.interactionMatrix[command.verb.id] && this.interactionMatrix[command.verb.id][command.subject.id] ) {
-      matchingList = this.interactionMatrix[command.verb.id][command.subject.id][thirdParam] || [];
+    if (interactionMatrix[command.verb.id] && interactionMatrix[command.verb.id][command.subject.id] ) {
+      matchingList = interactionMatrix[command.verb.id][command.subject.id][thirdParam] || [];
     }
 
     //loop over the list of Interactions
@@ -63,8 +63,8 @@ export default function (command) {
 
     // use a default response if no scripted response passed its conditions
     if (!response) {
-      let defaultResponseFunction = this.defaultResponses[command.verb.id] 
-      || this.defaultResponses["misc"] 
+      let defaultResponseFunction = defaultResponses[command.verb.id] 
+      || defaultResponses["misc"] 
       || function(){ return []}
       response = defaultResponseFunction(command)
       this.$emit('default-response-start',command)

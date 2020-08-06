@@ -44,18 +44,17 @@
 
 import Tile from './Tile'
 import InventoryBox from './InventoryBox'
-import InventoryMenu from "../InventoryMenu";
 import boxIcon from "../../icons/box-open.svg"
 
 export default {
     name: 'SierraInterface',
-    components: {InventoryMenu,InventoryBox, Tile},
+    components: {InventoryBox, Tile},
     props: ['gameStatus', 
-    'currentVerb','verbList',
+    'currentVerb',
     'items', 
     'subject','object','thingHoveredOn','needObject', 'lastCommand', 
     'conversation','recommendedVerb','selectedInventoryItem'],
-    
+
     data : function () {
         return {
             inventoryIsOpen: false,
@@ -76,13 +75,14 @@ export default {
             return false
         },
         inventoryVerbs(){
-            return this.verbList.filter(verb=> verb.showOnInventoryBox)
+            return this.$store.state.gameData.verbList.filter(verb=> verb.showOnInventoryBox)
         },
     },
 
     methods :{
         changeToNextVerb() {
-            const {currentVerb, verbList, subject,selectedInventoryItem, $emit} = this;
+            const {verbList} = this.$store.state.gameData;
+            const {currentVerb, selectedInventoryItem} = this;
 
             function tryNext(index) {
                 let nextIndex = index +1 < verbList.length ? index+1 : 0
@@ -93,7 +93,6 @@ export default {
             }
 
             let indexOfNextVerb = tryNext (verbList.indexOf(currentVerb) )
-            
             this.$emit('verb-picked', verbList[indexOfNextVerb].id)
         },
         toggleInventory() {

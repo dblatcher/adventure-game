@@ -62,8 +62,7 @@ export default {
             if (currentVerb.usesSelectedItem && currentItem) {
                 return `${currentVerb.description} ${currentItem.name} ${currentVerb.preposition}...`
             }
-
-
+            return null
         }
     },
     methods : {

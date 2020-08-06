@@ -18,7 +18,10 @@
 <script>
 export default {
     name: 'VerbMenu',
-    props:['picked','verbList','thingHoveredOn','recommendedVerb'],
+    props:['picked','thingHoveredOn','recommendedVerb'],
+    computed: {
+        verbList() {return this.$store.state.gameData.verbList}
+    },
 }
 </script>
 
