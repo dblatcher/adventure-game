@@ -9,11 +9,12 @@
 <script>
 export default {
     name: "MusicPlayer",
-    props: ['orders','audioContext', 'audioContextStatusEmitter'],
+    props: ['orders', 'audioContextStatusEmitter'],
 
     data () {
+        const {audioContext} = this.$store.state.audio;
         return {
-            gainNode: this.audioContext.createGain(),
+            gainNode: audioContext.createGain(),
             audioElementsToResumeWhenGameUnpause:[],
             track: undefined,
             currentlyPlaying: false,
@@ -21,6 +22,10 @@ export default {
             currentSong: this.orders.song,
             fading: false,
         }
+    },
+
+    computed: {
+        audioContext() {return this.$store.state.audio.audioContext}
     },
 
     methods: {

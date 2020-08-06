@@ -80,7 +80,6 @@
 
     <MusicPlayer
     v-bind:orders="musicOrders"
-    v-bind:audioContext="$parent.audio.audioContext"
     v-bind:audioContextStatusEmitter="$parent"
     ref="audio"/>
   </main>

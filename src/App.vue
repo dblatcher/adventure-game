@@ -27,7 +27,6 @@
 
     <MusicPlayer
     v-bind:orders="musicOrders"
-    v-bind:audioContext="audio.audioContext"
     v-bind:audioContextStatusEmitter="self"   
     ref="audio"/>
 
@@ -77,29 +76,19 @@ export default {
       savedGames.push( JSON.parse(jsonString) || {} );
     }
 
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    const audioContext = new AudioContext();
-    const masterGainNode = audioContext.createGain()
-    masterGainNode.gain.value = 0; // initial gain value is 0 because enabled is false 
-
     return {
       savedGames: savedGames,
       showTitleScreen: true,
       showEndingScreen: false,
       fileMenuIsOpen: false,
       song:'title',
-      audio : {
-        audioContext, 
-        masterGainNode,
-        enabled: false,
-        sfxVolume: 1,
-        musicVolume: .2,
-      },
     }
   },
 
   computed : {
     gameData() {return this.$store.state.gameData},
+    audio() {return this.$store.state.audio},
+
     TitleScreen() { return this.CustomTitleScreen || DefaultTitleScreen},
     EndingScreen() { return this.CustomEndingScreen || DefaultEndingScreen},
 
@@ -118,13 +107,6 @@ export default {
 
     showGame() {
       return (!this.showTitleScreen && !this.showEndingScreen)
-    },
-
-    sfxVolume : {
-      get() {return this.audio.masterGainNode.gain.value},
-      set(value) {
-        this.audio.masterGainNode.gain.value = value;
-        return this.audio.masterGainNode.gain.value} 
     },
 
     autoSaveSlotisUsed() {
@@ -166,14 +148,7 @@ export default {
     },
 
    respondToGameOptionsUpdate: function(newOptions) {
-    this.audio.enabled = newOptions.soundEnabled
-    if (typeof newOptions.sfxVolume === 'number' ) {
-      this.audio.sfxVolume = newOptions.sfxVolume
-    }
-    if (typeof newOptions.musicVolume === 'number' ) {
-      this.audio.musicVolume = newOptions.musicVolume
-    }
-    this.audio.masterGainNode.gain.value = this.audio.enabled ? this.audio.sfxVolume : 0;
+    this.$store.commit('setAudioOptions',newOptions);
 
     if ( this.audio.enabled && this.audio.audioContext.state === 'suspended') {
       this.audio.audioContext.resume()

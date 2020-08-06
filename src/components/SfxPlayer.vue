@@ -11,10 +11,10 @@
 <script>
 export default {
     name: "SfxPlayer",
-    props: ['audioPosition','timer','contextSource', 'audioContextStatusEmitter'],
+    props: ['audioPosition','timer', 'audioContextStatusEmitter'],
 
     data () {
-        const {audioContext} = this.contextSource
+        const {audioContext} = this.$store.state.audio;
         const gainNode = audioContext.createGain()
         const panner = new StereoPannerNode(audioContext, {pan:0})
 
@@ -28,6 +28,7 @@ export default {
     },
 
     computed: {
+        audio() { return this.$store.state.audio},
         sounds() { return this.$store.state.gameData.sounds}
     },
 
@@ -92,13 +93,13 @@ export default {
             if (!soundAndTrack) {return false}
             const {sound, audioElement} = soundAndTrack;
 
-            const play = this.contextSource.audioContext.state === 'suspended' ?
+            const play = this.audio.audioContext.state === 'suspended' ?
             null : audioElement.play()
 
             if (options.waitUntilFinish) {
                 audioElement.dataSet.waiting = true
 
-                if(this.contextSource.audioContext.state === 'suspended') {
+                if(this.audio.audioContext.state === 'suspended') {
                     return new Promise ( (resolve)=>{
                         const confirmEnd = () => {
                             audioElement.dataSet.waiting = false
@@ -208,12 +209,12 @@ export default {
                 audioElement.dataSet = {
                     loop: false
                 }
-                this.tracks[this.sounds[index].id] = this.contextSource.audioContext.createMediaElementSource(audioElement);
+                this.tracks[this.sounds[index].id] = this.audio.audioContext.createMediaElementSource(audioElement);
                 this.tracks[this.sounds[index].id]
                 .connect(this.panner)
                 .connect(this.gainNode)
-                .connect(this.contextSource.masterGainNode)
-                .connect(this.contextSource.audioContext.destination)
+                .connect(this.audio.masterGainNode)
+                .connect(this.audio.audioContext.destination)
             })
         }
 
