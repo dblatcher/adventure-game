@@ -140,7 +140,7 @@ export default {
 
   data () {
 
-    const {gameData} = this.$store.state;
+    const {gameData, audio} = this.$store.state;
 
     return Object.assign({
       message: 'blank message',
@@ -154,7 +154,7 @@ export default {
         optionsMenuIsOpen: false,
         instantMode: false,
         narration: {contents:[], dismissable:true},
-        options: {textDelay: 100, sfxVolume: .1, musicVolume: .2, soundEnabled:(this.$parent.audio.enabled)},
+        options: {textDelay: 100, sfxVolume: .1, musicVolume: .2, soundEnabled:audio.enabled},
     }, state.create(this.loadData, gameData) );
   },
 
@@ -295,13 +295,13 @@ export default {
       return !(this.gameStatus === 'LIVE')
     },
     musicOrders () {
-
-      let song = this.rooms[this.roomNumber].bgm
+      const {audio} = this.$store.state
+      const song = this.rooms[this.roomNumber].bgm
 
       return {
-          playing: this.running && this.$parent.audio.enabled && !!this.gameData.music[song],
-          noFade: !this.$parent.audio.enabled,
-          volume: this.$parent.audio.musicVolume,
+          playing: this.running && audio.enabled && !!this.gameData.music[song],
+          noFade: !audio.enabled,
+          volume: audio.musicVolume,
           song: this.gameData.music[song],
           pause: this.timerIsStopped,
       }
@@ -320,11 +320,12 @@ export default {
     },
 
     toggleOptionsMenu(event) {
+      const {audio} = this.$store.state
       const menuIsBeingClosing =  this.optionsMenuIsOpen
 
       if (!menuIsBeingClosing) {
-        this.options.soundEnabled = this.$parent.audio.enabled
-        this.options.sfxVolume = this.$parent.audio.sfxVolume
+        this.options.soundEnabled = audio.enabled
+        this.options.sfxVolume = audio.sfxVolume
       }
 
       this.optionsMenuIsOpen = !this.optionsMenuIsOpen;
