@@ -11,7 +11,7 @@
 <script>
 export default {
     name: "SfxPlayer",
-    props: ['audioPosition','timer', 'audioContextStatusEmitter'],
+    props: ['audioPosition','timer' ],
 
     data () {
         const {audioContext} = this.$store.state.audio;
@@ -28,6 +28,7 @@ export default {
     },
 
     computed: {
+        audioContextStatusEmitter() {return this.$root.$children[0]},
         audio() { return this.$store.state.audio},
         sounds() { return this.$store.state.gameData.sounds}
     },

@@ -20,7 +20,6 @@
         <SfxPlayer
         v-bind:audioPosition="audioPosition"
         v-bind:timer="gameInstance.$refs.heartBeat"
-        v-bind:audioContextStatusEmitter="gameInstance.$parent"
         ref="audio"/>
     </article>
 </template>

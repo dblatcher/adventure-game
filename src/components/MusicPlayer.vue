@@ -9,7 +9,7 @@
 <script>
 export default {
     name: "MusicPlayer",
-    props: ['orders', 'audioContextStatusEmitter'],
+    props: ['orders'],
 
     data () {
         const {audioContext} = this.$store.state.audio;
@@ -25,6 +25,7 @@ export default {
     },
 
     computed: {
+        audioContextStatusEmitter() {return this.$root.$children[0]},
         audioContext() {return this.$store.state.audio.audioContext}
     },
 

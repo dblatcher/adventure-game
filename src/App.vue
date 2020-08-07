@@ -27,7 +27,6 @@
 
     <MusicPlayer
     v-bind:orders="musicOrders"
-    v-bind:audioContextStatusEmitter="self"   
     ref="audio"/>
 
     <component v-bind:is="EndingScreen" v-show="showEndingScreen">
@@ -91,8 +90,6 @@ export default {
 
     TitleScreen() { return this.CustomTitleScreen || DefaultTitleScreen},
     EndingScreen() { return this.CustomEndingScreen || DefaultEndingScreen},
-
-    self() {return this},
 
     musicOrders() {
       return {
