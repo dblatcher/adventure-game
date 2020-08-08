@@ -11,6 +11,11 @@ const audioContext = new AudioContext();
 const masterGainNode = audioContext.createGain()
 masterGainNode.gain.value = 0; // initial gain value is 0 because soundEnabled is false 
 
+function DebugMessage(input) {
+  this.message = input.toString ? input.toString() : '*error - no toString*'
+  this.time = Date.now()
+}
+
 const store = new Vuex.Store({
   state: {
     gameData:gameIndex.gameData,
@@ -23,7 +28,8 @@ const store = new Vuex.Store({
     },
     nonAudioOptions: {
       textDelay: 100
-    }
+    },
+    debugMessages: [],
   },
   getters: {
     options: state => {
@@ -52,6 +58,9 @@ const store = new Vuex.Store({
       }
 
     },
+    debugMessage(state, payload) {
+      state.debugMessages.push(new DebugMessage(payload))
+    }
   }
 })
 

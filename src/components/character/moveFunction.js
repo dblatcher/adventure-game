@@ -1,6 +1,5 @@
 function skip() {
-     // eslint-disable-next-line
-    console.log(`skipped ${this.name} moving`);
+    this.$store.commit('debugMessage',`skipped ${this.name} moving`)
     let moveOrder = this.char.destinationQueue[this.char.destinationQueue.length-1];
     this.char.x =  moveOrder.x; 
     this.char.y = moveOrder.y;

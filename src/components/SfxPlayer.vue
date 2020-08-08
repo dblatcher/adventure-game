@@ -66,7 +66,7 @@ export default {
             const {sound, audioElement} = soundAndTrack;
 
             if (audioElement.dataSet.waiting) {
-                console.warn(`did not stop ${sound.description} because a sequence is waiting for it to end.`)
+                this.$store.commit('debugMessage', `Did not stop ${sound.description} because a sequence is waiting for it to end.`)
                 return false
             }
 

@@ -412,7 +412,7 @@ export default {
         return this.gameStatus;
       }
 
-      console.warn(`${statusName} is not a valid gameStatus`);
+      this.$store.commit('debugMessage',`${statusName} is not a valid gameStatus`)
       return false;
     },
 
@@ -463,7 +463,8 @@ export default {
   },
 
   beforeMount: function () {
-    console.log('GAME RESTARTED!', new Date);
+    window.vm = this;
+    this.$store.commit('debugMessage',`Game Restarted`)
   },
 
 }

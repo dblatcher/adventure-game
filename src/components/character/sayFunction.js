@@ -16,7 +16,7 @@ function say (text, options = {} ) {
     var currentOrder = Object.assign({text:text}, options);
 
     if (this.gameInstance.instantMode) {
-        console.log(`skipped - ${this.name}: ${currentOrder.text}`)
+        this.$store.commit('debugMessage',`skipped - ${this.name}: ${currentOrder.text}`)
         return Promise.resolve({
             finished:true,
             message: `${this.name} finished saying "${currentOrder.text}".`

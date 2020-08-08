@@ -43,7 +43,9 @@ export default {
 
             gainNode.gain.setValueAtTime(orders.volume, audioContext.currentTime)
             const playAudioCall = audioElement.play()
-            if (playAudioCall.catch) {playAudioCall.catch(error=>{console.warn(error)})}
+            if (playAudioCall.catch) {playAudioCall.catch(error=>{
+                this.$store.commit('debugMessage', error)
+            })}
         },
 
         stop() {
