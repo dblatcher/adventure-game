@@ -43,8 +43,11 @@
       visibility: showGame ? 'unset': 'hidden',
     }">
       <Game ref="game"
-      v-bind:running="showGame"
-      v-on:auto-save="autoSave"/> 
+      v-bind="{running: showGame, fileMenuIsOpen}"
+      v-on:auto-save="autoSave"
+      @game-over="endGame"
+      @options-change="respondToGameOptionsUpdate"
+      @open-file-menu="function(){handleFileMenuClick([null, 'toggle'])}"/>
     </div>
 
   </div>

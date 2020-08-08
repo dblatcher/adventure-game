@@ -23,6 +23,7 @@
       <Room ref="room" 
         v-bind:room="rooms[roomNumber]" 
         v-bind:measure="roomMeasure"
+        @scale-change="changeScale"
         v-on:clicked-room="handleClickOnRoom($event)"
         v-on:double-click="handleDoubleClick($event)">
 
@@ -129,7 +130,7 @@ function makeObjectFromList(list, keyname) {
 
 export default {
   name: 'Game',
-  props: ['running'],
+  props: ['running', 'fileMenuIsOpen'],
   components :{
     DialogMenu, Room, ThingInRoom, OptionsMenu, 
     HeartBeater, ControlButtons, NarrationMessage,
@@ -283,11 +284,8 @@ export default {
       return this.rooms[this.roomNumber].obstacles;
     },
     grid : pathFinding.makeGrid,
-    fileMenuIsOpen () {
-      return this.$parent.fileMenuIsOpen;
-    },
     timerIsStopped () {
-      return (this.gameStatus === 'PAUSED' || this.$parent.fileMenuIsOpen || this.optionsMenuIsOpen || !this.running);
+      return (this.gameStatus === 'PAUSED' || this.fileMenuIsOpen || this.optionsMenuIsOpen || !this.running);
     },
     hideControls () {
       return !(this.gameStatus === 'LIVE')
@@ -314,7 +312,7 @@ export default {
 
     openFileMenu(event) {
      if (this.gameStatus === 'CUTSCENE') {return false}
-     this.$parent.handleFileMenuClick([null, 'toggle']);
+     this.$emit('open-file-menu')
     },
 
     openOptionsMenu() {
@@ -323,12 +321,16 @@ export default {
 
     handleOptionsMenuClose(newOptions) {
       this.optionsMenuIsOpen = false
-      this.$parent.respondToGameOptionsUpdate(newOptions)
+      this.$emit('options-change', newOptions)
     },
 
     togglePaused() {
       if (this.fileMenuIsOpen || this.optionsMenuIsOpen) {return false}
       this.setGameStatus ( this.gameStatus === 'PAUSED' ? 'UNPAUSED' : 'PAUSED' )
+    },
+
+    changeScale(adjustment) {
+      this.roomMeasure.scale *= adjustment;
     },
 
     findPath: pathFinding.findPath, 
@@ -413,7 +415,7 @@ export default {
 
       if (statusName === 'COMPLETE' ) {
         this.gameStatus = statusName;
-        this.$parent.endGame(parameter);
+        this.$emit('game-over', parameter)
         return this.gameStatus;
       }
 

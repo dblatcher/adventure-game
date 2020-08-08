@@ -34,7 +34,8 @@ export default {
         resize : function () {
             let widthRatio  = this.$el.parentElement.clientWidth  / this.$el.offsetWidth;
             let heightRatio = this.$el.parentElement.clientHeight / this.$el.offsetHeight;
-            this.$parent.roomMeasure.scale *= Math.min(widthRatio, heightRatio);
+            
+            this.$emit('scale-change', Math.min(widthRatio, heightRatio))
         }
     },
     computed: {
