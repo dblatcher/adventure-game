@@ -1,41 +1,38 @@
 <template>
-    <div class="overlay">
+    <div class="overlay" v-show="optionsMenuIsOpen">
 
         <main class="frame">
             
             <div class="row">
                 <h2 class="title">Options</h2>
-                <div class="close-button" @click="$emit('close',null)">
+                <div class="close-button" @click="updateOptionsAndClose">
                     <img src="../icons/window-close.svg"/>
                 </div>
             </div>
 
-            <form>
-
-                <p class="label">Text time: {{options.textDelay}}%</p>
+            <div>
+                <p class="label">Text time: {{newOptions.textDelay}}%</p>
                 <div class="slidecontainer">
-                    <input type="range" min="1" max="300" v-model.number="options.textDelay" class="slider">
+                    <input type="range" min="1" max="300" v-model.number="newOptions.textDelay" class="slider">
                 </div>
 
 
                 <label class="row" for="options-menu-sound-toggle">
                     <p>Sound enabled:</p>
-                    <input id="options-menu-sound-toggle" type="checkbox" v-model="options.soundEnabled"/>
+                    <input id="options-menu-sound-toggle" type="checkbox" v-model="newOptions.soundEnabled"/>
                 </label>
 
 
-                <p class="label">SFX volume: {{Math.round(options.sfxVolume*100)}}%</p>
+                <p class="label">SFX volume: {{Math.round(newOptions.sfxVolume*100)}}%</p>
                 <div class="slidecontainer">
-                    <input type="range" min="0" max="2" step=".01" v-model.number="options.sfxVolume" class="slider">
+                    <input type="range" min="0" max="2" step=".01" v-model.number="newOptions.sfxVolume" class="slider">
                 </div>
 
-                <p class="label">Music volume: {{Math.round(options.musicVolume*500)}}%</p>
+                <p class="label">Music volume: {{Math.round(newOptions.musicVolume*500)}}%</p>
                 <div class="slidecontainer">
-                    <input type="range" min="0" max=".4" step=".01" v-model.number="options.musicVolume" class="slider">
+                    <input type="range" min="0" max=".4" step=".01" v-model.number="newOptions.musicVolume" class="slider">
                 </div>
-
-
-            </form>
+            </div>
 
         </main>
 
@@ -47,7 +44,33 @@
 <script>
 export default {
     name: "OptionsMenu",
-    props: ["options"]
+    props: ["optionsMenuIsOpen"],
+
+    data() {
+        const storedOptions = this.$store.getters.options
+        let newOptions = {}
+        Object.keys(storedOptions).forEach (key => {
+            newOptions[key] = storedOptions[key]
+        })
+        return { newOptions: newOptions }
+    },
+    methods: {
+        updateOptionsAndClose() {
+            this.$emit('close', this.newOptions)
+        },
+        refresh() {
+            const storedOptions = this.$store.getters.options
+            Object.keys(storedOptions).forEach(key => {
+                this.newOptions[key] = storedOptions[key]
+            })
+            this.$forceUpdate()
+        }
+    },
+    watch: {
+        optionsMenuIsOpen (newValue) {
+            if (newValue === true) {this.refresh()}
+        }
+    }
 }
 </script>
 

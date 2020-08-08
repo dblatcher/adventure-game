@@ -1,6 +1,6 @@
 function executeSayOrder (order) {		
     this.saying = order.text;
-    this.sayingCountDown = order.time * (this.gameInstance.options.textDelay/100);
+    this.sayingCountDown = order.time * (this.$store.getters.options.textDelay/100);
     if (this.char.destinationQueue.length === 0) { //not moving
         if (this.char.model.cycles[order.action]) { //and the character model has a cycle matching the action options 
             this.char.behaviour_action = order.action;

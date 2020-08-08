@@ -9,7 +9,7 @@ Vue.use(Vuex)
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 const audioContext = new AudioContext();
 const masterGainNode = audioContext.createGain()
-masterGainNode.gain.value = 0; // initial gain value is 0 because enabled is false 
+masterGainNode.gain.value = 0; // initial gain value is 0 because soundEnabled is false 
 
 const store = new Vuex.Store({
   state: {
@@ -17,23 +17,41 @@ const store = new Vuex.Store({
     audio: {
       audioContext, 
       masterGainNode,
-      enabled: false,
+      soundEnabled: false,
       sfxVolume: 1,
       musicVolume: .2,
     },
+    nonAudioOptions: {
+      textDelay: 100
+    }
+  },
+  getters: {
+    options: state => {
+      return {
+        textDelay: state.nonAudioOptions.textDelay,
+        soundEnabled: state.audio.soundEnabled,
+        sfxVolume: state.audio.sfxVolume,
+        musicVolume: state.audio.musicVolume,
+      }
+    }
   },
   mutations: {
-    setAudioOptions (state, payload) {
-      console.log('setAudioOptions', payload)
+    setOptions (state, payload) {
+      console.log('setOptions', payload)
 
-      state.audio.enabled = !!payload.soundEnabled
+      state.audio.soundEnabled = !!payload.soundEnabled
       if (typeof payload.sfxVolume === 'number' ) {
         state.audio.sfxVolume = payload.sfxVolume
       }
       if (typeof payload.musicVolume === 'number' ) {
         state.audio.musicVolume = payload.musicVolume
       }
-      state.audio.masterGainNode.gain.value = state.audio.enabled ? state.audio.sfxVolume : 0;
+      state.audio.masterGainNode.gain.value = state.audio.soundEnabled ? state.audio.sfxVolume : 0;
+
+      if (typeof payload.textDelay === 'number' ) {
+        state.nonAudioOptions.textDelay = payload.textDelay
+      }
+
     },
   }
 })

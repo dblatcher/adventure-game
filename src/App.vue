@@ -9,7 +9,7 @@
     ></FileMenu>
 
 
-    <component v-bind:is="TitleScreen" v-show="showTitleScreen" v-bind:soundEnabled="audio.enabled">
+    <component v-bind:is="TitleScreen" v-show="showTitleScreen" v-bind:soundEnabled="audio.soundEnabled">
 
       <template v-slot:file-buttons>
         <button id="new-game" @click="restartGame()">New Game</button>
@@ -18,7 +18,7 @@
       </template>
 
       <template v-slot:sound-toggle>
-        <button id="toggle-sound" @click="toggleSound">{{audio.enabled? 'disable sound' : 'enable sound'}}</button>
+        <button id="toggle-sound" @click="toggleSound">{{audio.soundEnabled? 'disable sound' : 'enable sound'}}</button>
       </template>
 
       <template v-slot:loading-bar><LoadingBar/></template>
@@ -93,8 +93,8 @@ export default {
 
     musicOrders() {
       return {
-          playing: this.showTitleScreen && this.audio.enabled && !!this.gameData.music[this.song],
-          noFade: !this.audio.enabled,
+          playing: this.showTitleScreen && this.audio.soundEnabled && !!this.gameData.music[this.song],
+          noFade: !this.audio.soundEnabled,
           pause: false,
           volume: this.audio.musicVolume,
           song: this.gameData.music[this.song],
@@ -145,9 +145,9 @@ export default {
     },
 
    respondToGameOptionsUpdate: function(newOptions) {
-    this.$store.commit('setAudioOptions',newOptions);
+    this.$store.commit('setOptions',newOptions);
 
-    if ( this.audio.enabled && this.audio.audioContext.state === 'suspended') {
+    if ( this.audio.soundEnabled && this.audio.audioContext.state === 'suspended') {
       this.audio.audioContext.resume()
       .then( () => {
         this.$emit('audio-enabled')
@@ -156,7 +156,7 @@ export default {
    },
 
     toggleSound : function() {
-      this.respondToGameOptionsUpdate({soundEnabled: !this.audio.enabled})
+      this.respondToGameOptionsUpdate({soundEnabled: !this.audio.soundEnabled})
     },
 
     autoSave: function() {

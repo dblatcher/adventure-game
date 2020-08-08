@@ -7,14 +7,13 @@
     v-bind:timerIsStopped="timerIsStopped"
     ref="heartBeat"/>
 
-    <OptionsMenu v-show="optionsMenuIsOpen"
-    v-bind:options="options"
-    @close="toggleOptionsMenu()"/>
+    <OptionsMenu v-bind="{optionsMenuIsOpen}"
+    @close="handleOptionsMenuClose"/>
 
    <ControlButtons
     v-bind="{ gameStatus, highlightingThings,fileMenuIsOpen,optionsMenuIsOpen }"
     @pause-button="togglePaused"
-    @options-button="toggleOptionsMenu"
+    @options-button="openOptionsMenu"
     @file-button="openFileMenu"
     @skip-button="handleSkipButton"
     @highlight-button="handleHighlightButton"
@@ -154,7 +153,6 @@ export default {
         optionsMenuIsOpen: false,
         instantMode: false,
         narration: {contents:[], dismissable:true},
-        options: {textDelay: 100, sfxVolume: .1, musicVolume: .2, soundEnabled:audio.enabled},
     }, state.create(this.loadData, gameData) );
   },
 
@@ -299,8 +297,8 @@ export default {
       const song = this.rooms[this.roomNumber].bgm
 
       return {
-          playing: this.running && audio.enabled && !!this.gameData.music[song],
-          noFade: !audio.enabled,
+          playing: this.running && audio.soundEnabled && !!this.gameData.music[song],
+          noFade: !audio.soundEnabled,
           volume: audio.musicVolume,
           song: this.gameData.music[song],
           pause: this.timerIsStopped,
@@ -319,21 +317,13 @@ export default {
      this.$parent.handleFileMenuClick([null, 'toggle']);
     },
 
-    toggleOptionsMenu(event) {
-      const {audio} = this.$store.state
-      const menuIsBeingClosing =  this.optionsMenuIsOpen
+    openOptionsMenu() {
+      this.optionsMenuIsOpen = true
+    },
 
-      if (!menuIsBeingClosing) {
-        this.options.soundEnabled = audio.enabled
-        this.options.sfxVolume = audio.sfxVolume
-      }
-
-      this.optionsMenuIsOpen = !this.optionsMenuIsOpen;
-
-      if (menuIsBeingClosing) {
-        this.$parent.respondToGameOptionsUpdate(this.options)
-      } 
-
+    handleOptionsMenuClose(newOptions) {
+      this.optionsMenuIsOpen = false
+      this.$parent.respondToGameOptionsUpdate(newOptions)
     },
 
     togglePaused() {
@@ -480,9 +470,7 @@ export default {
   beforeMount: function () {
     window.vm = this;
     console.log('GAME RESTARTED!', new Date);
-
   },
-
 
 }
 </script>
