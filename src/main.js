@@ -76,6 +76,7 @@ function launchApp(selector, rootProps) {
       data() {return {rootProps}},
       render(h) { 
           return h(App, {props: {
+            showDebugMessages: process.env.VUE_APP_DEBUG == 'on',
             CustomTitleScreen: this.rootProps.gameIndex.TitleScreen,
             CustomEndingScreen: this.rootProps.gameIndex.EndingScreen,
           }})

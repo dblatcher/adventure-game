@@ -50,7 +50,10 @@
       @open-file-menu="function(){handleFileMenuClick([null, 'toggle'])}"/>
     </div>
 
+    <DebugWindow v-if="showDebugMessages"/>
   </div>
+
+
 </template>
 
 <script>
@@ -61,14 +64,14 @@ import FileMenu from "./components/fileMenu";
 import MusicPlayer from "./components/MusicPlayer"
 import DefaultTitleScreen from "./components/DefaultTitleScreen"
 import DefaultEndingScreen from "./components/DefaultEndingScreen"
-
+import DebugWindow from "./components/DebugWindow"
 
 
 export default {
   name: 'App',
-  props: ['CustomTitleScreen', 'CustomEndingScreen'],
+  props: ['CustomTitleScreen', 'CustomEndingScreen', 'showDebugMessages'],
   components :{
-    Game, FileMenu, LoadingBar, MusicPlayer,
+    Game, FileMenu, LoadingBar, MusicPlayer, DebugWindow
   },
 
   data () {
