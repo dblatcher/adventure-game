@@ -37,7 +37,6 @@ const store = new Vuex.Store({
   },
   mutations: {
     setOptions (state, payload) {
-      console.log('setOptions', payload)
 
       state.audio.soundEnabled = !!payload.soundEnabled
       if (typeof payload.sfxVolume === 'number' ) {

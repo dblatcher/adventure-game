@@ -14,12 +14,12 @@ function say (text, options = {} ) {
     if (typeof options.time !== 'number') {options.time = 3000}
     if (typeof options.action !== 'string') {options.action = this.char.talkCycle}
     var currentOrder = Object.assign({text:text}, options);
-    
+
     if (this.gameInstance.instantMode) {
         console.log(`skipped - ${this.name}: ${currentOrder.text}`)
         return Promise.resolve({
             finished:true,
-            message: this.name+' finished saying \"'+currentOrder.text + '\".'
+            message: `${this.name} finished saying "${currentOrder.text}".`
         })
     }
 
@@ -35,7 +35,7 @@ function say (text, options = {} ) {
             if (orderJustDone !== currentOrder) {return false}
             resolve({
                 finished:true,
-                message: that.name+' finished saying \"'+currentOrder.text + '\".'
+                message: `${that.name} finished saying "${currentOrder.text}".`,
             });
             that.$off('sayOrderDone', handleSayOrderDone)
         }

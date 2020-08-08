@@ -43,7 +43,7 @@ export default {
 
             gainNode.gain.setValueAtTime(orders.volume, audioContext.currentTime)
             const playAudioCall = audioElement.play()
-            if (playAudioCall.catch) {playAudioCall.catch(error=>{})}
+            if (playAudioCall.catch) {playAudioCall.catch(error=>{console.warn(error)})}
         },
 
         stop() {
@@ -67,12 +67,10 @@ export default {
         fadeOut(fadeTime = 2) {
             this.currentlyPlaying = false
             this.fading = true
-            const {audioElement} = this.$refs
-            const {audioContext,gainNode,stop} = this
+            const {audioContext,gainNode} = this
 
             gainNode.gain.linearRampToValueAtTime(0.0, audioContext.currentTime + fadeTime)
 
-            const that = this;
             return new Promise ((resolve)=>{
                 setTimeout(function() {
                     this.fading = false
@@ -96,7 +94,7 @@ export default {
     watch: {
         orders: function (newOrders) {
             const {audioContext,gainNode} = this
-            const {playing, volume, noFade, song, pause} = newOrders
+            const {playing, noFade, song, pause} = newOrders
 
 
             if (!this.fading) {

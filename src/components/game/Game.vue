@@ -28,7 +28,7 @@
         v-on:double-click="handleDoubleClick($event)">
 
         <ThingInRoom ref="things"
-          v-for="thing in thingsInRoom":key="rooms[roomNumber].id + '--' + thing.id"
+          v-for="thing in thingsInRoom" :key="rooms[roomNumber].id + '--' + thing.id"
           v-bind:measure="roomMeasure"
           v-bind:data="thing"
           v-bind:roomWidth="rooms[roomNumber].width"
@@ -120,13 +120,6 @@ import ControlButtons from "../ControlButtons";
 import NarrationMessage from "../NarrationMessage";
 import MusicPlayer from "../MusicPlayer"
 
-function makeObjectFromList(list, keyname) {
-  let result = {}
-  list.forEach(item => {
-    result[item[keyname]] = item;
-  })
-  return result
-}
 
 export default {
   name: 'Game',
@@ -140,7 +133,7 @@ export default {
 
   data () {
 
-    const {gameData, audio} = this.$store.state;
+    const {gameData} = this.$store.state;
 
     return Object.assign({
       message: 'blank message',
@@ -310,7 +303,7 @@ export default {
       this.$refs.things.forEach(thing => {thing.onBeat(data)})
     },
 
-    openFileMenu(event) {
+    openFileMenu() {
      if (this.gameStatus === 'CUTSCENE') {return false}
      this.$emit('open-file-menu')
     },
@@ -372,7 +365,7 @@ export default {
       this.highlightingThings = !this.highlightingThings;
     },
 
-    handleDoubleClick (event) {
+    handleDoubleClick () {
       let pc = this.getThings('pc');
       if (!pc) { return false}
       pc.char.destinationQueue.forEach (order=> {
@@ -470,7 +463,6 @@ export default {
   },
 
   beforeMount: function () {
-    window.vm = this;
     console.log('GAME RESTARTED!', new Date);
   },
 
