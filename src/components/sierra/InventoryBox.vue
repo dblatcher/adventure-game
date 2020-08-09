@@ -65,12 +65,6 @@ export default {
             return null
         }
     },
-    methods : {
-        handleItemClick(event){
-            console.log('TILE ITEM', event)
-        }
-    }
-
 }
 </script>
 
