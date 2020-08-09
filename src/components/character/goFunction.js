@@ -21,7 +21,7 @@ function standardiseDestination (destination, game) {
 	if (typeof destination === 'string') {
 		let point = findTargetWalkTo(destination)
 		if (point === false) {
-			console.warn('Character.goTo failed: id ' + destination +  ' not found')
+			game.$store.commit('debugMessage', 'Character.goTo failed: id ' + destination +  ' not found')
 			return false;
 		}
 		return point;
@@ -31,7 +31,7 @@ function standardiseDestination (destination, game) {
 		if (typeof destination[0] === 'string') {
 			let point = findTargetWalkTo(destination[0])
 			if (point === false) {
-				console.warn('Character.goTo failed: id ' + destination[0] +  ' not found')
+				this.$store.commit('debugMessage', 'Character.goTo failed: id ' + destination[0] +  ' not found')
 				return false
 			}
 			return point;
@@ -80,11 +80,11 @@ function goTo (target, options = {}) {
 	
 
 	// create list of orders
-	
+	let orders
 	if (this.gameInstance.instantMode) {
-		var orders = skip.apply(this,[path]);
+		orders = skip.apply(this,[path]);
 	} else {
-		var orders = []; 
+		orders = []; 
 		for (var i=0; i<path.length; i++) {
 			orders.push({
 				x: path[i].x,

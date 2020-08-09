@@ -2,7 +2,7 @@
 function getInventoryItem (id, options={}) {
     let item = this.inventoryItems.filter(function(a){return a.id==id})[0];
     if(!item){
-      console.warn(`no inventory item with id ${id}`);
+      this.$store.commit('debugMessage', `no inventory item with id ${id}`)
       return false;
     }
 
@@ -12,7 +12,7 @@ function getInventoryItem (id, options={}) {
 function looseInventoryItem (id, options={}) {
     let item = this.inventoryItems.filter(function(a){return a.id==id})[0];
     if(!item) {
-      console.warn(`no inventory item with id ${id}`);
+      this.$store.commit('debugMessage', `no inventory item with id ${id}`)
       return false;
     }
 

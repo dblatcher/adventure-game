@@ -2,7 +2,7 @@ export default function (action, options = {} ) {
     //validate inputs
     if (typeof action  !== 'string') {
         // eslint-disable-next-line
-        console.warn ('Action order skipped: non-string value for ' + this.name+'.')
+        this.$store.commit('debugMessage', 'Action order skipped: non-string value for ' + this.name+'.')
         return Promise.resolve({
             finished:true,
             message:'Action order skipped: non-string value for ' + this.name+'.'
@@ -10,7 +10,7 @@ export default function (action, options = {} ) {
     }
     if (!this.char.model.cycles[action]) {
         // eslint-disable-next-line
-        console.warn ('Action order skipped: ' + action +' is not a cycle of' + this.name+'.')
+        this.$store.commit('debugMessage', 'Action order skipped: ' + action +' is not a cycle of' + this.name+'.')
         return Promise.resolve({
             finished:true,
             message: 'Action order skipped: ' + action +' is not a cycle of' + this.name+'.'
@@ -30,7 +30,7 @@ export default function (action, options = {} ) {
     
     if (this.gameInstance.instantMode) {
          // eslint-disable-next-line
-        console.log(`skipped - ${this.name} doing ${currentOrder.action}`);
+        this.$store.commit('debugMessage', `skipped - ${this.name} doing ${currentOrder.action}`);
         return Promise.resolve({
             finished: true,
             message:this.ident + ' finished action:' + currentOrder.action

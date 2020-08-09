@@ -6,7 +6,7 @@ function wait(target, options={}) {
     let unit = validTimeUnits.includes(options.unit) ? options.unit : 's';
 
     if (this.instantMode) {
-        console.log(`skipped - Order to wait for ${time} ${unit}`)
+        this.$store.commit('debugMessage', `skipped - Order to wait for ${time} ${unit}`)
         return Promise.resolve({
             finished:true,
             message: 'wait over'
