@@ -1,24 +1,24 @@
 export default function (action, options = {} ) {
     //validate inputs
     if (typeof action  !== 'string') {
-        // eslint-disable-next-line
-        this.$store.commit('debugMessage', 'Action order skipped: non-string value for ' + this.name+'.')
+        let warningMessage = 'Action order skipped: non-string value for ' + this.name+'.'
+        this.$store.commit('debugMessage', warningMessage)
         return Promise.resolve({
-            finished:true,
-            message:'Action order skipped: non-string value for ' + this.name+'.'
+            finished: true,
+            message: warningMessage
         });
     }
     if (!this.char.model.cycles[action]) {
-        // eslint-disable-next-line
-        this.$store.commit('debugMessage', 'Action order skipped: ' + action +' is not a cycle of' + this.name+'.')
+        let warningMessage = 'Action order skipped: ' + action +' is not a cycle of ' + this.name+'.'
+        this.$store.commit('debugMessage', warningMessage)
         return Promise.resolve({
-            finished:true,
-            message: 'Action order skipped: ' + action +' is not a cycle of' + this.name+'.'
+            finished: true,
+            message: warningMessage
         });
     }
     
     // default options.direction to current direction
-    if (!options.direction) {options.direction = this.currentDirection}            
+    if (!options.direction) {options.direction = this.currentDirection}
     
     //ensure options.direction is a direction supported by the character model's cycle;
     var availableDirections = Object.keys(this.char.model.cycles[action]);
@@ -29,7 +29,6 @@ export default function (action, options = {} ) {
     var currentOrder = Object.assign({action:action, actFrame:0},options);
     
     if (this.gameInstance.instantMode) {
-         // eslint-disable-next-line
         this.$store.commit('debugMessage', `skipped - ${this.name} doing ${currentOrder.action}`);
         return Promise.resolve({
             finished: true,
@@ -39,7 +38,7 @@ export default function (action, options = {} ) {
 
     var that = this;
 
-    return new Promise ( function (resolve, reject) {
+    return new Promise ( function (resolve) {
 
         that.char.actionQueue = [currentOrder];
 
