@@ -6,6 +6,13 @@ class StandardCondition {
         this.comparitor = comparitor;
     }
 
+    toString() {
+        if (this.actorId === 'GAME') {
+            return `StandardCondition{${this.property} ${this.operator} ${this.comparitor}}`
+        }
+        return `StandardCondition{${this.actorId}['${this.property}'] ${this.operator} ${this.comparitor ? this.comparitor :''}}`
+    }
+
     evaluate (game){
         const {actorId, operator, property, comparitor} = this;
         let actor = game.getComponentOrDataObject(actorId)
@@ -48,7 +55,7 @@ class StandardCondition {
                 return (actor[property].indexOf(comparitor) === 0)
         }
 
-        console.warn ('condition invalid',this)
+        console.warn ('condition invalid',this.toString)
         return true
     }
 

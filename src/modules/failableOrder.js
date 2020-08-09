@@ -10,6 +10,13 @@ class failableOrder extends StandardOrder{
         }
     }
 
+    toString() {
+        if (this.actorId === 'GAME') {
+            return `FailableOrder{${this.action}: ${this.target}}`
+        }
+        return `FailableOrder{${this.actorId} ${this.action}: ${this.target}}`
+    }
+
     evaluate(result) {
         return result.finished
     }

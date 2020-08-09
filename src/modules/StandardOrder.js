@@ -99,19 +99,25 @@ class StandardOrder {
 	}
 	get isStandardOrder() {return true}
 
+	toString() {
+		if (this.actorId === 'GAME') {
+			return `STANDARD ORDER [${this.action}: ${this.target}]`
+		}
+		return `STANDARD ORDER [${this.actorId} ${this.action}: ${this.target}]`
+	}
+
 	execute(game) {
 
 		const {actorId, action, target,options} = this;
 
 		let actor = game.getComponentOrDataObject(actorId)
 		if (!actor) {
-			console.warn(`failed order: ${actorId}' not found`)
+			game.$store.commit('debugMessage',`failed order: ${this.toString()} -- ${actorId}' not found`)
 			return Promise.resolve({result:'failed'})
 		}
 
 		if (typeof actor[action] !== "function") {
-			console.warn(`failed order: ${action}' is not a method of ${actor === game? 'Game' : actorId }`)
-			console.log('failed order:',this)
+			game.$store.commit('debugMessage',`failed order: ${this.toString()} -- ${action}' is not a method of ${actor === game? 'Game' : actorId }`)
 			return Promise.resolve({result:'failed - no action found'})
 		}
 
