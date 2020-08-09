@@ -1,5 +1,5 @@
-function setDefaultCycle (type, cycleName) {
-    
+function setDefaultCycle (type, cycleName, comp = null) {
+    console.log('setDefaultCycle', {type, cycleName, comp})
     let propertyName;
     switch (type) {
         case 'wait': propertyName = 'waitCycle'; break;
@@ -9,13 +9,18 @@ function setDefaultCycle (type, cycleName) {
     }
 
     if ( !this.model.cycles[cycleName]) {
+        let warningMessage = `set default ${type} failed : ${this.ident || this.id} does not have a cycle called "${cycleName}".`
 
-        console.warn ( `set default ${type} failed : ${this.ident} does not have a cycle called "${cycleName}".` ) 
+        if (comp && comp.$store) {
+            comp.$store.commit('debugMessage', warningMessage)
+        } else { // TODO - solve: called via Character DataClass not Character component and doesn't have access to the store 
+            console.warn (warningMessage)
+        }
 
         return Promise.resolve({
             finished:true,
             cycle: this[propertyName],
-            message:`set default ${type} : ${this.ident} does not have a cycle called "${cycleName}".`
+            message: warningMessage
         });
     }
 
@@ -32,16 +37,16 @@ function setDefaultCycle (type, cycleName) {
 }
 
 
-function setDefaultWait (cycleName) {
-    return setDefaultCycle.apply(this, ['wait', cycleName])
+function setDefaultWait (cycleName,comp) {
+    return setDefaultCycle.apply(this, ['wait', cycleName, comp])
 }
 
-function setDefaultWalk (cycleName) {
-    return setDefaultCycle.apply(this, ['walk', cycleName])
+function setDefaultWalk (cycleName, comp) {
+    return setDefaultCycle.apply(this, ['walk', cycleName,comp])
 }
 
-function setDefaultTalk (cycleName) {
-    return setDefaultCycle.apply(this, ['talk', cycleName])
+function setDefaultTalk (cycleName, comp) {
+    return setDefaultCycle.apply(this, ['talk', cycleName,comp])
 }
 
 

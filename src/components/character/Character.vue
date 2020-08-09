@@ -167,9 +167,9 @@ export default {
         say, countDownSpeech,
         move : moveFunction,
         checkForIdleAnimation, 
-        setDefaultWait: function (type, cycleName){ return this.char.setDefaultWait (type, cycleName) },
-        setDefaultWalk: function (type, cycleName){ return this.char.setDefaultWalk (type, cycleName) },
-        setDefaultTalk: function (type, cycleName){ return this.char.setDefaultTalk (type, cycleName) },
+        setDefaultWait: function (cycleName) { return this.char.setDefaultWait (cycleName, this) },
+        setDefaultWalk: function (cycleName) { return this.char.setDefaultWalk (cycleName, this) },
+        setDefaultTalk: function (cycleName) { return this.char.setDefaultTalk (cycleName, this) },
 
         goToRoom : function (target,options){
             this.gameInstance.teleportCharacter ([this.char].concat(target), options)
