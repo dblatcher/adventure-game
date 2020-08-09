@@ -79,7 +79,7 @@ export default function (command) {
     } else if (typeof response === 'string' && this.gameData.sequences[response]) {
       execution =  this.runSequence( this.gameData.sequences[response] )
     } else {
-      console.warn('bad response, neither function, array, nor name of sequence', response)
+      this.$store.commit('debugMessage', `Bad response, neither function, array, nor name of sequence: ${response && response.toString ? response.toString() : response}`)
     }
 
     this.lastCommand.verb = this.verb;

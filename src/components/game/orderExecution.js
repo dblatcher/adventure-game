@@ -55,7 +55,7 @@ function runSequence(input, options){
             this)
     }
 
-    console.warn("unrecognised sequence", sequence)
+    this.$store.commit('debugMessage', `Unrecognised sequence: ${input && input.toString ? input.toString() : input}`)
     return Promise.resolve({finished:false})
 }
 

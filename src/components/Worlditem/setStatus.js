@@ -8,8 +8,7 @@ export default function setStatus (input) {
         if (this.item.model.cycles[nextOrder.cycle]) { 
             orders.push(nextOrder);
         } else {
-            // eslint-disable-next-line
-            console.warn ( `${this.ident} does not have a cycle called "${nextOrder.cycle}".` ) 
+            this.$store.commit('debugMessage', `failed order: ${this.ident} does not have a cycle called "${nextOrder.cycle}".`)
         }
     }
 

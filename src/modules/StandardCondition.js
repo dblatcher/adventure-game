@@ -17,7 +17,7 @@ class StandardCondition {
         const {actorId, operator, property, comparitor} = this;
         let actor = game.getComponentOrDataObject(actorId)
         if (!actor) {
-            console.warn(`condition invalid: ${actorId}' not found`)
+            game.$store.commit('debugMessage', `condition invalid: ${this.toString} (actor '${actorId}' not found).`)
             return true
         }
         
@@ -55,7 +55,7 @@ class StandardCondition {
                 return (actor[property].indexOf(comparitor) === 0)
         }
 
-        console.warn ('condition invalid',this.toString)
+        game.$store.commit('debugMessage', `condition invalid: ${this.toString()} (invalid operator)`)
         return true
     }
 

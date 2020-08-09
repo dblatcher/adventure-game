@@ -45,9 +45,8 @@ export default class Character {
     get dataType() {return 'Character'}
 
     goTo (target, options={}, game) {
-        if (typeof this.room !== 'number') {return false}    
+        if (typeof this.room !== 'number') {return false}
         let destination = game.resolveDestination(target)
-        console.log(target, destination);
         if (!destination) {return false}
         let obstaclesContainDestination = game.rooms[this.room].obstacles.map (obstacle=>{return obstacle.containsPoint(destination) })
         if (obstaclesContainDestination.includes(true)) {return false}
