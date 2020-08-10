@@ -43,7 +43,7 @@
       visibility: showGame ? 'unset': 'hidden',
     }">
       <Game ref="game"
-      v-bind="{running: showGame, fileMenuIsOpen}"
+      v-bind="{running: showGame, fileMenuIsOpen, minigames}"
       v-on:auto-save="autoSave"
       @game-over="endGame"
       @options-change="respondToGameOptionsUpdate"
@@ -69,7 +69,7 @@ import DebugWindow from "./components/DebugWindow"
 
 export default {
   name: 'App',
-  props: ['CustomTitleScreen', 'CustomEndingScreen', 'showDebugMessages'],
+  props: ['CustomTitleScreen', 'CustomEndingScreen', 'minigames','showDebugMessages'],
   components :{
     Game, FileMenu, LoadingBar, MusicPlayer, DebugWindow
   },

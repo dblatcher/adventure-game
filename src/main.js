@@ -90,6 +90,7 @@ function launchApp(selector, rootProps) {
             showDebugMessages: debug.onScreen,
             CustomTitleScreen: this.rootProps.gameIndex.TitleScreen,
             CustomEndingScreen: this.rootProps.gameIndex.EndingScreen,
+            minigames: this.rootProps.gameIndex.minigames || {}
           }})
       },
   });

@@ -110,6 +110,10 @@ var interactions =[
 	new Interaction(['WALK','GATE_W'],[],
 	doorFunction('GATE_W',['SWAMP_R',100,10])
 	),
+
+	new Interaction(['USE','KEYPAD_W'],[],
+		[new StandardOrder('[status]MINIGAME','KeyPad')]
+	)
 ]
 
 var defaultResponses = {

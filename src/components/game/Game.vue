@@ -46,6 +46,10 @@
        v-bind:narration="narration"/>
     </div>
 
+    <component v-if="gameStatus === 'MINIGAME' && currentMinigameName"
+    v-bind:is="minigames[currentMinigameName]"
+    @cancel="cancelMinigame"/>
+
 
     <component v-bind:is="interfaceComponent"
     v-bind="{
@@ -123,7 +127,7 @@ import MusicPlayer from "../MusicPlayer"
 
 export default {
   name: 'Game',
-  props: ['running', 'fileMenuIsOpen'],
+  props: ['running', 'fileMenuIsOpen', 'minigames'],
   components :{
     DialogMenu, Room, ThingInRoom, OptionsMenu, 
     HeartBeater, ControlButtons, NarrationMessage,
@@ -137,16 +141,17 @@ export default {
 
     return Object.assign({
       message: 'blank message',
-        roomMeasure: {unit:'px',scale:1}, //only supporting px ?
-        thingHoveredOn:null, 
-        verb: gameData.verbList[0],
-        selectedInventoryItem:null,
-        subject: null, object:null,
-        lastCommand: {verb:undefined, subject:undefined, object:undefined, inProgress:false},
-        highlightingThings : false,
-        optionsMenuIsOpen: false,
-        instantMode: false,
-        narration: {contents:[], dismissable:true},
+      roomMeasure: {unit:'px',scale:1}, //only supporting px ?
+      thingHoveredOn:null, 
+      verb: gameData.verbList[0],
+      selectedInventoryItem:null,
+      subject: null, object:null,
+      lastCommand: {verb:undefined, subject:undefined, object:undefined, inProgress:false},
+      highlightingThings : false,
+      optionsMenuIsOpen: false,
+      instantMode: false,
+      narration: {contents:[], dismissable:true},
+      currentMinigameName: false,
     }, state.create(this.loadData, gameData) );
   },
 
@@ -412,8 +417,24 @@ export default {
         return this.gameStatus;
       }
 
+      if (statusName === 'MINIGAME' ) {
+
+        if (!parameter || !this.minigames[parameter]) {
+          this.$store.commit('debugMessage', parameter ? `${parameter} is not a minigame.` : 'No minigame name provided')
+          return this.gameStatus;
+        }
+
+        this.gameStatus = statusName
+        this.currentMinigameName = parameter
+        return this.gameStatus;
+      }
+
       this.$store.commit('debugMessage',`${statusName} is not a valid gameStatus`)
       return false;
+    },
+
+    cancelMinigame() {
+      this.setGameStatus('LIVE')
     },
 
     setGameVar(target, options={}) {
