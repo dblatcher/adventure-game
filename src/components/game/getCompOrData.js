@@ -29,7 +29,9 @@ export default function getComponentOrDataObject (input) {
                 Object.keys(data).forEach(rId=> {
                     if (data[rId][id]){matches.push(data[rId][id])}
                 })
-                if (matches.length > 1) {console.warn(`More than one ${id} found.`)}
+                if (matches.length > 1) {
+                    this.$store.commit('debugMessage', `There is more than one WorldItem with id ${id}.`)
+                }
                 return matches.shift();
             }
             break;

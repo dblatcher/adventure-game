@@ -1,5 +1,4 @@
-function setDefaultCycle (type, cycleName, comp = null) {
-    console.log('setDefaultCycle', {type, cycleName, comp})
+function setDefaultCycle (type, cycleName, component = null) {
     let propertyName;
     switch (type) {
         case 'wait': propertyName = 'waitCycle'; break;
@@ -11,9 +10,10 @@ function setDefaultCycle (type, cycleName, comp = null) {
     if ( !this.model.cycles[cycleName]) {
         let warningMessage = `set default ${type} failed : ${this.ident || this.id} does not have a cycle called "${cycleName}".`
 
-        if (comp && comp.$store) {
-            comp.$store.commit('debugMessage', warningMessage)
+        if (component && component.$store) {
+            component.$store.commit('debugMessage', warningMessage)
         } else { // TODO - solve: called via Character DataClass not Character component and doesn't have access to the store 
+            // eslint-disable-next-line
             console.warn (warningMessage)
         }
 
@@ -37,16 +37,16 @@ function setDefaultCycle (type, cycleName, comp = null) {
 }
 
 
-function setDefaultWait (cycleName,comp) {
-    return setDefaultCycle.apply(this, ['wait', cycleName, comp])
+function setDefaultWait (cycleName,component) {
+    return setDefaultCycle.apply(this, ['wait', cycleName, component])
 }
 
-function setDefaultWalk (cycleName, comp) {
-    return setDefaultCycle.apply(this, ['walk', cycleName,comp])
+function setDefaultWalk (cycleName, component) {
+    return setDefaultCycle.apply(this, ['walk', cycleName,component])
 }
 
-function setDefaultTalk (cycleName, comp) {
-    return setDefaultCycle.apply(this, ['talk', cycleName,comp])
+function setDefaultTalk (cycleName, component) {
+    return setDefaultCycle.apply(this, ['talk', cycleName,component])
 }
 
 

@@ -19,7 +19,6 @@ export default function () {
     }
 
     var moveOrder = this.char.destinationQueue[0];
-    
     if (!moveOrder.started) {
         if (moveOrder.action) {
             if (moveOrder.action !== this.currentAction || moveOrder.direction !== this.currentDirection) {
@@ -52,12 +51,11 @@ export default function () {
     for (var i=0; i<obstacles.length; i++) {
         if (obstacles[i].containsPoint( this.x+movement.x, this.y+movement.y) ) {
             movement = {x:0, y:0};
-             // eslint-disable-next-line
-            console.log('hit-obstacle', moveOrder);
             this.char.behaviour_action = this.char.waitCycle;
             this.char.behaviour_direction = moveOrder.direction;
             this.char.behaviour_actFrame = 0;
             this.char.destinationQueue.shift();
+            this.$store.commit('debugMessage', `${this.char.name} hit obstable during move to [${moveOrder.x}, ${moveOrder.y}]`)
         }
     }
     this.char.x += movement.x;

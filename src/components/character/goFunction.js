@@ -21,7 +21,7 @@ function standardiseDestination (destination, game) {
 	if (typeof destination === 'string') {
 		let point = findTargetWalkTo(destination)
 		if (point === false) {
-			game.$store.commit('debugMessage', 'Character.goTo failed: id ' + destination +  ' not found')
+			game.$store.commit('debugMessage', `Character.goTo failed: id ${destination} not found`)
 			return false;
 		}
 		return point;
@@ -31,7 +31,7 @@ function standardiseDestination (destination, game) {
 		if (typeof destination[0] === 'string') {
 			let point = findTargetWalkTo(destination[0])
 			if (point === false) {
-				this.$store.commit('debugMessage', 'Character.goTo failed: id ' + destination[0] +  ' not found')
+				game.$store.commit('debugMessage', `Character.goTo failed: id ${destination[0]} not found`)
 				return false
 			}
 			return point;
@@ -59,7 +59,7 @@ function turnTo (target, options = {}) {
 		return Promise.resolve( {finished: false, reason:'not valid destination'})
 	}
 	
-	this.char.behaviour_direction = findDirection (destination,this,this.char.model.validDirections)
+	this.char.behaviour_direction = findDirection (destination, this, this.char.model.validDirections)
 	return Promise.resolve( {finished: true})
 }
 
