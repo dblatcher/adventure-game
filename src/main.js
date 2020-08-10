@@ -5,13 +5,18 @@ const gameIndex = require(`../games/${process.env.VUE_APP_GAME_NAME}/gameIndex`)
 
 Vue.use(Vuex)
 
+const debug = {
+  onScreen: process.env.VUE_APP_DEBUG_ONSCREEN === 'on',
+  inConsole: process.env.VUE_APP_DEBUG_LOGGING === 'on'
+}
 
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 const audioContext = new AudioContext();
 const masterGainNode = audioContext.createGain()
 masterGainNode.gain.value = 0; // initial gain value is 0 because soundEnabled is false 
 
-function DebugMessage(input) {
+function DebugMessage(input, messageType) {
+  this.messageType = messageType
   this.message = input.toString ? input.toString() : '*error - no toString*'
   this.time = Date.now()
 }
@@ -58,8 +63,14 @@ const store = new Vuex.Store({
       }
 
     },
-    debugMessage(state, payload) {
-      state.debugMessages.push(new DebugMessage(payload))
+    debugMessage(state, message) {
+      if (debug.inConsole) {
+        // eslint-disable-next-line
+        console.warn(message)
+      }
+      if (debug.onScreen) {
+        state.debugMessages.push(new DebugMessage(message))
+      }
     }
   }
 })
@@ -76,7 +87,7 @@ function launchApp(selector, rootProps) {
       data() {return {rootProps}},
       render(h) { 
           return h(App, {props: {
-            showDebugMessages: process.env.VUE_APP_DEBUG == 'on',
+            showDebugMessages: debug.onScreen,
             CustomTitleScreen: this.rootProps.gameIndex.TitleScreen,
             CustomEndingScreen: this.rootProps.gameIndex.EndingScreen,
           }})
