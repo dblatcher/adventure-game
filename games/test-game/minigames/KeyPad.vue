@@ -43,7 +43,7 @@ export default {
 
     methods: {
         exitButton() {
-            this.$emit('cancel')
+            this.$emit('resolution',{finished:false, backToLive:true, answer: this.answer})
         },
         deleteKeyHandle(){
             if (this.userInput.length === 0) {return}
@@ -55,7 +55,7 @@ export default {
                 this.userInput = ""
             } else {
                 this.inputWasCorrect = true
-                this.$emit('win',{answer: this.answer})
+                this.$emit('resolution',{finished:true, answer: this.answer})
             }
         },
         numberKeyHandle(number) {

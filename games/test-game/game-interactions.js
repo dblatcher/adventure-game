@@ -1,5 +1,6 @@
 import { Interaction, doorFunction } from "../../src/modules/interaction-constructor";
 import { StandardOrder } from "../../src/modules/StandardOrder";
+import { failableOrder } from "../../src/modules/failableOrder";
 
 function pcSays(text,time) {
 	return function() { this.getThings('pc').say(text,{time:time});}	
@@ -112,12 +113,14 @@ var interactions =[
 	),
 
 	new Interaction(['USE','KEYPAD_W'],[],
-		[new StandardOrder('[status]MINIGAME',{
+		[
+			new failableOrder('[status]MINIGAME',{
 			componentName:'KeyPad',
-			props: {
-				answer: '1188'
-			}
-		})]
+			props: { answer: '1188'},
+			}),
+			new StandardOrder('pc::I GOT IT RIGHT'),
+			new StandardOrder('[status]LIVE'),
+		]
 	)
 ]
 

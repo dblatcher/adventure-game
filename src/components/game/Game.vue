@@ -47,6 +47,7 @@
     </div>
 
     <component v-if="gameStatus === 'MINIGAME' && currentMinigameName"
+    ref="minigame"
     v-bind:is="minigames[currentMinigameName]"
     v-bind="currentMinigameProps"
     @cancel="cancelMinigame"/>
@@ -434,7 +435,17 @@ export default {
         this.gameStatus = 'MINIGAME'
         this.currentMinigameName = parameter.componentName
         this.currentMinigameProps = parameter.props || {}
-        return this.gameStatus;
+
+        return new Promise(resolve => {
+          const resolutionFunction = result => {
+            if (result.backToLive) { this.gameStatus = 'LIVE' }
+            resolve(result)
+          }
+
+          this.$nextTick(function(){
+            this.$refs.minigame.$once('resolution', resolutionFunction)
+          })
+        })
       }
 
       this.$store.commit('debugMessage',`${statusName} is not a valid gameStatus`)
