@@ -48,6 +48,7 @@
 
     <component v-if="gameStatus === 'MINIGAME' && currentMinigameName"
     v-bind:is="minigames[currentMinigameName]"
+    v-bind="currentMinigameProps"
     @cancel="cancelMinigame"/>
 
 
@@ -152,6 +153,7 @@ export default {
       instantMode: false,
       narration: {contents:[], dismissable:true},
       currentMinigameName: false,
+      currentMinigameProps: {},
     }, state.create(this.loadData, gameData) );
   },
 
@@ -419,13 +421,19 @@ export default {
 
       if (statusName === 'MINIGAME' ) {
 
-        if (!parameter || !this.minigames[parameter]) {
-          this.$store.commit('debugMessage', parameter ? `${parameter} is not a minigame.` : 'No minigame name provided')
+        if (!parameter || typeof parameter !== 'object') {
+          this.$store.commit('debugMessage', 'setStatus fail: must pass an object as options')
           return this.gameStatus;
         }
 
-        this.gameStatus = statusName
-        this.currentMinigameName = parameter
+        if ( !parameter.componentName || !this.minigames[parameter.componentName]) {
+          this.$store.commit('debugMessage', `setStatus fail: options.componentName (${parameter.componentName}) not valid`)
+          return this.gameStatus;
+        }
+
+        this.gameStatus = 'MINIGAME'
+        this.currentMinigameName = parameter.componentName
+        this.currentMinigameProps = parameter.props || {}
         return this.gameStatus;
       }
 

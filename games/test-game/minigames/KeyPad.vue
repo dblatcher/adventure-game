@@ -6,8 +6,8 @@
 
             <div v-bind:class="{
                 'keypad__light': true,
-                'keypad__light--red': answerRight===false,
-                'keypad__light--green': answerRight===true,
+                'keypad__light--red': inputWasCorrect===false,
+                'keypad__light--green': inputWasCorrect===true,
             }"></div>
 
             <p class="keypad__display">{{userInput}}</p>
@@ -31,12 +31,13 @@
 
 <script>
 export default {
+    name: "KeyPadMinigame",
+    props: ["answer"],
 
     data() {
         return {
             userInput: "",
-            answer: "8811",
-            answerRight: undefined,
+            inputWasCorrect: undefined,
         }
     },
 
@@ -50,15 +51,16 @@ export default {
         },
         enterKeyHandle(){
             if (this.userInput != this.answer) {
-                this.answerRight = false
+                this.inputWasCorrect = false
                 this.userInput = ""
             } else {
-                this.answerRight = true
+                this.inputWasCorrect = true
+                this.$emit('win',{answer: this.answer})
             }
         },
         numberKeyHandle(number) {
             this.userInput += number.toString()
-            this.answerRight = undefined
+            this.inputWasCorrect = undefined
         }
     },
 }
@@ -79,6 +81,7 @@ export default {
         position: relative;
 
         &__display {
+            margin: .5rem auto;
             background-color: black;
             width: 8rem;
             color: yellowgreen;
@@ -87,6 +90,7 @@ export default {
         }
 
         &__button-holder {
+            margin: .5rem auto;
             display: flex;
             flex-flow: wrap;
             width: 8rem;

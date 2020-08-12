@@ -112,7 +112,12 @@ var interactions =[
 	),
 
 	new Interaction(['USE','KEYPAD_W'],[],
-		[new StandardOrder('[status]MINIGAME','KeyPad')]
+		[new StandardOrder('[status]MINIGAME',{
+			componentName:'KeyPad',
+			props: {
+				answer: '1188'
+			}
+		})]
 	)
 ]
 
