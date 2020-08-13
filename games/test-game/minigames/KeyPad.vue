@@ -43,7 +43,7 @@ export default {
 
     methods: {
         exitButton() {
-            this.$emit('resolution',{finished:false, backToLive:true, answer: this.answer})
+            this.$emit('resolution',{finished:false, answer: this.answer})
         },
         deleteKeyHandle(){
             if (this.userInput.length === 0) {return}

@@ -49,8 +49,7 @@
     <component v-if="gameStatus === 'MINIGAME' && currentMinigameName"
     ref="minigame"
     v-bind:is="minigames[currentMinigameName]"
-    v-bind="currentMinigameProps"
-    @cancel="cancelMinigame"/>
+    v-bind="currentMinigameProps"/>
 
 
     <component v-bind:is="interfaceComponent"
@@ -432,13 +431,14 @@ export default {
           return this.gameStatus;
         }
 
+        const gameStatusBeforeMinigame = this.gameStatus
         this.gameStatus = 'MINIGAME'
         this.currentMinigameName = parameter.componentName
         this.currentMinigameProps = parameter.props || {}
 
         return new Promise(resolve => {
           const resolutionFunction = result => {
-            if (result.backToLive) { this.gameStatus = 'LIVE' }
+            this.gameStatus = gameStatusBeforeMinigame
             resolve(result)
           }
 
@@ -452,9 +452,6 @@ export default {
       return false;
     },
 
-    cancelMinigame() {
-      this.setGameStatus('LIVE')
-    },
 
     setGameVar(target, options={}) {
       Object.keys(target).forEach(key => {

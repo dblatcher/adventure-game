@@ -119,7 +119,6 @@ var interactions =[
 			props: { answer: '1188'},
 			}),
 			new StandardOrder('pc::I GOT IT RIGHT'),
-			new StandardOrder('[status]LIVE'),
 		]
 	)
 ]
