@@ -1,6 +1,7 @@
 import { Interaction, doorFunction } from "../../src/modules/interaction-constructor";
 import { StandardOrder } from "../../src/modules/StandardOrder";
 import { failableOrder } from "../../src/modules/failableOrder";
+import { BranchingOrder } from "../../src/modules/BranchingOrder";
 
 function pcSays(text,time) {
 	return function() { this.getThings('pc').say(text,{time:time});}	
@@ -114,11 +115,22 @@ var interactions =[
 
 	new Interaction(['USE','KEYPAD_W'],[],
 		[
-			new failableOrder('[status]MINIGAME',{
-			componentName:'KeyPad',
-			props: { answer: '1188'},
-			}),
-			new StandardOrder('pc::I GOT IT RIGHT'),
+			// new failableOrder('[status]MINIGAME',{
+			// componentName:'KeyPad',
+			// props: { answer: '1188'},
+			// }),
+			// new StandardOrder('pc::I GOT IT RIGHT'),
+			new StandardOrder('[status]CUTSCENE'),
+			new StandardOrder(`pc::let's try this keypad!`),
+			new BranchingOrder({initialOrderArguments:['[status]MINIGAME',{componentName:'KeyPad', props:{answer:1234}}],
+			finishedOutcome: [
+				['pc:: I got it right!'],
+			], 
+			notFinishedOutcome: [
+				['pc:: I give up!'],
+			]}),
+			new StandardOrder(`pc::let's carry on.`),
+			new StandardOrder('[status]LIVE'),
 		]
 	)
 ]
