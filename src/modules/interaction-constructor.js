@@ -33,32 +33,4 @@ Interaction.makeMatrix = function (interactions) {
 	return interactionMatrix;
 }
 
-
-
-
-
-
-
-function doorFunction (doorId, destination) {	
-	return function () {
-		this.getThings('pc').goTo(this.getThings(doorId).walkToPoint,{wasManual:true})
-		.then( (feedback) => {
-			if (feedback.finished) {this.changeRoom(destination,{});}
-		} );
-	}
-}
-	
-function takeFunction (worldItemId, inventoryItemId, worldItemStays=false) {	
-	return function () {
-		this.getThings('pc').goTo(this.getThings(worldItemId).walkToPoint,{wasManual:true})
-		.then( (feedback) => {
-			if (feedback.finished) {
-				this.getInventoryItem(inventoryItemId);
-				if (!worldItemStays) {this.getThings(worldItemId).item.removed = true}
-			}
-		} );
-	}
-}
-
-
-export { Interaction, doorFunction, takeFunction }
+export { Interaction }
