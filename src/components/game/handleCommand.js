@@ -73,7 +73,7 @@ export default function (command) {
 
     // execute the response
     if (typeof response ===  'function') {
-      execution = response.apply(this,[]);
+      execution = response.apply(this,[]); // TO DO - stop using execution functions - should all be arrays of Orders
     } else if ( Array.isArray(response)) {
       execution= this.runSequence(response) 
     } else if (typeof response === 'string' && this.gameData.sequences[response]) {
@@ -88,12 +88,12 @@ export default function (command) {
     this.lastCommand.inProgress = true
 
     if (execution && execution.then) {
-      execution.then ( r => {
+      execution.then ( () => {
         this.lastCommand.inProgress = false
         setInputsOptionsAfterCommand.apply(this,[])
         this.$emit('auto-save')
       } ) 
-    } else {
+    } else { // incase execusion does not return a promise
       this.lastCommand.inProgress = false
       setInputsOptionsAfterCommand.apply(this,[])
       this.$emit('auto-save')
