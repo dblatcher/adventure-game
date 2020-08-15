@@ -1,5 +1,5 @@
 import { RectZone, PolyZone } from "../../src/modules/zone";
-import { Room, EffectZone, Foreground, Sprite } from "../../src/modules/constructors"
+import { Room, EffectZone, Foreground, Sprite, Sound } from "../../src/modules/constructors"
 import Character from "../../src/modules/characterDataClass"
 import WorldItem from "../../src/modules/WorldItemDataClass"
 import InventoryItem from "../../src/modules/InventoryItem"
@@ -25,7 +25,9 @@ var sprites = [
 ]
 
 var sounds = [
-
+    new Sound('keypad beep', 'beep', require('./audio/zapsplat_household_dehumidifier_on_off_select_beep_single_49226.mp3' )),
+    new Sound('keypad correct tone', 'correct-tone', require('./audio/zapsplat_multimedia_correct_tone_beep_17736.mp3' )),
+    new Sound('keypad wrong tone', 'wrong-tone', require('./audio/zapsplat_multimedia_game_error_tone_001_24919.mp3' )),
 ]
 
 var music = {

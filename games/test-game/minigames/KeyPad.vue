@@ -26,18 +26,31 @@
                 <div @click="enterKeyHandle" class="keypad__button keypad__button--enter">ENT</div>
             </div>
         </article>
+        <SfxPlayer ref='sfx' v-bind="{audioPosition}"/>
     </div>
 </template>
 
 <script>
+import SfxPlayer from '../../../src/components/SfxPlayer'
 export default {
     name: "KeyPadMinigame",
     props: ["answer"],
+    components: {SfxPlayer},
 
     data() {
         return {
             userInput: "",
             inputWasCorrect: undefined,
+        }
+    },
+
+    computed: {
+        audioPosition() {
+            return {
+                gain: .25,
+                pan: 0,
+                loopSound: false
+            }
         }
     },
 
@@ -48,15 +61,18 @@ export default {
         },
         deleteKeyHandle(){
             if (this.userInput.length === 0 || this.inputWasCorrect) {return}
+            this.$refs.sfx.play('beep')
             this.userInput = this.userInput.slice(0, this.userInput.length - 1)
         },
         enterKeyHandle(){
             if (this.inputWasCorrect) {return}
             if (this.userInput != this.answer) {
                 this.inputWasCorrect = false
+                this.$refs.sfx.play('wrong-tone')
                 this.userInput = ""
             } else {
                 this.inputWasCorrect = true
+                this.$refs.sfx.play('correct-tone')
                 setTimeout( ()=>{
                     this.$emit('resolution',{finished:true, answer: this.answer})
                 }, 1000 )
@@ -64,6 +80,7 @@ export default {
         },
         numberKeyHandle(number) {
             if (this.inputWasCorrect) {return}
+            this.$refs.sfx.play('beep')
             this.userInput += number.toString()
             this.inputWasCorrect = undefined
         }
