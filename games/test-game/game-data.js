@@ -246,7 +246,7 @@ var makeInventoryItems = function() { return  [
 		2: require('./items/twonails.png'),
 		3: require('./items/threenails.png'),
 		4: require('./items/manynails.jpg')
-	},true, {quantity: 2, pluralName: 'nails'}),
+	}, {startWith: true, quantity: 2, pluralName: 'nails'}),
 	new InventoryItem('stick','lolly stick', require('./items/stick.jpg'),{startsWith: true}),
 	new InventoryItem('stick2','lolly stick', require('./items/stick.jpg'),{startsWith: true}),
 	new InventoryItem('stick3','lolly stick', require('./items/stick.jpg'),{startsWith: true}),

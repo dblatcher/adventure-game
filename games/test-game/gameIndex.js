@@ -10,7 +10,7 @@ import * as gameConfigImport from './game-config'
 import sequences from "./sequences";
 
 
-import custom from './custom.scss'
+require('./custom.scss');
 
 const gameData = { ...gameDataImport, ...gameConfigImport,
     sequences, interactionMatrix, makeConversations,}
