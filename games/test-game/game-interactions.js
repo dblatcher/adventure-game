@@ -109,21 +109,26 @@ var interactions =[
 
 	}),
 
-	new Interaction(['WALK','GATE_W'],[],
-	doorFunction('GATE_W',['SWAMP_R',100,10])
+	new Interaction(['WALK','KEYPAD_DOOR_W'],[],
+	doorFunction('KEYPAD_DOOR_W',['TEST_ROOM_R',100,10])
 	),
+
+	new Interaction(['LOOK','KEYPAD_DOOR_W'],[],[
+		new StandardOrder('pc::the number "1234" has been scratched in the frame'),
+	]),
+
+	new Interaction(['LOOK','KEYPAD_DOOR_W'],[],[
+		new StandardOrder('pc::the number "1234" has been scratched in the frame'),
+	]),
 
 	new Interaction(['USE','KEYPAD_W'],[],
 		[
-			// new failableOrder('[status]MINIGAME',{
-			// componentName:'KeyPad',
-			// props: { answer: '1188'},
-			// }),
-			// new StandardOrder('pc::I GOT IT RIGHT'),
+			new failableOrder('pc>>KEYPAD_W'),
 			new StandardOrder('[status]CUTSCENE'),
 			new StandardOrder(`pc::let's try this keypad!`),
 			new BranchingOrder({initialOrderArguments:['[status]MINIGAME',{componentName:'KeyPad', props:{answer:1234}}],
 			finishedOutcome: [
+				['KEYPAD_DOOR_W','setStatus',['opening','open']],
 				['pc:: I got it right!'],
 			], 
 			notFinishedOutcome: [
@@ -135,27 +140,7 @@ var interactions =[
 	)
 ]
 
-var defaultResponses = {
-    "WALK" : function(command) {
-        return [new StandardOrder('pc','goTo',command.subject.id, {wasManual:true})]
-        
-    },
-    "LOOK" : function(command) {
-        if (command.subject.id.endsWith('W')) {
-            return [new StandardOrder('pc','say',`It looks like a normal ${command.subject.name} to me.`)]
-        } else {
-            return [new StandardOrder('pc','say',`I don't see anything special about ${command.subject.name}.`) ]
-        }
-    },
-    "OPEN" : function(command) {
-        return [new StandardOrder('pc','say',`The ${command.subject.name} doesn't open.`)]    
-    },
-    "misc" : function(command) {
-        return [new StandardOrder('pc','say',`I can't do that.`)  ]  
-    } 
-};
-
 
 
 var interactionMatrix = Interaction.makeMatrix(interactions);
-export { interactionMatrix, defaultResponses }
+export { interactionMatrix }

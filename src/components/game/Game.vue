@@ -433,6 +433,7 @@ export default {
 
         const gameStatusBeforeMinigame = this.gameStatus
         this.gameStatus = 'MINIGAME'
+        this.instantMode = false
         this.currentMinigameName = parameter.componentName
         this.currentMinigameProps = parameter.props || {}
 

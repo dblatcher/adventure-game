@@ -211,7 +211,8 @@ var makeRooms = function(){ return [
 			new WorldItem ('gate','dark gate', [300,170,0,-15],50,50,'neutral',null,{noZoneScaling:true}),
 			new WorldItem ('tube1','tube', [80,20],20,35,'neutral',worldItemModels.tube),
 			new WorldItem ('tube2','tube', [110,120],20,35,'neutral',worldItemModels.tube),
-			new WorldItem ('keypad','electric keypad', [160,20],20,20,'neutral',worldItemModels.keypad),
+			new WorldItem ('keypad','electric keypad', [140,180,0,-30],20,20,'neutral',worldItemModels.keypad),
+			new WorldItem ('keypad_door','security door',[165,170,0,-20],50,100,'closed',worldItemModels.door,{zAdjust:80}),
 		],
 		obstacles: [
 			new RectZone(45,165,315,100),
