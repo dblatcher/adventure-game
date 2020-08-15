@@ -97,7 +97,7 @@ export default {
     }
 
     .keypad {
-        background-color: blueviolet;
+        background-color: lightgray;
         border: 5px outset;
         width: 10rem;
         position: relative;
@@ -105,9 +105,11 @@ export default {
         &__display {
             margin: .5rem auto;
             background-color: black;
+            box-sizing: border-box;
+            border: 2px outset;
+            min-height: 1.4rem;
             width: 8rem;
             color: yellowgreen;
-            min-height: 1rem;
             font-family: monospace;
         }
 
@@ -132,6 +134,7 @@ export default {
             justify-content: center;
             font-family: sans-serif;
             margin-bottom: 10px;
+            cursor: pointer;
 
             &--enter {
                 width: 60%;
