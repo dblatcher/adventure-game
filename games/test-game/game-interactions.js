@@ -2,6 +2,7 @@ import { Interaction, doorFunction } from "../../src/modules/interaction-constru
 import { StandardOrder } from "../../src/modules/StandardOrder";
 import { failableOrder } from "../../src/modules/failableOrder";
 import { BranchingOrder } from "../../src/modules/BranchingOrder";
+import { StandardCondition } from "../../src/modules/StandardCondition";
 
 function pcSays(text,time) {
 	return function() { this.getThings('pc').say(text,{time:time});}	
@@ -121,7 +122,7 @@ var interactions =[
 		new StandardOrder('pc::the number "1234" has been scratched in the frame'),
 	]),
 
-	new Interaction(['USE','KEYPAD_W'],[],
+	new Interaction(['USE','KEYPAD_W'],[new StandardCondition('KEYPAD_DOOR_W','status','===','closed')],
 		[
 			new failableOrder('pc>>KEYPAD_W'),
 			new StandardOrder('[status]CUTSCENE'),
@@ -137,7 +138,13 @@ var interactions =[
 			new StandardOrder(`pc::let's carry on.`),
 			new StandardOrder('[status]LIVE'),
 		]
-	)
+	),
+
+	new Interaction(['USE','KEYPAD_W'],[],
+		[
+			new StandardOrder(`pc::The door is already open.`),
+		]
+	),
 ]
 
 
