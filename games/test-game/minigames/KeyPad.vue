@@ -43,22 +43,27 @@ export default {
 
     methods: {
         exitButton() {
+            if (this.inputWasCorrect) {return}
             this.$emit('resolution',{finished:false, answer: this.answer})
         },
         deleteKeyHandle(){
-            if (this.userInput.length === 0) {return}
+            if (this.userInput.length === 0 || this.inputWasCorrect) {return}
             this.userInput = this.userInput.slice(0, this.userInput.length - 1)
         },
         enterKeyHandle(){
+            if (this.inputWasCorrect) {return}
             if (this.userInput != this.answer) {
                 this.inputWasCorrect = false
                 this.userInput = ""
             } else {
                 this.inputWasCorrect = true
-                this.$emit('resolution',{finished:true, answer: this.answer})
+                setTimeout( ()=>{
+                    this.$emit('resolution',{finished:true, answer: this.answer})
+                }, 1000 )
             }
         },
         numberKeyHandle(number) {
+            if (this.inputWasCorrect) {return}
             this.userInput += number.toString()
             this.inputWasCorrect = undefined
         }
