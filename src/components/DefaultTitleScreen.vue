@@ -1,6 +1,5 @@
 <template>
-    <main class="default-title-page" v-bind:style="pageStyle">
-        
+    <main class="default-title-page">
         <h1 class="default-title-page__title">{{title}}</h1>
 
         <img v-if="picture" class="default-title-page__image"
@@ -9,13 +8,10 @@
 
         <div class="default-title-page__button-set">
             <slot name="file-buttons"></slot>
+            <slot name="sound-toggle"></slot>
         </div>
 
-
-        <slot name="sound-toggle"></slot>
-        
         <slot name="loading-bar" class='foo-bar'></slot>
-        
     </main>
 </template>
 
@@ -33,7 +29,6 @@ export default {
             title: settings.title || title || "untitled game",
             subtitle:settings.subtitle,
             picture:settings.picture,
-            pageStyle: settings.pageStyle || {},
         }
     } 
 }
@@ -47,12 +42,11 @@ export default {
 .default-title-page {
 
     @include fullscreen;
-    padding: 0 2rem;
+    padding: 2rem;
 
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-
 
     &__title, &__text {
         align-self: center;

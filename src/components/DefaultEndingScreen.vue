@@ -1,5 +1,5 @@
 <template>
-    <main class="default-end-page" v-bind:style="pageStyle">
+    <main class="default-end-page">
         
         <h1 class="default-end-page__title">{{title}}</h1>
 
@@ -28,7 +28,6 @@ export default {
             title: settings.title ||  "Game Over",
             subtitle:settings.subtitle,
             picture:settings.picture,
-            pageStyle: settings.pageStyle || {},
         }
     } 
 }

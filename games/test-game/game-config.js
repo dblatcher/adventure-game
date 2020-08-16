@@ -89,13 +89,8 @@ const config = {
     resetVerbAfterEachCommand: true,
     rightClickForRecommendedVerb:true,
     titleScreen: {
-        //picture: require('./title-skinner.png'),
         title: 'Test Game',
         subtitle: 'For testing.',
-        pageStyle: {
-            backgroundImage: 'linear-gradient(180deg, blue, transparent)',
-            fontSize: '150%',
-        }
     },
     endingScreen : {
 

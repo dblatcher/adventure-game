@@ -20,31 +20,21 @@ export default {
 @import "../../src/modules/_material.scss";
 
 .ending-page {
-
     @include fullscreen;
-
-    background-image: linear-gradient(45deg, black, transparent);
     padding: 2rem;
-
-
     display: flex;
     justify-content: center;
     align-items: center;
 
     &__frame {
         padding: 1rem;
-        background-color: black;
+        background-color: lightgreen;
         border: 5px outset green;
-
         display: flex;
         flex-flow: column nowrap;
         justify-content: space-around;
-
-        color:green;
-
+        color:black;
     }
-
-
 
     &__title {
         align-self: center;

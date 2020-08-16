@@ -5,10 +5,10 @@
 
             <div class="title-page__button-set">
                 <slot name="file-buttons"></slot>
+                <slot name="sound-toggle"></slot>
             </div>
 
-            <p class="title-page__text">This should have a picture of something</p>
-
+            <p class="title-page__text">This is a custom title page.</p>
             <slot name="loading-bar"></slot>
         </div>
     </main>
@@ -29,7 +29,7 @@ export default {
 
     @include fullscreen;
 
-    background-image: linear-gradient(45deg, black, transparent);
+    background-image: linear-gradient(45deg, darkgoldenrod, transparent);
     padding: 2rem;
 
     display: flex;

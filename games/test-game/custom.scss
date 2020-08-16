@@ -1,7 +1,18 @@
+.game, .file-menu, .default-title-page, .default-ending-page {
+    font-family: fantasy;
+}
+
+.default-title-page {
+    background-image: linear-gradient(180deg, darkgoldenrod, transparent);
+    
+    &__title {
+        font-size: 3em;
+    }
+}
+
 .game {
     background-color: darkgoldenrod;
     background-image: repeating-radial-gradient(transparent, black);
-    font-family: fantasy;
 }
 
 .file-menu {
