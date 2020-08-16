@@ -32,8 +32,8 @@ var defaultResponses = {
     "LOOK" : function(command) {
         if  (command.subject.id.endsWith('W')) {
             return [
-                new StandardOrder(`pc^^${command.subject.id}`),
-                new StandardOrder('pc','say',`It looks like a normal ${command.subject.name} to me.`)
+                new StandardOrder(`pc^^{{game.subject.id}}`),
+                new StandardOrder('pc','say',`It looks like a normal {{game.subject.name}} to me.`)
             ]
         } else if  (command.subject.id.endsWith('C')) {
             return [

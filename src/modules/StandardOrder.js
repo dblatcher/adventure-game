@@ -122,9 +122,11 @@ class StandardOrder {
 			return Promise.resolve({result:'failed - no action found'})
 		}
 
-		
 		if (typeof target === 'string') {
 			processedTarget = game.processWildCards(target)
+		}
+		if (Array.isArray(target)) {
+			processedTarget = target.map(item => typeof item === 'string' ? game.processWildCards(item) : item )
 		}
 
 		let execution = actor[action](processedTarget||target, options || {}, game)
