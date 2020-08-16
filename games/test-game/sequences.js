@@ -5,9 +5,9 @@ import { StandardCondition } from "../../src/modules/StandardCondition";
 
 const starting = [
     new StandardOrder ('[status]CUTSCENE'),
-    new StandardOrder ('pc::This is the starting sequence'),
+    new StandardOrder ('pc::Hello World, my name is {{pc.name}}.'),
     new StandardOrder ('pc##wave'),
-    new StandardOrder ('pc::Hello World'),
+    new StandardOrder ('pc::This is the starting sequence for {{GAME.gameData.config.title}}.'),
     new StandardOrder ('[status]LIVE'),
 ]
 
