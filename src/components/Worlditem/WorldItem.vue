@@ -34,19 +34,20 @@ import { innerBorder } from "../../modules/styleGen";
 export default {
     name:'WorldItem',
     components: { Sprite,SfxPlayer },
-    props:['item','measure','highlight'],
+    props:['data','measure','highlight'],
 
     data: function() {
         return {
-        spriteSet : this.$store.state.gameData.sprites.filter(sprite => this.item.model.spritesUsed.includes(sprite.id) ),
-        cycleFrame:0,
+            cycleFrame:0,
         }
     },
 
     computed :{
+        item: function() {return this.data},
+        spriteSet: function() {return this.$store.state.gameData.sprites.filter(sprite => this.item.model.spritesUsed.includes(sprite.id) )},
         ident: function() {return this.item.id},
         dataType: function() {return 'WorldItem'},
-        gameInstance: function() {return this.$parent.$parent.$parent},
+        gameInstance: function() {return this.$parent.$parent},
         x: function() {return this.item.x},
         y: function() {return this.item.y},
         recommendedVerb: function() {return this.item.recommendedVerb},

@@ -27,13 +27,17 @@
         v-on:clicked-room="handleClickOnRoom($event)"
         v-on:double-click="handleDoubleClick($event)">
 
-        <ThingInRoom ref="things"
-          v-for="thing in thingsInRoom" :key="rooms[roomNumber].id + '--' + thing.id"
-          v-bind:measure="roomMeasure"
-          v-bind:data="thing"
-          v-bind:roomWidth="rooms[roomNumber].width"
-          v-bind:roomHeight="rooms[roomNumber].height"
-          v-bind:highlight="highlightingThings"
+        <component ref="things"
+          v-for="data in thingsInRoom" :key="rooms[roomNumber].id + '--' + data.id"
+          v-bind:is="thingInRoomComponents[data.dataType]"
+          v-bind="{
+            data: data,
+            measure: roomMeasure,
+            roomWidth: rooms[roomNumber].width,
+            roomHeight: rooms[roomNumber].height,
+            highlight: highlightingThings
+          }"
+
           @dblclick="handleDoubleClick($event)"
           @clicked-thing="handleClickOnThing($event)"
           @right-clicked-thing="handleRightClickOnThing($event)"
@@ -116,7 +120,6 @@ import handleHoverEvent from "./handleHoverEvent";
 
 import DialogMenu from "../DialogMenu";
 import Room from "../Room";
-import ThingInRoom from "../ThingInRoom";
 import OptionsMenu from "../optionsMenu";
 import HeartBeater from "../HeartBeater";
 import ScummInterface from "../ScummInterface";
@@ -124,13 +127,14 @@ import SierraInterface from "../sierra/SierraInterface"
 import ControlButtons from "../ControlButtons";
 import NarrationMessage from "../NarrationMessage";
 import MusicPlayer from "../MusicPlayer"
-
+import WorldItem from "../Worlditem/WorldItem";
+import Character from "../character/Character";
 
 export default {
   name: 'Game',
   props: ['running', 'fileMenuIsOpen', 'minigames'],
   components :{
-    DialogMenu, Room, ThingInRoom, OptionsMenu, 
+    DialogMenu, Room, OptionsMenu, 
     HeartBeater, ControlButtons, NarrationMessage,
     SierraInterface, ScummInterface,
     MusicPlayer
@@ -165,6 +169,9 @@ export default {
         case 'Sierra': return SierraInterface;
         default: return ScummInterface;
      }
+    },
+    thingInRoomComponents() {
+      return {WorldItem, Character}
     },
 
     needObject: function() {
