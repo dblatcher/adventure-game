@@ -60,4 +60,38 @@ function runSequence(input, options){
 }
 
 
-export { runSequence, resolveDestination}
+const evalutateWildCard = (wildCardElements, game)=> {
+    let targetObject = game.getComponentOrDataObject(wildCardElements[0])
+    if (!targetObject) {
+        game.$store.commit('debugMessage', `Invalid wild card target object: "${wildCardElements[0]}".`)
+        return '**error**'
+    }
+
+    let value = targetObject
+    for (let i=1; i<wildCardElements.length; i++) {
+        if (typeof value[wildCardElements[i]] === 'undefined' || value[wildCardElements[i]] === null) {
+            game.$store.commit('debugMessage', `Invalid wild card expression: "${wildCardElements.toString().replace(/,/g,".")}".`)
+            return '**error**'
+        }
+        value = value[wildCardElements[i]]
+    }
+    return value.toString()
+}
+
+const replaceFirstWildCard = (output, game)=> {
+    let openBraceIndex = output.indexOf('{{')
+    let closeBraceIndex = output.indexOf('}}')
+    let wildCardElements = output.substring(openBraceIndex+2, closeBraceIndex).split('.')
+    let replacementString = evalutateWildCard(wildCardElements, game)
+    return output.substring(0, openBraceIndex) + replacementString + output.substring(closeBraceIndex + 2)
+}
+
+function processWildCards(input) {
+    let output = input
+    while (output.indexOf('{{') !== -1 && output.indexOf('}}') > output.indexOf('{{')) {
+        output = replaceFirstWildCard(output, this)
+    }
+    return output
+}
+
+export { runSequence, resolveDestination, processWildCards}

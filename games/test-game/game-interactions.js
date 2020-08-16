@@ -83,9 +83,8 @@ var interactions = [
 	),
 
 	new Interaction(['LOOK',"NAIL_I"],[],
-	function() {
-		this.getThings('pc').say(`I have ${this.inventoryAsObject.NAIL_I.quantity} nails.`);
-	}),
+	[new StandardOrder('pc::I have {{NAIL_I.quantity}} nails.')]
+	),
 	
 	new Interaction(['USE',"NAIL_I","WINDOW_W"],[],[
 		new StandardOrder('[var]',{wantsHammer: true}),

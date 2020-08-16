@@ -109,6 +109,7 @@ class StandardOrder {
 	execute(game) {
 
 		const {actorId, action, target,options} = this;
+		let processedTarget;
 
 		let actor = game.getComponentOrDataObject(actorId)
 		if (!actor) {
@@ -121,7 +122,12 @@ class StandardOrder {
 			return Promise.resolve({result:'failed - no action found'})
 		}
 
-		let execution = actor[action](target, options || {}, game)
+		
+		if (typeof target === 'string') {
+			processedTarget = game.processWildCards(target)
+		}
+
+		let execution = actor[action](processedTarget||target, options || {}, game)
 		if (!execution || !execution.then) { return Promise.resolve({finished:true, result: execution}) }
 		return execution;
 	}
