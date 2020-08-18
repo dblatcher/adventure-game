@@ -165,17 +165,19 @@ var pcId = 'JANE_C';
 
 var makeRooms = function(){ return [
     
-    new Room ('swamp','swamp',require("./rooms/bg1.png"), 400, 250, {
+    new Room ('swamp','swamp',require("./rooms/bg1.png"), 800, 250, {
     worldItems:[
-        new WorldItem ('lake','lake',[200,40,20,-20],400,50),
-        new WorldItem ('house','path back to house',[375,0],50,150),
+        new WorldItem ('lake','lake',[400,40,20,-20],800,50),
+        new WorldItem ('house','path back to house',[725,0],150,150),
         new WorldItem ('bucket','bucket',[250,20],40,40,'neutral',worldItemModels.bucket),
         new WorldItem ('bucket2','big bucket',[80,20],40,40,'neutral',worldItemModels.bucket,{removed: true, scale: 1.5}),
         new WorldItem ('fire','fire',[145,20,20,0],40,40,'burning',worldItemModels.fire),
     ],
     obstacles:[
         new RectZone (200,40,400,50,true)
-    ]}),
+    ]},{
+        screenScrollX:2
+    }),
      
     new Room ('LIVING_ROOM', 'Living room', require("./rooms/bg2.jpg"), 400, 250,{
     worldItems : [

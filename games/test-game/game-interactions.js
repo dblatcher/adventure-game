@@ -31,7 +31,7 @@ var interactions = [
 	new Interaction(['OPEN','DOOR_W'],[],[new StandardOrder ('pc::It\'s not closed!')]),
 
 	new Interaction(['WALK','DOOR_W'],[new StandardCondition('DOOR_W','status','===','open')],
-		doorFunction('DOOR_W',['SWAMP_R',375,10])
+		doorFunction('DOOR_W',['SWAMP_R',675,10])
 	),
 
 	new Interaction(

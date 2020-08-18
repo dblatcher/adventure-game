@@ -19,36 +19,37 @@
     @highlight-button="handleHighlightButton"
    />
 
-    <div class="game__room-wrapper">
-      <Room ref="room" 
-        v-bind:room="rooms[roomNumber]" 
-        v-bind:measure="roomMeasure"
-        @scale-change="changeScale"
-        v-on:clicked-room="handleClickOnRoom($event)"
-        v-on:double-click="handleDoubleClick($event)">
+      <div class="game__room-wrapper" ref="roomWrap">
+        <Room ref="room" 
+          v-bind:room="rooms[roomNumber]" 
+          v-bind:measure="roomMeasure"
+          @scale-change="changeScale"
+          v-on:clicked-room="handleClickOnRoom($event)"
+          v-on:double-click="handleDoubleClick($event)">
 
-        <component ref="things"
-          v-for="data in thingsInRoom" :key="rooms[roomNumber].id + '--' + data.id"
-          v-bind:is="thingInRoomComponents[data.dataType]"
-          v-bind="{
-            data: data,
-            measure: roomMeasure,
-            roomWidth: rooms[roomNumber].width,
-            roomHeight: rooms[roomNumber].height,
-            highlight: highlightingThings
-          }"
+          <component ref="things"
+            v-for="data in thingsInRoom" :key="rooms[roomNumber].id + '--' + data.id"
+            v-bind:is="thingInRoomComponents[data.dataType]"
+            v-bind="{
+              data: data,
+              measure: roomMeasure,
+              roomWidth: rooms[roomNumber].width,
+              roomHeight: rooms[roomNumber].height,
+              highlight: highlightingThings
+            }"
 
-          @dblclick="handleDoubleClick($event)"
-          @clicked-thing="handleClickOnThing($event)"
-          @right-clicked-thing="handleRightClickOnThing($event)"
-          @hover-event="handleHoverEvent($event[0],$event[1])"/>
- 
-      </Room>
+            @character-moved="adjustScroll"
+            @dblclick="handleDoubleClick($event)"
+            @clicked-thing="handleClickOnThing($event)"
+            @right-clicked-thing="handleRightClickOnThing($event)"
+            @hover-event="handleHoverEvent($event[0],$event[1])"/>
+  
+        </Room>
 
-       <NarrationMessage
-       @dismiss="dismissMessage()"
-       v-bind:narration="narration"/>
-    </div>
+        <NarrationMessage
+        @dismiss="dismissMessage()"
+        v-bind:narration="narration"/>
+      </div>
 
     <component v-if="gameStatus === 'MINIGAME' && currentMinigameName"
     ref="minigame"
@@ -338,6 +339,18 @@ export default {
 
     changeScale(adjustment) {
       this.roomMeasure.scale *= adjustment;
+      this.adjustScroll()
+    },
+
+    adjustScroll() {
+      let scrollWidth = this.$refs.roomWrap.scrollWidth
+      let offsetWidth = this.$refs.roomWrap.offsetWidth
+
+      if (scrollWidth > offsetWidth) {
+        let pcScrollX = (this.getThings('pc').char.x / this.rooms[this.roomNumber].width) * scrollWidth
+        let scrollValue = Math.max(pcScrollX - (offsetWidth/2),0)
+        this.$refs.roomWrap.scrollTo(scrollValue,0)
+      } 
     },
 
     findPath: pathFinding.findPath, 

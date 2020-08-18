@@ -60,7 +60,8 @@ export default function () {
     }
     this.char.x += movement.x;
     this.char.y += movement.y;
-    
+    this.$emit('character-moved', this.char.id)
+
     // test if character got to the moveOrder destination, shift queue, report if finished
     if (this.x ===  moveOrder.x && this.y === moveOrder.y) { 
         

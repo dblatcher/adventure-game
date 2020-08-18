@@ -29,6 +29,7 @@ function Room (id, name, url, width,height, contents, config={}) {
 	this.obstacles = contents.obstacles || [];
 	this.effectZones = contents.effectZones || [];
 	this.foregrounds = contents.foregrounds || [];
+	this.screenScrollX = config.screenScrollX || 1
 
 	this.worldItems.forEach(item => {item.roomId = this.id});
 

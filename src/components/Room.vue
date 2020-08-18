@@ -20,6 +20,12 @@ export default {
     props: ['room','measure'],
     components: {CanvasOverlay},
 
+    data() {
+        return {
+            shouldBeCentered: undefined
+        }
+    },
+
     methods : {
         clickHandler : function (event) {
             this.$emit('clicked-room', event);
@@ -34,8 +40,15 @@ export default {
         resize : function () {
             let widthRatio  = this.$el.parentElement.clientWidth  / this.$el.offsetWidth;
             let heightRatio = this.$el.parentElement.clientHeight / this.$el.offsetHeight;
-            
-            this.$emit('scale-change', Math.min(widthRatio, heightRatio))
+            this.$emit('scale-change', Math.min(widthRatio * this.room.screenScrollX, heightRatio))
+
+            this.$nextTick(function(){
+                if (this.$el.offsetWidth < this.$el.parentElement.clientWidth) {
+                    this.shouldBeCentered = true
+                } else {
+                    this.shouldBeCentered = false
+                }
+            })
         }
     },
     computed: {
@@ -51,6 +64,7 @@ export default {
                 height: (this.room.height * this.measure.scale) + this.measure.unit,
                 backgroundSize: '100% 100%',
                 backgroundImage: `url(${this.room.url})`,
+                alignSelf: this.shouldBeCentered ? 'center' : 'unset',
             }
         },
         foregrounds : function() {
@@ -86,7 +100,10 @@ export default {
     },
     mounted() {
         this.resize();
-    }
+    },
+    watch: {
+        room() { this.$nextTick(this.resize)}
+    },
 
 }
 </script>
