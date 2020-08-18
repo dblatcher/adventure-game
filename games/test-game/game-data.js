@@ -157,8 +157,8 @@ var makeCharacters = function() {return [
         baseHeight: 80,
         speechColor: 'white',
     }),
-    new Character ('billy',[200,10,0],characterModels.billy),
-    new Character ('luigi',[125,10,1],characterModels.mario),
+    new Character ('billy',[200,10,0],characterModels.billy,{scale:3}),
+    new Character ('luigi',[125,10,1],characterModels.mario,{scale:2.5}),
 ]}
 
 var pcId = 'JANE_C';
