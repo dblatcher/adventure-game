@@ -101,10 +101,6 @@ export default {
     mounted() {
         this.resize();
     },
-    watch: {
-        room() { this.$nextTick(this.resize)}
-    },
-
 }
 </script>
 
