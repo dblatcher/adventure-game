@@ -164,8 +164,8 @@ var makeCharacters = function() {return [
 var pcId = 'JANE_C';
 
 var makeRooms = function(){ return [
-    
-    new Room ('swamp','swamp',require("./rooms/bg1.png"), 800, 250, {
+
+    new Room ('swamp', require("./rooms/bg1.png"), 800, 250, {
     worldItems:[
         new WorldItem ('lake','lake',[400,40,20,-20],800,50),
         new WorldItem ('house','path back to house',[725,0],150,150),
@@ -175,11 +175,12 @@ var makeRooms = function(){ return [
     ],
     obstacles:[
         new RectZone (200,40,400,50,true)
-    ]},{
-        screenScrollX:2
+    ],
+    screenScrollX:2,
     }),
-     
-    new Room ('LIVING_ROOM', 'Living room', require("./rooms/bg2.jpg"), 400, 250,{
+
+    new Room ('LIVING_ROOM', require("./rooms/bg2.jpg"), 400, 250,{
+    name: 'Living room',
     worldItems : [
         new WorldItem ('door','wooden door',[265,25,0,-20],50,100,'closed',worldItemModels.door,{zAdjust:80}),
         new WorldItem ('window','nice window',[120,150,0,-140],100,145)
@@ -189,7 +190,7 @@ var makeRooms = function(){ return [
         new RectZone (135,20,200,200,true),
     ]}),
 
-    new Room ('TEST_ROOM', 'test room', require("./rooms/testroom.png"), 400, 300, {
+    new Room ('TEST_ROOM', require("./rooms/testroom.png"), 400, 300, {
     effectZones:[
         new EffectZone(
         new PolyZone ([ [184,90], [219,78],[206,60],[160,60],[150,78] ]),
@@ -208,7 +209,8 @@ var makeRooms = function(){ return [
         new Foreground(require("./rooms/tree.png"),[-70,0],[220,200], {opacity:1,filter:'blur(1px)'}),
     ]}),
 
-    new Room ('Gallery', 'The Overlook', require("./rooms/testroom3.png"), 400,300, {
+    new Room ('Gallery', require("./rooms/testroom3.png"), 400,300, {
+        name: 'The Overlook',
         worldItems: [
         //    new WorldItem ('path_down','', [350,80],180,90,'neutral',worldItemModels.stairs,{noZoneScaling:true, unclickable:true}),
             new WorldItem ('platform','', [200,0],400,130,'neutral',worldItemModels.platform,{noZoneScaling:true, unclickable:true, zAdjust:80}),

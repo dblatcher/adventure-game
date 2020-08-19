@@ -18,32 +18,30 @@ class Sprite {
 
 }
 
+class Room {
+	constructor (id, url, width,height, config={}) {
+		this.id = id.toUpperCase()+"_R";
+		this.url= url;
+		this.width = width;
+		this.height = height;
+		this.name = config.name || id;
+		this.screenScrollX = config.screenScrollX || 1
+		this.bgm = config.bgm || null
+		this.worldItems = config.worldItems || [];
+		this.worldItems.forEach(item => {item.roomId = this.id});
+		this.obstacles = config.obstacles || [];
+		this.effectZones = config.effectZones || [];
+		this.foregrounds = config.foregrounds || [];
+	}
 
-function Room (id, name, url, width,height, contents, config={}) {
-	this.id = this.id = id.toUpperCase()+"_R";
-	this.name = name;
-	this.url= url;
-	this.width = width;
-	this.height = height;
-	this.worldItems = contents.worldItems || [];
-	this.obstacles = contents.obstacles || [];
-	this.effectZones = contents.effectZones || [];
-	this.foregrounds = contents.foregrounds || [];
-	this.screenScrollX = config.screenScrollX || 1
-
-	this.worldItems.forEach(item => {item.roomId = this.id});
-
-	this.bgm = config.bgm || null
+	returnState () {
+		let state = {name:this.name, worldItems:[]};
+		this.worldItems.forEach ( (item) => {
+			state.worldItems.push ( item.returnState() );
+		});
+		return state;
+	}
 }
-Room.prototype.returnState = function () {
-	let state = {name:this.name, worldItems:[]};
-	this.worldItems.forEach ( (item) => {
-		state.worldItems.push ( item.returnState() );
-	});
-
-	return state;
-}
-
 
 function EffectZone (zone,effect) {
 	this.zone = zone,
@@ -72,13 +70,11 @@ function Verb (description, id, config={}) {
 Verb.prototype.isVerb = true;
 
 class Sound {
-
 	constructor(description, id, path) {
 		this.description =description
 		this.id = id
 		this.path = path
 	}
-
 }
 
 export {
