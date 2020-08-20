@@ -48,13 +48,29 @@ function EffectZone (zone,effect) {
 	this.effect = effect;
 }
 
-function Foreground (url, coords, size, style) {
+class Foreground { 
+	constructor (url, coords, size, style) {
 	this.url= url;
 	this.x=coords[0];
 	this.y=coords[1];
 	this.width=size[0];
 	this.height=size[1];
 	this.style = style || {};
+	}
+
+	getStyleObject(measure) {
+		return Object.assign(this.style, {
+			backgroundSize: '100% 100%',
+			position:'absolute',
+			width:  (this.width  * measure.scale) + measure.unit,
+			height: (this.height * measure.scale) + measure.unit,
+			left: (this.x * measure.scale) + measure.unit,
+			bottom: (this.y * measure.scale) + measure.unit,
+			zIndex: this.zIndex || 100,
+			backgroundImage: `url(${this.url})`,
+			pointerEvents: 'none',
+		})
+	}
 }
 
 function Verb (description, id, config={}) {
