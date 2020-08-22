@@ -3,38 +3,35 @@ import resetObject from "./resetObject"
 import {Model} from "./models.js"
 
 class WorldItem {
-    constructor (id, name, coords ,width,height,initialCycle, model,config={}) {
+    constructor (id, coords ,width,height, model=null, config={}) {
         this.id = id.toUpperCase() + "_W";
-        this.name = name;
         this.x = coords[0] || 0;
         this.y = coords[1] || 0;
+        this.walkOffsetX =  coords[2] || 0;
+        this.walkOffsetY =  coords[3] || 0;
+        this.baseWidth = width || 20;
+        this.baseHeight = height || 20;
+
+        this.name = config.name || id;
         this.scale = config.scale || 1;
         this.unclickable = config.unclickable || false;
         this.noZoneScaling = config.noZoneScaling || false;
         this.zAdjust = config.zAdjust || 0;
         this.removed = config.removed || false;
         this.recommendedVerb = config.recommendedVerb || null;
-        
+        this.status = config.initialCycle || 'neutral';
+
         this.roomId = 'undefined';
 
-        Object.defineProperty(this,'fullId',{
-            get() {return this.roomId ? this.roomId+'_'+this.id : undefined}
-        })
 
-        this.walkOffsetX =  coords[2] || 0;
-        this.walkOffsetY =  coords[3] || 0;
-        
-        this.baseWidth = width || 20;
-        this.baseHeight = height || 20;
-        this.status = initialCycle||'neutral';
         this.queue = [];
-        
+
         if (model) {
             this.model = model
         } else {
             this.model = new Model({},{})
         }
-        
+
         this.initialState = Object.freeze(Object.assign({model:model},this));
     }
 

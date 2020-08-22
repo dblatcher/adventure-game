@@ -167,11 +167,18 @@ var makeRooms = function(){ return [
 
     new Room ('swamp', require("./rooms/bg1.png"), 800, 250, {
     worldItems:[
-        new WorldItem ('lake','lake',[400,40,20,-20],800,50),
-        new WorldItem ('house','path back to house',[725,0],150,150),
-        new WorldItem ('bucket','bucket',[250,20],40,40,'neutral',worldItemModels.bucket),
-        new WorldItem ('bucket2','big bucket',[80,20],40,40,'neutral',worldItemModels.bucket,{removed: true, scale: 1.5}),
-        new WorldItem ('fire','fire',[145,20,20,0],40,40,'burning',worldItemModels.fire),
+        new WorldItem ('lake',[400,40,20,-20],800,50),
+        new WorldItem ('house',[725,0],150,150,null,{
+            name:'path back to house',
+        }),
+        new WorldItem ('bucket',[250,20],40,40,worldItemModels.bucket),
+        new WorldItem ('big bucket',[80,20],40,40,worldItemModels.bucket,{
+            removed: true, 
+            scale: 1.5
+        }),
+        new WorldItem ('fire',[145,20,20,0],40,40,worldItemModels.fire,{
+            initialCycle:'burning',
+        }),
     ],
     obstacles:[
         new RectZone (200,40,400,50,true)
@@ -182,8 +189,12 @@ var makeRooms = function(){ return [
     new Room ('LIVING_ROOM', require("./rooms/bg2.jpg"), 400, 250,{
     name: 'Living room',
     worldItems : [
-        new WorldItem ('door','wooden door',[265,25,0,-20],50,100,'closed',worldItemModels.door,{zAdjust:80}),
-        new WorldItem ('window','nice window',[120,150,0,-140],100,145)
+        new WorldItem ('door',[265,25,0,-20],50,100,worldItemModels.door,{
+            name: 'wooden door',
+            zAdjust:80,
+            initialCycle: 'closed'
+        }),
+        new WorldItem ('window',[120,150,0,-140],100,145)
     ],
     obstacles:[
         new RectZone (200,32,400,200,true),
@@ -212,13 +223,25 @@ var makeRooms = function(){ return [
     new Room ('Gallery', require("./rooms/testroom3.png"), 400,300, {
         name: 'The Overlook',
         worldItems: [
-        //    new WorldItem ('path_down','', [350,80],180,90,'neutral',worldItemModels.stairs,{noZoneScaling:true, unclickable:true}),
-            new WorldItem ('platform','', [200,0],400,130,'neutral',worldItemModels.platform,{noZoneScaling:true, unclickable:true, zAdjust:80}),
-            new WorldItem ('gate','dark gate', [300,170,0,-15],50,50,'neutral',null,{noZoneScaling:true}),
-            new WorldItem ('tube1','tube', [80,20],20,35,'neutral',worldItemModels.tube),
-            new WorldItem ('tube2','tube', [110,120],20,35,'neutral',worldItemModels.tube),
-            new WorldItem ('keypad','electric keypad', [140,180,0,-30],20,20,'neutral',worldItemModels.keypad),
-            new WorldItem ('keypad_door','security door',[165,170,0,-20],50,100,'closed',worldItemModels.door,{zAdjust:80}),
+            new WorldItem ('platform', [200,0],400,130,worldItemModels.platform,{noZoneScaling:true, unclickable:true, zAdjust:80}),
+            new WorldItem ('gate', [300,170,0,-15],50,50,null,{
+                noZoneScaling:true,
+                name: 'forbidding gate'
+            }),
+            new WorldItem ('tube1', [80,20],20,35,worldItemModels.tube,{
+                name: 'tube',
+            }),
+            new WorldItem ('tube2', [110,120],20,35,worldItemModels.tube, {
+                name: 'tube',
+            }),
+            new WorldItem ('keypad', [140,180,0,-30],20,20,worldItemModels.keypad,{
+                name: 'electric keypad',
+            }),
+            new WorldItem ('keypad_door',[165,170,0,-20],50,100,worldItemModels.door,{
+                name: 'security door',
+                zAdjust:80,
+                initialCycle:'closed',
+            }),
         ],
         obstacles: [
             new RectZone(45,165,315,100),
