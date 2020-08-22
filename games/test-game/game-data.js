@@ -22,6 +22,7 @@ var sprites = [
   new Sprite ('sk1',  require('./sprites/skinner-1-r.png'), [12,1]),
   new Sprite ('sk2',  require('./sprites/skinner-1-l.png'), [12,1]),
   new Sprite ('keypad',  require('./sprites/keypad.png')),
+  new Sprite ('lightSwitch', require('./sprites/switch.jpg')),
 ]
 
 var sounds = [
@@ -147,6 +148,9 @@ var worldItemModels = {
     keypad: new WorldItem.Model ({
         neutral: [ ['keypad',0,0]  ],
     }),
+    lightSwitch: new WorldItem.Model ({
+        neutral: [ ['lightSwitch',0,0]  ],
+    }),
 };
 
 
@@ -204,11 +208,13 @@ var makeRooms = function(){ return [
     new Room ('TEST_ROOM', require("./rooms/testroom.png"), 400, 300, {
     effectZones:[
         new EffectZone(
-        new PolyZone ([ [184,90], [219,78],[206,60],[160,60],[150,78] ]),
-        { filter:'sepia(100%) brightness(60%)'}),
+            new PolyZone ([ [184,90], [219,78],[206,60],[160,60],[150,78] ]),
+            { filter:'sepia(100%) brightness(60%)'
+        }),
         new EffectZone(
-        new RectZone (0,0,400,200),
-        { scale:function(){return 1.5- this.y/200} }),
+            new RectZone (0,0,400,200),
+            { scale:function(){return 1.5- this.y/200} 
+        }),
     ],
     obstacles:[
         new PolyZone ([ [0,0],[83,126],[83,251],[0,300]  ]),
@@ -222,6 +228,9 @@ var makeRooms = function(){ return [
 
     new Room ('Gallery', require("./rooms/testroom3.png"), 400,300, {
         name: 'The Overlook',
+        filter: {
+            brightness: 25,
+        },
         worldItems: [
             new WorldItem ('platform', [200,0],400,130,worldItemModels.platform,{noZoneScaling:true, unclickable:true, zAdjust:80}),
             new WorldItem ('gate', [300,170,0,-15],50,50,null,{
@@ -242,6 +251,9 @@ var makeRooms = function(){ return [
                 zAdjust:80,
                 initialCycle:'closed',
             }),
+            new WorldItem ('light switch',[10,140,70,-100],25,25,worldItemModels.lightSwitch,{
+                zAdjust:80,
+            }),
         ],
         obstacles: [
             new RectZone(45,165,315,100),
@@ -250,7 +262,6 @@ var makeRooms = function(){ return [
             new RectZone(0,0,40,300),
             new RectZone(0,65,360,20),
             new RectZone(380,65,40,20),
-            
         ],
         effectZones: [
             new EffectZone( new RectZone(0,0,400,80), {

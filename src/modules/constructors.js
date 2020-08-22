@@ -31,6 +31,46 @@ class Room {
 		this.obstacles = config.obstacles || [];
 		this.effectZones = config.effectZones || [];
 		this.foregrounds = config.foregrounds || [];
+		this.filter = Room.filterDefaults
+		if (config.filter) {
+			for (let key in this.filter) {
+				if (typeof config.filter[key]  === 'number') { 
+					this.filter[key] = config.filter[key]
+				}
+			}
+		}
+	}
+
+	static get filterDefaults() {
+		return { blur: 0, brightness:100, contrast: 100, grayscale: 0, hueRotate: 0, invert: 0, opacity: 100, saturate: 100,sepia:0}
+	}
+	static get filterProperties() {
+		return [
+			{name: 'blur', unit: "px"},
+			{name: 'brightness', unit: "%"},
+			{name: 'contrast', unit: "%"},
+			{name: 'grayscale', unit: "%"},
+			{name: 'hue-rotate', unit: "deg"},
+			{name: 'invert', unit: "%"},
+			{name: 'opacity', unit: "%"},
+			{name: 'saturate', unit: "%"},
+			{name: 'sepia', unit: "%"},
+		]
+	}
+
+	get filterString () {
+		const {filter} = this;
+		const validFilterProperties = Room.filterProperties
+
+		let output = ""
+		Object.keys(filter).forEach (key => {
+			let keyIndex = validFilterProperties.map(item => item.name).indexOf(key)
+			if (key === 'hueRotate') {keyIndex = 4}
+			if (keyIndex === -1) {return}
+			if (filter[key] === Room.filterDefaults[key]) {return}
+			output += `${validFilterProperties[keyIndex].name}(${filter[key]}${validFilterProperties[keyIndex].unit}) `
+		})
+		return output
 	}
 
 	returnState () {

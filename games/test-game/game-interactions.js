@@ -130,6 +130,13 @@ var interactions = [
 			new StandardOrder(`pc::The door is already open.`),
 		]
 	),
+
+	new Interaction(['USE','LIGHT_SWITCH_W'],[],
+		[
+			new StandardOrder(`pc>>LIGHT_SWITCH_W`),
+			new StandardOrder(`pc::Nothing happens.`),
+		]
+	),
 ]
 
 
