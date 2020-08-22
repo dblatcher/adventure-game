@@ -19,7 +19,7 @@ class Sprite {
 
 class Room {
 	constructor (id, url, width,height, config={}) {
-		this.id = id.toUpperCase()+"_R";
+		this.id = id.toUpperCase().replace(/[^\w]/g, "_")+"_R";
 		this.url= url;
 		this.width = width;
 		this.height = height;

@@ -151,14 +151,14 @@ var worldItemModels = {
 
 
 var makeCharacters = function() {return [
-    new Character ('jane',[375,10,3],characterModels.jane,
+    new Character ('Jane',[375,10,3],characterModels.jane,
     {
         baseWidth: 50,
         baseHeight: 80,
         speechColor: 'white',
     }),
-    new Character ('billy',[200,10,0],characterModels.billy,{scale:3}),
-    new Character ('luigi',[125,10,1],characterModels.mario,{scale:2.5}),
+    new Character ('Billy',[200,10,0],characterModels.billy,{scale:3}),
+    new Character ('Luigi',[125,10,1],characterModels.mario,{scale:2.5}),
 ]}
 
 var pcId = 'JANE_C';

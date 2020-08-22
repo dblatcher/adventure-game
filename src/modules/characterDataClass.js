@@ -6,7 +6,7 @@ import resetObject from "./resetObject"
 export default class Character {
 
     constructor (id,coords,model,config={}) {
-        this.id = id.toUpperCase()+"_C";
+        this.id = id.toUpperCase().replace(/[^\w]/g, "_")+"_C";
         this.x = coords[0];
         this.y = coords[1];
         this.room = coords[2];

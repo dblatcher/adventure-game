@@ -4,7 +4,7 @@ import {Model} from "./models.js"
 
 class WorldItem {
     constructor (id, coords ,width,height, model=null, config={}) {
-        this.id = id.toUpperCase() + "_W";
+        this.id = id.toUpperCase().replace(/[^\w]/g, "_") + "_W";
         this.x = coords[0] || 0;
         this.y = coords[1] || 0;
         this.walkOffsetX =  coords[2] || 0;

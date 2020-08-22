@@ -2,7 +2,7 @@
 export default class InventoryItem  {
 
 	constructor(id, name, url, config={}) {
-		this.id = id.toUpperCase() + "_I";
+		this.id = id.toUpperCase().replace(/[^\w]/g, "_") + "_I";
 		this.name=name;
 	
 		if (typeof url === 'object') {
