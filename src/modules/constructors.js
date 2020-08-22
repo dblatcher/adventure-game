@@ -1,4 +1,3 @@
-
 class Sprite {
 	constructor (id, url, dims, config = {} ) {
 		if (!dims) {dims = [1,1]}
@@ -43,9 +42,11 @@ class Room {
 	}
 }
 
-function EffectZone (zone,effect) {
-	this.zone = zone,
-	this.effect = effect;
+class EffectZone {
+	constructor (zone,effect) {
+		this.zone = zone;
+		this.effect = effect;
+	}
 }
 
 class Foreground { 
@@ -73,17 +74,19 @@ class Foreground {
 	}
 }
 
-function Verb (description, id, config={}) {
-	this.description = description;
-	this.id = id;
-	this.preposition = config.preposition || '[NO PREPOSITION]';
-	this.transitive = !!(config.preposition);
+class Verb {
+	constructor (id, config={}) {
+		this.id = id;
+		this.description = config.description || id.toLowerCase();
+		this.preposition = config.preposition || '[NO PREPOSITION]';
+		this.transitive = !!(config.preposition);
 
-	this.icon = config.icon
-	this.showOnInventoryBox = config.showOnInventoryBox
-	this.usesSelectedItem = config.usesSelectedItem
+		this.icon = config.icon
+		this.showOnInventoryBox = config.showOnInventoryBox
+		this.usesSelectedItem = config.usesSelectedItem
+	}
+	get isVerb() {return true}
 }
-Verb.prototype.isVerb = true;
 
 class Sound {
 	constructor(description, id, path) {

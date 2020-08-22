@@ -4,23 +4,28 @@ import { Verb } from "../../src/modules/constructors";
 
 
 var verbList = [
-    new Verb('walk to','WALK',{
+    new Verb('WALK',{
+        description: 'walk to',
     }),
-    new Verb('look at','LOOK', {
+    new Verb('LOOK', {
+        description: 'look at',
     }),
-    new Verb('use','USE', {
+    new Verb('USE', {
         preposition:'with',
     }),
-    new Verb('talk to','TALK',{
+    new Verb('TALK',{
+        description: 'talk to',
     }),
-    new Verb('give','GIVE', {
+    new Verb('GIVE', {
         preposition:'to',
     }),
-    new Verb('pick up','TAKE',{
+    new Verb('TAKE',{
+        description: 'pick up',
     }),
-    new Verb('open','OPEN',{
+    new Verb('OPEN',{
     }),
-    new Verb('close','SHUT',{
+    new Verb('SHUT',{
+        description: 'close',
     }),
 ]
 
