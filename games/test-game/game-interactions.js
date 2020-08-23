@@ -131,10 +131,19 @@ var interactions = [
 		]
 	),
 
+	new Interaction(['USE','LIGHT_SWITCH_W'],[new StandardCondition('LIGHT_SWITCH_W','status','===','on')],
+		[
+			new StandardOrder(`pc>>LIGHT_SWITCH_W`),
+			new StandardOrder('LIGHT_SWITCH_W','setStatus',['off']),
+			new StandardOrder("GAME","setRoomFilter",["current","brightness","25"]),
+		]
+	),
+
 	new Interaction(['USE','LIGHT_SWITCH_W'],[],
 		[
 			new StandardOrder(`pc>>LIGHT_SWITCH_W`),
-			new StandardOrder(`pc::Nothing happens.`),
+			new StandardOrder('LIGHT_SWITCH_W','setStatus',['on']),
+			new StandardOrder("GAME","setRoomFilter",["current","brightness","100"]),
 		]
 	),
 ]

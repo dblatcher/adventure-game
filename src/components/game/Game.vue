@@ -102,7 +102,7 @@ import state from "../../modules/savedStates";
 import * as pathFinding from "./pathFinding";
 
 import { runSequence, resolveDestination, processWildCards } from "./orderExecution";
-import {changeRoom, teleportCharacter} from "./roomMethods";
+import {changeRoom, teleportCharacter, setRoomFilter} from "./roomMethods";
 import {getInventoryItem, looseInventoryItem} from "./inventoryMethods";
 
 import {wait} from "./wait";
@@ -368,6 +368,7 @@ export default {
     getInventoryItem,
     looseInventoryItem,
     teleportCharacter,
+    setRoomFilter,
     runSequence,
     resolveDestination,
     processWildCards,
@@ -495,10 +496,6 @@ export default {
           return;
         }
       }
-    },
-    reportEvent: function(message){
-      var now = new Date();
-      this.message = `${now.getHours()}:${now.getMinutes()}.${now.getSeconds()} - ${message}. `
     },
     returnCurrentState: function() {
       return state.get(this);

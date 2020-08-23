@@ -74,7 +74,7 @@ class Room {
 	}
 
 	returnState () {
-		let state = {name:this.name, worldItems:[]};
+		let state = {name:this.name, worldItems:[], filter: Object.assign({}, this.filter)};
 		this.worldItems.forEach ( (item) => {
 			state.worldItems.push ( item.returnState() );
 		});

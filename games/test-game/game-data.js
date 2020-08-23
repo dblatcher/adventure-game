@@ -23,6 +23,7 @@ var sprites = [
   new Sprite ('sk2',  require('./sprites/skinner-1-l.png'), [12,1]),
   new Sprite ('keypad',  require('./sprites/keypad.png')),
   new Sprite ('lightSwitch', require('./sprites/switch.jpg')),
+  new Sprite ('lightSwitchFlipped', require('./sprites/switch-flip.jpg')),
 ]
 
 var sounds = [
@@ -149,7 +150,8 @@ var worldItemModels = {
         neutral: [ ['keypad',0,0]  ],
     }),
     lightSwitch: new WorldItem.Model ({
-        neutral: [ ['lightSwitch',0,0]  ],
+        off: [ ['lightSwitch',0,0]  ],
+        on: [ ['lightSwitchFlipped',0,0]  ],
     }),
 };
 
@@ -252,6 +254,7 @@ var makeRooms = function(){ return [
                 initialCycle:'closed',
             }),
             new WorldItem ('light switch',[10,140,70,-100],25,25,worldItemModels.lightSwitch,{
+                initialCycle:'off',
                 zAdjust:80,
             }),
         ],

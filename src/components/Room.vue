@@ -64,7 +64,6 @@ export default {
                 backgroundImage: `url(${this.room.url})`,
                 alignSelf: this.shouldBeCentered ? 'center' : 'unset',
                 filter: this.room.filterString,
-                transition: 'filter 1s',
             }
         },
         foregroundStyles : function() {

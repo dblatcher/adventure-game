@@ -91,11 +91,13 @@ function modifyGameData (state, loadData) {
     loadData.rooms.forEach(roomDatum=> {
         newRoomsArray.push({
             name: roomDatum.name,
+            filter: roomDatum.filter,
             worldItems: roomDatum.worldItems.map( worldItem => { return worldItem.returnState ? worldItem.returnState() : worldItem })
         })
     }) 
 
     state.rooms.forEach ((room, index1) => {
+        Object.assign(room.filter, newRoomsArray[index1].filter)
         room.worldItems.forEach ( (worldItem, index2) => {
             Object.assign(worldItem, newRoomsArray[index1].worldItems[index2])
         }) 

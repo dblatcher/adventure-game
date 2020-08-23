@@ -31,7 +31,6 @@ function changeRoom (target,options={}) {
     game.thingHoveredOn = null;
 
     game.$nextTick( function() {
-      game.reportEvent('room change to '+game.rooms[rNum].name);
       game.$refs.room.resize();
       if (typeof options.callback === 'function' ) { options.callback.apply(game,[]); }
       resolve({finished:true, newRoom:game.rooms[rNum].id})
@@ -60,7 +59,7 @@ function teleportCharacter (target, options={}) {
   }
 
 
-  return new Promise ( function(resolve,reject) {
+  return new Promise ( function(resolve) {
     movingCharacter.room = rNum;
     movingCharacter.x = x;
     movingCharacter.y = y;
@@ -71,5 +70,40 @@ function teleportCharacter (target, options={}) {
 
 }
 
+function setRoomFilter (target, options={}) {
+  let rNum = target[0], filterProperty = target[1], filterValue = target[2]
+  let validOrder = true
+  let game = this;
 
-export {changeRoom, teleportCharacter}
+  if ( rNum === "" || rNum === "current") {
+    rNum = game.roomNumber
+  }
+  else if (typeof rNum === 'string') {
+    rNum = findIndexById (rNum, game.rooms)
+  }
+  const targetRoom = game.rooms[rNum]
+
+  if (typeof filterProperty !== 'string' || Object.keys(targetRoom.filter).indexOf(filterProperty) === -1) {
+      game.$store.commit('debugMessage', `setRoomFilter: invalid filterProperty "${filterProperty}".`)
+      validOrder = false
+  }
+
+  if ( isNaN(filterValue)) {
+    game.$store.commit('debugMessage', `setRoomFilter: invalid filterValue "${filterValue}".`)
+    validOrder = false
+  }
+
+  if (!validOrder) {
+    return Promise.resolve({finished:true, message:'invalid setRoomFilter'})
+  }
+
+  return new Promise(function(resolve) {
+    targetRoom.filter[filterProperty] = Number(filterValue)
+    game.$nextTick( function() {
+      resolve ({finished:true, message:`set ${targetRoom.name} ${filterProperty} to ${filterValue}.`})
+    })
+  })
+
+}
+
+export {changeRoom, teleportCharacter,setRoomFilter}
