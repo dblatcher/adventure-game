@@ -22,7 +22,7 @@
         v-bind:key="item.id"
         v-bind:active="item===currentItem"
         v-bind:icon="item.rightPicture"
-        v-bind:background="item.background"/>
+        v-bind:background="item.backgroundStyleObject"/>
       </div>
 
       

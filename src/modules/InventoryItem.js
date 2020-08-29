@@ -1,97 +1,99 @@
+import {backingShape} from './styleGen'
 
 export default class InventoryItem  {
 
-	constructor(id, url, config={}) {
-		this.id = id.toUpperCase().replace(/[^\w]/g, "_") + "_I";
-		this.name= config.name || id;
-	
-		if (typeof url === 'object') {
-			this.picture = {};
-			Object.keys(url).forEach( (key) => {
-				this.picture[key] = url[key];
-			});
-		} else {
-			this.picture = {
-				1: url
-			}
-		}
-		
-		this.recommendedVerb = config.recommendedVerb || null;
-		this.background = config.background;
-	
-		this.have=!!config.startWith;
-		this.quantified = typeof config.quantity === 'number' ? true  : false;
-		if (this.quantified) {
-			this.quantity = config.quantity;
-			this.pluralName = config.pluralName || name;
-		}
-	}
+    constructor(id, url, config={}) {
+        this.id = id.toUpperCase().replace(/[^\w]/g, "_") + "_I";
+        this.name= config.name || id;
 
-	get dataType() {return 'InventoryItem'}
+        if (typeof url === 'object') {
+            this.picture = {};
+            Object.keys(url).forEach( (key) => {
+                this.picture[key] = url[key];
+            });
+        } else {
+            this.picture = {
+                1: url
+            }
+        }
 
-	get rightPicture() {
-		
-		if(!this.quantified) {return this.picture[1]}
+        this.recommendedVerb = config.recommendedVerb || null;
+        this.background = config.background;
 
-		let numberToUse = this.quantity;
-		let keyList = Object.keys(this.picture).map(item => Number(item) );
+        this.have=!!config.startWith;
+        this.quantified = typeof config.quantity === 'number' ? true  : false;
+        if (this.quantified) {
+            this.quantity = config.quantity;
+            this.pluralName = config.pluralName || name;
+        }
+    }
 
-		if (!keyList.includes(numberToUse)) {
-			for (let index = keyList.length; index > 0; index--) {
-				if (numberToUse > keyList[index] ) {
-					numberToUse = keyList[index];
-					break;
-				}
-			}
-		}
+    get dataType() {return 'InventoryItem'}
 
-		return this.picture[numberToUse];
-	}
+    get rightPicture() {
+        if(!this.quantified) {return this.picture[1]}
 
-	returnState() {
-		return{
-			name : this.name,
-			have: this.have,
-			quantity:this.quantity,
-		}
-	}
+        let numberToUse = this.quantity;
+        let keyList = Object.keys(this.picture).map(item => Number(item) );
 
-	add(target, options = {}) {
-		let quantity = options.quantity;
-		if (!quantity) {quantity = 1}
+        if (!keyList.includes(numberToUse)) {
+            for (let index = keyList.length; index > 0; index--) {
+                if (numberToUse > keyList[index] ) {
+                    numberToUse = keyList[index];
+                    break;
+                }
+            }
+        }
 
-		if (this.quantified) {
-		  if (this.have) {
-			this.quantity += quantity;
-		  } else {
-			this.quantity = quantity;
-			this.have = true;
-		  }
-		  return this.quantity;
-		}
-	
-		this.have = true;
-		return true;
-	}
+        return this.picture[numberToUse];
+    }
 
-	loose(target, options = {}) {
-		let quantity = options.quantity;
-		if (!quantity) {quantity = 1}
+    get backgroundStyleObject() { return backingShape(this.background) }
 
-		if (this.have === false) {return false}
-	
-		if (!this.quantified) {
-			this.have = false;
-			return true;
-		}
-	
-		if (quantity === 'all') {
-			this.quantity = 0;
-			this.have = false;
-		}
-	
-		this.quantity -= quantity;
-		if (this.quantity <= 0) {this.have = false}
-		return this.quantity;
-	}
+    returnState() {
+        return{
+            name : this.name,
+            have: this.have,
+            quantity:this.quantity,
+        }
+    }
+
+    add(target, options = {}) {
+        let quantity = options.quantity;
+        if (!quantity) {quantity = 1}
+
+        if (this.quantified) {
+          if (this.have) {
+            this.quantity += quantity;
+          } else {
+            this.quantity = quantity;
+            this.have = true;
+          }
+          return this.quantity;
+        }
+    
+        this.have = true;
+        return true;
+    }
+
+    loose(target, options = {}) {
+        let quantity = options.quantity;
+        if (!quantity) {quantity = 1}
+
+        if (this.have === false) {return false}
+    
+        if (!this.quantified) {
+            this.have = false;
+            return true;
+        }
+    
+        if (quantity === 'all') {
+            this.quantity = 0;
+            this.have = false;
+        }
+    
+        this.quantity -= quantity;
+        if (this.quantity <= 0) {this.have = false}
+        return this.quantity;
+    }
 }

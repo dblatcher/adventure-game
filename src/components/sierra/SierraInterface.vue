@@ -71,7 +71,7 @@ export default {
         },
         verbBackground() {
             const {currentVerb, selectedInventoryItem} = this
-            if (selectedInventoryItem && currentVerb.usesSelectedItem) {return selectedInventoryItem.background}
+            if (selectedInventoryItem && currentVerb.usesSelectedItem) {return selectedInventoryItem.backgroundStyleObject}
             return false
         },
         inventoryVerbs(){

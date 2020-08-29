@@ -4,32 +4,28 @@
   <figure @click="$emit('tile-click')"  
   v-bind:style="tileStyle" 
   v-bind:class="{active: active, static:static}">
-    <div class="shape" v-bind:style="shapeStyle"></div>
+    <div class="shape" v-bind:style="background"></div>
     <img v-if="icon" v-bind:src="icon">
   </figure>
 
 </template>
 
 <script>
-import {backingShape} from '../../modules/styleGen'
 
 export default {
     name: 'Tile',
     props: ['icon', 'background', 'size', 'active', 'static', 'backgroundColor'],
 
     computed : {
-        tileStyle() {
-            let size = this.size || 4
-            let backgroundColor = this.backgroundColor || 'unset'
-            return {
-                height: `${size}rem`,
-                width: `${size}rem`,
-                backgroundColor: backgroundColor,
-            }
-        },
-        shapeStyle () {
-            return backingShape (this.background)
-        },
+      tileStyle() {
+        let size = this.size || 4
+        let backgroundColor = this.backgroundColor || 'unset'
+        return {
+            height: `${size}rem`,
+            width: `${size}rem`,
+            backgroundColor: backgroundColor,
+        }
+      },
     }
 }
 </script>
