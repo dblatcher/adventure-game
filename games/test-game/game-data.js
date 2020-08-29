@@ -280,19 +280,17 @@ var makeRooms = function(){ return [
 
 
 var makeInventoryItems = function() { return  [
-    new InventoryItem('bucket', 'bucket', require('./items/bucket.png'),{} ),
-    new InventoryItem('sock', 'sock', require('./items/sock.png'),{startWith: true}),
-    new InventoryItem('nail', 'nail', {
+    new InventoryItem('bucket', require('./items/bucket.png'),{} ),
+    new InventoryItem('sock', require('./items/sock.png'),{startWith: true, background:{shape:'diamond', color:'blue'}}),
+    new InventoryItem('nail', {
         1: require('./items/nail.png'),
         2: require('./items/twonails.png'),
         3: require('./items/threenails.png'),
         4: require('./items/manynails.jpg')
     }, {startWith: true, quantity: 2, pluralName: 'nails'}),
-    new InventoryItem('stick','lolly stick', require('./items/stick.jpg'),{startsWith: true}),
-    new InventoryItem('stick2','lolly stick', require('./items/stick.jpg'),{startsWith: true}),
-    new InventoryItem('stick3','lolly stick', require('./items/stick.jpg'),{startsWith: true}),
-    new InventoryItem('shoe','red shoe', require('./items/shoe.jpg'),{startsWith: true}),
-    new InventoryItem('hammer','hammer', require('./items/hammer.jpg')),
+    new InventoryItem('stick', require('./items/stick.jpg'),{startWith: true, name:'small wooden stick'}),
+    new InventoryItem('shoe', require('./items/shoe.jpg'),{startWith: true, name: 'big red shoe'}),
+    new InventoryItem('hammer', require('./items/hammer.jpg')),
 ]};
 
 var setGameVars = function ()  { return {

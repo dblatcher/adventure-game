@@ -1,9 +1,9 @@
 
 export default class InventoryItem  {
 
-	constructor(id, name, url, config={}) {
+	constructor(id, url, config={}) {
 		this.id = id.toUpperCase().replace(/[^\w]/g, "_") + "_I";
-		this.name=name;
+		this.name= config.name || id;
 	
 		if (typeof url === 'object') {
 			this.picture = {};
@@ -17,7 +17,7 @@ export default class InventoryItem  {
 		}
 		
 		this.recommendedVerb = config.recommendedVerb || null;
-		this.background = config.bg;
+		this.background = config.background;
 	
 		this.have=!!config.startWith;
 		this.quantified = typeof config.quantity === 'number' ? true  : false;
