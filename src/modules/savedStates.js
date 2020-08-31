@@ -1,7 +1,3 @@
-
-
-
-
 function getCurrentGameData (gameInstance) {
     let currentState = {
         roomNumber : gameInstance.roomNumber,
@@ -35,7 +31,9 @@ function getCurrentGameData (gameInstance) {
     return currentState;
 }
 
-function createGameData(savedGame, gameData) {
+function createGameData(savedGame, gameInstance) {
+
+    const gameData = gameInstance.$store.state.gameData
 
     let state = {
         gameStatus : 'LIVE',
@@ -46,8 +44,8 @@ function createGameData(savedGame, gameData) {
         inventoryItems: gameData.makeInventoryItems(),
         allCharacters : gameData.makeCharacters(),
         conversations : gameData.makeConversations(),
-        gameVars : Object.assign({},gameData.initialGameVars),
-        pcId : gameData.pcId,
+        gameVars : gameData.initialGameVars ? Object.assign({},gameData.initialGameVars) : {},
+        pcId : gameData.pcId || gameData.makeCharacters()[0].id,
     };
 
     // set starting room to be the room the pc starts in
@@ -56,17 +54,15 @@ function createGameData(savedGame, gameData) {
     })
 
     //check for duplicate worldItem.id
-    let wiids = [], duplicateFound=false;
+    let wiids = [];
     state.rooms.forEach (room =>{
         room.worldItems.forEach (item => {
             if ( wiids.includes(item.id) ) {
-                console.warn (`duplicate WorldItem.id detected: ${item.id} in ${room.id}`);
-                duplicateFound = true;
+                gameInstance.$store.commit('debugMessage', `duplicate WorldItem.id detected: ${item.id} in ${room.id} - interactions may fail.`)
             }
             wiids.push(item.id);
         })
     })
-    if (duplicateFound) {console.warn('WorldItem.ids must be unique or interactions may fail.')}
 
     if (savedGame && savedGame.gameStatus) {
         modifyGameData(state, savedGame)

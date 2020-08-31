@@ -159,7 +159,7 @@ export default {
       narration: {contents:[], dismissable:true},
       currentMinigameName: false,
       currentMinigameProps: {},
-    }, state.create(this.loadData, gameData) );
+    }, state.create(this.loadData, this) );
   },
 
   computed : {
@@ -507,7 +507,7 @@ export default {
       });
     },
     restart () {
-      state.modify(this.$data, state.create(false, this.gameData));
+      state.modify(this.$data, state.create(false, this));
       this.$nextTick(function(){
         this.$refs.room.resize();
       });
