@@ -295,9 +295,9 @@ var makeInventoryItems = function() { return  [
     new InventoryItem('hammer', require('./items/hammer.jpg')),
 ]};
 
-var setGameVars = function ()  { return {
+var initialGameVars = {
     wantsHammer: false,
     numberOfSomething: 5,
-}};
+}
 
-export { sprites, makeRooms, makeInventoryItems, makeCharacters, pcId, setGameVars, sounds, music }
+export { sprites, makeRooms, makeInventoryItems, makeCharacters, pcId, initialGameVars, sounds, music }

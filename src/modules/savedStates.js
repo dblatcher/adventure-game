@@ -46,7 +46,7 @@ function createGameData(savedGame, gameData) {
         inventoryItems: gameData.makeInventoryItems(),
         allCharacters : gameData.makeCharacters(),
         conversations : gameData.makeConversations(),
-        gameVars : gameData.setGameVars(),
+        gameVars : Object.assign({},gameData.initialGameVars),
         pcId : gameData.pcId,
     };
 
