@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import App from './App.vue'
 const gameIndex = require(`../games/${process.env.VUE_APP_GAME_NAME}/gameIndex`)
 
-Vue.use(Vuex)
+gameIndex.gameData.config = gameIndex.gameData.config || {}
 
 const debug = {
   onScreen: process.env.VUE_APP_DEBUG_ONSCREEN === 'on',
@@ -21,6 +21,7 @@ function DebugMessage(input, messageType) {
   this.time = Date.now()
 }
 
+Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     gameData:gameIndex.gameData,

@@ -94,20 +94,19 @@ const config = {
     resetVerbAfterEachCommand: true,
     rightClickForRecommendedVerb:true,
     titleScreen: {
-        title: 'Test Game',
-        subtitle: 'For testing.',
+        title: 'The Test Game',
+        subtitle: 'A game for testing and examples.',
     },
     endingScreen : {
 
     },
     defaultVerb: {WorldItem:"LOOK", InventoryItem:"USE", Character:"TALK"},
+    pcId: 'JANE_C',
+    initialGameVars: {
+        wantsHammer: false,
+        numberOfSomething: 5,
+    }
 }
 
-const initialGameVars = {
-    wantsHammer: false,
-    numberOfSomething: 5,
-}
 
-var pcId = 'JANE_C';
-
-export { defaultResponses, verbList, config, initialGameVars, pcId }
+export { defaultResponses, verbList, config }

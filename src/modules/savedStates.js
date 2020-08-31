@@ -44,8 +44,8 @@ function createGameData(savedGame, gameInstance) {
         inventoryItems: gameData.makeInventoryItems(),
         allCharacters : gameData.makeCharacters(),
         conversations : gameData.makeConversations(),
-        gameVars : gameData.initialGameVars ? Object.assign({},gameData.initialGameVars) : {},
-        pcId : gameData.pcId || gameData.makeCharacters()[0].id,
+        gameVars : gameData.config.initialGameVars ? Object.assign({},gameData.config.initialGameVars) : {},
+        pcId : gameData.config.pcId || gameData.makeCharacters()[0].id,
     };
 
     // set starting room to be the room the pc starts in
