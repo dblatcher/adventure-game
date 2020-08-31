@@ -53,26 +53,26 @@ var defaultResponses = {
     },
     "USE"  : function (command) {
         if (!command.object) {
-            return [new StandardOrder('pc','say',`I can\'t use the ${command.subject.name} .`)]
+            return [new StandardOrder('pc','say',`I can't use the ${command.subject.name} .`)]
         }
         return [new StandardOrder('pc','say',
-        `I can\'t use the ${command.subject.name} ${command.verb.preposition || 'with'} the ${command.object.name}.`
+        `I can't use the ${command.subject.name} ${command.verb.preposition || 'with'} the ${command.object.name}.`
         )]
     },
     "ACTIVATE"  : function (command) {
         if  (command.subject.id.endsWith('W')) {
             return [
                 new StandardOrder(`pc^^${command.subject.id}`),
-                new StandardOrder('pc','say',`I don\'t know what to do with the ${command.subject.name}.`)
+                new StandardOrder('pc','say',`I don't know what to do with the ${command.subject.name}.`)
             ]
         } else if  (command.subject.id.endsWith('C')) {
             return [
                 new StandardOrder(`pc^^${command.subject.id}`),
-                new StandardOrder('pc','say',`I don\'t know what to do to ${command.subject.name}.`)
+                new StandardOrder('pc','say',`I don't know what to do to ${command.subject.name}.`)
             ]
         } else {
             return [
-                new StandardOrder('pc','say',`I don\'t know what to do with the ${command.subject.name}.`)
+                new StandardOrder('pc','say',`I don't know what to do with the ${command.subject.name}.`)
             ]
         }
     },
@@ -103,4 +103,11 @@ const config = {
     defaultVerb: {WorldItem:"LOOK", InventoryItem:"USE", Character:"TALK"},
 }
 
-export { defaultResponses, verbList, config }
+const initialGameVars = {
+    wantsHammer: false,
+    numberOfSomething: 5,
+}
+
+var pcId = 'JANE_C';
+
+export { defaultResponses, verbList, config, initialGameVars, pcId }

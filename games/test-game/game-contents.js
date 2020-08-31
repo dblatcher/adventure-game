@@ -120,9 +120,7 @@ var characterModels = {
     },{
 
     }),
-    
 }
-
 
 var worldItemModels = {
     door: new WorldItem.Model ({
@@ -168,8 +166,6 @@ var makeCharacters = function() {return [
     new Character ('Billy',[200,10,0],characterModels.billy,{scale:3}),
     new Character ('Luigi',[125,10,1],characterModels.mario,{scale:2.5}),
 ]}
-
-var pcId = 'JANE_C';
 
 var makeRooms = function(){ return [
 
@@ -295,9 +291,5 @@ var makeInventoryItems = function() { return  [
     new InventoryItem('hammer', require('./items/hammer.jpg')),
 ]};
 
-var initialGameVars = {
-    wantsHammer: false,
-    numberOfSomething: 5,
-}
 
-export { sprites, makeRooms, makeInventoryItems, makeCharacters, pcId, initialGameVars, sounds, music }
+export { sprites, sounds, music, makeCharacters, makeRooms, makeInventoryItems}

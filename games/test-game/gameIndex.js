@@ -5,14 +5,14 @@ import KeyPad from './minigames/KeyPad'
 
 import { interactionMatrix } from './game-interactions'
 import { makeConversations } from "./game-conversations";
-import * as gameDataImport from "./game-data";
+import * as gameContentsImport from "./game-contents";
 import * as gameConfigImport from './game-config'
 import sequences from "./sequences";
 
 
 require('./custom.scss');
 
-const gameData = { ...gameDataImport, ...gameConfigImport,
+const gameData = { ...gameContentsImport, ...gameConfigImport,
     sequences, interactionMatrix, makeConversations,}
 
 const minigames = {KeyPad}
