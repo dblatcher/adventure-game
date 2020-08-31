@@ -59,7 +59,7 @@ Create a ".env.local" file in the proect root (These are git ignored by default)
 * VUE_APP_DEBUG_LOGGING ('off'/'on'): Debug messages about in-game "orders" are logged in the browser console.
 
 
-## Game Building
+## Making a game
 ### The gameIndex file
 Webventure's aim is for games to have games acting as interchangable modules, while allowing the game designers as much freedom as possible to tell thier stories. 
 
@@ -94,4 +94,14 @@ In addition, there are 'abstract' objects that determine how the 'concrete' obje
 * Sounds - Objects representing the audio files used for sound effects and background music.
 
 ### All in Order
-TO DO - desription of Orders
+An Order is an object reprensenting an call to a method of either the gameInstance or one of the concrete objects. When building a game, Orders are used as the instructions to say what should happen when (for example) the user makes a Command to 'OPEN DOOR'. Orders can make a character say a line of dialogue, change the animation cycle a WorldItem is using, add or remove an InventoryItem, set which the Room the gameInstance is displaying etc - whenever anything happens within the world of the game, it is done by executing an order. 
+
+Under the hood, when webventure executes an order, it returns a Promise, which allows it to chain a Sequence of Orders together, know when the Sequence has finished and use the outcome of an Order to determine what happens next. An Order won't necesssarily 'finish' sucessfully when executed - if you order a Character to walk to a location it cannot reach, or the user interrupts the Order by issuing another Command, for example. The Order.execute Promise resolves a 'result' object with a boolean 'finished' property. 
+
+There different kinds of Order that can be used:
+* StandardOrder - calls the method, then returns the 'result'.
+* failableOrder - calls the method, if the Outcome reports the Order was 'finished', the Sequence continues - if not the Sequence is interrupted and ends with this failableOrder.
+* ConditionalOrder - Evaluates an array of StandardConditions (see below), then executes its 'orderIfTrue' (if there is one) if all the conditions pass, else executes its 'orderIfFalse'(if there is one), then moves to the next Order in Sequence. 
+* BranchingOrder - executes an 'initial' Order then executes a Sequence determined by the initial Order's result. This can either be based on the result's 'finished' propery or its 'outcome' property (currently, only running Minigames will produce a result with an 'outcome' property)
+
+ Take look at /games/test-game/game-interactions.js to see some examples a Orders being defined.
