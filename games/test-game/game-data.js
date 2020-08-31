@@ -30,6 +30,8 @@ var sounds = [
     new Sound('keypad beep', 'beep', require('./audio/zapsplat_household_dehumidifier_on_off_select_beep_single_49226.mp3' )),
     new Sound('keypad correct tone', 'correct-tone', require('./audio/zapsplat_multimedia_correct_tone_beep_17736.mp3' )),
     new Sound('keypad wrong tone', 'wrong-tone', require('./audio/zapsplat_multimedia_game_error_tone_001_24919.mp3' )),
+    new Sound('footstep1','step1', require('./audio/zapsplat_foley_footstep_single_shoe_soft_girls_carpet_007_36951.mp3')),
+    new Sound('footstep2','step2', require('./audio/zapsplat_foley_footstep_single_shoe_soft_girls_carpet_015_36959.mp3')),
 ]
 
 var music = {
@@ -69,20 +71,20 @@ var characterModels = {
 
     jane : new Character.Model ({
         wait : {
-            up       : [ ['w',0,0] ],
+            up    : [ ['w',0,0] ],
             left  : [ ['w',0,1] ],
             down  : [ ['w',0,2] ],
             right : [ ['w',0,3] ],
         },
         walk : {
-            up       : [ ['w',0,0],['w',1,0],['w',2,0],['w',3,0], ['w',4,0],['w',5,0],['w',6,0],['w',7,0], ['w',8,0] ],
-            left  : [ ['w',0,1],['w',1,1],['w',2,1],['w',3,1], ['w',4,1],['w',5,1],['w',6,1],['w',7,1], ['w',8,1] ],
-            down  : [ ['w',0,2],['w',1,2],['w',2,2],['w',3,2], ['w',4,2],['w',5,2],['w',6,2],['w',7,2], ['w',8,2] ],
-            right : [ ['w',0,3],['w',1,3],['w',2,3],['w',3,3], ['w',4,3],['w',5,3],['w',6,3],['w',7,3], ['w',8,3] ] ,
+            up    : [ ['w',0,0],['w',1,0,'step1'],['w',2,0],['w',3,0,'step2'], ['w',4,0],['w',5,0,'step1'],['w',6,0],['w',7,0,'step2'], ['w',8,0] ],
+            left  : [ ['w',0,1],['w',1,1,'step1'],['w',2,1],['w',3,1,'step2'], ['w',4,1],['w',5,1,'step1'],['w',6,1],['w',7,1,'step2'], ['w',8,1] ],
+            down  : [ ['w',0,2],['w',1,2,'step1'],['w',2,2],['w',3,2,'step2'], ['w',4,2],['w',5,2,'step1'],['w',6,2],['w',7,2,'step2'], ['w',8,2] ],
+            right : [ ['w',0,3],['w',1,3,'step1'],['w',2,3],['w',3,3,'step2'], ['w',4,3],['w',5,3,'step1'],['w',6,3],['w',7,3,'step2'], ['w',8,3] ] ,
             
         },
         talk : {
-            up       : [ ['w',0,0], ['w2',0,0], ['w2',1,0],['w2',2,0] ],
+            up    : [ ['w',0,0], ['w2',0,0], ['w2',1,0],['w2',2,0] ],
             left  : [ ['w',0,1], ['w2',0,1], ['w2',1,1],['w2',2,1] ],
             down  : [ ['w',0,2], ['w2',0,2], ['w2',1,2],['w2',2,2] ],
             right : [ ['w',0,3], ['w2',0,3], ['w2',1,3],['w2',2,3] ] ,
