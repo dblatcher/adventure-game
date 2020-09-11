@@ -50,7 +50,7 @@ function runSequence(input, options){
                 }
 
                 if (!order.evaluate) {return true}
-                return order.evaluate(result)
+                return order.evaluate(result, this)
             },
             this)
     }

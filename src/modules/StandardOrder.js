@@ -9,7 +9,7 @@ class StandardOrder {
 			this.options = options;
 		}
 
-		function parseOrderString(oString, options) {
+		function parseOrderString(oString, options={}) {
 			function arrayParse (input) {
 				let output = input.split(',')
 				output = output.map( (item) => {

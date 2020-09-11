@@ -17,7 +17,13 @@ class failableOrder extends StandardOrder{
         return `FailableOrder{${this.actorId} ${this.action}: ${this.target}}`
     }
 
-    evaluate(result) {
+    evaluate(result, game) {
+        if (this.options.tests && Array.isArray(this.options.tests)) {
+            let testResults = this.options.tests.map (test => test.evaluate(game))
+            testResults.push(result.finished)
+            return testResults.indexOf(false) == -1
+        }
+
         return result.finished
     }
 }
