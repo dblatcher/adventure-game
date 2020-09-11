@@ -165,6 +165,10 @@ var makeCharacters = function() {return [
     }),
     new Character ('Billy',[200,10,0],characterModels.billy,{scale:3}),
     new Character ('Luigi',[125,10,1],characterModels.mario,{scale:2.5}),
+    new Character ('Skinner',[100,140,3],characterModels.skinner,{
+        baseHeight: 80,
+        baseWidth: 60,
+    })
 ]}
 
 var makeRooms = function(){ return [
@@ -229,7 +233,7 @@ var makeRooms = function(){ return [
     new Room ('Gallery', require("./rooms/testroom3.png"), 400,300, {
         name: 'The Overlook',
         filter: {
-            brightness: 25,
+            brightness: 100,
         },
         worldItems: [
             new WorldItem ('platform', [200,0],400,130,worldItemModels.platform,{noZoneScaling:true, unclickable:true, zAdjust:80}),
@@ -237,10 +241,10 @@ var makeRooms = function(){ return [
                 noZoneScaling:true,
                 name: 'forbidding gate'
             }),
-            new WorldItem ('tube1', [80,20],20,35,worldItemModels.tube,{
+            new WorldItem ('tube1', [160,20],25,50,worldItemModels.tube,{
                 name: 'tube',
             }),
-            new WorldItem ('tube2', [110,120],20,35,worldItemModels.tube, {
+            new WorldItem ('tube2', [80,140],25,50,worldItemModels.tube, {
                 name: 'tube',
             }),
             new WorldItem ('keypad', [140,180,0,-30],20,20,worldItemModels.keypad,{
@@ -252,7 +256,7 @@ var makeRooms = function(){ return [
                 initialCycle:'closed',
             }),
             new WorldItem ('light switch',[10,140,70,-100],25,25,worldItemModels.lightSwitch,{
-                initialCycle:'off',
+                initialCycle:'on',
                 zAdjust:80,
             }),
         ],

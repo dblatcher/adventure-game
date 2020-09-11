@@ -1,6 +1,8 @@
 import { StandardOrder } from "../../src/modules/StandardOrder";
+import { failableOrder } from "../../src/modules/failableOrder";
 import { ConditionalOrder } from "../../src/modules/ConditionalOrder";
 import { StandardCondition } from "../../src/modules/StandardCondition";
+
 
 
 const starting = [
@@ -11,4 +13,11 @@ const starting = [
     new StandardOrder ('[status]LIVE'),
 ]
 
-export default { starting };
+const skinnerWalkAbout = [
+    new failableOrder ('SKINNER_C>>TUBE2_W',{tests:[new StandardCondition('LIGHT_SWITCH_W','status','===','on')]}),
+    new failableOrder ('SKINNER_C::I am over here.', {action:'yell'}),
+    new failableOrder ('SKINNER_C>>TUBE1_W'),
+    new failableOrder ('SKINNER_C::Now I am up here.'),
+]
+
+export default { starting, skinnerWalkAbout };
