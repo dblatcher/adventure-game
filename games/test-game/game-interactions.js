@@ -60,6 +60,10 @@ var interactions = [
 	new Interaction (['WALK','HOUSE_W'],[],
 		doorFunction('HOUSE_W',['LIVING_ROOM_R',260,15])
 	),
+
+	new Interaction (['WALK','OVERLOOK_PATH_W'],[],
+		doorFunction('OVERLOOK_PATH_W',['GALLERY_R',300,150])
+	),
 	
 	new Interaction(['USE','SHOE_I'],[],pcSays("It doesn't fit me")),
 	

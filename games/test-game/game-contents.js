@@ -176,6 +176,9 @@ var makeRooms = function(){ return [
     new Room ('swamp', require("./rooms/bg1.png"), 800, 250, {
     worldItems:[
         new WorldItem ('lake',[400,40,20,-20],800,50),
+        new WorldItem ('overlook path',[0,0],150,150,null,{
+            name:'path back to house',
+        }),
         new WorldItem ('house',[725,0],150,150,null,{
             name:'path back to house',
         }),
@@ -241,7 +244,7 @@ var makeRooms = function(){ return [
                 noZoneScaling:true,
                 name: 'forbidding gate'
             }),
-            new WorldItem ('tube1', [160,20],25,50,worldItemModels.tube,{
+            new WorldItem ('tube1', [140,140],25,50,worldItemModels.tube,{
                 name: 'tube',
             }),
             new WorldItem ('tube2', [80,140],25,50,worldItemModels.tube, {
