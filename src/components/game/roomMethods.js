@@ -32,7 +32,7 @@ function changeRoom (target,options={}) {
 
     game.$nextTick( function() {
       game.$refs.room.resize();
-      if (typeof options.callback === 'function' ) { options.callback.apply(game,[]); }
+      game.$emit('changing-room',game.rooms[rNum])
       resolve({finished:true, newRoom:game.rooms[rNum].id})
     })
 
