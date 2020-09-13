@@ -32,6 +32,7 @@ class Room {
 		this.effectZones = config.effectZones || [];
 		this.foregrounds = config.foregrounds || [];
 		this.filter = Room.filterDefaults
+		this.sequenceLoops = {}
 		if (config.filter) {
 			for (let key in this.filter) {
 				if (typeof config.filter[key]  === 'number') { 

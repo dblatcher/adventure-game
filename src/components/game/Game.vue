@@ -101,7 +101,7 @@
 import state from "../../modules/savedStates";
 import * as pathFinding from "./pathFinding";
 
-import { runSequence, resolveDestination, processWildCards } from "./orderExecution";
+import { runSequence,startLoopSequence, haltLoopSequence, resolveDestination, processWildCards } from "./orderExecution";
 import {changeRoom, teleportCharacter, setRoomFilter} from "./roomMethods";
 import {getInventoryItem, looseInventoryItem} from "./inventoryMethods";
 
@@ -369,7 +369,7 @@ export default {
     looseInventoryItem,
     teleportCharacter,
     setRoomFilter,
-    runSequence,
+    runSequence, startLoopSequence, haltLoopSequence,
     resolveDestination,
     processWildCards,
     wait,

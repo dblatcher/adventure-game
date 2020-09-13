@@ -33,6 +33,12 @@ function changeRoom (target,options={}) {
     game.$nextTick( function() {
       game.$refs.room.resize();
       game.$emit('changing-room',game.rooms[rNum])
+
+      for (let sequenceName in game.rooms[rNum].sequenceLoops) {
+        let sequenceLoop =  game.rooms[rNum].sequenceLoops[sequenceName]
+        if (sequenceLoop.interface.getInteruptedByChangeOfRoom()) { sequenceLoop.interface.restart() }
+      }
+
       resolve({finished:true, newRoom:game.rooms[rNum].id})
     })
 
