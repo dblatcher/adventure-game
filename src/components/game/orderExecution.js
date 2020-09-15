@@ -31,6 +31,7 @@ function runSequence(input, options) {
     let sequence = typeof input === "string" ?
         this.gameData.sequences[input] : input;
 
+    //TO DO - make sure we can remove this block?
     if (typeof sequence === "function") {
         return sequence.apply(this, [options]);
     }
@@ -77,17 +78,37 @@ function startLoopSequence(sequenceName, options) {
 
     let count = 0;
     let max = typeof options.max === 'number' ? options.max : Infinity
-    let halted = false
+    let haltedAtNextOrder = false
+    let haltedAtEndOfCycle = false
 
     function makeLoopPromise() {
 
         let thePromise = new Promise(resolve => {
 
             function execute() {
-                return game.runSequence(sequence, options).then(result => { return repeatOrExit(result) })
+
+                return makeChain(
+                    sequence,
+                    function (order) { return order.execute(game) },
+                    function (order, result) {
+
+                        if (haltedAtNextOrder) { return false }
+                        if (Array.isArray(order)) { //TO DO move this array logic to chain Promises module
+                            let subEvaluations = order.map((subOrder, index) => {
+                                if (!subOrder.evaluate) { return true }
+                                return subOrder.evaluate(result[index])
+                            })
+                            return !subEvaluations.includes(false)
+                        }
+
+                        if (!order.evaluate) { return true }
+                        return order.evaluate(result, game)
+                    },
+                    game).then(result => { return repeatOrExit(result) })
+
             }
             function repeatOrExit(result) {
-                if (result.finished && !halted && count < max) {
+                if (result.finished && !haltedAtNextOrder && !haltedAtEndOfCycle && count < max) {
                     count++
                     return execute()
                 }
@@ -103,8 +124,13 @@ function startLoopSequence(sequenceName, options) {
 
         thePromise.interface = {
             sequenceName,
-            haltLoop() {
-                halted = true
+            haltLoopAtNextOrder() {
+                haltedAtNextOrder = true
+                return thePromise
+            },
+            haltLoopEndOfCycle() {
+                haltedAtEndOfCycle = true
+                return thePromise
             },
             getCount() {
                 return count
@@ -121,7 +147,7 @@ function startLoopSequence(sequenceName, options) {
     return loopPromise
 }
 
-function haltLoopSequence (sequenceName, options) {
+function haltLoopSequence(sequenceName, options) {
     const game = this;
 
     let sequence = game.gameData.sequences[sequenceName];
@@ -132,13 +158,11 @@ function haltLoopSequence (sequenceName, options) {
 
     if (!game.activeLoopSequences[sequenceName] || !game.activeLoopSequences[sequenceName].interface) {
         game.$store.commit('debugMessage', `Sequence "${sequenceName.toString()}" is not looping.}`)
+        return Promise.resolve({ finished: false })
     }
 
-    game.activeLoopSequences[sequenceName].interface.haltLoop()
-
-    return Promise.resolve({
-        finished: true
-    })
+    if (options.haltLoopEndOfCycle) { return game.activeLoopSequences[sequenceName].interface.haltLoopEndOfCycle() }
+    return game.activeLoopSequences[sequenceName].interface.haltLoopAtNextOrder()
 }
 
 const evalutateWildCard = (wildCardElements, game) => {

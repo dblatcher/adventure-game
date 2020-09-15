@@ -150,6 +150,18 @@ var interactions = [
 			new StandardOrder("GAME","setRoomFilter",["current","brightness","100"]),
 		]
 	),
+
+	new Interaction(['TALK','SKINNER_C'],[],
+		[
+			new StandardOrder('[status]CUTSCENE'),
+			new StandardOrder('GAME','haltLoopSequence','skinnerWalkAbout'),
+			new StandardOrder('pc::Hi!'),
+			new StandardOrder('SKINNER_C::Yes?'),
+			new StandardOrder('pc::Never mind'),
+			new StandardOrder('[status]LIVE'),
+			new StandardOrder('GAME','startLoopSequence','skinnerWalkAbout'),
+		]
+	)
 ]
 
 

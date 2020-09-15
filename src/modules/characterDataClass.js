@@ -62,17 +62,17 @@ export default class Character {
         }
         this.x = destination.x;
         this.y = destination.y;
-        game.$store.commit('debugMessage', `offstage movement: ${this.name}`)
+        // game.$store.commit('debugMessage', `offstage movement: ${this.name}`)
         return game.wait(1);
     }
 
     doAction(target, options = {}, game) {
-        game.$store.commit('debugMessage', `offstage action: ${this.name}, ${target}`)
+        // game.$store.commit('debugMessage', `offstage action: ${this.name}, ${target}`)
         return game.wait(1)
     }
 
     say(target, options = {}, game) {
-        game.$store.commit('debugMessage', `offstage speech: ${this.name}, ${target}`)
+        // game.$store.commit('debugMessage', `offstage speech: ${this.name}, ${target}`)
         return game.wait(1)
     }
 
