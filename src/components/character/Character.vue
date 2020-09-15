@@ -63,6 +63,7 @@ export default {
         name: function() {return this.char.name},
         x: function() {return this.char.x},
         y: function() {return this.char.y},
+        room: function() {return this.char.room},
         ident: function() {return this.char.id},
         dataType: function() {return 'Character'},
         recommendedVerb: function() {return this.char.recommendedVerb},
