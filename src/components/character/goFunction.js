@@ -123,7 +123,7 @@ function goTo(target, options = {}) {
         let handleRoomChange = function () {
             that.$off('moveOrderDone', handleMoveOrderDone)
             resolve({
-                finished: false,
+                finished: true,
                 reason: 'room change',
                 interuptedByChangeOfRoom: true,
                 message: `Game moved room before got to destination [${targetOrder.x},${targetOrder.y}]`

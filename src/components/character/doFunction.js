@@ -63,7 +63,7 @@ export default function (action, options = {}) {
         let handleRoomChange = function () {
             that.$off('actionOrderDone', handleActionOrderDone)
             resolve({
-                finished: false,
+                finished: true,
                 reason: 'room change',
                 interuptedByChangeOfRoom: true,
                 message: `Game moved room before ${that.ident} finished action ${currentOrder.action}`

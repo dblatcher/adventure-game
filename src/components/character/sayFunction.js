@@ -44,7 +44,7 @@ function say(text, options = {}) {
         let handleRoomChange = function () {
             that.$off('sayOrderDone', handleSayOrderDone)
             resolve({
-                finished: false,
+                finished: true,
                 reason: 'room change',
                 interuptedByChangeOfRoom: true,
                 message: `Game moved room before finished saying "${currentOrder.text}".`

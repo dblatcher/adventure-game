@@ -159,6 +159,7 @@ export default {
       narration: {contents:[], dismissable:true},
       currentMinigameName: false,
       currentMinigameProps: {},
+      activeLoopSequences: {},
     }, state.create(this.loadData, this) );
   },
 

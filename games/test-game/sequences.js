@@ -15,9 +15,9 @@ const starting = [
 
 const skinnerWalkAbout = [
     new failableOrder ('SKINNER_C>>TUBE2_W',{tests:[new StandardCondition('LIGHT_SWITCH_W','status','===','on')]}),
-    new failableOrder ('SKINNER_C::I am over here.', {action:'yell'}),
-    new failableOrder ('SKINNER_C>>TUBE1_W'),
-    new failableOrder ('SKINNER_C::Now I am up here.'),
+    new failableOrder ('SKINNER_C::I am over here.', {action:'yell', tests:[new StandardCondition('LIGHT_SWITCH_W','status','===','on')]}),
+    new failableOrder ('SKINNER_C>>TUBE1_W',{tests:[new StandardCondition('LIGHT_SWITCH_W','status','===','on')]}),
+    new failableOrder ('SKINNER_C::Now I am up here.',{tests:[new StandardCondition('LIGHT_SWITCH_W','status','===','on')]}),
 ]
 
 export default { starting, skinnerWalkAbout };

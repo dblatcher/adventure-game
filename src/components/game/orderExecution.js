@@ -62,7 +62,7 @@ function runSequence(input, options) {
 
 function startLoopSequence(sequenceName, options) {
     const game = this;
-    const roomWhereItHappened = game.rooms[options.roomNumber || game.roomNumber]
+
 
     let sequence = game.gameData.sequences[sequenceName];
     if (!sequence) {
@@ -70,24 +70,18 @@ function startLoopSequence(sequenceName, options) {
         return Promise.resolve({ finished: false })
     }
 
-    if (roomWhereItHappened.sequenceLoops[sequenceName]) {
-        game.$store.commit('debugMessage', `Sequence called: ${sequenceName.toString()} is already running in ${roomWhereItHappened.id}`)
+    if (game.activeLoopSequences[sequenceName]) {
+        game.$store.commit('debugMessage', `Sequence called: ${sequenceName.toString()} is already looping.}`)
         return Promise.resolve({ finished: false })
     }
 
     let count = 0;
     let max = typeof options.max === 'number' ? options.max : Infinity
     let halted = false
-    let interuptedByChangeOfRoom = false
 
-    function makeLoopPromise(startPending = false) {
+    function makeLoopPromise() {
 
         let thePromise = new Promise(resolve => {
-
-            if (startPending) {
-                interuptedByChangeOfRoom = true
-                return new Promise(()=>{})
-            }
 
             function execute() {
                 return game.runSequence(sequence, options).then(result => { return repeatOrExit(result) })
@@ -98,15 +92,8 @@ function startLoopSequence(sequenceName, options) {
                     return execute()
                 }
 
-                if (result.interuptedByChangeOfRoom || (
-                    result.results && result.results.map(item => item.interuptedByChangeOfRoom).indexOf(true) != -1)) {
-                    interuptedByChangeOfRoom = true
-                    game.$store.commit('debugMessage', `looping sequence ${sequenceName} interupted by change of room from ${roomWhereItHappened.id}`)
-                    return resolve(result)
-                }
-
-                game.$store.commit('debugMessage', `looping sequence ${sequenceName} finished in ${roomWhereItHappened.id}`)
-                game.$delete(roomWhereItHappened.sequenceLoops, sequenceName)
+                game.$store.commit('debugMessage', `looping sequence ${sequenceName} finished`)
+                game.$delete(game.activeLoopSequences, sequenceName)
                 return resolve(result)
 
             }
@@ -122,20 +109,6 @@ function startLoopSequence(sequenceName, options) {
             getCount() {
                 return count
             },
-            restart() {
-
-                if (halted === true) {
-                    game.$store.commit('debugMessage', `not restarting sequence ${sequenceName} in ${roomWhereItHappened.id} because it was halted`)
-                    game.$delete(roomWhereItHappened.sequenceLoops, sequenceName)
-                    return
-                }
-
-                game.$store.commit('debugMessage', `restarting sequence ${sequenceName} in ${roomWhereItHappened.id}`)
-                game.$set(roomWhereItHappened.sequenceLoops, sequenceName, makeLoopPromise(false))
-            },
-            getInteruptedByChangeOfRoom() {
-                return interuptedByChangeOfRoom
-            },
             getOriginalArguments() {
                 return { sequenceName, options, max }
             }
@@ -143,14 +116,13 @@ function startLoopSequence(sequenceName, options) {
         return thePromise
     }
 
-    let loopPromise = makeLoopPromise(roomWhereItHappened != game.rooms[game.roomNumber])
-    game.$set(roomWhereItHappened.sequenceLoops, sequenceName, loopPromise)
+    let loopPromise = makeLoopPromise()
+    game.$set(game.activeLoopSequences, sequenceName, loopPromise)
     return loopPromise
 }
 
 function haltLoopSequence (sequenceName, options) {
     const game = this;
-    const roomWhereItHappened = game.rooms[options.roomNumber || game.roomNumber]
 
     let sequence = game.gameData.sequences[sequenceName];
     if (!sequence) {
@@ -158,11 +130,11 @@ function haltLoopSequence (sequenceName, options) {
         return Promise.resolve({ finished: false })
     }
 
-    if (!roomWhereItHappened.sequenceLoops[sequenceName] || !roomWhereItHappened.sequenceLoops[sequenceName].interface) {
-        game.$store.commit('debugMessage', `Sequence "${sequenceName.toString()}" is not running in ${roomWhereItHappened.name}`)
+    if (!game.activeLoopSequences[sequenceName] || !game.activeLoopSequences[sequenceName].interface) {
+        game.$store.commit('debugMessage', `Sequence "${sequenceName.toString()}" is not looping.}`)
     }
 
-    roomWhereItHappened.sequenceLoops[sequenceName].interface.haltLoop()
+    game.activeLoopSequences[sequenceName].interface.haltLoop()
 
     return Promise.resolve({
         finished: true
