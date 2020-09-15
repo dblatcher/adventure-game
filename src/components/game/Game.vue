@@ -502,13 +502,13 @@ export default {
       return state.get(this);
     },
     loadSaveGame (savedGame) {
-      state.modify(this.$data, savedGame);
+      state.modify(this.$data, savedGame, this);
       this.$nextTick(function(){
         this.$refs.room.resize();
       });
     },
     restart () {
-      state.modify(this.$data, state.create(false, this));
+      state.modify(this.$data, state.create(false, this), this);
       this.$nextTick(function(){
         this.$refs.room.resize();
       });

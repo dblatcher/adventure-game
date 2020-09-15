@@ -77,6 +77,7 @@ function startLoopSequence(sequenceName, options) {
     }
 
     let count = 0;
+    let orderIndex = 0;
     let max = typeof options.max === 'number' ? options.max : Infinity
     let haltedAtNextOrder = false
     let haltedAtEndOfCycle = false
@@ -91,7 +92,7 @@ function startLoopSequence(sequenceName, options) {
                     sequence,
                     function (order) { return order.execute(game) },
                     function (order, result) {
-
+                        orderIndex++
                         if (haltedAtNextOrder) { return false }
                         if (Array.isArray(order)) { //TO DO move this array logic to chain Promises module
                             let subEvaluations = order.map((subOrder, index) => {
@@ -104,7 +105,10 @@ function startLoopSequence(sequenceName, options) {
                         if (!order.evaluate) { return true }
                         return order.evaluate(result, game)
                     },
-                    game).then(result => { return repeatOrExit(result) })
+                    game).then(result => { 
+                        orderIndex = 0
+                        return repeatOrExit(result) 
+                    })
 
             }
             function repeatOrExit(result) {
@@ -135,8 +139,11 @@ function startLoopSequence(sequenceName, options) {
             getCount() {
                 return count
             },
+            getOrderIndex() {
+                return orderIndex
+            },
             getOriginalArguments() {
-                return { sequenceName, options, max }
+                return { sequenceName, options }
             }
         }
         return thePromise
