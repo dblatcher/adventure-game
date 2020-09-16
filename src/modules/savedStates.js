@@ -59,6 +59,7 @@ function createGameData(savedGame, gameInstance) {
         inventoryItems: gameData.makeInventoryItems(),
         allCharacters: gameData.makeCharacters(),
         conversations: gameData.makeConversations(),
+        serialisedLoopSequences: [],
         gameVars: gameData.config.initialGameVars ? Object.assign({}, gameData.config.initialGameVars) : {},
         pcId: gameData.config.pcId || gameData.makeCharacters()[0].id,
     };
