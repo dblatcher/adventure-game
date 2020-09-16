@@ -76,8 +76,8 @@ function startLoopSequence(sequenceName, options) {
         return Promise.resolve({ finished: false })
     }
 
-    let count = 0;
-    let orderIndex = 0;
+    let count = options.countToStartWith || 0;
+    let orderIndex = options.orderIndexToStartWith || 0;
     let max = typeof options.max === 'number' ? options.max : Infinity
     let haltedAtNextOrder = false
     let haltedAtEndOfCycle = false
@@ -86,10 +86,10 @@ function startLoopSequence(sequenceName, options) {
 
         let thePromise = new Promise(resolve => {
 
-            function execute() {
+            function execute(firstTime = false) {
 
                 return makeChain(
-                    sequence,
+                    firstTime ? sequence.slice(orderIndex) : sequence,
                     function (order) { return order.execute(game) },
                     function (order, result) {
                         orderIndex++
@@ -105,12 +105,12 @@ function startLoopSequence(sequenceName, options) {
                         if (!order.evaluate) { return true }
                         return order.evaluate(result, game)
                     },
-                    game).then(result => { 
+                    game).then(result => {
                         orderIndex = 0
-                        return repeatOrExit(result) 
+                        return repeatOrExit(result)
                     })
-
             }
+
             function repeatOrExit(result) {
                 if (result.finished && !haltedAtNextOrder && !haltedAtEndOfCycle && count < max) {
                     count++
@@ -120,10 +120,9 @@ function startLoopSequence(sequenceName, options) {
                 game.$store.commit('debugMessage', `looping sequence ${sequenceName} finished`)
                 game.$delete(game.activeLoopSequences, sequenceName)
                 return resolve(result)
-
             }
 
-            return execute()
+            return execute(true)
         })
 
         thePromise.interface = {

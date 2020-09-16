@@ -53,4 +53,17 @@ const skinnerWalkBetweenRooms = [
     }),
 ]
 
-export default { starting, skinnerWalkAbout,skinnerWalkBetweenRooms };
+const skinnerCounting = [
+    new StandardOrder ('SKINNER_C::1'),
+    new StandardOrder ('SKINNER_C::2'),
+    new StandardOrder ('SKINNER_C::3'),
+    new StandardOrder ('SKINNER_C::4'),
+    new StandardOrder ('SKINNER_C::5'),
+    new StandardOrder ('SKINNER_C::6'),
+    new StandardOrder ('SKINNER_C::7'),
+    new StandardOrder ('SKINNER_C::8'),
+    new StandardOrder ('SKINNER_C::9'),
+    new StandardOrder ('SKINNER_C::10'),
+]
+
+export default { starting, skinnerWalkAbout,skinnerWalkBetweenRooms, skinnerCounting };

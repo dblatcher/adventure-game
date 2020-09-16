@@ -148,7 +148,11 @@ function restartSerialisedLoopSequences(gameInstance, serialisedLoopSequences) {
 
     serialisedLoopSequences.forEach(serialisedLoopSequence => {
         //TO DO - add option to set the count and orderIndex to match serialisedLoopSequence.count and serialisedLoopSequence.orderIndex
-        gameInstance.startLoopSequence(serialisedLoopSequence.sequenceName, serialisedLoopSequence.options)
+        let modifiedOptions = Object.assign({}, serialisedLoopSequence.options)
+        modifiedOptions.countToStartWith = serialisedLoopSequence.count
+        modifiedOptions.orderIndexToStartWith = serialisedLoopSequence.orderIndex
+
+        gameInstance.startLoopSequence(serialisedLoopSequence.sequenceName, modifiedOptions)
     })
 }
 
