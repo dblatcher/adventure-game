@@ -99,9 +99,29 @@ An Order is an object reprensenting an call to a method of either the gameInstan
 Under the hood, when webventure executes an order, it returns a Promise, which allows it to chain a Sequence of Orders together, know when the Sequence has finished and use the outcome of an Order to determine what happens next. An Order won't necesssarily 'finish' sucessfully when executed - if you order a Character to walk to a location it cannot reach, or the user interrupts the Order by issuing another Command, for example. The Order.execute Promise resolves a 'result' object with a boolean 'finished' property. 
 
 There different kinds of Order that can be used:
-* StandardOrder - calls the method, then returns the 'result'.
-* failableOrder - calls the method, if the Outcome reports the Order was 'finished', the Sequence continues - if not the Sequence is interrupted and ends with this failableOrder.
+* StandardOrder - calls the method, then returns the result.
+* failableOrder - calls the method, if the result reports the Order was 'finished' and not of the optional StandardConditions(see below) fail, the Sequence continues - if not the Sequence is interrupted and ends with this failableOrder.
 * ConditionalOrder - Evaluates an array of StandardConditions (see below), then executes its 'orderIfTrue' (if there is one) if all the conditions pass, else executes its 'orderIfFalse'(if there is one), then moves to the next Order in Sequence. 
 * BranchingOrder - executes an 'initial' Order then executes a Sequence determined by the initial Order's result. This can either be based on the result's 'finished' propery or its 'outcome' property (currently, only running Minigames will produce a result with an 'outcome' property)
 
  Take look at /games/test-game/game-interactions.js to see some examples a Orders being defined.
+
+ ### In good Condition
+ StandardConditions are objects representing a conditional. They are used in Interactions, Conditional Order etc. Their 'evaluate' method take the game component as an argument and return true or false depening on the current game state. 
+ 
+ For example:
+
+```
+    new StandardCondition('DOOR_W','status','===','closed')
+```
+
+returns a StandardCondition with an execute method that will return true if the 'status' property of the WorldItem with id 'DOOR_W' is equal to 'closed'. Whereas: 
+
+```
+    new StandardCondition('GAME','roomNumber','===',3)
+```
+
+returns a StandardCondition withe an execute method that will return true if the Game's current roomNumber is 3.
+
+
+### Looping Sequences
