@@ -7,6 +7,3 @@ To change this:
 1. create a .env.local file in the root of adventure-game folder (these files are git ignored by default)
 2. add a value for VUE_APP_GAME_NAME in .env.local which is the same as the folder name of your target game. E.g. if your game was in "adventure-game/games/my-awesome-game", add the line VUE_APP_GAME_NAME=my-awesome-game
 3. run the npm run build or npm run serve command
-
-## how to write your own games
-[big TO DO for this...]
