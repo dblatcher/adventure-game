@@ -75,7 +75,7 @@ export default {
         },
         finishTyping() {
             this.finishedTyping = true
-            this.$emit('resolution',{finished:true})
+            this.$emit('outcome',{finished:true})
         }
     },
 

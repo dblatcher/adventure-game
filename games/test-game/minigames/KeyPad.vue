@@ -57,7 +57,7 @@ export default {
     methods: {
         exitButton() {
             if (this.inputWasCorrect) {return}
-            this.$emit('resolution',{finished:false, answer: this.answer})
+            this.$emit('outcome',{finished:false, userInput: this.userInput})
         },
         deleteKeyHandle(){
             if (this.userInput.length === 0 || this.inputWasCorrect) {return}
@@ -74,7 +74,7 @@ export default {
                 this.inputWasCorrect = true
                 this.$refs.sfx.play('correct-tone')
                 setTimeout( ()=>{
-                    this.$emit('resolution',{finished:true, answer: this.answer})
+                    this.$emit('outcome',{finished:true, userInput: this.userInput})
                 }, 1000 )
             }
         },

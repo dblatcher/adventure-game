@@ -11,7 +11,7 @@ const starting = [
     new StandardOrder ('pc##wave'),
     // new StandardOrder ('pc::This is the starting sequence for {{GAME.gameData.config.title}}.'),
     
-    new StandardOrder('[status]MINIGAME',{componentName:'TypeWriterAnimation', props:{
+    new StandardOrder('GAME','launchMinigame','TypeWriterAnimation',{ props:{
         textLines: [
             'Hey there.',
             'This is text\b\b\b\bwords...',

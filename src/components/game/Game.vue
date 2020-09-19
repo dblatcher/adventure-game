@@ -50,8 +50,9 @@
         v-bind:narration="narration"/>
       </div>
 
-    <component v-if="gameStatus === 'MINIGAME' && currentMinigameName"
+    <component v-if="currentMinigameName"
     ref="minigame"
+    @outcome="handleMinigameOutcome"
     v-bind:is="minigames[currentMinigameName]"
     v-bind="currentMinigameProps"/>
 
@@ -116,6 +117,7 @@ import handleClickOnRoom from "./handleClickOnRoom";
 import handleClickOnThing from "./handleClickOnThing";
 import handleRightClickOnThing from "./handleRightClickOnThing";
 import handleHoverEvent from "./handleHoverEvent";
+import {launchMinigame, handleMinigameOutcome} from "./minigameMethods";
 
 
 import DialogMenu from "../DialogMenu";
@@ -370,6 +372,7 @@ export default {
     processWildCards,
     wait,
     showNarration,
+    launchMinigame, handleMinigameOutcome,
 
     dismissMessage(forceDismiss) {
       if (this.narration.dismissable === false && !forceDismiss) {return false}
@@ -435,36 +438,6 @@ export default {
         this.gameStatus = statusName;
         this.$emit('game-over', parameter)
         return this.gameStatus;
-      }
-
-      if (statusName === 'MINIGAME' ) {
-
-        if (!parameter || typeof parameter !== 'object') {
-          this.$store.commit('debugMessage', 'setStatus fail: must pass an object as options')
-          return this.gameStatus;
-        }
-
-        if ( !parameter.componentName || !this.minigames[parameter.componentName]) {
-          this.$store.commit('debugMessage', `setStatus fail: options.componentName (${parameter.componentName}) not valid`)
-          return this.gameStatus;
-        }
-
-        const gameStatusBeforeMinigame = this.gameStatus
-        this.gameStatus = 'MINIGAME'
-        this.instantMode = false
-        this.currentMinigameName = parameter.componentName
-        this.currentMinigameProps = parameter.props || {}
-
-        return new Promise(resolve => {
-          const resolutionFunction = result => {
-            this.gameStatus = gameStatusBeforeMinigame
-            resolve(result)
-          }
-
-          this.$nextTick(function(){
-            this.$refs.minigame.$once('resolution', resolutionFunction)
-          })
-        })
       }
 
       this.$store.commit('debugMessage',`${statusName} is not a valid gameStatus`)
