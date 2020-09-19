@@ -37,6 +37,7 @@ const store = new Vuex.Store({
     nonAudioOptions: {
       textDelay: 100
     },
+    gameEmitter: new Emitter(),
     debugMessages: [],
   },
   getters: {

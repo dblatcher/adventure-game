@@ -64,9 +64,8 @@ export default function () {
 
     // test if character got to the moveOrder destination, shift queue, report if finished
     if (this.x ===  moveOrder.x && this.y === moveOrder.y) { 
-        
-        this.emitter.emit('moveOrderDone', moveOrder)
 
+        this.emitter.emit('moveOrderDone', moveOrder)
         this.char.destinationQueue.shift();
         if (this.char.destinationQueue.length === 0) {
             this.char.behaviour_action = this.char.waitCycle;

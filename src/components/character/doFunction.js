@@ -45,7 +45,7 @@ export default function (action, options = {}) {
         let handleActionOrderDone = function (doneOrder) {
             if (doneOrder === currentOrder) {
                 that.emitter.off('actionOrderDone', handleActionOrderDone)
-                that.$off('changing-room', handleRoomChange)
+                that.$store.state.gameEmitter.off('changing-room', handleRoomChange)
                 resolve({
                     finished: true,
                     message: that.ident + ' finished action:' + currentOrder.action
@@ -62,17 +62,18 @@ export default function (action, options = {}) {
 
         let handleRoomChange = function () {
             that.emitter.off('actionOrderDone', handleActionOrderDone)
+            let message = `Game moved room before ${that.ident} finished action ${currentOrder.action}`
             resolve({
                 finished: true,
                 reason: 'room change',
                 interuptedByChangeOfRoom: true,
-                message: `Game moved room before ${that.ident} finished action ${currentOrder.action}`
+                message, 
             })
         }
 
 
         that.emitter.on('actionOrderDone', handleActionOrderDone)
-        that.gameInstance.$once('changing-room', handleRoomChange)
+        that.$store.state.gameEmitter.once('changing-room', handleRoomChange)
 
     });
 }

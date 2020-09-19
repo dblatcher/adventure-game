@@ -34,7 +34,7 @@ function say(text, options = {}) {
         function handleSayOrderDone(orderJustDone) {
             if (orderJustDone !== currentOrder) { return false }
             that.emitter.off('sayOrderDone', handleSayOrderDone)
-            that.$off('changing-room', handleRoomChange)
+            that.$store.state.gameEmitter.off('changing-room', handleRoomChange)
             resolve({
                 finished: true,
                 message: `${that.name} finished saying "${currentOrder.text}".`,
@@ -43,16 +43,17 @@ function say(text, options = {}) {
 
         let handleRoomChange = function () {
             that.emitter.off('sayOrderDone', handleSayOrderDone)
+            let message = `Game moved room before finished saying "${currentOrder.text}".`
             resolve({
                 finished: true,
                 reason: 'room change',
                 interuptedByChangeOfRoom: true,
-                message: `Game moved room before finished saying "${currentOrder.text}".`
+                message,
             })
         }
 
         that.emitter.on('sayOrderDone', handleSayOrderDone)
-        that.gameInstance.$once('changing-room', handleRoomChange)
+        that.$store.state.gameEmitter.once('changing-room', handleRoomChange)
     });
 
 }

@@ -32,8 +32,7 @@ function changeRoom (target,options={}) {
 
     game.$nextTick( function() {
       game.$refs.room.resize();
-      game.$emit('changing-room',game.rooms[rNum])
-
+      game.$store.state.gameEmitter.emit('changing-room',game.rooms[rNum])
       resolve({finished:true, newRoom:game.rooms[rNum].id})
     })
 
