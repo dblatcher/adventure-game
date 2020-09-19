@@ -44,7 +44,7 @@ export default function (action, options = {}) {
 
         let handleActionOrderDone = function (doneOrder) {
             if (doneOrder === currentOrder) {
-                that.$off('actionOrderDone', handleActionOrderDone)
+                that.emitter.off('actionOrderDone', handleActionOrderDone)
                 that.$off('changing-room', handleRoomChange)
                 resolve({
                     finished: true,
@@ -52,7 +52,7 @@ export default function (action, options = {}) {
                 });
             }
             else if (!that.char.actionQueue.includes(currentOrder)) {
-                that.$off('actionOrderDone', handleActionOrderDone)
+                that.emitter.off('actionOrderDone', handleActionOrderDone)
                 resolve({
                     finished: false,
                     message: that.ident + ' did not finish action:' + currentOrder.action
@@ -61,7 +61,7 @@ export default function (action, options = {}) {
         }
 
         let handleRoomChange = function () {
-            that.$off('actionOrderDone', handleActionOrderDone)
+            that.emitter.off('actionOrderDone', handleActionOrderDone)
             resolve({
                 finished: true,
                 reason: 'room change',
@@ -71,7 +71,7 @@ export default function (action, options = {}) {
         }
 
 
-        that.$on('actionOrderDone', handleActionOrderDone)
+        that.emitter.on('actionOrderDone', handleActionOrderDone)
         that.gameInstance.$once('changing-room', handleRoomChange)
 
     });

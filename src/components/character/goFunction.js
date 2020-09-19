@@ -105,7 +105,7 @@ function goTo(target, options = {}) {
 
         let handleMoveOrderDone = function (doneOrder) {
             if (doneOrder === targetOrder) {
-                that.$off('moveOrderDone', handleMoveOrderDone)
+                that.emitter.off('moveOrderDone', handleMoveOrderDone)
                 that.$off('changing-room', handleRoomChange)
                 if (targetOrder.x === that.x && targetOrder.y === that.y) {
                     resolve({ finished: true, message: `Reached [${targetOrder.x},${targetOrder.y}]` });
@@ -115,13 +115,13 @@ function goTo(target, options = {}) {
                 return;
             }
             else if (!that.char.destinationQueue.includes(targetOrder)) {
-                that.$off('moveOrderDone', handleMoveOrderDone)
+                that.emitter.off('moveOrderDone', handleMoveOrderDone)
                 resolve({ finished: false, reason: 'destination change', message: `Not going to [${targetOrder.x},${targetOrder.y}] any more` })
             }
         }
 
         let handleRoomChange = function () {
-            that.$off('moveOrderDone', handleMoveOrderDone)
+            that.emitter.off('moveOrderDone', handleMoveOrderDone)
             resolve({
                 finished: true,
                 reason: 'room change',
@@ -131,7 +131,7 @@ function goTo(target, options = {}) {
         }
 
         // subscribe to event fired by this.move (called by onBeat) when a move order is finished
-        that.$on('moveOrderDone', handleMoveOrderDone)
+        that.emitter.on('moveOrderDone', handleMoveOrderDone)
         that.gameInstance.$once('changing-room', handleRoomChange)
 
     });

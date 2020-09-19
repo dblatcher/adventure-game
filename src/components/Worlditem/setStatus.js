@@ -30,17 +30,17 @@ export default function setStatus (input) {
                     finished:true,
                     message: that.ident + ' finished sequence ending in ' + lastOrder.cycle
                 });
-                that.$off('statusOrderDone', handleStatusOrderDone);
+                that.emitter.off('statusOrderDone', handleStatusOrderDone);
             } else if (that.item.queue.indexOf(lastOrder) === -1) {
                 resolve({
                     finished: false,
                     message: that.ident + ' no longer doing sequence ending with ' + lastOrder.cycle
                 });
-                that.$off('statusOrderDone', handleStatusOrderDone);
+                that.emitter.off('statusOrderDone', handleStatusOrderDone);
             }
         }
 
-        that.$on('statusOrderDone', handleStatusOrderDone);
+        that.emitter.on('statusOrderDone', handleStatusOrderDone);
 
     });
 

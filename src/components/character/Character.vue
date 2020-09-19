@@ -44,6 +44,7 @@ import doFunction from "./doFunction";
 import moveFunction from "./moveFunction";
 
 import { innerBorder } from "../../modules/styleGen";
+import { TinyEmitter } from 'tiny-emitter';
 
 export default {
     name:'Character',
@@ -52,7 +53,8 @@ export default {
 
     data: function() {
         return {
-            timeSpentIdle : 0
+            timeSpentIdle : 0,
+            emitter: new TinyEmitter()
         }
     },
 
@@ -196,7 +198,7 @@ export default {
            
             if (onLastFrame && (!order.loop && !noActions )) {
                 this.char.actionQueue.shift();
-                this.$emit ('actionOrderDone', order)
+                this.emitter.emit ('actionOrderDone', order)
             }
         },  
         clickHandler : function (event) {

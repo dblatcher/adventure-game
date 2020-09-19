@@ -30,6 +30,7 @@ import SfxPlayer from "../SfxPlayer";
 import setStatus from "./setStatus.js";
 import setRemoval from "./setRemoval.js";
 import { innerBorder } from "../../modules/styleGen";
+import { TinyEmitter } from 'tiny-emitter';
 
 export default {
     name:'WorldItem',
@@ -39,6 +40,7 @@ export default {
     data: function() {
         return {
             cycleFrame:0,
+            emitter: new TinyEmitter()
         }
     },
 
@@ -151,7 +153,7 @@ export default {
 
             if (onLastFrame) {
                 if (this.item.queue.length) {
-                    this.$emit('statusOrderDone',this.item.queue[0])
+                    this.emitter.emit('statusOrderDone',this.item.queue[0])
                     this.item.status = this.item.queue.shift().cycle;
                 }
             }

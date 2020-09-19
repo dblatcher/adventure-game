@@ -33,7 +33,7 @@ function say(text, options = {}) {
 
         function handleSayOrderDone(orderJustDone) {
             if (orderJustDone !== currentOrder) { return false }
-            that.$off('sayOrderDone', handleSayOrderDone)
+            that.emitter.off('sayOrderDone', handleSayOrderDone)
             that.$off('changing-room', handleRoomChange)
             resolve({
                 finished: true,
@@ -42,7 +42,7 @@ function say(text, options = {}) {
         }
 
         let handleRoomChange = function () {
-            that.$off('sayOrderDone', handleSayOrderDone)
+            that.emitter.off('sayOrderDone', handleSayOrderDone)
             resolve({
                 finished: true,
                 reason: 'room change',
@@ -51,7 +51,7 @@ function say(text, options = {}) {
             })
         }
 
-        that.$on('sayOrderDone', handleSayOrderDone)
+        that.emitter.on('sayOrderDone', handleSayOrderDone)
         that.gameInstance.$once('changing-room', handleRoomChange)
     });
 
@@ -71,7 +71,7 @@ function countDownSpeech(beat) {
                 this.char.behaviour_actFrame = 0;
             }
 
-            this.$emit('sayOrderDone', this.char.sayingQueue[0])
+            this.emitter.emit('sayOrderDone', this.char.sayingQueue[0])
             this.char.sayingQueue.shift() // remove current order from queue
 
             if (this.char.sayingQueue.length > 0) { //execute queued order with no promise
