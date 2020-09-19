@@ -173,7 +173,6 @@ export default {
     },
 
     mounted () {
-
         this.gameInstance.$refs.heartBeat.emitter.on('beat', this.onBeat)
     },
 

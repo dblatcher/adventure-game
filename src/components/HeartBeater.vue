@@ -3,13 +3,13 @@
 </template>
 
 <script>
-var Emitter = require ('tiny-emitter');
+import { TinyEmitter } from 'tiny-emitter';
 export default {
 
     props: ['delay','timerIsStopped'],
 
     data: function () {
-        const emitter = new Emitter();
+        const emitter = new TinyEmitter();
         return {
             count: 0,
             currentDelay: this.delay || 100,
