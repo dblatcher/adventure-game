@@ -156,7 +156,7 @@ export default {
     if ( this.audio.soundEnabled && this.audio.audioContext.state === 'suspended') {
       this.audio.audioContext.resume()
       .then( () => {
-        this.$emit('audio-enabled')
+        this.audio.emitter.emit('audio-enabled')
       })
     }
    },

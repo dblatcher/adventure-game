@@ -28,7 +28,7 @@ export default {
     },
 
     computed: {
-        audioContextStatusEmitter() {return this.$root.$children[0]},
+        audioEmitter() {return this.$store.state.audio.emitter},
         audio() { return this.$store.state.audio},
         sounds() { return this.$store.state.gameData.sounds}
     },
@@ -119,27 +119,13 @@ export default {
                     const confirmEnd = () => {
                         audioElement.dataSet.waiting = false
                         audioElement.removeEventListener('ended', confirmEnd)
-                        this.audioContextStatusEmitter.$off('audio-disabled', confirmEndBecauseSoundDisable)
                         resolve({
                             finished:true,
                             play:play,
                             message:`${sound.description} finished`
                         })
                     }
-                    const confirmEndBecauseSoundDisable = () => {
-                        audioElement.dataSet.waiting = false
-                        audioElement.removeEventListener('ended', confirmEnd)
-                        this.audioContextStatusEmitter.$off('audio-disabled', confirmEndBecauseSoundDisable)
-                        this.stop(sound.id,{now:true})
-                        // TO DO: should really delay for remaining time of track before resolving? 
-                        resolve({
-                            finished:true,
-                            play:play,
-                            message:`${sound.description} stopped because audio disabled`
-                        })
-                    }
                     audioElement.addEventListener('ended', confirmEnd)
-                    this.audioContextStatusEmitter.$on('audio-disabled', confirmEndBecauseSoundDisable)
                 })
             }
 
@@ -219,7 +205,7 @@ export default {
             })
         }
 
-        this.audioContextStatusEmitter.$on('audio-enabled', this.handleAudioContextEnabled)
+        this.audioEmitter.on('audio-enabled', this.handleAudioContextEnabled)
 
         if (this.heartBeat) {
             this.heartBeat.emitter.on('timer-stop', this.handleGamePaused)
@@ -233,7 +219,7 @@ export default {
     },
 
     beforeDestroy() {
-        this.audioContextStatusEmitter.$off('audio-enabled', this.handleAudioContextEnabled)
+        this.audioEmitter.off('audio-enabled', this.handleAudioContextEnabled)
         if (this.heartBeat) {
             this.heartBeat.emitter.off('timer-stop', this.handleGamePaused)
             this.heartBeat.emitter.off('timer-start', this.handleGameUnpaused)

@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import App from './App.vue'
-const gameIndex = require(`../games/${process.env.VUE_APP_GAME_NAME}/gameIndex`)
+var Emitter = require ('tiny-emitter');
 
+const gameIndex = require(`../games/${process.env.VUE_APP_GAME_NAME}/gameIndex`)
 gameIndex.gameData.config = gameIndex.gameData.config || {}
 
 const debug = {
@@ -31,6 +32,7 @@ const store = new Vuex.Store({
       soundEnabled: false,
       sfxVolume: 1,
       musicVolume: .2,
+      emitter: new Emitter(),
     },
     nonAudioOptions: {
       textDelay: 100

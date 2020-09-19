@@ -25,7 +25,7 @@ export default {
     },
 
     computed: {
-        audioContextStatusEmitter() {return this.$root.$children[0]},
+        audioEmitter() {return this.$store.state.audio.emitter},
         audioContext() {return this.$store.state.audio.audioContext}
     },
 
@@ -139,8 +139,8 @@ export default {
             .connect(this.gainNode)
             .connect(this.audioContext.destination)
 
-        if (this.audioContextStatusEmitter) {
-            this.audioContextStatusEmitter.$on('audio-enabled', this.handleAudioContextEnabled)
+        if (this.audioEmitter) {
+            this.audioEmitter.on('audio-enabled', this.handleAudioContextEnabled)
         }
 
         if (this.audioContext.state !== 'suspended' && this.orders.playing) {
@@ -150,8 +150,8 @@ export default {
     },
 
     beforeDestroy() {
-        if (this.audioContextStatusEmitter) {
-            this.audioContextStatusEmitter.$off('audio-enabled', this.handleAudioContextEnabled)
+        if (this.audioEmitter) {
+            this.audioEmitter.off('audio-enabled', this.handleAudioContextEnabled)
         }
     }
 }
