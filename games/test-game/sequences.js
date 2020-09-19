@@ -7,10 +7,23 @@ import { StandardCondition } from "../../src/modules/StandardCondition";
 
 const starting = [
     new StandardOrder ('[status]CUTSCENE'),
-    new StandardOrder ('pc::Hello World, my name is {{pc.name}}.'),
+    // new StandardOrder ('pc::Hello World, my name is {{pc.name}}.'),
     new StandardOrder ('pc##wave'),
-    new StandardOrder ('pc::This is the starting sequence for {{GAME.gameData.config.title}}.'),
+    // new StandardOrder ('pc::This is the starting sequence for {{GAME.gameData.config.title}}.'),
+    
+    new StandardOrder('[status]MINIGAME',{componentName:'TypeWriterAnimation', props:{
+        textLines: [
+            'Hey there.',
+            'This is text\b\b\b\bwords...',
+            'in a custom anina\b\bmation.',
+        ],
+        pageStyle: {
+        },
+        inkStyle : {
+        }
+    }}),
     new StandardOrder ('[status]LIVE'),
+    
 ]
 
 const skinnerWalkAbout = [

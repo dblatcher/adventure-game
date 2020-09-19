@@ -32,6 +32,12 @@ var sounds = [
     new Sound('keypad wrong tone', 'wrong-tone', require('./audio/zapsplat_multimedia_game_error_tone_001_24919.mp3' )),
     new Sound('footstep1','step1', require('./audio/zapsplat_foley_footstep_single_shoe_soft_girls_carpet_007_36951.mp3')),
     new Sound('footstep2','step2', require('./audio/zapsplat_foley_footstep_single_shoe_soft_girls_carpet_015_36959.mp3')),
+    new Sound('typewriter number', 'typeNum', require('./audio/zapsplat_office_typewriter_number_single_key_press_rear_close_vintage_1960_lemair_helvetia_001_41002.mp3')),
+    new Sound('typewriter key', 'typeKey', require('./audio/zapsplat_office_typewriter_single_key_press_medium_typebar_rear_close_vintage_1960_lemair_helvetia_001_41017.mp3')),
+    new Sound('typewriter enter bell', 'typeEnterBell', require('./audio/zapsplat_office_typewriter_carriage_return_vintage_1960_lemair_helvetia_001_40994.mp3')),
+    new Sound('typewriter space', 'typeSpace', require('./audio/zapsplat_office_typewriter_spacebar_key_press_typebar_rfront_close_vintage_1960_lemair_helvetia_001_41037.mp3')),
+    new Sound('typewriter enter', 'typeEnter', require('./audio/zapsplat_office_typewriter_carriage_return_margin_bell_vintage_1960_lemair_helvetia_001_40992.mp3')),
+    new Sound('typewriter tab', 'typeTab', require('./audio/zapsplat_office_typewriter_tab_single_key_press_rear_close_vintage_1960_lemair_helvetia_004_41045.mp3')),
 ]
 
 var music = {

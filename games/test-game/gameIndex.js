@@ -2,6 +2,7 @@ import TitleScreen from './Title-Screen'
 import EndingScreen from './Ending-Screen'
 
 import KeyPad from './minigames/KeyPad'
+import TypeWriterAnimation from './minigames/TypeWriterAnimation'
 
 import { interactionMatrix } from './game-interactions'
 import { makeConversations } from "./game-conversations";
@@ -15,7 +16,7 @@ require('./custom.scss');
 const gameData = { ...gameContentsImport, ...gameConfigImport,
     sequences, interactionMatrix, makeConversations,}
 
-const minigames = {KeyPad}
+const minigames = {KeyPad, TypeWriterAnimation}
 
 export {
     TitleScreen,
