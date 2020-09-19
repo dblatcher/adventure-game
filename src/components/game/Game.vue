@@ -35,7 +35,6 @@
               roomWidth: rooms[roomNumber].width,
               roomHeight: rooms[roomNumber].height,
               highlight: highlightingThings,
-              heartBeat: $refs.heartBeat
             }"
 
             @character-moved="adjustScroll"
