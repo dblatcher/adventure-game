@@ -2,7 +2,6 @@
   <main class="game">
 
     <HeartBeater 
-    @beat="onBeat" 
     delay="50" 
     v-bind:timerIsStopped="timerIsStopped"
     ref="heartBeat"/>
@@ -35,7 +34,8 @@
               measure: roomMeasure,
               roomWidth: rooms[roomNumber].width,
               roomHeight: rooms[roomNumber].height,
-              highlight: highlightingThings
+              highlight: highlightingThings,
+              heartBeat: $refs.heartBeat
             }"
 
             @character-moved="adjustScroll"
@@ -314,10 +314,6 @@ export default {
   },
   
   methods : {
-
-    onBeat (data) {
-      this.$refs.things.forEach(thing => {thing.onBeat(data)})
-    },
 
     openFileMenu() {
      if (this.gameStatus === 'CUTSCENE') {return false}

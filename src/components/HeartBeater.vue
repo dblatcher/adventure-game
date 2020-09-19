@@ -23,7 +23,6 @@ export default {
             if (this.timerIsStopped) {return false}
             this.count++;
             this.emitter.emit('beat',{count:this.count, time: new Date, delay:this.currentDelay})
-            this.$emit('beat',{count:this.count, time: new Date, delay:this.currentDelay})
             if (this.delay !== this.currentDelay) {
                 clearInterval(this.timer);
                 this.currentDelay = this.delay;
@@ -36,18 +35,16 @@ export default {
     watch: {
         timerIsStopped: function (value) {
             this.emitter.emit(value ? 'timer-stop': 'timer-start', {})
-            this.$emit(value ? 'timer-stop': 'timer-start', {})
         }
     },
 
-    mounted : function() {        
+    mounted : function() {
         var that = this;
         this.timer = setInterval (function(){that.beat()},that.delay);
     },
-    
+
     beforeDestroy: function() {
         clearInterval(this.timer);    
     }
-
 }
 </script>

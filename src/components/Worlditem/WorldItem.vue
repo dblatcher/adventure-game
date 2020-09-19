@@ -19,7 +19,7 @@
         </div>
         <SfxPlayer
         v-bind:audioPosition="audioPosition"
-        v-bind:heartBeat="gameInstance.$refs.heartBeat"
+        v-bind:heartBeat="heartBeat"
         ref="audio"/>
     </article>
 </template>
@@ -34,7 +34,7 @@ import { innerBorder } from "../../modules/styleGen";
 export default {
     name:'WorldItem',
     components: { Sprite,SfxPlayer },
-    props:['data','measure','highlight'],
+    props:['data','measure','highlight','heartBeat'],
 
     data: function() {
         return {
@@ -169,6 +169,14 @@ export default {
         },
 
     },
+
+    mounted () {
+        this.heartBeat.emitter.on('beat', this.onBeat)
+    },
+
+    beforeDestroy() {
+        this.heartBeat.emitter.off('beat', this.onBeat)
+    }
 
 }
 </script>

@@ -27,7 +27,7 @@
         
         <SfxPlayer 
         v-bind:audioPosition="audioPosition"
-        v-bind:heartBeat="gameInstance.$refs.heartBeat"
+        v-bind:heartBeat="heartBeat"
         ref="audio"/>
 
     </article>
@@ -48,7 +48,7 @@ import { innerBorder } from "../../modules/styleGen";
 export default {
     name:'Character',
     components:{Sprite, SpeechLine, SfxPlayer},
-    props:['data', 'measure','roomWidth','roomHeight','highlight'],
+    props:['data', 'measure','roomWidth','roomHeight','highlight', 'heartBeat'],
 
     data: function() {
         return {
@@ -162,7 +162,7 @@ export default {
             }
         }
     },
-    
+
     methods : {
         doAction : doFunction,
         goTo, turnTo,
@@ -230,6 +230,14 @@ export default {
             this.move();
             this.countDownSpeech(beat);
         }
+    },
+
+    mounted () {
+        this.heartBeat.emitter.on('beat', this.onBeat)
+    },
+
+    beforeDestroy() {
+        this.heartBeat.emitter.off('beat', this.onBeat)
     }
 
 }
