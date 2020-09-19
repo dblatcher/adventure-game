@@ -135,6 +135,7 @@ export default {
             font-family: sans-serif;
             margin-bottom: 10px;
             cursor: pointer;
+            line-height: 2;
 
             &--enter {
                 width: 60%;
