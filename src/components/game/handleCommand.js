@@ -56,7 +56,7 @@ export default function (command) {
       //if all the condtions pass, record the response for the interaction and end the loop 
       if (!failedCondition) {
         response = matchingList[i].response;
-        this.$emit('interaction-start',command)
+        this.$store.state.gameEmitter.emit('interaction-start',command)
         break;
       }
     }
@@ -67,7 +67,7 @@ export default function (command) {
       || defaultResponses["misc"] 
       || function(){ return []}
       response = defaultResponseFunction(command)
-      this.$emit('default-response-start',command)
+      this.$store.state.gameEmitter.emit('default-response-start',command)
     }
 
 

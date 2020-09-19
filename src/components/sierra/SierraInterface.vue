@@ -122,15 +122,15 @@ export default {
 
     mounted () {
         window.addEventListener('contextmenu',this.changeToNextVerb)
-        this.$parent.$on('unhandled-right-click-on-thing', this.changeToNextVerb)
-        this.$parent.$on('interaction-start', this.closeInventory)
-        this.$parent.$on('default-response-start', this.closeInventory)
+        this.$store.state.gameEmitter.on('unhandled-right-click-on-thing', this.changeToNextVerb)
+        this.$store.state.gameEmitter.on('interaction-start', this.closeInventory)
+        this.$store.state.gameEmitter.on('default-response-start', this.closeInventory)
     },
     beforeDestroy() {
         window.removeEventListener('contextmenu',this.changeToNextVerb)
-        this.$parent.$off('unhandled-right-click-on-thing', this.changeToNextVerb)
-        this.$parent.$off('interaction-start', this.closeInventory)
-        this.$parent.$off('default-response-start', this.closeInventory)
+        this.$store.state.gameEmitter.off('unhandled-right-click-on-thing', this.changeToNextVerb)
+        this.$store.state.gameEmitter.off('interaction-start', this.closeInventory)
+        this.$store.state.gameEmitter.off('default-response-start', this.closeInventory)
     }
 }
 </script>

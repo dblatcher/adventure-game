@@ -29,13 +29,13 @@ function showNarration (target, options={}) {
     }
 
     if (options.waitForDismiss) {
-        this.narration.dismissable = true;    
+        this.narration.dismissable = true;
         return new Promise (resolve => {
             const waitForDismiss = () => {
-                this.$off('dismissed-message', waitForDismiss)
+                this.$store.state.gameEmitter.off('dismissed-message', waitForDismiss)
                 resolve({finished:true})
             }
-            this.$on('dismissed-message', waitForDismiss)
+            this.$store.state.gameEmitter.on('dismissed-message', waitForDismiss)
         })
     }
 

@@ -22,5 +22,5 @@ export default function(thing) {
     interactWithRecommendedVerb.apply(this,[thing])
     return
   }
-  this.$emit('unhandled-right-click-on-thing')
+  this.$store.state.gameEmitter.emit('unhandled-right-click-on-thing')
 }

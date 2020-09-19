@@ -374,7 +374,7 @@ export default {
     dismissMessage(forceDismiss) {
       if (this.narration.dismissable === false && !forceDismiss) {return false}
       this.narration.contents.splice(0, this.narration.contents.length)
-      this.$emit('dismissed-message',{})
+      this.$store.state.gameEmitter.emit('dismissed-message',{})
     },
 
     handleSkipButton() {
