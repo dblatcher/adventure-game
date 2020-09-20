@@ -3,7 +3,7 @@
     @click="$emit('dismiss',$event)"
     >
         <div class="text-frame">
-            <p class="line" v-for="line in narration.contents">{{line}}</p>
+            <p class="line" v-for="(line, index) in narration.contents" :key="index">{{line}}</p>
         </div>
 
          <div v-show="narration.dismissable" class="dismiss-button"><img src="../icons/window-close.svg"/></div>

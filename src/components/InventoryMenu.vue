@@ -3,7 +3,7 @@
 
         <div class="inventory-menu__holder">
             <figure 
-            v-for="item, index in this.items" v-bind:key="index"
+            v-for="(item, index) in this.items" v-bind:key="index"
             @click="$emit('item-clicked', item)" 
             @contextmenu="rightClickHandler(item, $event)" 
             v-on:mouseover="hoverHandler(item,$event)" 

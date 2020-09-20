@@ -1,6 +1,6 @@
 <template>
     <section class="verb-menu" >
-        <div class="verb-menu__option" v-for="verb, index in this.verbList":key="index">
+        <div class="verb-menu__option" v-for="(verb, index) in this.verbList" :key="index">
 
             <div class="verb-menu__box"
                 v-bind:for="'verb_'+verb.id"
