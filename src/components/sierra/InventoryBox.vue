@@ -10,7 +10,7 @@
         @tile-click="$emit('verb-clicked', verb)" 
         v-bind:key="verb.id"
         v-bind:size="3"
-        v-bind:active="verb===currentVerb"
+        v-bind:isActive="verb===currentVerb"
         v-bind:icon="verb.icon"/>
       </div>
 
@@ -20,7 +20,7 @@
         <Tile v-for="item in items"
         @tile-click="$emit('item-clicked', item)" 
         v-bind:key="item.id"
-        v-bind:active="item===currentItem"
+        v-bind:isActive="item===currentItem"
         v-bind:icon="item.rightPicture"
         v-bind:background="item.backgroundStyleObject"/>
       </div>
