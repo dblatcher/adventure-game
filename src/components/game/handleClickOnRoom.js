@@ -2,7 +2,6 @@ export default function (event){
   if (this.gameStatus !== 'LIVE') {return false}
 
     const {config} = this.$store.state.gameData
-    var pc = this.getThings('pc');
     var room = this.$refs.room;
     var clickCoordinPx = {x: (event.offsetX),y: (room.$el.offsetHeight - event.offsetY)};
 

@@ -1,6 +1,6 @@
+// eslint-disable-next-line
 export default function (id, options={} ) {
     if (typeof id === 'object') {id=id.id}
-    var currentList, currentIndex;
 
     if (id.endsWith('_W')) {
       this.rooms[this.roomNumber].worldItems.forEach(thing => {

@@ -44,7 +44,7 @@ export default class Character {
     get isDataObject() { return true }
     get dataType() { return 'Character' }
 
-
+    // eslint-disable-next-line
     goTo(target, options = {}, game) {
         if (typeof this.room !== 'number') {
             game.$store.commit('debugMessage', `goTo call for ${this.name} to failed because ${this.name} is not in a room.`)
@@ -66,11 +66,13 @@ export default class Character {
         return game.wait(1);
     }
 
+    // eslint-disable-next-line
     doAction(target, options = {}, game) {
         // game.$store.commit('debugMessage', `offstage action: ${this.name}, ${target}`)
         return game.wait(1)
     }
 
+    // eslint-disable-next-line
     say(target, options = {}, game) {
         // game.$store.commit('debugMessage', `offstage speech: ${this.name}, ${target}`)
         return game.wait(1)

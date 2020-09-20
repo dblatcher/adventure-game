@@ -52,7 +52,7 @@ function findDirection(currentPoint, prevPoint, validDirections) {
         validDirections.includes(vertical) ? vertical : horizontal;
 }
 
-
+// eslint-disable-next-line
 function turnTo(target, options = {}) {
     let destination = standardiseDestination(target, this.gameInstance);
     if (destination === false) {

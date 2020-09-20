@@ -4,6 +4,7 @@ export default function getComponentOrDataObject (input) {
 
     if (input === 'VAR') {return this.gameVars}
 
+    //TO DO - document and/or simplify!
     let idSet = input.split('.');
     let id = idSet.pop();
     if (id === 'PC') {id = this.pcId}
@@ -14,11 +15,11 @@ export default function getComponentOrDataObject (input) {
     if (this.getThings(id)) {return this.getThings(id)}
 
     let suffix = id.substring( id.length-2)
+    let data = this.allRoomItemData;
 
     switch (suffix) {
 
         case '_W':
-            let data = this.allRoomItemData;
             if (roomId) {
                 if (data[roomId]) { return data[roomId][id] }
             } else {
@@ -37,10 +38,8 @@ export default function getComponentOrDataObject (input) {
             break;
         case '_C':
             return this.allCharactersAsObject[id];
-            break;
         case '_I':
             return this.allInventoryItemsAsObject[id]
-            break;
 
     }
 

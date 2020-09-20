@@ -40,7 +40,7 @@ function changeRoom (target,options={}) {
 
 }
 
-
+// eslint-disable-next-line
 function teleportCharacter (target, options={}) {
   
   let movingCharacter = target[0], rNum = target[1], x=target[2], y=target[3];
@@ -70,6 +70,7 @@ function teleportCharacter (target, options={}) {
 
 }
 
+// eslint-disable-next-line
 function setRoomFilter (target, options={}) {
   let rNum = target[0], filterProperty = target[1], filterValue = target[2]
   let validOrder = true
