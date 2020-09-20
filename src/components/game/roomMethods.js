@@ -30,7 +30,7 @@ function changeRoom (target,options={}) {
     game.roomNumber = rNum;
     game.thingHoveredOn = null;
 
-    game.$nextTick( function() {
+    game.$nextTick( () => {
       game.$refs.room.resize();
       game.$store.state.gameEmitter.emit('changing-room',game.rooms[rNum])
       resolve({finished:true, newRoom:game.rooms[rNum].id})
@@ -63,7 +63,7 @@ function teleportCharacter (target, options={}) {
     movingCharacter.room = rNum;
     movingCharacter.x = x;
     movingCharacter.y = y;
-    game.$nextTick( function() {
+    game.$nextTick( () => {
       resolve({finished:true, char:movingCharacter})
     });
   });
@@ -100,7 +100,7 @@ function setRoomFilter (target, options={}) {
 
   return new Promise(function(resolve) {
     targetRoom.filter[filterProperty] = Number(filterValue)
-    game.$nextTick( function() {
+    game.$nextTick( () => {
       resolve ({finished:true, message:`set ${targetRoom.name} ${filterProperty} to ${filterValue}.`})
     })
   })

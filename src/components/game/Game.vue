@@ -476,7 +476,7 @@ export default {
     },
     loadSaveGame (savedGame) {
       state.modify(this.$data, savedGame, this);
-      this.$nextTick(function(){
+      this.$nextTick(() => {
         this.$refs.room.resize();
       });
     },
