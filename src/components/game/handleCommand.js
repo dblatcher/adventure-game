@@ -16,11 +16,9 @@ function setInputsOptionsAfterCommand () {
       this.verb = verbList[0]
       this.subject = null
     } 
-    else if (this.verb.usesSelectedItem && this.selectedInventoryItem) {
-    } 
-    else {
+    else if (!this.verb.usesSelectedItem ) {
       this.subject = null
-    }
+    } 
     
   }
 
