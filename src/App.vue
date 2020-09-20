@@ -66,6 +66,7 @@ import DefaultTitleScreen from "./components/DefaultTitleScreen"
 import DefaultEndingScreen from "./components/DefaultEndingScreen"
 import DebugWindow from "./components/DebugWindow"
 
+import {reactive} from 'vue'
 
 export default {
   name: 'App',
@@ -203,16 +204,13 @@ export default {
       let dataString = JSON.stringify(state);
       window.localStorage.setItem(this.gameData.config.title+'_savedGame_'+slotNumber, dataString)
 
-      let app = this;
-      Object.keys(state).forEach ( (key) => {
-        app.$set(app.savedGames[slotNumber], key, state[key]);
-      });
+      this.savedGames[slotNumber] = reactive(state);
 
     },
 
     deleteSavedGame : function (slotNumber) {
       window.localStorage.removeItem(this.gameData.config.title+'_savedGame_'+slotNumber);
-      this.$set( this.savedGames, slotNumber, {} );
+      this.savedGames[slotNumber] = reactive({});
     },
 
   },
