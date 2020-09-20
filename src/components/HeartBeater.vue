@@ -43,7 +43,7 @@ export default {
         this.timer = setInterval (function(){that.beat()},that.delay);
     },
 
-    beforeDestroy: function() {
+    beforeUnmount: function() {
         clearInterval(this.timer);    
     }
 }

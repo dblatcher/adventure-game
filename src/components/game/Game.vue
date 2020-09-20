@@ -26,7 +26,7 @@
           v-on:clicked-room="handleClickOnRoom($event)"
           v-on:double-click="handleDoubleClick($event)">
 
-          <component ref="things"
+          <component :ref="setThingsRef"
             v-for="data in thingsInRoom" :key="rooms[roomNumber].id + '--' + data.id"
             v-bind:is="thingInRoomComponents[data.dataType]"
             v-bind="{
@@ -161,6 +161,7 @@ export default {
       currentMinigameName: false,
       currentMinigameProps: {},
       activeLoopSequences: {},
+      thingsRefs: [],
     }, state.create(this.loadData, this) );
   },
 
@@ -315,6 +316,10 @@ export default {
   },
   
   methods : {
+
+    setThingsRef(el) {
+      this.thingsRefs.push(el)
+    },
 
     openFileMenu() {
      if (this.gameStatus === 'CUTSCENE') {return false}
@@ -477,7 +482,8 @@ export default {
     },
     restart () {
       state.modify(this.$data, state.create(false, this), this);
-      this.$nextTick(function(){
+
+      this.$nextTick(() =>{
         this.$refs.room.resize();
       });
 
@@ -492,6 +498,9 @@ export default {
     this.$store.commit('debugMessage',`Game Restarted`)
   },
 
+  beforeUpdate() {
+    this.thingsRefs = []
+  },
 }
 </script>
 

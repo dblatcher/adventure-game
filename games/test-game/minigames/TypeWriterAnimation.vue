@@ -93,7 +93,7 @@ export default {
         this.addLetter()
     },
 
-    beforeDestroy() {
+    beforeUnmount() {
         if (!this.finishedTyping) { this.finishTyping() }
     },
 }

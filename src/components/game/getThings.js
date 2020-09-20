@@ -1,7 +1,7 @@
 export default function (ident) {		
     if (ident == 'pc') {ident = this.pcId;}
 
-    var list = [].concat(this.$refs.things); // array of components in room
+    var list = [].concat(this.thingsRefs); // array of components in room
 
     var result = {};
     for (var i = 0; i<list.length; i++) {

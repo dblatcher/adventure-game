@@ -176,7 +176,7 @@ export default {
         this.gameInstance.$refs.heartBeat.emitter.on('beat', this.onBeat)
     },
 
-    beforeDestroy() {
+    beforeUnmount() {
         this.gameInstance.$refs.heartBeat.emitter.off('beat', this.onBeat)
     }
 
