@@ -1,3 +1,5 @@
+import { reactive } from 'vue'
+
 export default function (action, options = {}) {
     //validate inputs
     if (typeof action !== 'string') {
@@ -26,7 +28,7 @@ export default function (action, options = {}) {
         options.direction = availableDirections[0];
     }
 
-    var currentOrder = Object.assign({ action: action, actFrame: 0 }, options);
+    var currentOrder = reactive (Object.assign({ action: action, actFrame: 0 }, options));
 
     if (this.gameInstance.instantMode) {
         this.$store.commit('debugMessage', `skipped - ${this.name} doing ${currentOrder.action}`);

@@ -1,3 +1,5 @@
+import { reactive } from 'vue'
+
 function executeSayOrder(order) {
     this.saying = order.text;
     this.sayingCountDown = order.time * (this.$store.getters.options.textDelay / 100);
@@ -13,7 +15,7 @@ function executeSayOrder(order) {
 function say(text, options = {}) {
     if (typeof options.time !== 'number') { options.time = 3000 }
     if (typeof options.action !== 'string') { options.action = this.char.talkCycle }
-    var currentOrder = Object.assign({ text: text }, options);
+    var currentOrder = reactive( Object.assign({ text: text }, options));
 
     if (this.gameInstance.instantMode) {
         this.$store.commit('debugMessage', `skipped - ${this.name}: ${currentOrder.text}`)
