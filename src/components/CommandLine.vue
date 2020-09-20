@@ -14,11 +14,6 @@
 </template>
 
 <script>
-function describe(thing) {
-  return thing.quantified && thing.quantity !== 1
-    ? thing.quantity + " " + thing.pluralName
-    : thing.name;
-}
 
 export default {
   name: "CommandLine",
@@ -33,23 +28,32 @@ export default {
     "lastCommand",
   ],
 
+  methods: {
+    describe(thing) {
+      if (thing.dataType == 'InventoryItem') {
+        return thing.description
+      }
+      return thing.name
+    }
+  },
+
   computed: {
     choosenText: function () {
       var sentence = this.verb.description + " ";
       if (this.subject) {
-        sentence += describe(this.subject) + " ";
+        sentence += this.describe(this.subject) + " ";
         if (this.needObject) {
           sentence += this.verb.preposition + " ";
         }
       }
       if (this.object) {
-        sentence += describe(this.object);
+        sentence += this.describe(this.object);
       }
 
       return sentence;
     },
     possibleText: function () {
-      return this.thingHoveredOn ? describe(this.thingHoveredOn) : "";
+      return this.thingHoveredOn ? this.describe(this.thingHoveredOn) : "";
     },
     commandInProgessText: function () {
       const { verb, subject, object, inProgress } = this.lastCommand;
@@ -58,11 +62,11 @@ export default {
       }
       let sentence = verb.description + " ";
       if (subject) {
-        sentence += describe(subject) + " ";
+        sentence += this.describe(subject) + " ";
       }
       if (object) {
         sentence += verb.preposition + " ";
-        sentence += describe(object);
+        sentence += this.describe(object);
       }
       return sentence;
     },

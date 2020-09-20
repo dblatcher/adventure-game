@@ -30,6 +30,10 @@ export default class InventoryItem  {
 
     get dataType() {return 'InventoryItem'}
 
+    get description() {
+        return (this.quantified && this.quantity !== 1) ? this.quantity + " " + this.pluralName : this.name
+    }
+
     get rightPicture() {
         if(!this.quantified) {return this.picture[1]}
 
