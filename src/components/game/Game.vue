@@ -201,14 +201,14 @@ export default {
       const {defaultVerb} = this.gameData.config;
 
       if (!thingHoveredOn ) {return null}
-      const {recommendedVerb, dataType, status} = thingHoveredOn;
+      const {recommendedVerb, dataType} = thingHoveredOn;
 
       let verbId;
       if (typeof recommendedVerb === 'string' ) {
         verbId = recommendedVerb
       }
       else if (recommendedVerb && typeof recommendedVerb === 'object') {
-        if (dataType === 'WorldItem' && recommendedVerb[status]){ verbId = recommendedVerb[status] }
+        if (dataType === 'WorldItem' && recommendedVerb[thingHoveredOn.status]){ verbId = recommendedVerb[thingHoveredOn.status] }
       }
       else if (typeof defaultVerb === 'string') {
         verbId = defaultVerb
