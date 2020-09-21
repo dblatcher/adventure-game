@@ -158,7 +158,9 @@ export default {
       currentMinigameName: false,
       currentMinigameProps: {},
       activeLoopSequences: {},
-      thingsRefs: [],
+      thingRefs: {},
+      
+
     }, state.create(this.loadData, this) );
   },
 
@@ -315,7 +317,9 @@ export default {
   methods : {
 
     setThingsRef(el) {
-      this.thingsRefs.push(el)
+      if (el && el.ident) {
+        this.thingRefs[el.ident] = el
+      }
     },
 
     openFileMenu() {
@@ -496,8 +500,13 @@ export default {
   },
 
   beforeUpdate() {
-    this.thingsRefs = []
+    this.thingRefs = {}
   },
+
+  updated() {
+    console.log(this.thingRefs)
+  }
+
 }
 </script>
 
