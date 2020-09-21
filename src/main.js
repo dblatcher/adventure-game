@@ -39,6 +39,7 @@ const store = createStore({
       textDelay: 100
     },
     gameEmitter: new TinyEmitter(),
+    timerIsStopped: undefined,
     debugMessages: [],
   },
   getters: {
@@ -67,6 +68,9 @@ const store = createStore({
         state.nonAudioOptions.textDelay = payload.textDelay
       }
 
+    },
+    setTimerStopped (state, value) {
+      state.timerIsStopped = !!value;
     },
     debugMessage(state, message) {
       if (debug.inConsole) {

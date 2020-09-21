@@ -1,10 +1,7 @@
 <template>
   <main class="game">
 
-    <HeartBeater 
-    delay="50" 
-    v-bind:timerIsStopped="timerIsStopped"
-    ref="heartBeat"/>
+    <HeartBeater v-bind="{ timerIsStopped, delay: 50 }"/>
 
     <OptionsMenu v-bind="{optionsMenuIsOpen}"
     @close="handleOptionsMenuClose"/>
@@ -389,7 +386,7 @@ export default {
       if (this.gameStatus === 'LIVE') {return}
       else {
         this.instantMode = true
-        this.$emit('instant-mode',{})
+        this.$store.state.gameEmitter('instant-mode',{})
       }
 
     },

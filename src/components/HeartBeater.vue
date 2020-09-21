@@ -3,18 +3,15 @@
 </template>
 
 <script>
-import { TinyEmitter } from 'tiny-emitter';
 export default {
 
     props: ['delay','timerIsStopped'],
 
     data: function () {
-        const emitter = new TinyEmitter();
         return {
             count: 0,
             currentDelay: this.delay || 100,
             timer: null,
-            emitter
         }
     },
 
@@ -22,7 +19,7 @@ export default {
         beat: function () {
             if (this.timerIsStopped) {return false}
             this.count++;
-            this.emitter.emit('beat',{count:this.count, time: new Date, delay:this.currentDelay})
+            this.$store.state.gameEmitter.emit('beat',{count:this.count, time: new Date, delay:this.currentDelay})
             if (this.delay !== this.currentDelay) {
                 clearInterval(this.timer);
                 this.currentDelay = this.delay;
@@ -34,7 +31,8 @@ export default {
 
     watch: {
         timerIsStopped: function (value) {
-            this.emitter.emit(value ? 'timer-stop': 'timer-start', {})
+            this.$store.commit('setTimerStopped',value);
+            this.$store.state.gameEmitter.emit(value ? 'timer-stop': 'timer-start', {})
         }
     },
 
@@ -44,7 +42,7 @@ export default {
     },
 
     beforeUnmount: function() {
-        clearInterval(this.timer);    
+        clearInterval(this.timer);
     }
 }
 </script>

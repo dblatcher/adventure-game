@@ -19,7 +19,6 @@
         </div>
         <SfxPlayer
         v-bind:audioPosition="audioPosition"
-        v-bind:heartBeat="gameInstance.$refs.heartBeat"
         ref="audio"/>
     </article>
 </template>
@@ -173,11 +172,11 @@ export default {
     },
 
     mounted () {
-        this.gameInstance.$refs.heartBeat.emitter.on('beat', this.onBeat)
+        this.$store.state.gameEmitter.on('beat', this.onBeat)
     },
 
     beforeUnmount() {
-        this.gameInstance.$refs.heartBeat.emitter.off('beat', this.onBeat)
+        this.$store.state.gameEmitter.off('beat', this.onBeat)
     }
 
 }

@@ -11,7 +11,7 @@
 <script>
 export default {
     name: "SfxPlayer",
-    props: ['audioPosition','heartBeat' ],
+    props: ['audioPosition'],
 
     data () {
         const {audioContext} = this.$store.state.audio;
@@ -170,7 +170,7 @@ export default {
         handleAudioContextEnabled () {
             if (this.audioPosition.loopSound) {
 
-                if (this.heartBeat && this.heartBeat.timerIsStopped) {
+                if (this.$store.state.timerIsStopped) {
                     this.audioElementsToResumeWhenGameUnpause.push( this.getSoundAndAudioElement(this.audioPosition.loopSound).audioElement)
                 } else {
                     this.play(this.audioPosition.loopSound, {loop:true})
@@ -215,10 +215,8 @@ export default {
 
         this.audioEmitter.on('audio-enabled', this.handleAudioContextEnabled)
 
-        if (this.heartBeat) {
-            this.heartBeat.emitter.on('timer-stop', this.handleGamePaused)
-            this.heartBeat.emitter.on('timer-start', this.handleGameUnpaused)
-        }
+        this.$store.state.gameEmitter.on('timer-stop', this.handleGamePaused)
+        this.$store.state.gameEmitter.on('timer-start', this.handleGameUnpaused)
 
         if (this.audioPosition.loopSound) {
             this.play(this.audioPosition.loopSound, {loop:true})
@@ -228,10 +226,8 @@ export default {
 
     beforeUnmount() {
         this.audioEmitter.off('audio-enabled', this.handleAudioContextEnabled)
-        if (this.heartBeat) {
-            this.heartBeat.emitter.off('timer-stop', this.handleGamePaused)
-            this.heartBeat.emitter.off('timer-start', this.handleGameUnpaused)
-        }
+        this.$store.state.gameEmitter.off('timer-stop', this.handleGamePaused)
+        this.$store.state.gameEmitter.off('timer-start', this.handleGameUnpaused)
     },
 
     beforeUpdate() {
