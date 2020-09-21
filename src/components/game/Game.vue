@@ -390,7 +390,7 @@ export default {
       if (this.gameStatus === 'LIVE') {return}
       else {
         this.instantMode = true
-        this.$store.state.gameEmitter('instant-mode',{})
+        this.$store.state.gameEmitter.emit('instant-mode',{})
       }
 
     },
@@ -453,10 +453,10 @@ export default {
 
     setGameVar(target, options={}) {
       Object.keys(target).forEach(key => {
-        this.$set(this.gameVars,key, target[key])
-      })
+        this.gameVars[key] = key
+        })
       Object.keys(options).forEach(key => {
-        this.$set(this.gameVars,key, options[key])
+        this.gameVars[key] = key
       })
       return this.gameVars;
     },
@@ -504,7 +504,7 @@ export default {
   },
 
   updated() {
-    console.log(this.thingRefs)
+    //console.log(this.thingRefs)
   }
 
 }
