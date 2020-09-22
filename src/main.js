@@ -1,9 +1,10 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import {createApp} from 'vue'
+import { createStore } from 'vuex'
 import App from './App.vue'
 import { TinyEmitter } from 'tiny-emitter';
 
 const gameIndex = require(`../games/${process.env.VUE_APP_GAME_NAME}/gameIndex`)
+
 gameIndex.gameData.config = gameIndex.gameData.config || {}
 
 const debug = {
@@ -22,8 +23,8 @@ function DebugMessage(input, messageType) {
   this.time = Date.now()
 }
 
-Vue.use(Vuex)
-const store = new Vuex.Store({
+
+const store = createStore({
   state: {
     gameData:gameIndex.gameData,
     audio: {
@@ -38,6 +39,7 @@ const store = new Vuex.Store({
       textDelay: 100
     },
     gameEmitter: new TinyEmitter(),
+    timerIsStopped: undefined,
     debugMessages: [],
   },
   getters: {
@@ -67,6 +69,9 @@ const store = new Vuex.Store({
       }
 
     },
+    setTimerStopped (state, value) {
+      state.timerIsStopped = !!value;
+    },
     debugMessage(state, message) {
       if (debug.inConsole) {
         // eslint-disable-next-line
@@ -81,23 +86,24 @@ const store = new Vuex.Store({
 
 
 
-Vue.config.productionTip = false
+//Vue.config.productionTip = false
 
 function launchApp(selector, rootProps) {
 
-  return new Vue({
-      el: selector,
-      store: store,
-      data() {return {rootProps}},
-      render(h) { 
-          return h(App, {props: {
-            showDebugMessages: debug.onScreen,
-            CustomTitleScreen: this.rootProps.gameIndex.TitleScreen,
-            CustomEndingScreen: this.rootProps.gameIndex.EndingScreen,
-            minigames: this.rootProps.gameIndex.minigames || {}
-          }})
-      },
-  });
+  const app = createApp(App,
+    {
+      showDebugMessages: debug.onScreen,
+      CustomTitleScreen: rootProps.gameIndex.TitleScreen,
+      CustomEndingScreen: rootProps.gameIndex.EndingScreen,
+      minigames: rootProps.gameIndex.minigames || {}
+    }
+  )
+
+  app.use(store)
+
+  app.mount(selector)
+
+  return app
 }
 
 launchApp('#app',{gameIndex})

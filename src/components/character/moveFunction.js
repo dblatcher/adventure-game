@@ -3,7 +3,8 @@ function skip() {
     let moveOrder = this.char.destinationQueue[this.char.destinationQueue.length-1];
     this.char.x =  moveOrder.x; 
     this.char.y = moveOrder.y;
-    this.$set(this.char, 'destinationQueue', []);
+    this.char.destinationQueue.splice (0, this.char.destinationQueue.length)
+
     this.char.behaviour_action = this.char.waitCycle;
     this.char.behaviour_actFrame = 0;
     this.char.behaviour_direction = moveOrder.direction;
@@ -64,7 +65,6 @@ export default function () {
 
     // test if character got to the moveOrder destination, shift queue, report if finished
     if (this.x ===  moveOrder.x && this.y === moveOrder.y) { 
-
         this.emitter.emit('moveOrderDone', moveOrder)
         this.char.destinationQueue.shift();
         if (this.char.destinationQueue.length === 0) {

@@ -1,6 +1,6 @@
 <template>
 <div>
-    <audio ref="audio"
+    <audio :ref="setAudioElementRefs"
     v-for="sound in sounds" 
     v-bind:key="sound.id"
     v-bind:src="sound.path">
@@ -11,7 +11,7 @@
 <script>
 export default {
     name: "SfxPlayer",
-    props: ['audioPosition','heartBeat' ],
+    props: ['audioPosition'],
 
     data () {
         const {audioContext} = this.$store.state.audio;
@@ -24,6 +24,9 @@ export default {
             audioElementsToResumeWhenGameUnpause:[],
             tracks: {},
             currentLoopSound: null,
+            audioElementRefs: [
+
+            ]
         }
     },
 
@@ -34,10 +37,15 @@ export default {
     },
 
     methods: {
+
+        setAudioElementRefs(el) {
+            this.audioElementRefs.push(el)
+        },
+
         getSoundsPlaying() {
-            if (!this.$refs.audio) {return false}
+            if (!this.audioElementRefs) {return false}
             let list = []
-            this.$refs.audio.forEach((audioElement, index) =>{
+            this.audioElementRefs.forEach((audioElement, index) =>{
                 if (audioElement.paused === false) {list.push(this.sounds[index].id)}
             })
             return list
@@ -56,7 +64,7 @@ export default {
 
             return {
                 sound:sound,
-                audioElement:this.$refs.audio[index]
+                audioElement:this.audioElementRefs[index]
             }
         },
 
@@ -143,8 +151,8 @@ export default {
         },
 
         handleGamePaused () {
-            if (!this.$refs.audio) {return false}
-            this.$refs.audio.forEach(element=> { 
+            if (!this.audioElementRefs) {return false}
+            this.audioElementRefs.forEach(element=> { 
                 if (element.paused === false) {
                     this.audioElementsToResumeWhenGameUnpause.push(element)
                     element.pause()
@@ -162,7 +170,7 @@ export default {
         handleAudioContextEnabled () {
             if (this.audioPosition.loopSound) {
 
-                if (this.heartBeat && this.heartBeat.timerIsStopped) {
+                if (this.$store.state.timerIsStopped) {
                     this.audioElementsToResumeWhenGameUnpause.push( this.getSoundAndAudioElement(this.audioPosition.loopSound).audioElement)
                 } else {
                     this.play(this.audioPosition.loopSound, {loop:true})
@@ -191,8 +199,8 @@ export default {
         this.panner.pan.value = this.audioPosition.pan
         this.gainNode.value = this.audioPosition.gain
 
-        if (this.$refs.audio) {
-            this.$refs.audio.forEach((audioElement, index) =>{
+        if (this.audioElementRefs) {
+            this.audioElementRefs.forEach((audioElement, index) =>{
                 audioElement.dataSet = {
                     loop: false
                 }
@@ -207,10 +215,8 @@ export default {
 
         this.audioEmitter.on('audio-enabled', this.handleAudioContextEnabled)
 
-        if (this.heartBeat) {
-            this.heartBeat.emitter.on('timer-stop', this.handleGamePaused)
-            this.heartBeat.emitter.on('timer-start', this.handleGameUnpaused)
-        }
+        this.$store.state.gameEmitter.on('timer-stop', this.handleGamePaused)
+        this.$store.state.gameEmitter.on('timer-start', this.handleGameUnpaused)
 
         if (this.audioPosition.loopSound) {
             this.play(this.audioPosition.loopSound, {loop:true})
@@ -218,12 +224,14 @@ export default {
         }
     },
 
-    beforeDestroy() {
+    beforeUnmount() {
         this.audioEmitter.off('audio-enabled', this.handleAudioContextEnabled)
-        if (this.heartBeat) {
-            this.heartBeat.emitter.off('timer-stop', this.handleGamePaused)
-            this.heartBeat.emitter.off('timer-start', this.handleGameUnpaused)
-        }
-    }
+        this.$store.state.gameEmitter.off('timer-stop', this.handleGamePaused)
+        this.$store.state.gameEmitter.off('timer-start', this.handleGameUnpaused)
+    },
+
+    beforeUpdate() {
+        this.audioElementRefs = []
+    },
 }
 </script>

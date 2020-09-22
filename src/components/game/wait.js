@@ -20,12 +20,12 @@ function wait(target, options={}) {
             if (unit === 'beat' || unit === 'beats') {time--}
             if (unit === 'ms') {time -= beat.delay}
             if (time <=0 ) {
-                this.$refs.heartBeat.emitter.off('beat', listenToBeat);
+                this.$store.state.gameEmitter.emit('beat', listenToBeat);
                 resolve({finished: true})
             }
         }
 
-        this.$refs.heartBeat.emitter.on('beat', listenToBeat)
+        this.$store.state.gameEmitter.on('beat', listenToBeat)
 
     })
 

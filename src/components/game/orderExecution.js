@@ -27,9 +27,8 @@ function resolveDestination(target) {
 
 
 function runSequence(input, options) {
-
     let sequence = typeof input === "string" ?
-        this.gameData.sequences[input] : input;
+    this.gameData.sequences[input] : input;
 
     //TO DO - make sure we can remove this block?
     if (typeof sequence === "function") {
@@ -90,7 +89,9 @@ function startLoopSequence(sequenceName, options) {
 
                 return makeChain(
                     firstTime ? sequence.slice(orderIndex) : sequence,
-                    function (order) { return order.execute(game) },
+                    function (order) { 
+                        return order.execute(this) 
+                     },
                     function (order, result) {
                         orderIndex++
                         if (haltedAtNextOrder) { return false }
@@ -118,7 +119,7 @@ function startLoopSequence(sequenceName, options) {
                 }
 
                 game.$store.commit('debugMessage', `looping sequence ${sequenceName} finished`)
-                game.$delete(game.activeLoopSequences, sequenceName)
+                game.activeLoopSequences[sequenceName] = null
                 return resolve(result)
             }
 
@@ -149,7 +150,7 @@ function startLoopSequence(sequenceName, options) {
     }
 
     let loopPromise = makeLoopPromise()
-    game.$set(game.activeLoopSequences, sequenceName, loopPromise)
+    game.activeLoopSequences[sequenceName]= loopPromise
     return loopPromise
 }
 

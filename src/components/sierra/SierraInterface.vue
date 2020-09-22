@@ -144,7 +144,7 @@ export default {
       this.closeInventory
     );
   },
-  beforeDestroy() {
+  beforeUnmount() {
     window.removeEventListener("contextmenu", this.changeToNextVerb);
     this.$store.state.gameEmitter.off(
       "unhandled-right-click-on-thing",

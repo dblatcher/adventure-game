@@ -11,8 +11,8 @@ function showNarration (target, options={}) {
 
         return new Promise (resolve => {
             const clear = () => {
-                this.$refs.heartBeat.emitter.off('beat', listenToBeat);
-                this.$refs.heartBeat.emitter.off('instant-mode', clear)
+                this.$store.state.gameEmitter.off('beat', listenToBeat);
+                this.$store.state.gameEmitter.off('instant-mode', clear)
                 this.dismissMessage(true)
                 resolve({finished: true})
             } 
@@ -23,8 +23,8 @@ function showNarration (target, options={}) {
                     clear()
                 }
             }
-            this.$refs.heartBeat.emitter.on('beat', listenToBeat)
-            this.$refs.heartBeat.emitter.on('instant-mode', clear)
+            this.$store.state.gameEmitter.on('beat', listenToBeat)
+            this.$store.state.gameEmitter.on('instant-mode', clear)
         })
     }
 

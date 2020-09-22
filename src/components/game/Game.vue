@@ -1,10 +1,7 @@
 <template>
   <main class="game">
 
-    <HeartBeater 
-    delay="50" 
-    v-bind:timerIsStopped="timerIsStopped"
-    ref="heartBeat"/>
+    <HeartBeater v-bind="{ timerIsStopped, delay: 50 }"/>
 
     <OptionsMenu v-bind="{optionsMenuIsOpen}"
     @close="handleOptionsMenuClose"/>
@@ -26,7 +23,7 @@
           v-on:clicked-room="handleClickOnRoom($event)"
           v-on:double-click="handleDoubleClick($event)">
 
-          <component ref="things"
+          <component :ref="setThingsRef"
             v-for="data in thingsInRoom" :key="rooms[roomNumber].id + '--' + data.id"
             v-bind:is="thingInRoomComponents[data.dataType]"
             v-bind="{
@@ -161,6 +158,9 @@ export default {
       currentMinigameName: false,
       currentMinigameProps: {},
       activeLoopSequences: {},
+      thingRefs: {},
+      
+
     }, state.create(this.loadData, this) );
   },
 
@@ -201,14 +201,14 @@ export default {
       const {defaultVerb} = this.gameData.config;
 
       if (!thingHoveredOn ) {return null}
-      const {recommendedVerb, dataType, status} = thingHoveredOn;
+      const {recommendedVerb, dataType} = thingHoveredOn;
 
       let verbId;
       if (typeof recommendedVerb === 'string' ) {
         verbId = recommendedVerb
       }
       else if (recommendedVerb && typeof recommendedVerb === 'object') {
-        if (dataType === 'WorldItem' && recommendedVerb[status]){ verbId = recommendedVerb[status] }
+        if (dataType === 'WorldItem' && recommendedVerb[thingHoveredOn.status]){ verbId = recommendedVerb[thingHoveredOn.status] }
       }
       else if (typeof defaultVerb === 'string') {
         verbId = defaultVerb
@@ -316,6 +316,12 @@ export default {
   
   methods : {
 
+    setThingsRef(el) {
+      if (el && el.ident) {
+        this.thingRefs[el.ident] = el
+      }
+    },
+
     openFileMenu() {
      if (this.gameStatus === 'CUTSCENE') {return false}
      this.$emit('open-file-menu')
@@ -384,7 +390,7 @@ export default {
       if (this.gameStatus === 'LIVE') {return}
       else {
         this.instantMode = true
-        this.$emit('instant-mode',{})
+        this.$store.state.gameEmitter.emit('instant-mode',{})
       }
 
     },
@@ -447,10 +453,10 @@ export default {
 
     setGameVar(target, options={}) {
       Object.keys(target).forEach(key => {
-        this.$set(this.gameVars,key, target[key])
-      })
+        this.gameVars[key] = key
+        })
       Object.keys(options).forEach(key => {
-        this.$set(this.gameVars,key, options[key])
+        this.gameVars[key] = key
       })
       return this.gameVars;
     },
@@ -471,13 +477,14 @@ export default {
     },
     loadSaveGame (savedGame) {
       state.modify(this.$data, savedGame, this);
-      this.$nextTick(function(){
+      this.$nextTick(() => {
         this.$refs.room.resize();
       });
     },
     restart () {
       state.modify(this.$data, state.create(false, this), this);
-      this.$nextTick(function(){
+
+      this.$nextTick(() =>{
         this.$refs.room.resize();
       });
 
@@ -491,6 +498,14 @@ export default {
     window.vm = this;
     this.$store.commit('debugMessage',`Game Restarted`)
   },
+
+  beforeUpdate() {
+    this.thingRefs = {}
+  },
+
+  updated() {
+    //console.log(this.thingRefs)
+  }
 
 }
 </script>

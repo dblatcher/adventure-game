@@ -1,3 +1,5 @@
+import { reactive } from 'vue'
+
 function skip(path) {
     return [{
         x: path[path.length - 1].x,
@@ -86,13 +88,13 @@ function goTo(target, options = {}) {
     } else {
         orders = [];
         for (var i = 0; i < path.length; i++) {
-            orders.push({
+            orders.push(reactive({
                 x: path[i].x,
                 y: path[i].y,
                 direction: findDirection(path[i], i > 0 ? path[i - 1] : this, this.char.model.validDirections),
                 action: options.action,
                 wasManual: options.wasManual,
-            });
+            }));
         }
     }
 

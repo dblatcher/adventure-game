@@ -149,7 +149,7 @@ export default {
 
     },
 
-    beforeDestroy() {
+    beforeUnmount() {
         if (this.audioEmitter) {
             this.audioEmitter.off('audio-enabled', this.handleAudioContextEnabled)
         }

@@ -40,7 +40,7 @@ export default {
             let heightRatio = this.$el.parentElement.clientHeight / this.$el.offsetHeight;
             this.$emit('scale-change', Math.min(widthRatio * this.room.screenScrollX, heightRatio))
 
-            this.$nextTick(function(){
+            this.$nextTick(() =>{
                 if (this.$el.offsetWidth < this.$el.parentElement.clientWidth) {
                     this.shouldBeCentered = true
                 } else {
@@ -75,7 +75,7 @@ export default {
     created() {
         window.addEventListener("resize", this.resize);
     },
-    destroyed() {
+    unmounted() {
         window.removeEventListener("resize", this.resize);
     },
     mounted() {
