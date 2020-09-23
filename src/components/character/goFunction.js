@@ -1,4 +1,5 @@
 import { reactive } from 'vue'
+import { makeOrderPromise } from './orderAdmin'
 
 function skip(path) {
     return [{
@@ -100,44 +101,9 @@ function goTo(target, options = {}) {
 
     this.char.destinationQueue = orders;
     var targetOrder = orders[orders.length - 1];
-    var that = this;
 
 
-    return new Promise(function (resolve) {
-
-        let handleMoveOrderDone = function (doneOrder) {
-            if (doneOrder === targetOrder) {
-                that.emitter.off('moveOrderDone', handleMoveOrderDone)
-                that.$store.state.gameEmitter.off('changing-room', handleRoomChange)
-                if (targetOrder.x === that.x && targetOrder.y === that.y) {
-                    resolve({ finished: true, message: `Reached [${targetOrder.x},${targetOrder.y}]` });
-                } else {
-                    resolve({ finished: false, message: `Did not reach [${targetOrder.x},${targetOrder.y}]` });
-                }
-                return;
-            }
-            else if (!that.char.destinationQueue.includes(targetOrder)) {
-                that.emitter.off('moveOrderDone', handleMoveOrderDone)
-                resolve({ finished: false, reason: 'destination change', message: `Not going to [${targetOrder.x},${targetOrder.y}] any more` })
-            }
-        }
-
-        let handleRoomChange = function () {
-            that.emitter.off('moveOrderDone', handleMoveOrderDone)
-            let message = `Game moved room before got to destination [${targetOrder.x},${targetOrder.y}]`
-            resolve({
-                finished: true,
-                reason: 'room change',
-                interuptedByChangeOfRoom: true,
-                message,
-            })
-        }
-
-        // subscribe to event fired by this.move (called by onBeat) when a move order is finished
-        that.emitter.on('moveOrderDone', handleMoveOrderDone)
-        that.$store.state.gameEmitter.once('changing-room', handleRoomChange)
-
-    });
+    return makeOrderPromise(this, targetOrder, 'move')
 
 }
 

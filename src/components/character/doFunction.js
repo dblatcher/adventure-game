@@ -1,4 +1,5 @@
 import { reactive } from 'vue'
+import { makeOrderPromise } from './orderAdmin'
 
 export default function (action, options = {}) {
     //validate inputs
@@ -38,44 +39,10 @@ export default function (action, options = {}) {
         });
     }
 
-    var that = this;
-
-    return new Promise(function (resolve) {
-
-        that.char.actionQueue = [currentOrder];
-
-        let handleActionOrderDone = function (doneOrder) {
-            if (doneOrder === currentOrder) {
-                that.emitter.off('actionOrderDone', handleActionOrderDone)
-                that.$store.state.gameEmitter.off('changing-room', handleRoomChange)
-                resolve({
-                    finished: true,
-                    message: that.ident + ' finished action:' + currentOrder.action
-                });
-            }
-            else if (!that.char.actionQueue.includes(currentOrder)) {
-                that.emitter.off('actionOrderDone', handleActionOrderDone)
-                resolve({
-                    finished: false,
-                    message: that.ident + ' did not finish action:' + currentOrder.action
-                });
-            }
-        }
-
-        let handleRoomChange = function () {
-            that.emitter.off('actionOrderDone', handleActionOrderDone)
-            let message = `Game moved room before ${that.ident} finished action ${currentOrder.action}`
-            resolve({
-                finished: true,
-                reason: 'room change',
-                interuptedByChangeOfRoom: true,
-                message, 
-            })
-        }
+    this.char.actionQueue = [currentOrder];
 
 
-        that.emitter.on('actionOrderDone', handleActionOrderDone)
-        that.$store.state.gameEmitter.once('changing-room', handleRoomChange)
+    return makeOrderPromise(this, currentOrder, 'action')
 
-    });
+
 }
