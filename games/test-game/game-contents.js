@@ -4,6 +4,9 @@ import Character from "../../src/modules/characterDataClass"
 import WorldItem from "../../src/modules/WorldItemDataClass"
 import InventoryItem from "../../src/modules/InventoryItem"
 
+import assets from './assest.js'
+
+
 var sprites = [
   new Sprite (0, require('./sprites/boy.png'), [4,4]),
   new Sprite (2, require('./sprites/boy2.png'),[4,4]), 
@@ -290,19 +293,19 @@ var makeRooms = function(){ return [
 ]}
 
 
-var makeInventoryItems = function() { return  [
-    new InventoryItem('bucket', require('./items/bucket.png'),{} ),
-    new InventoryItem('sock', require('./items/sock.png'),{startWith: true, background:{shape:'diamond', color:'blue'}}),
-    new InventoryItem('nail', {
-        1: require('./items/nail.png'),
-        2: require('./items/twonails.png'),
-        3: require('./items/threenails.png'),
-        4: require('./items/manynails.jpg')
-    }, {startWith: true, quantity: 2, pluralName: 'nails'}),
-    new InventoryItem('stick', require('./items/stick.jpg'),{startWith: true, name:'small wooden stick'}),
-    new InventoryItem('shoe', require('./items/shoe.jpg'),{startWith: true, name: 'big red shoe'}),
-    new InventoryItem('hammer', require('./items/hammer.jpg')),
-]};
+
+const inventoryItemsData = [
+    ['bucket', 'bucket', {}],
+    ['sock', 'sock', {startWith: true, background:{shape:'diamond', color:'blue'}}],
+    ['nail', 'nail', {startWith: true, quantity: 2, pluralName: 'nails'}],
+    ['stick', 'stick',{startWith: true, name:'small wooden stick'}],
+    ['shoe', 'shoe',{startWith: true, name: 'big red shoe'}],
+    ['hammer', 'hammer'],
+]
+
+var makeInventoryItems = function() { 
+    return  inventoryItemsData.map(datum =>  new InventoryItem(datum[0], assets[datum[1]], datum[2] || {})
+)};
 
 
 export { sprites, sounds, music, makeCharacters, makeRooms, makeInventoryItems}
