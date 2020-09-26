@@ -7,40 +7,50 @@ import InventoryItem from "../../src/modules/InventoryItem"
 import assets from './assest.js'
 
 
+function importAll(r) {
+    let images = {}
+    r.keys().forEach((item) => { images[item.replace('./', '')] = r(item); });
+    return images;
+  }
+const spriteFiles = importAll(require.context('./sprites', false, /\.(png|jpe?g|svg)$/));
+const roomFiles = importAll(require.context('./rooms', false, /\.(png|jpe?g|svg)$/));
+const audioFiles = importAll(require.context('./audio', false, /\.(mp3|wav|mp4)$/));
+
+
 var sprites = [
-  new Sprite (0, require('./sprites/boy.png'), [4,4]),
-  new Sprite (2, require('./sprites/boy2.png'),[4,4]), 
-  new Sprite ('bf', require('./sprites/boy-flag.png'), [3,1], [1,2]),
-  new Sprite ('bfr',  require('./sprites/boy-flag-raise.png'),[1,1],[2,1]),
-  new Sprite ('m',  require('./sprites/mario.png'),[3,2] ),
-  new Sprite ('w',  require('./sprites/woman.png'), [9,4]),
-  new Sprite ('w2',  require('./sprites/woman2b.png'), [3,4]),
-  new Sprite ('w-wave',  require('./sprites/womanWave.png'), [3,1]),
-  new Sprite ('door',  require('./sprites/door.png'), [3,1]),
-  new Sprite ('bucket',  require('./sprites/bucket.png'), [1,1]),
-  new Sprite ('stairs',  require('./sprites/stairs.png'), [1,1]),
-  new Sprite ('platform',  require('./sprites/testroom3platform.png'), [1,1]),
-  new Sprite ('tube',  require('./sprites/tube.png')),
-  new Sprite ('fire',  require('./sprites/Fire.png'), [4,2]),
-  new Sprite ('sk1',  require('./sprites/skinner-1-r.png'), [12,1]),
-  new Sprite ('sk2',  require('./sprites/skinner-1-l.png'), [12,1]),
-  new Sprite ('keypad',  require('./sprites/keypad.png')),
-  new Sprite ('lightSwitch', require('./sprites/switch.jpg')),
-  new Sprite ('lightSwitchFlipped', require('./sprites/switch-flip.jpg')),
+  new Sprite ('b0', spriteFiles['boy.png'], [4,4]),
+  new Sprite ('b2', spriteFiles['boy2.png'],[4,4]), 
+  new Sprite ('bf', spriteFiles['boy-flag.png'], [3,1], [1,2]),
+  new Sprite ('bfr',  spriteFiles['boy-flag-raise.png'],[1,1],[2,1]),
+  new Sprite ('m',  spriteFiles['mario.png'],[3,2] ),
+  new Sprite ('w',  spriteFiles['woman.png'], [9,4]),
+  new Sprite ('w2',  spriteFiles['woman2b.png'], [3,4]),
+  new Sprite ('w-wave',  spriteFiles['womanWave.png'], [3,1]),
+  new Sprite ('door',  spriteFiles['door.png'], [3,1]),
+  new Sprite ('bucket',  spriteFiles['bucket.png'], [1,1]),
+  new Sprite ('stairs',  spriteFiles['stairs.png'], [1,1]),
+  new Sprite ('platform',  spriteFiles['testroom3platform.png'], [1,1]),
+  new Sprite ('tube',  spriteFiles['tube.png']),
+  new Sprite ('fire',  spriteFiles['Fire.png'], [4,2]),
+  new Sprite ('sk1',  spriteFiles['skinner-1-r.png'], [12,1]),
+  new Sprite ('sk2',  spriteFiles['skinner-1-l.png'], [12,1]),
+  new Sprite ('keypad',  spriteFiles['keypad.png']),
+  new Sprite ('lightSwitch', spriteFiles['switch.jpg']),
+  new Sprite ('lightSwitchFlipped', spriteFiles['switch-flip.jpg']),
 ]
 
 var sounds = [
-    new Sound('keypad beep', 'beep', require('./audio/zapsplat_household_dehumidifier_on_off_select_beep_single_49226.mp3' )),
-    new Sound('keypad correct tone', 'correct-tone', require('./audio/zapsplat_multimedia_correct_tone_beep_17736.mp3' )),
-    new Sound('keypad wrong tone', 'wrong-tone', require('./audio/zapsplat_multimedia_game_error_tone_001_24919.mp3' )),
-    new Sound('footstep1','step1', require('./audio/zapsplat_foley_footstep_single_shoe_soft_girls_carpet_007_36951.mp3')),
-    new Sound('footstep2','step2', require('./audio/zapsplat_foley_footstep_single_shoe_soft_girls_carpet_015_36959.mp3')),
-    new Sound('typewriter number', 'typeNum', require('./audio/zapsplat_office_typewriter_number_single_key_press_rear_close_vintage_1960_lemair_helvetia_001_41002.mp3')),
-    new Sound('typewriter key', 'typeKey', require('./audio/zapsplat_office_typewriter_single_key_press_medium_typebar_rear_close_vintage_1960_lemair_helvetia_001_41017.mp3')),
-    new Sound('typewriter enter bell', 'typeEnterBell', require('./audio/zapsplat_office_typewriter_carriage_return_vintage_1960_lemair_helvetia_001_40994.mp3')),
-    new Sound('typewriter space', 'typeSpace', require('./audio/zapsplat_office_typewriter_spacebar_key_press_typebar_rfront_close_vintage_1960_lemair_helvetia_001_41037.mp3')),
-    new Sound('typewriter enter', 'typeEnter', require('./audio/zapsplat_office_typewriter_carriage_return_margin_bell_vintage_1960_lemair_helvetia_001_40992.mp3')),
-    new Sound('typewriter tab', 'typeTab', require('./audio/zapsplat_office_typewriter_tab_single_key_press_rear_close_vintage_1960_lemair_helvetia_004_41045.mp3')),
+    new Sound('keypad beep', 'beep', audioFiles['zapsplat_household_dehumidifier_on_off_select_beep_single_49226.mp3']),
+    new Sound('keypad correct tone', 'correct-tone', audioFiles['zapsplat_multimedia_correct_tone_beep_17736.mp3']),
+    new Sound('keypad wrong tone', 'wrong-tone', audioFiles['zapsplat_multimedia_game_error_tone_001_24919.mp3']),
+    new Sound('footstep1','step1', audioFiles['zapsplat_foley_footstep_single_shoe_soft_girls_carpet_007_36951.mp3']),
+    new Sound('footstep2','step2', audioFiles['zapsplat_foley_footstep_single_shoe_soft_girls_carpet_015_36959.mp3']),
+    new Sound('typewriter number', 'typeNum', audioFiles['zapsplat_office_typewriter_number_single_key_press_rear_close_vintage_1960_lemair_helvetia_001_41002.mp3']),
+    new Sound('typewriter key', 'typeKey', audioFiles['zapsplat_office_typewriter_single_key_press_medium_typebar_rear_close_vintage_1960_lemair_helvetia_001_41017.mp3']),
+    new Sound('typewriter enter bell', 'typeEnterBell', audioFiles['zapsplat_office_typewriter_carriage_return_vintage_1960_lemair_helvetia_001_40994.mp3']),
+    new Sound('typewriter space', 'typeSpace', audioFiles['zapsplat_office_typewriter_spacebar_key_press_typebar_rfront_close_vintage_1960_lemair_helvetia_001_41037.mp3']),
+    new Sound('typewriter enter', 'typeEnter', audioFiles['zapsplat_office_typewriter_carriage_return_margin_bell_vintage_1960_lemair_helvetia_001_40992.mp3']),
+    new Sound('typewriter tab', 'typeTab', audioFiles['zapsplat_office_typewriter_tab_single_key_press_rear_close_vintage_1960_lemair_helvetia_004_41045.mp3']),
 ]
 
 var music = {
@@ -63,16 +73,16 @@ var characterModels = {
     }),
 
     billy : new Character.Model ({
-            wait: [[0,0,0]],
+            wait: [['b0',0,0]],
             waveFlag: [['bf',0,1],['bf',1,1],['bf',2,1]],
-            raiseFlag: [[0,0,0],['bfr',0,0],['bfr',0,0]],
-            lowerFlag: [['bfr',0,0],['bfr',0,0],[0,0,0]],
-            talk: [[0,0,0],[2,0,0],],
+            raiseFlag: [['b0',0,0],['bfr',0,0],['bfr',0,0]],
+            lowerFlag: [['bfr',0,0],['bfr',0,0],['b0',0,0]],
+            talk: [['b0',0,0],['b2',0,0],],
             walk: {
-                up       : [[0,0,1],[0,1,1],[0,2,1],[0,3,1]  ],
-                down  : [[0,0,0],[0,1,0],[0,2,0],[0,3,0]  ],
-                left  : [[0,0,2],[0,1,2],[0,2,2],[0,3,2]  ],
-                right : [[0,0,3],[0,1,3],[0,2,3],[0,3,3]  ],
+                up    : [['b0',0,1],['b0',1,1],['b0',2,1],['b0',3,1]  ],
+                down  : [['b0',0,0],['b0',1,0],['b0',2,0],['b0',3,0]  ],
+                left  : [['b0',0,2],['b0',1,2],['b0',2,2],['b0',3,2]  ],
+                right : [['b0',0,3],['b0',1,3],['b0',2,3],['b0',3,3]  ],
             }
     },{
 
@@ -182,7 +192,7 @@ var makeCharacters = function() {return [
 
 var makeRooms = function(){ return [
 
-    new Room ('swamp', require("./rooms/bg1.png"), 800, 250, {
+    new Room ('swamp', roomFiles['bg1.png'], 800, 250, {
     worldItems:[
         new WorldItem ('lake',[400,40,20,-20],800,50),
         new WorldItem ('overlook path',[0,0],150,150,null,{
@@ -206,7 +216,7 @@ var makeRooms = function(){ return [
     screenScrollX:2,
     }),
 
-    new Room ('LIVING_ROOM', require("./rooms/bg2.jpg"), 400, 250,{
+    new Room ('LIVING_ROOM', roomFiles['bg2.jpg'], 400, 250,{
     name: 'Living room',
     worldItems : [
         new WorldItem ('door',[265,25,0,-20],50,100,worldItemModels.door,{
@@ -221,7 +231,7 @@ var makeRooms = function(){ return [
         new RectZone (135,20,200,200,true),
     ]}),
 
-    new Room ('TEST_ROOM', require("./rooms/testroom.png"), 400, 300, {
+    new Room ('TEST_ROOM', roomFiles['testroom.png'], 400, 300, {
     effectZones:[
         new EffectZone(
             new PolyZone ([ [184,90], [219,78],[206,60],[160,60],[150,78] ]),
@@ -239,10 +249,10 @@ var makeRooms = function(){ return [
         new PolyZone ([ [296,130], [296,250], [400,300], [400,0] ]),
     ],
     foregrounds:[
-        new Foreground(require("./rooms/tree.png"),[-70,0],[220,200], {opacity:1,filter:'blur(1px)'}),
+        new Foreground(roomFiles['tree.png'],[-70,0],[220,200], {opacity:1,filter:'blur(1px)'}),
     ]}),
 
-    new Room ('Gallery', require("./rooms/testroom3.png"), 400,300, {
+    new Room ('Gallery', roomFiles['testroom3.png'], 400,300, {
         name: 'The Overlook',
         filter: {
             brightness: 100,
