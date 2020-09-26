@@ -4,8 +4,6 @@ import Character from "../../src/modules/characterDataClass"
 import WorldItem from "../../src/modules/WorldItemDataClass"
 import InventoryItem from "../../src/modules/InventoryItem"
 
-import assets from './assest.js'
-
 
 function importAll(r) {
     let images = {}
@@ -13,8 +11,9 @@ function importAll(r) {
     return images;
   }
 const spriteFiles = importAll(require.context('./sprites', false, /\.(png|jpe?g|svg)$/));
-const roomFiles = importAll(require.context('./rooms', false, /\.(png|jpe?g|svg)$/));
-const audioFiles = importAll(require.context('./audio', false, /\.(mp3|wav|mp4)$/));
+const roomFiles   = importAll(require.context('./rooms', false, /\.(png|jpe?g|svg)$/));
+const audioFiles  = importAll(require.context('./audio', false, /\.(mp3|wav|mp4)$/));
+const itemFiles  = importAll(require.context('./items', false, /\.(png|jpe?g|svg)$/));
 
 
 var sprites = [
@@ -305,16 +304,33 @@ var makeRooms = function(){ return [
 
 
 const inventoryItemsData = [
-    ['bucket', 'bucket', {}],
-    ['sock', 'sock', {startWith: true, background:{shape:'diamond', color:'blue'}}],
-    ['nail', 'nail', {startWith: true, quantity: 2, pluralName: 'nails'}],
-    ['stick', 'stick',{startWith: true, name:'small wooden stick'}],
-    ['shoe', 'shoe',{startWith: true, name: 'big red shoe'}],
-    ['hammer', 'hammer'],
+    ['bucket', 'bucket.png', {}],
+    ['sock', 'sock.png', {startWith: true, background:{shape:'diamond', color:'blue'}}],
+    ['nail', {
+        1: 'nail.png',
+        2: 'twonails.png',
+        3: 'threenails.png',
+        4: 'manynails.jpg'
+    }, {startWith: true, quantity: 2, pluralName: 'nails'}],
+    ['stick', 'stick.jpg',{startWith: true, name:'small wooden stick'}],
+    ['shoe', 'shoe.jpg',{startWith: true, name: 'big red shoe'}],
+    ['hammer', 'hammer.jpg'],
 ]
 
 var makeInventoryItems = function() { 
-    return  inventoryItemsData.map(datum =>  new InventoryItem(datum[0], assets[datum[1]], datum[2] || {})
+
+    function processImageMap(imageMap) {
+        let output = {}
+        for (let key in imageMap) { output[key] = itemFiles[imageMap[key]] }
+        return output
+    }
+
+    return  inventoryItemsData.map(datum =>  new InventoryItem(
+        datum[0], 
+        typeof datum[1] == 'string' 
+            ? itemFiles[datum[1]]
+            : processImageMap(datum[1]), 
+        datum[2] || {})
 )};
 
 
