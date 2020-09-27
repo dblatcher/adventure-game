@@ -2,8 +2,18 @@ import {createApp} from 'vue'
 import { createStore } from 'vuex'
 import App from './App.vue'
 import { TinyEmitter } from 'tiny-emitter';
+import unpackRawContents from './unpackRawContents';
 
 const gameIndex = require(`../games/${process.env.VUE_APP_GAME_NAME}/gameIndex`)
+
+
+if (gameIndex.gameData.gameContentsAreRaw) {
+  const unpackedContents = unpackRawContents(gameIndex.gameData.allGameContentsData)
+  for (let key in unpackedContents) { 
+    gameIndex.gameData[key] = unpackedContents[key]
+  }
+}
+
 
 gameIndex.gameData.config = gameIndex.gameData.config || {}
 
