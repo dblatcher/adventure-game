@@ -162,6 +162,7 @@ class Verb {
         this.icon = config.icon
         this.showOnInventoryBox = config.showOnInventoryBox
         this.usesSelectedItem = config.usesSelectedItem
+        this.defaultResponse = config.defaultResponse
     }
     get isVerb() {return true}
 }

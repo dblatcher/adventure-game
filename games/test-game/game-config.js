@@ -1,4 +1,5 @@
 import { StandardOrder } from "../../src/modules/StandardOrder";
+import { ConditionalOrder } from "../../src/modules/ConditionalOrder";
 import { Verb } from "../../src/modules/constructors";
 
 
@@ -9,9 +10,30 @@ var verbList = [
     }),
     new Verb('LOOK', {
         description: 'look at',
+        defaultResponse: [
+            new ConditionalOrder({
+                conditions:[['WILDCARD','{{game.subject.dataType}}', '==', 'InventoryItem']],
+                orderIfTrue:['pc:: Good {{game.subject.name}}.'],
+            }),
+            new ConditionalOrder({
+                conditions:[['WILDCARD','{{game.subject.dataType}}', '==', 'Character']],
+                orderIfTrue:['pc:: I don\'t see anything special about {{game.subject.name}}'],
+            }),
+            new ConditionalOrder({
+                conditions:[['WILDCARD','{{game.subject.dataType}}', '==', 'WorldItem']],
+                orderIfTrue:['pc::It looks like a normal {{game.subject.name}} to me.'],
+            }),
+        ]
     }),
     new Verb('USE', {
         preposition:'with',
+        defaultResponse: [
+            new ConditionalOrder({
+                conditions:[['WILDCARD','{{game.object}}', 'false']],
+                orderIfTrue:['pc:: I can\'t use the {{game.subject.name}}!'],
+                orderIfFalse:['pc:: I can\'t use the {{game.subject.name}} with the {{game.object.name}}!'],
+            }),
+        ],
     }),
     new Verb('TALK',{
         description: 'talk to',
@@ -33,31 +55,6 @@ var verbList = [
 var defaultResponses = {
     "WALK" : function(command) {
         return [new StandardOrder('pc','goTo',command.subject.id, {wasManual:true})]
-    },
-    "LOOK" : function(command) {
-        if  (command.subject.id.endsWith('W')) {
-            return [
-                new StandardOrder(`pc^^{{game.subject.id}}`),
-                new StandardOrder('pc','say',`It looks like a normal {{game.subject.name}} to me.`)
-            ]
-        } else if  (command.subject.id.endsWith('C')) {
-            return [
-                new StandardOrder(`pc^^${command.subject.id}`),
-                new StandardOrder('pc','say',`I don't see anything special about ${command.subject.name}.`)
-            ]
-        } else {
-            return[
-                new StandardOrder('pc','say',`Good ${command.subject.name}.`)
-            ]
-        } 
-    },
-    "USE"  : function (command) {
-        if (!command.object) {
-            return [new StandardOrder('pc','say',`I can't use the ${command.subject.name} .`)]
-        }
-        return [new StandardOrder('pc','say',
-        `I can't use the ${command.subject.name} ${command.verb.preposition || 'with'} the ${command.object.name}.`
-        )]
     },
     "ACTIVATE"  : function (command) {
         if  (command.subject.id.endsWith('W')) {

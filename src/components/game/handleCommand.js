@@ -61,10 +61,15 @@ export default function (command) {
 
     // use a default response if no scripted response passed its conditions
     if (!response) {
-      let defaultResponseFunction = defaultResponses[command.verb.id] 
-      || defaultResponses["misc"] 
-      || function(){ return []}
-      response = defaultResponseFunction(command)
+      
+      if (command.verb.defaultResponse) {
+        response = command.verb.defaultResponse
+      } else {
+        let defaultResponseFunction = defaultResponses[command.verb.id] 
+        || defaultResponses["misc"] 
+        || function(){ return []}
+        response = defaultResponseFunction(command)
+      }
       this.$store.state.gameEmitter.emit('default-response-start',command)
     }
 
