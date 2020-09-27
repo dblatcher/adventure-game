@@ -300,11 +300,13 @@ const allGameContentsData = {
                 effectZones: [
                     [
                         ['RectZone', 0, 0, 400, 80],
-                        { scale: function () { return 3 } }
+                        { scale: "3 - this.y/200"  }
                     ],
                     [
                         ['RectZone', 0, 80, 400, 90],
-                        { scale: function () { return .75 - (this.y - 85) / 300 } },
+                        { 
+                            scale: ".75 - (this.y - 85) / 300"
+                        },
                     ],
                 ],
             }

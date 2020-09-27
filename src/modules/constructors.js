@@ -85,10 +85,25 @@ class EffectZone {
     constructor (zone,effect) {
         this.zone = zone;
         this.effect = effect;
+        if (typeof this.effect.scale === 'string') { this.effect.scale = convertStringToEffectFunction(this.effect.scale) }
+
+        function convertStringToEffectFunction(formula) {
+            try {
+                let constructedFunction = function(){ return eval(formula) }
+                let testValue = constructedFunction.bind({x:10, y:10})()
+                if (typeof testValue !== 'number') {
+                    console.warn ('stringified EffectZone scale did not return a number:', formula)
+                    return function() { return 1}
+                }
+                return constructedFunction
+            } catch {
+                console.warn ('failed to evaluate stringified EffectZone scale:', formula)
+                return function() { return 1}
+            }
+        }
     }
 
     addEffect(target, effectObject) {
-
         if (this.zone.containsPoint(target)) {
             if (this.effect.filter) {
                 effectObject.filter += this.effect.filter + ' ';
@@ -108,7 +123,6 @@ class EffectZone {
         effectZones.forEach(effectZone => {
             effectObject = effectZone.addEffect(target, effectObject)
         })
-
         return effectObject;
     }
 }
