@@ -64,7 +64,7 @@ function teleportCharacter (target, options={}) {
     movingCharacter.x = x;
     movingCharacter.y = y;
     game.$nextTick( () => {
-      resolve({finished:true, char:movingCharacter})
+      resolve({finished:true, character:movingCharacter})
     });
   });
 

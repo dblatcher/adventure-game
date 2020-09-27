@@ -224,8 +224,8 @@ export default {
     },
     thingsInRoom : function() {
       var that = this, set = [];
-      let cSet =  this.allCharacters.filter( (char)=> {
-        return char.room === that.roomNumber;
+      let cSet =  this.allCharacters.filter( (character)=> {
+        return character.room === that.roomNumber;
       });
       let wSet = this.rooms[this.roomNumber].worldItems.filter ( (item)=> {
         return !item.removed;
@@ -264,8 +264,8 @@ export default {
     },
     allCharactersAsObject: function() {
       let result = {};
-        this.allCharacters.forEach (char => {
-          result[char.id] = char;
+        this.allCharacters.forEach (character => {
+          result[character.id] = character;
         })
       return result;
     },
@@ -351,7 +351,7 @@ export default {
       let offsetWidth = this.$refs.roomWrap.offsetWidth
 
       if (scrollWidth > offsetWidth) {
-        let pcScrollX = (this.getThings('pc').char.x / this.rooms[this.roomNumber].width) * scrollWidth
+        let pcScrollX = (this.getThings('pc').item.x / this.rooms[this.roomNumber].width) * scrollWidth
         let scrollValue = Math.max(pcScrollX - (offsetWidth/2),0)
         this.$refs.roomWrap.scrollTo(scrollValue,0)
       } 
@@ -402,7 +402,7 @@ export default {
     handleDoubleClick () {
       let pc = this.getThings('pc');
       if (!pc) { return false}
-      pc.char.destinationQueue.forEach (order=> {
+      pc.item.destinationQueue.forEach (order=> {
         if (order.wasManual) {order.isRun = true}
       })
     },

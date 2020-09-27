@@ -11,7 +11,7 @@ export default function (action, options = {}) {
             message: warningMessage
         });
     }
-    if (!this.char.model.cycles[action]) {
+    if (!this.item.model.cycles[action]) {
         let warningMessage = 'Action order skipped: ' + action + ' is not a cycle of ' + this.name + '.'
         this.$store.commit('debugMessage', warningMessage)
         return Promise.resolve({
@@ -24,7 +24,7 @@ export default function (action, options = {}) {
     if (!options.direction) { options.direction = this.currentDirection }
 
     //ensure options.direction is a direction supported by the character model's cycle;
-    var availableDirections = Object.keys(this.char.model.cycles[action]);
+    var availableDirections = Object.keys(this.item.model.cycles[action]);
     if (!availableDirections.includes(options.direction)) {
         options.direction = availableDirections[0];
     }
@@ -39,7 +39,7 @@ export default function (action, options = {}) {
         });
     }
 
-    this.char.actionQueue = [currentOrder];
+    this.item.actionQueue = [currentOrder];
 
 
     return makeOrderPromise(this, currentOrder, 'action')

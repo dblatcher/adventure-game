@@ -5,8 +5,8 @@ function skip(path) {
     return [{
         x: path[path.length - 1].x,
         y: path[path.length - 1].y,
-        direction: findDirection(path[0], this, this.char.model.validDirections),
-        action: this.char.walkCycle
+        direction: findDirection(path[0], this, this.item.model.validDirections),
+        action: this.item.walkCycle
     }];
 }
 
@@ -62,7 +62,7 @@ function turnTo(target, options = {}) {
         return Promise.resolve({ finished: false, reason: 'not valid destination' })
     }
 
-    this.char.behaviour_direction = findDirection(destination, this, this.char.model.validDirections)
+    this.item.behaviour_direction = findDirection(destination, this, this.item.model.validDirections)
     return Promise.resolve({ finished: true })
 }
 
@@ -74,7 +74,7 @@ function goTo(target, options = {}) {
     }
 
 
-    if (typeof options.action === 'undefined' || !this.char.model.cycles[options.action]) { options.action = this.char.walkCycle }
+    if (typeof options.action === 'undefined' || !this.item.model.cycles[options.action]) { options.action = this.item.walkCycle }
 
     var path = this.gameInstance.findPath(this, destination);
     if (path.length === 0) {
@@ -92,14 +92,14 @@ function goTo(target, options = {}) {
             orders.push(reactive({
                 x: path[i].x,
                 y: path[i].y,
-                direction: findDirection(path[i], i > 0 ? path[i - 1] : this, this.char.model.validDirections),
+                direction: findDirection(path[i], i > 0 ? path[i - 1] : this, this.item.model.validDirections),
                 action: options.action,
                 wasManual: options.wasManual,
             }));
         }
     }
 
-    this.char.destinationQueue = orders;
+    this.item.destinationQueue = orders;
     var targetOrder = orders[orders.length - 1];
 
 

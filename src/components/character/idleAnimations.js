@@ -1,6 +1,6 @@
 function checkForIdleAnimation () {
 
-    const {idleAnimations, behaviour_action} = this.char
+    const {idleAnimations, behaviour_action} = this.item
     const idleConfig = idleAnimations[behaviour_action]
 
     if ( this.isIdle ) {

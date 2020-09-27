@@ -41,8 +41,8 @@ class Model {
     correctOrder(order) {
         var directionNeeded = !Array.isArray(this.cycles[order.action]);
         if (directionNeeded && !this.cycles[order.action][order.direction] ) {
-            console.warn (`Character model for  ${'this.char.name'} has no cycle for : ${order.action} ${order.direction}!`);
-            let firstKey = Object.keys( this.char.cycles[order.action] )[0] ;
+            console.warn (`Character model for  ${'this.item.name'} has no cycle for : ${order.action} ${order.direction}!`);
+            let firstKey = Object.keys( this.item.cycles[order.action] )[0] ;
             order.direction = firstKey;
         }
     }

@@ -21,7 +21,7 @@
         <SpeechLine 
             v-bind:text="saying"
             v-bind:measure="this.measure"
-            v-bind:color="char.speechColor"
+            v-bind:color="item.speechColor"
             v-bind:pos="this.speechLinePositioning"
         ></SpeechLine>
         
@@ -58,45 +58,45 @@ export default {
     },
 
     computed :{
-        char: function() {return this.data},
-        spriteSet: function() {return this.$store.state.gameData.sprites.filter(sprite => this.char.model.spritesUsed.includes(sprite.id) )},
+        item: function() {return this.data},
+        spriteSet: function() {return this.$store.state.gameData.sprites.filter(sprite => this.item.model.spritesUsed.includes(sprite.id) )},
         gameInstance: function() {return this.$parent.$parent},
-        name: function() {return this.char.name},
-        x: function() {return this.char.x},
-        y: function() {return this.char.y},
-        room: function() {return this.char.room},
-        ident: function() {return this.char.id},
+        name: function() {return this.item.name},
+        x: function() {return this.item.x},
+        y: function() {return this.item.y},
+        room: function() {return this.item.room},
+        ident: function() {return this.item.id},
         dataType: function() {return 'Character'},
-        recommendedVerb: function() {return this.char.recommendedVerb},
+        recommendedVerb: function() {return this.item.recommendedVerb},
         saying : {
-            get: function() { return this.char.saying },
-            set: function(v) { this.char.saying=v }
+            get: function() { return this.item.saying },
+            set: function(v) { this.item.saying=v }
         },
         sayingCountDown : {
-            get: function() { return this.char.sayingCountDown },
-            set: function(v) { this.char.sayingCountDown=v }
+            get: function() { return this.item.sayingCountDown },
+            set: function(v) { this.item.sayingCountDown=v }
         },
         behaviour : {
             get: function() {return {
-                action:this.char.behaviour_action,
-                actFrame:this.char.behaviour_actFrame,
-                direction:this.char.behaviour_direction,
+                action:this.item.behaviour_action,
+                actFrame:this.item.behaviour_actFrame,
+                direction:this.item.behaviour_direction,
             }}
         },
 
-        scaledHeight : function() {return this.char.scale * this.char.baseHeight * this.zoneEffects.scale();},
-        scaledWidth : function() {return this.char.scale * this.char.baseWidth* this.zoneEffects.scale();},
+        scaledHeight : function() {return this.item.scale * this.item.baseHeight * this.zoneEffects.scale();},
+        scaledWidth : function() {return this.item.scale * this.item.baseWidth* this.zoneEffects.scale();},
         currentAction : function () {
-            return (this.char.actionQueue.length) ? 
-                this.char.actionQueue[0].action : this.behaviour.action;
+            return (this.item.actionQueue.length) ? 
+                this.item.actionQueue[0].action : this.behaviour.action;
         },
         currentDirection : function () {
-            return (this.char.actionQueue.length) ? 
-                this.char.actionQueue[0].direction : this.behaviour.direction;
+            return (this.item.actionQueue.length) ? 
+                this.item.actionQueue[0].direction : this.behaviour.direction;
         }, 
         frame : function() {
-            const frameData = this.char.model.getFrame(
-                this.char.actionQueue[0] || this.behaviour
+            const frameData = this.item.model.getFrame(
+                this.item.actionQueue[0] || this.behaviour
             )
             return {
                 sprite: frameData[0],
@@ -133,7 +133,7 @@ export default {
                     if (effectZones[i].effect.filter) {
                         result.filter += effectZones[i].effect.filter + ' ';
                     }
-                    if (effectZones[i].effect.scale && !this.char.noZoneScaling) {
+                    if (effectZones[i].effect.scale && !this.item.noZoneScaling) {
                         result.scale = effectZones[i].effect.scale.bind(this);
                     }
                 }
@@ -141,7 +141,7 @@ export default {
             return result;
         },
         isIdle : function() {
-            return !this.char.actionQueue[0] && !this.char.destinationQueue[0] && !this.char.actionQueue[0] && !this.char.saying
+            return !this.item.actionQueue[0] && !this.item.destinationQueue[0] && !this.item.actionQueue[0] && !this.item.saying
         },
         speechLinePositioning : function() {
             return {
@@ -151,15 +151,15 @@ export default {
                 characterWidth:this.scaledWidth,
                 roomHeight:this.roomHeight,
                 roomWidth:this.roomWidth,
-                speechBubbleDown:this.char.model.speechBubbleDown,
-                speechBubbleIn:this.char.model.speechBubbleIn,
+                speechBubbleDown:this.item.model.speechBubbleDown,
+                speechBubbleIn:this.item.model.speechBubbleIn,
             }
         },
         audioPosition : function() {
             return {
                 pan: Math.max (Math.min( (this.x - this.roomWidth/2) / (this.roomWidth/2),1), -1),
                 gain: .1,
-                loopSound: this.char.model.getCycleSoundLoop(this.currentAction)
+                loopSound: this.item.model.getCycleSoundLoop(this.currentAction)
             }
         }
     },
@@ -170,46 +170,46 @@ export default {
         say, countDownSpeech,
         move : moveFunction,
         checkForIdleAnimation, 
-        setDefaultWait: function (cycleName) { return this.char.setDefaultWait (cycleName, this) },
-        setDefaultWalk: function (cycleName) { return this.char.setDefaultWalk (cycleName, this) },
-        setDefaultTalk: function (cycleName) { return this.char.setDefaultTalk (cycleName, this) },
+        setDefaultWait: function (cycleName) { return this.item.setDefaultWait (cycleName, this) },
+        setDefaultWalk: function (cycleName) { return this.item.setDefaultWalk (cycleName, this) },
+        setDefaultTalk: function (cycleName) { return this.item.setDefaultTalk (cycleName, this) },
 
         goToRoom : function (target,options){
-            this.gameInstance.teleportCharacter ([this.char].concat(target), options)
+            this.gameInstance.teleportCharacter ([this.item].concat(target), options)
         },
         showNextFrame : function () { //TO DO - move this method to the data Model?
-            var order = this.char.actionQueue[0] || this.behaviour;
-            this.char.model.correctOrder(order)
+            var order = this.item.actionQueue[0] || this.behaviour;
+            this.item.model.correctOrder(order)
 
-            const cycle = this.char.model.getCycle(order)
+            const cycle = this.item.model.getCycle(order)
             
             const onLastFrame = !(cycle.length > order.actFrame+1);
             order.actFrame = onLastFrame ? 0 : order.actFrame + 1;
 
-            //this.behaviour is just an object with convience copies of the this.char behaviour properties
-            const noActions = ( this.char.actionQueue[0] ) ? false:true; 
-            if (noActions) {this.char.behaviour_actFrame = order.actFrame}
+            //this.behaviour is just an object with convience copies of the this.item behaviour properties
+            const noActions = ( this.item.actionQueue[0] ) ? false:true; 
+            if (noActions) {this.item.behaviour_actFrame = order.actFrame}
 
-            let newFrame = this.char.model.getFrame(order)
+            let newFrame = this.item.model.getFrame(order)
             if (newFrame[3]) {
                this.playSound(newFrame[3])
             }
            
             if (onLastFrame && (!order.loop && !noActions )) {
-                this.char.actionQueue.shift();
+                this.item.actionQueue.shift();
                 this.emitter.emit ('actionOrderDone', order)
             }
         },  
         clickHandler : function (event) {
             if (this.ident === this.gameInstance.pcId) {return false}
             event.stopPropagation();
-            this.$emit('clicked-thing', this.char);
+            this.$emit('clicked-thing', this.item);
         },
         rightClickHandler : function (event) {
             event.preventDefault();
             event.stopPropagation();
-            if (this.char.unclickable) {return false}
-            this.$emit('right-clicked-thing', this.char);
+            if (this.item.unclickable) {return false}
+            this.$emit('right-clicked-thing', this.item);
         },
         hoverHandler : function (event) {
             if (this.ident === this.gameInstance.pcId) {return false}

@@ -65,8 +65,8 @@ function createGameData(savedGame, gameInstance) {
     };
 
     // set starting room to be the room the pc starts in
-    state.allCharacters.forEach(char => {
-        if (char.id === state.pcId) { state.roomNumber = char.room }
+    state.allCharacters.forEach(character => {
+        if (character.id === state.pcId) { state.roomNumber = character.room }
     })
 
     //check for duplicate worldItem.id

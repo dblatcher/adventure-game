@@ -1,31 +1,31 @@
 function skip() {
     this.$store.commit('debugMessage',`skipped ${this.name} moving`)
-    let moveOrder = this.char.destinationQueue[this.char.destinationQueue.length-1];
-    this.char.x =  moveOrder.x; 
-    this.char.y = moveOrder.y;
-    this.char.destinationQueue.splice (0, this.char.destinationQueue.length)
+    let moveOrder = this.item.destinationQueue[this.item.destinationQueue.length-1];
+    this.item.x =  moveOrder.x; 
+    this.item.y = moveOrder.y;
+    this.item.destinationQueue.splice (0, this.item.destinationQueue.length)
 
-    this.char.behaviour_action = this.char.waitCycle;
-    this.char.behaviour_actFrame = 0;
-    this.char.behaviour_direction = moveOrder.direction;
+    this.item.behaviour_action = this.item.waitCycle;
+    this.item.behaviour_actFrame = 0;
+    this.item.behaviour_direction = moveOrder.direction;
     this.emitter.emit('moveOrderDone', moveOrder)
 }
 
 export default function () {
-    if (this.char.destinationQueue.length === 0) {return false}
+    if (this.item.destinationQueue.length === 0) {return false}
     
     if (this.gameInstance.instantMode) {
         skip.apply(this,[])
         return false;
     }
 
-    var moveOrder = this.char.destinationQueue[0];
+    var moveOrder = this.item.destinationQueue[0];
     if (!moveOrder.started) {
         if (moveOrder.action) {
             if (moveOrder.action !== this.currentAction || moveOrder.direction !== this.currentDirection) {
-                this.char.behaviour_action = moveOrder.action;
-                this.char.behaviour_direction = moveOrder.direction;
-                this.char.behaviour_actFrame = 0;
+                this.item.behaviour_action = moveOrder.action;
+                this.item.behaviour_direction = moveOrder.direction;
+                this.item.behaviour_actFrame = 0;
             }
         }
     }
@@ -52,25 +52,25 @@ export default function () {
     for (var i=0; i<obstacles.length; i++) {
         if (obstacles[i].containsPoint( this.x+movement.x, this.y+movement.y) ) {
             movement = {x:0, y:0};
-            this.char.behaviour_action = this.char.waitCycle;
-            this.char.behaviour_direction = moveOrder.direction;
-            this.char.behaviour_actFrame = 0;
-            this.char.destinationQueue.shift();
-            this.$store.commit('debugMessage', `${this.char.name} hit obstable during move to [${moveOrder.x}, ${moveOrder.y}]`)
+            this.item.behaviour_action = this.item.waitCycle;
+            this.item.behaviour_direction = moveOrder.direction;
+            this.item.behaviour_actFrame = 0;
+            this.item.destinationQueue.shift();
+            this.$store.commit('debugMessage', `${this.item.name} hit obstable during move to [${moveOrder.x}, ${moveOrder.y}]`)
         }
     }
-    this.char.x += movement.x;
-    this.char.y += movement.y;
-    this.$emit('character-moved', this.char.id)
+    this.item.x += movement.x;
+    this.item.y += movement.y;
+    this.$emit('character-moved', this.item.id)
 
     // test if character got to the moveOrder destination, shift queue, report if finished
     if (this.x ===  moveOrder.x && this.y === moveOrder.y) { 
         this.emitter.emit('moveOrderDone', moveOrder)
-        this.char.destinationQueue.shift();
-        if (this.char.destinationQueue.length === 0) {
-            this.char.behaviour_action = this.char.waitCycle;
-            this.char.behaviour_actFrame = 0;
-            this.char.behaviour_direction = moveOrder.direction;
+        this.item.destinationQueue.shift();
+        if (this.item.destinationQueue.length === 0) {
+            this.item.behaviour_action = this.item.waitCycle;
+            this.item.behaviour_actFrame = 0;
+            this.item.behaviour_direction = moveOrder.direction;
         }
     }
     

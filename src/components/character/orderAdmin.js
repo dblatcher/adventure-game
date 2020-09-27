@@ -61,7 +61,7 @@ function makeOrderPromise(that, currentOrder, orderType) {
                 that.$store.state.gameEmitter.off('changing-room', handleRoomChange)
                 resolve(makeResolutionForOrderDone());
             }
-            else if (!that.char[queueName].includes(currentOrder)) {
+            else if (!that.item[queueName].includes(currentOrder)) {
                 that.emitter.off(eventName, handleOrderDone)
                 resolve(makeResolutionForOrderNoLongerInQueue());
             }
