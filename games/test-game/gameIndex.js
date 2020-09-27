@@ -13,14 +13,19 @@ import sequences from "./sequences";
 
 require('./custom.scss');
 
-const gameData = { ...gameContentsImport, ...gameConfigImport,
-    sequences, interactionMatrix, makeConversations,}
+const gameData = { 
+    ...gameContentsImport, 
+    ...gameConfigImport,
+    sequences,
+    interactionMatrix,
+    makeConversations,
+}
 
 const minigames = {KeyPad, TypeWriterAnimation}
 
 export {
+    gameData,
     TitleScreen,
     EndingScreen, 
-    gameData,
     minigames,
 }

@@ -1,4 +1,4 @@
-const allGameContentsData = {
+const rawGameContentsData = {
     inventoryItems : [
         ['bucket', 'bucket.png', {}],
         ['sock', 'sock.png', {startWith: true, background:{shape:'diamond', color:'blue'}}],
@@ -316,6 +316,4 @@ const allGameContentsData = {
     ]
 }
 
-const gameContentsAreRaw = true
-
-export { allGameContentsData, gameContentsAreRaw}
+export { rawGameContentsData }
