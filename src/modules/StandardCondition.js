@@ -14,45 +14,54 @@ class StandardCondition {
     }
 
     evaluate (game){
-        const {actorId, operator, property, comparitor} = this;
-        let actor = game.getComponentOrDataObject(actorId)
-        if (!actor) {
-            game.$store.commit('debugMessage', `condition invalid: ${this.toString} (actor '${actorId}' not found).`)
-            return true
+        const {actorId, property, operator, comparitor} = this;
+        let value;
+
+        if (actorId.toUpperCase() === 'WILDCARD') {
+            value = game.processWildCards(property)
+            if (value === '**error**') {value = false}
+        } else {
+            let actor = game.getComponentOrDataObject(actorId)
+            if (!actor) {
+                game.$store.commit('debugMessage', `condition invalid: ${this.toString} (actor '${actorId}' not found).`)
+                return true
+            }
+            value = actor[property];
         }
-        
+
+
         switch (operator) {
             case "true":
-                return !!actor[property]; 
+                return !!value; 
             case "false":
-                return !actor[property]; 
+                return !value; 
             case "eq":
             case "=":
             case "==":
             case "===":
-                return actor[property] == comparitor;
+                return value == comparitor;
             case "ne":
             case "!=":
             case "!==":
             case "<>":
-                return actor[property] !== comparitor;
+                return value != comparitor;
             case "gt":
             case ">":
-                return actor[property] > comparitor;
+                return value > comparitor;
             case "lt":
             case "<":
-                return actor[property] < comparitor;
+                return value < comparitor;
             case "ge":
             case ">=":
-                return actor[property] >= comparitor;
+                return value >= comparitor;
             case "le":
             case "<=":
-                return actor[property] <= comparitor;
+                return value <= comparitor;
             case "begins":
             case "left":
             case "starts":
-                if (typeof actor[property] !== 'string' || typeof comparitor !== 'string' ) {return false}
-                return (actor[property].indexOf(comparitor) === 0)
+                if (typeof value !== 'string' || typeof comparitor !== 'string' ) {return false}
+                return (value.indexOf(comparitor) === 0)
         }
 
         game.$store.commit('debugMessage', `condition invalid: ${this.toString()} (invalid operator)`)
