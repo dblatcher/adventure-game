@@ -28,6 +28,7 @@ import Sprite from "../Sprite";
 import SfxPlayer from "../SfxPlayer";
 import setStatus from "./setStatus.js";
 import setRemoval from "./setRemoval.js";
+import {EffectZone} from "../../modules/constructors"
 import { innerBorder } from "../../modules/styleGen";
 import { TinyEmitter } from 'tiny-emitter';
 
@@ -92,22 +93,7 @@ export default {
             transform: 'translateX(-50%)'
         }},
         zoneEffects : function() {
-            var result= {
-                filter:"",
-                scale:function(){return 1},
-            };
-            var effectZones = this.gameInstance.rooms[this.gameInstance.roomNumber].effectZones;
-            for (var i=0; i<effectZones.length; i++) {
-                if (effectZones[i].zone.containsPoint(this)) {
-                    if (effectZones[i].effect.filter) {
-                        result.filter += effectZones[i].effect.filter + ' ';
-                    }
-                    if (effectZones[i].effect.scale && !this.item.noZoneScaling) {
-                        result.scale = effectZones[i].effect.scale.bind(this);
-                    }
-                }
-            }
-            return result;
+            return EffectZone.combineEffects(this, this.gameInstance.rooms[this.gameInstance.roomNumber].effectZones)
         },
         audioPosition : function() {
 
