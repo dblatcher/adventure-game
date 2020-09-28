@@ -25,7 +25,10 @@ function setInputsOptionsAfterCommand () {
 }
 
 export default function (command) {
-    const {interactionMatrix, defaultResponses} = this.$store.state.gameData
+    const {interactionMatrix, defaultResponses} = this.gameData
+    const {fallbackDefaultResponse} = this.gameData.config;
+
+
     if (!command) {command = {verb: this.verb, subject: this.subject, object: this.object};}
     let failedCondition = false, condition, passed, response=null, execution=null;
 
@@ -64,6 +67,8 @@ export default function (command) {
       
       if (command.verb.defaultResponse) {
         response = command.verb.defaultResponse
+      } else if (fallbackDefaultResponse) {
+        response = fallbackDefaultResponse
       } else {
         let defaultResponseFunction = defaultResponses[command.verb.id] 
         || defaultResponses["misc"] 
