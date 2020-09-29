@@ -488,8 +488,8 @@ export default {
         this.$refs.room.resize();
       });
 
-      if (this.gameData.sequences.starting) {
-        this.runSequence('starting');
+      if (this.gameData.sequences._starting) {
+        this.runSequence('_starting');
       }
     }
   },

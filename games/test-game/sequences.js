@@ -5,7 +5,7 @@ import { StandardCondition } from "../../src/modules/StandardCondition";
 
 
 
-const starting = [
+const _starting = [
     new StandardOrder ('[status]CUTSCENE'),
     // new StandardOrder ('pc::Hello World, my name is {{pc.name}}.'),
     new StandardOrder ('pc##wave'),
@@ -91,4 +91,4 @@ const skinnerCounting = [
     new StandardOrder ('SKINNER_C::10'),
 ]
 
-export default { starting, _fallbackDefaultResponse, skinnerWalkAbout,skinnerWalkBetweenRooms, skinnerCounting };
+export default { _starting, _fallbackDefaultResponse, skinnerWalkAbout,skinnerWalkBetweenRooms, skinnerCounting };
