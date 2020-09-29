@@ -26,6 +26,18 @@ const starting = [
     
 ]
 
+const _fallbackDefaultResponse = [
+    new ConditionalOrder({
+        conditions:[['WILDCARD','{{game.subject.dataType}}', '!=', 'InventoryItem']],
+        orderIfTrue:['pc^^{{game.subject.id}}'],
+    }),
+    new ConditionalOrder({
+        conditions:[['WILDCARD','{{game.object.id}}', 'false']],
+        orderIfTrue:['pc:: I can\'t {{game.verb.description}} the {{game.subject.name}}!'],
+        orderIfFalse:['pc:: I can\'t {{game.verb.description}} the {{game.subject.name}} {{game.verb.preposition}} the {{game.object.name}}!'],
+    }),
+]
+
 const skinnerWalkAbout = [
     new failableOrder ('SKINNER_C>>TUBE2_W',{tests:[new StandardCondition('LIGHT_SWITCH_W','status','===','on')]}),
     new failableOrder ('SKINNER_C::I am over here.', {action:'yell', tests:[new StandardCondition('LIGHT_SWITCH_W','status','===','on')]}),
@@ -79,4 +91,4 @@ const skinnerCounting = [
     new StandardOrder ('SKINNER_C::10'),
 ]
 
-export default { starting, skinnerWalkAbout,skinnerWalkBetweenRooms, skinnerCounting };
+export default { starting, _fallbackDefaultResponse, skinnerWalkAbout,skinnerWalkBetweenRooms, skinnerCounting };

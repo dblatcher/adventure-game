@@ -84,7 +84,6 @@ var verbList = [
     }),
 ]
 
-
 const config = {
     title: 'Test Game',
     interface: 'Scumm',
@@ -99,17 +98,6 @@ const config = {
 
     },
     defaultVerb: {WorldItem:"LOOK", InventoryItem:"USE", Character:"TALK"},
-    fallbackDefaultResponse: [
-        new ConditionalOrder({
-            conditions:[['WILDCARD','{{game.subject.dataType}}', '!=', 'InventoryItem']],
-            orderIfTrue:['pc^^{{game.subject.id}}'],
-        }),
-        new ConditionalOrder({
-            conditions:[['WILDCARD','{{game.object.id}}', 'false']],
-            orderIfTrue:['pc:: I can\'t {{game.verb.description}} the {{game.subject.name}}!'],
-            orderIfFalse:['pc:: I can\'t {{game.verb.description}} the {{game.subject.name}} {{game.verb.preposition}} the {{game.object.name}}!'],
-        }),
-    ],
     pcId: 'JANE_C',
     initialGameVars: {
         wantsHammer: false,

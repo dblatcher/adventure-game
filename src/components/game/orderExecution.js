@@ -35,7 +35,7 @@ function runSequence(input, options) {
         return sequence.apply(this, [options]);
     }
 
-    if (Array.isArray(sequence)) {
+    if (Array.isArray(sequence) && sequence.length > 0) {
         return makeChain(
             sequence,
             function (order) { return order.execute(this) },
@@ -55,7 +55,7 @@ function runSequence(input, options) {
             this)
     }
 
-    this.$store.commit('debugMessage', `Unrecognised sequence: ${input && input.toString ? input.toString() : input}`)
+    this.$store.commit('debugMessage', `Unrecognised or empty sequence: ${input && input.toString ? input.toString() : input}`)
     return Promise.resolve({ finished: false })
 }
 

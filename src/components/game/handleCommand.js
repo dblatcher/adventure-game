@@ -25,9 +25,7 @@ function setInputsOptionsAfterCommand () {
 }
 
 export default function (command) {
-    const {interactionMatrix, defaultResponses} = this.gameData
-    const {fallbackDefaultResponse} = this.gameData.config;
-
+    const {interactionMatrix, sequences} = this.gameData
 
     if (!command) {command = {verb: this.verb, subject: this.subject, object: this.object};}
     let failedCondition = false, condition, passed, response=null, execution=null;
@@ -67,13 +65,11 @@ export default function (command) {
       
       if (command.verb.defaultResponse) {
         response = command.verb.defaultResponse
-      } else if (fallbackDefaultResponse) {
-        response = fallbackDefaultResponse
+      } else if (sequences._fallbackDefaultResponse) {
+        response = sequences._fallbackDefaultResponse
       } else {
-        let defaultResponseFunction = defaultResponses[command.verb.id] 
-        || defaultResponses["misc"] 
-        || function(){ return []}
-        response = defaultResponseFunction(command)
+        this.$store.commit('debugMessage', `No default response for verb ${command.verb.id} or _fallbackDefaultResponse sequence found!.`)
+        response = []
       }
       this.$store.state.gameEmitter.emit('default-response-start',command)
     }
