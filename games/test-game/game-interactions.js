@@ -167,4 +167,4 @@ var interactions = [
 
 
 var interactionMatrix = Interaction.makeMatrix(interactions);
-export { interactionMatrix }
+export default interactionMatrix;

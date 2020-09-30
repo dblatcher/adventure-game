@@ -61,4 +61,4 @@ function makeConversations() {
     return conversations
 }
 
-export {makeConversations}
+export default makeConversations;
