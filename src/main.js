@@ -1,7 +1,8 @@
 import {createApp} from 'vue'
 import App from './App.vue'
-import unpackRawContents from './unpackRawContents';
+import unpackRawContents from './unpack/unpackRawContents';
 import buildStore from './buildStore';
+import unpackRawVerbList from './unpack/unpackRawVerbList';
 
 
 const gameIndex = require(`../games/${process.env.VUE_APP_GAME_NAME}/gameIndex`)
@@ -13,6 +14,11 @@ if (gameIndex.gameData.rawGameContentsData) {
 }
 gameIndex.gameData.config = gameIndex.gameData.config || {}
 
+
+if (gameIndex.gameData.rawVerbList) {
+  const unpackedVerbList = unpackRawVerbList(gameIndex.gameData.rawVerbList)
+  gameIndex.gameData.verbList = unpackedVerbList
+}
 
 const debugSetting = {
   onScreen: process.env.VUE_APP_DEBUG_ONSCREEN === 'on',

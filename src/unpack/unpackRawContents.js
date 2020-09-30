@@ -1,8 +1,8 @@
-import { RectZone, PolyZone } from "./modules/zone";
-import { Room, EffectZone, Foreground, Sprite, Sound } from "./modules/constructors"
-import Character from "./modules/characterDataClass"
-import WorldItem from "./modules/WorldItemDataClass"
-import InventoryItem from "./modules/InventoryItem"
+import { RectZone, PolyZone } from "../modules/zone";
+import { Room, EffectZone, Foreground, Sprite, Sound } from "../modules/constructors"
+import Character from "../modules/characterDataClass"
+import WorldItem from "../modules/WorldItemDataClass"
+import InventoryItem from "../modules/InventoryItem"
 
 
 export default function unpackRawContents(allGameContentsData) {
@@ -12,10 +12,10 @@ export default function unpackRawContents(allGameContentsData) {
         r.keys().forEach((item) => { images[item.replace('./', '')] = r(item); });
         return images;
     }
-    const spriteFiles = importAll(require.context(`../games/${process.env.VUE_APP_GAME_NAME}/sprites`, false, /\.(png|jpe?g|svg)$/));
-    const roomFiles = importAll(require.context(`../games/${process.env.VUE_APP_GAME_NAME}/rooms`, false, /\.(png|jpe?g|svg)$/));
-    const audioFiles = importAll(require.context(`../games/${process.env.VUE_APP_GAME_NAME}/audio`, false, /\.(mp3|wav|mp4)$/));
-    const itemFiles = importAll(require.context(`../games/${process.env.VUE_APP_GAME_NAME}/items`, false, /\.(png|jpe?g|svg)$/));
+    const spriteFiles = importAll(require.context(`../../games/${process.env.VUE_APP_GAME_NAME}/sprites`, false, /\.(png|jpe?g|svg)$/));
+    const roomFiles = importAll(require.context(`../../games/${process.env.VUE_APP_GAME_NAME}/rooms`, false, /\.(png|jpe?g|svg)$/));
+    const audioFiles = importAll(require.context(`../../games/${process.env.VUE_APP_GAME_NAME}/audio`, false, /\.(mp3|wav|mp4)$/));
+    const itemFiles = importAll(require.context(`../../games/${process.env.VUE_APP_GAME_NAME}/items`, false, /\.(png|jpe?g|svg)$/));
 
     var sprites = allGameContentsData.sprites.map(datum => new Sprite(datum[0], spriteFiles[datum[1]], datum[2]))
     var sounds = allGameContentsData.sounds.map(datum => new Sound(datum[0], datum[1], audioFiles[datum[2]]))
